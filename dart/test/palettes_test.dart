@@ -136,8 +136,6 @@ void main() {
       final corePaletteB = CorePalette.of(0xff0000ff);
       final corePaletteC = CorePalette.of(0xff123456);
 
-      print(corePaletteC);
-
       expect(corePaletteA, corePaletteB);
       expect(corePaletteB, isNot(corePaletteC));
 

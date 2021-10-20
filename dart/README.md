@@ -14,7 +14,7 @@ space, choosing theme colors from images, and creating tones of colors.
 `dart pub add material_color_utilities` or `flutter pub add material_color_utilities`
 
 ```dart
-import `package:material_color_utilities:material_color_utilities.dart;`
+import 'package:material_color_utilities:material_color_utilities.dart;'
 ```
 
 ## Additional information
