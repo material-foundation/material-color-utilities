@@ -18,7 +18,9 @@ version: 0.1.0
 repository: https://github.com/material-foundation/material-color-utilities
 
 environment:
-  sdk: '>=2.13.4 <3.0.0'
+  sdk: ">=2.13.4 <3.0.0"
 
 dev_dependencies:
   test: ^1.16.0
+dependencies:
+  matcher: ^0.12.11 # used by color_matcher.dart

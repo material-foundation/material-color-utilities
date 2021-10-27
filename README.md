@@ -1,6 +1,6 @@
 # Material color utilities
 
-Includes tooling and algorithms used for Material You, such as a new color
+Algorithms and utilities used for Material You, such as a new color
 space, choosing theme colors from images, and creating tones of colors.
 
 ## Code availability
@@ -43,13 +43,12 @@ Here's how to do that:
 
 ## Cheat sheet
 
-TODO(plg): format this once image is uploaded
+![library cheat sheet](g3doc/cheat_sheet.png)
 
-![library cheat sheet](https://github.com/material-foundation/material-color-utilities/cheat_sheet.png)
+## Background
 
-## Glossary
-
-TODO(plg): add glossary once spec is published
+Learn about the [M3 color system]
+https://m3.material.io/styles/color/the-color-system/key-colors-tones.
 
 ## Components
 
