@@ -16,6 +16,7 @@
 
 import {CAM16} from 'hct/cam16';
 import {HCT} from 'hct/hct';
+import * as mathUtils from 'utils/math_utils';
 
 /**
  * Functions for blending in HCT and CAM16.
@@ -33,8 +34,16 @@ export class Blend {
    * @return The design color with a hue shifted towards the system's color,
    *     a slightly warmer/cooler variant of the design color's hue.
    */
-  static harmonize(designColor: number, keyColor: number) {
-    return Blend.hctHue(designColor, keyColor, 0.25);
+  static harmonize(designColor: number, sourceColor: number) {
+    const fromHct = HCT.fromInt(designColor);
+    const toHct = HCT.fromInt(sourceColor);
+    const differenceDegrees =
+        mathUtils.differenceDegrees(fromHct.hue, toHct.hue);
+    const rotationDegrees = Math.min(differenceDegrees * 0.5, 15.0);
+    const outputHue = mathUtils.sanitizeDegrees(
+        fromHct.hue +
+        rotationDegrees * Blend.rotationDirection(fromHct.hue, toHct.hue));
+    return HCT.from(outputHue, fromHct.chroma, fromHct.tone).toInt();
   }
 
   /**
@@ -78,5 +87,33 @@ export class Blend {
     const bstar = aBstar + (bBstar - aBstar) * amount;
 
     return CAM16.fromUcs(jstar, astar, bstar).viewedInSrgb();
+  }
+
+  /**
+   * Sign of direction change needed to travel from one angle to another.
+   *
+   * @param from The angle travel starts from, in degrees.
+   * @param to The angle travel ends at, in degrees.
+   * @return -1 if decreasing from leads to the shortest travel distance, 1 if
+   *    increasing from leads to the shortest travel distance.
+   */
+  private static rotationDirection(from: number, to: number): number {
+    const a = to - from;
+    const b = to - from + 360.0;
+    const c = to - from - 360.0;
+
+    const aAbs = Math.abs(a);
+    const bAbs = Math.abs(b);
+    const cAbs = Math.abs(c);
+
+    if (aAbs <= bAbs && aAbs <= cAbs) {
+      return a >= 0.0 ? 1 : -1;
+    }
+
+    if (bAbs <= aAbs && bAbs <= cAbs) {
+      return b >= 0.0 ? 1 : -1;
+    }
+
+    return c >= 0.0 ? 1 : -1;
   }
 }

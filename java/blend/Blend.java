@@ -16,13 +16,17 @@
 
 package blend;
 
+import static java.lang.Math.min;
+
 import hct.Cam16;
 import hct.Hct;
 import utils.ColorUtils;
+import utils.MathUtils;
 
 /** Functions for blending in HCT and CAM16. */
 public final class Blend {
-  private static final float HARMONIZE_BLEND_AMOUNT = 0.25f;
+  private static final float HARMONIZE_MAX_DEGREES = 15.0f;
+  private static final float HARMONIZE_PERCENTAGE = 0.5f;
 
   private Blend() {}
 
@@ -31,12 +35,20 @@ public final class Blend {
    * original color recognizable and recognizably shifted towards the key color.
    *
    * @param designColor ARGB representation of an arbitrary color.
-   * @param keyColor ARGB representation of the main theme color.
+   * @param sourceColor ARGB representation of the main theme color.
    * @return The design color with a hue shifted towards the system's color, a slightly
    *     warmer/cooler variant of the design color's hue.
    */
-  public static int harmonize(int designColor, int keyColor) {
-    return blendHctHue(designColor, keyColor, HARMONIZE_BLEND_AMOUNT);
+  public static int harmonize(int designColor, int sourceColor) {
+    Hct fromHct = Hct.fromInt(designColor);
+    Hct toHct = Hct.fromInt(sourceColor);
+    float differenceDegrees = MathUtils.differenceDegrees(fromHct.getHue(), toHct.getHue());
+    float rotationDegrees = min(differenceDegrees * HARMONIZE_PERCENTAGE, HARMONIZE_MAX_DEGREES);
+    float outputHue =
+        MathUtils.sanitizeDegrees(
+            fromHct.getHue()
+                + rotationDegrees * rotationDirection(fromHct.getHue(), toHct.getHue()));
+    return Hct.from(outputHue, fromHct.getChroma(), fromHct.getTone()).toInt();
   }
 
   /**
@@ -81,5 +93,31 @@ public final class Blend {
 
     Cam16 blended = Cam16.fromUcs(j, a, b);
     return blended.getInt();
+  }
+
+  /**
+   * Sign of direction change needed to travel from one angle to another.
+   *
+   * @param from The angle travel starts from, in degrees.
+   * @param to The angle travel ends at, in degrees.
+   * @return -1 if decreasing from leads to the shortest travel distance, 1 if increasing from leads
+   *     to the shortest travel distance.
+   */
+  private static float rotationDirection(float from, float to) {
+    float a = to - from;
+    float b = to - from + 360.0f;
+    float c = to - from - 360.0f;
+
+    float aAbs = Math.abs(a);
+    float bAbs = Math.abs(b);
+    float cAbs = Math.abs(c);
+
+    if (aAbs <= bAbs && aAbs <= cAbs) {
+      return a >= 0.0 ? 1 : -1;
+    } else if (bAbs <= aAbs && bAbs <= cAbs) {
+      return b >= 0.0 ? 1 : -1;
+    } else {
+      return c >= 0.0 ? 1 : -1;
+    }
   }
 }

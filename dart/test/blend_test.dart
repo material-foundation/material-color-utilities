@@ -13,14 +13,73 @@
 // limitations under the License.
 
 import 'package:material_color_utilities/blend/blend.dart';
+import 'package:material_color_utilities/utils_test/color_matcher.dart';
 import 'package:test/test.dart';
 
 const red = 0xffff0000;
 const blue = 0xff0000ff;
-
+const green = 0xff00ff00;
+const yellow = 0xffffff00;
 void main() {
-  test('blendRedAndBlue', () async {
-    final answer = Blend.cam16ucs(red, blue, 0.8);
-    expect(answer, equals(0xFF6440B4));
+  group('Harmonize', () {
+    test('redToBlue', () {
+      final answer = Blend.harmonize(red, blue);
+      expect(answer, isColor(0xffFB0054));
+    });
+
+    test('redToGreen', () {
+      final answer = Blend.harmonize(red, green);
+      expect(answer, isColor(0xffDA5400));
+    });
+
+    test('redToYellow', () {
+      final answer = Blend.harmonize(red, yellow);
+      expect(answer, isColor(0xffDA5400));
+    });
+
+    test('blueToGreen', () {
+      final answer = Blend.harmonize(blue, green);
+      expect(answer, isColor(0xff0047A7));
+    });
+
+    test('blueToRed', () {
+      final answer = Blend.harmonize(blue, red);
+      expect(answer, isColor(0xff5600DF));
+    });
+
+    test('blueToYellow', () {
+      final answer = Blend.harmonize(blue, yellow);
+      expect(answer, isColor(0xff0047A7));
+    });
+
+    test('greenToBlue', () {
+      final answer = Blend.harmonize(green, blue);
+      expect(answer, isColor(0xff00FC91));
+    });
+
+    test('greenToRed', () {
+      final answer = Blend.harmonize(green, red);
+      expect(answer, isColor(0xffADF000));
+    });
+
+    test('greenToYellow', () {
+      final answer = Blend.harmonize(green, yellow);
+      expect(answer, isColor(0xffADF000));
+    });
+
+    test('yellowToBlue', () {
+      final answer = Blend.harmonize(yellow, blue);
+      expect(answer, isColor(0xffEBFFB2));
+    });
+
+    test('yellowToGreen', () {
+      final answer = Blend.harmonize(yellow, green);
+      expect(answer, isColor(0xffEBFFB2));
+    });
+
+    test('yellowToRed', () {
+      final answer = Blend.harmonize(yellow, red);
+      expect(answer, isColor(0xffFFF6DC));
+    });
   });
 }
