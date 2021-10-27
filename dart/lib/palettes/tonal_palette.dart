@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'dart:math' as math;
+
 import 'package:material_color_utilities/hct/hct.dart';
 
 /// A convenience class for retrieving colors that are constant in hue and
@@ -85,16 +87,21 @@ class TonalPalette {
   /// If the class was instantiated from a fixed-size list of color ints, [tone]
   /// must be in [commonTones].
   int get(int tone) {
-    if ((_hue == null || _chroma == null) && !_cache.containsKey(tone)) {
-      throw (ArgumentError.value(
-        tone,
-        'tone',
-        'When a TonalPalette is created with fromList, tone must be one of '
-            '$commonTones',
-      ));
+    if (_hue == null || _chroma == null) {
+      if (!_cache.containsKey(tone)) {
+        throw (ArgumentError.value(
+          tone,
+          'tone',
+          'When a TonalPalette is created with fromList, tone must be one of '
+              '$commonTones',
+        ));
+      } else {
+        return _cache[tone]!;
+      }
     }
+    final chroma = (tone >= 90.0) ? math.min(_chroma!, 40.0) : _chroma!;
     return _cache.putIfAbsent(
-        tone, () => HctColor.from(_hue!, _chroma!, tone.toDouble()).toInt());
+        tone, () => HctColor.from(_hue!, chroma, tone.toDouble()).toInt());
   }
 
   @override
