@@ -28,7 +28,7 @@ Here's how to do that:
 
 ## Cheat sheet
 
-![library cheat sheet](g3doc/cheat_sheet.png)
+![library cheat sheet](cheat_sheet.png)
 
 ## Background
 
