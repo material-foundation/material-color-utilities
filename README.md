@@ -1,14 +1,15 @@
 # Material color utilities
 
-Algorithms and utilities used for Material You, such as a new color
-space, choosing theme colors from images, and creating tones of colors.
+Algorithms and utilities that power the Material Design 3 (M3) color system,
+including choosing theme colors from images and creating tones of colors; all in
+a new color space.
 
 ## Code availability
 
-Language    | Availability  | Notes
------------ | ------------- | --------------------------------------------
+Language    | Availability  | Package
+----------- | ------------- | -------
 C/C++       | *Coming soon* |
-Dart        | ✅             | `material_color_utilities` package available
+Dart        | ✅             | [`material_color_utilities`](https://pub.dev/packages/material_color_utilities)
 Java        | ✅             |
 Objective-C | *Coming soon* |
 TypeScript  | ✅             |
@@ -23,23 +24,7 @@ Need another platform/language?
 A common use case for this library is extracting a single color from an image.
 Here's how to do that:
 
-#### Dart
-
-```dart
-// TODO(plg): add code
-```
-
-#### Java
-
-```java
-// TODO(jamesoleary): add code
-```
-
-#### TypeScript
-
-```ts
-// TODO(plg): add code
-```
+*Coming soon*
 
 ## Cheat sheet
 
@@ -47,8 +32,8 @@ Here's how to do that:
 
 ## Background
 
-Learn about the [M3 color system]
-https://m3.material.io/styles/color/the-color-system/key-colors-tones.
+Learn about the
+[M3 color system](https://m3.material.io/styles/color/the-color-system/key-colors-tones).
 
 ## Components
 
@@ -98,3 +83,11 @@ Material Design Components, Android System UI, etc.
 
 *   Color — conversions between color spaces needed to implement HCT/CAM16
 *   Math — functions for ex. ensuring hue is between 0 and 360, clamping, etc.
+
+## Design Tooling
+
+The
+[Material Theme Builder](https://www.figma.com/community/plugin/1034969338659738588/Material-Theme-Builder)
+Figma plugin is recommended for design workflows. It delivers dynamic color to
+where design is done. Designers can take an existing design, and see what it
+looks like under different themes, with just a couple clicks.
