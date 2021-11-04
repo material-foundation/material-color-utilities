@@ -13,8 +13,9 @@
 // limitations under the License.
 
 import 'package:material_color_utilities/blend/blend.dart';
-import 'package:material_color_utilities/utils_test/color_matcher.dart';
 import 'package:test/test.dart';
+
+import './utils/color_matcher.dart';
 
 const red = 0xffff0000;
 const blue = 0xff0000ff;

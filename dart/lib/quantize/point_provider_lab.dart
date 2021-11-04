@@ -12,8 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'point_provider.dart';
 import 'package:material_color_utilities/utils/color_utils.dart';
+
+import 'point_provider.dart';
 
 class PointProviderLab implements PointProvider {
   const PointProviderLab();

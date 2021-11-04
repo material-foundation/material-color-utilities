@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:test/test.dart';
-
 import 'package:material_color_utilities/quantize/quantizer_celebi.dart';
+import 'package:test/test.dart';
 
 const red = 0xffff0000;
 const green = 0xff00ff00;

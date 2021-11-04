@@ -13,8 +13,9 @@
 // limitations under the License.
 
 import 'package:material_color_utilities/scheme/scheme.dart';
-import 'package:material_color_utilities/utils_test/color_matcher.dart';
 import 'package:test/test.dart';
+
+import './utils/color_matcher.dart';
 
 void main() {
   test('blue light scheme', () {

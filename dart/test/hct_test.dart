@@ -14,7 +14,6 @@
 
 import 'package:material_color_utilities/hct/cam16.dart';
 import 'package:material_color_utilities/hct/hct.dart';
-
 import 'package:material_color_utilities/hct/viewing_conditions.dart';
 import 'package:material_color_utilities/utils/color_utils.dart';
 import 'package:test/test.dart';

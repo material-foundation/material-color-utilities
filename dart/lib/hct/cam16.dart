@@ -14,6 +14,7 @@
 
 import 'dart:core';
 import 'dart:math' as math;
+
 import 'package:material_color_utilities/utils/color_utils.dart';
 import 'package:material_color_utilities/utils/math_utils.dart';
 

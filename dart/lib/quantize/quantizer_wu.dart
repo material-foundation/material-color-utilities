@@ -19,6 +19,7 @@
 // powerful help to verification and avoiding hard-to-debug issues.
 
 import 'package:material_color_utilities/utils/color_utils.dart';
+
 import 'quantizer.dart';
 import 'quantizer_map.dart';
 
