@@ -88,6 +88,8 @@ Material Design Components, Android System UI, etc.
 
 The
 [Material Theme Builder](https://www.figma.com/community/plugin/1034969338659738588/Material-Theme-Builder)
-Figma plugin is recommended for design workflows. It delivers dynamic color to
-where design is done. Designers can take an existing design, and see what it
-looks like under different themes, with just a couple clicks.
+Figma plugin and
+[web tool](https://material-foundation.github.io/material-theme-builder/) are
+recommended for design workflows. The Material Theme Builder delivers dynamic
+color to where design is done. Designers can take an existing design, and see
+what it looks like under different themes, with just a couple clicks.
