@@ -57,7 +57,7 @@ export class Scheme {
   }
 
   get onTertiary(): number {
-    return this.props.onSecondary;
+    return this.props.onTertiary;
   }
 
   get tertiaryContainer(): number {
