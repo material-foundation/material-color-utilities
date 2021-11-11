@@ -120,6 +120,14 @@ export class Scheme {
     return this.props.inverseOnSurface;
   }
 
+  get shadow(): number{
+    return this.props.shadow;
+  }
+
+  get inversePrimary(): number{
+    return this.props.inversePrimary;
+  }
+
   /**
    * @param argb ARGB representation of a color.
    * @return Light Material color scheme, based on the color's hue.
@@ -152,6 +160,8 @@ export class Scheme {
       onSurfaceVariant: core.n2.tone(30),
       inverseSurface: core.n1.tone(20),
       inverseOnSurface: core.n1.tone(95),
+      shadow: core.n1.tone(0),
+      inversePrimary: core.a1.tone(80)
     });
   }
 
@@ -186,7 +196,9 @@ export class Scheme {
       surfaceVariant: core.n2.tone(30),
       onSurfaceVariant: core.n2.tone(80),
       inverseSurface: core.n1.tone(90),
-      inverseOnSurface: core.n1.tone(20)
+      inverseOnSurface: core.n1.tone(20),
+      shadow: core.n1.tone(0),
+      inversePrimary: core.a1.tone(40)
     });
   }
 
@@ -215,6 +227,8 @@ export class Scheme {
     surfaceVariant: number,
     onSurfaceVariant: number,
     inverseSurface: number,
-    inverseOnSurface: number
+    inverseOnSurface: number,
+    shadow: number,
+    inversePrimary: number
   }) {}
 }
