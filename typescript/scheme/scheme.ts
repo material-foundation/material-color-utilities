@@ -147,7 +147,7 @@ export class Scheme {
       background: core.n1.tone(90),
       onBackground: core.n1.tone(10),
       surface: core.n1.tone(99),
-      onSurface: core.n1.tone(0),
+      onSurface: core.n1.tone(10),
       surfaceVariant: core.n2.tone(90),
       onSurfaceVariant: core.n2.tone(30),
       inverseSurface: core.n1.tone(20),
