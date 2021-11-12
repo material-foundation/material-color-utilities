@@ -169,7 +169,7 @@ export class Scheme {
       secondary: core.a2.tone(80),
       onSecondary: core.a2.tone(20),
       secondaryContainer: core.a2.tone(70),
-      onSecondaryContainer: core.a2.tone(10),
+      onSecondaryContainer: core.a2.tone(90),
       tertiary: core.a3.tone(80),
       onTertiary: core.a3.tone(20),
       tertiaryContainer: core.a3.tone(70),
