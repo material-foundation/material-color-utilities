@@ -1,1 +1,1 @@
-This repo is not accepting external contributions, but feature requests and bug reports are very welcome!
+This repo is not *currently* accepting external contributions, but feature requests and bug reports are very welcome!
