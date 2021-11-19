@@ -30,3 +30,4 @@ build/
 
 # Node.js related
 node_modules/
+lib/

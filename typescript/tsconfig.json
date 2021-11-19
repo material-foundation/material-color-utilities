@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "es2015",
+    "allowJs": false,
+    "strict": true,
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "baseUrl": "./src",
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node"
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "paths": {
+    "utils": ["utils/*"]
+  }
+}
