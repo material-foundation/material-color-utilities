@@ -1,0 +1,21 @@
+{
+  "name": "@elemental-design/material-color-utilities",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rm -rf lib/",
+    "build:js": "tsc -p tsconfig.json",
+    "build:types": "tsc -d true --emitDeclarationOnly --declarationDir lib",
+    "build": "npm run clean && npm run build:js && npm run build:types"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jasmine": "^3.10.2",
+    "jasmine": "^3.10.0",
+    "typescript": "^4.5.2"
+  }
+}

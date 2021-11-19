@@ -27,3 +27,6 @@ pubspec.lock
 .dart_tool/
 .packages
 build/
+
+# Node.js related
+node_modules/
