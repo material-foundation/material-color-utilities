@@ -1,14 +1,20 @@
 {
-  "name": "@elemental-design/material-color-utilities",
-  "version": "0.0.1",
+  "name": "@google/material-color-utilities",
+  "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "module": "lib/module/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf lib/",
-    "build:js": "tsc -p tsconfig.json",
+    "build:main": "tsc -p tsconfig.json",
+    "build:module": "tsc -p tsconfig.module.json",
     "build:types": "tsc -d true --emitDeclarationOnly --declarationDir lib",
-    "build": "npm run clean && npm run build:js && npm run build:types"
+    "build": "npm run clean && npm run build:main && npm run build:module && npm run build:types"
   },
   "keywords": [],
   "author": "",
