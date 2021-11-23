@@ -97,45 +97,45 @@ void main() {
   test('gamutMap_red', () {
     final colorToTest = red;
     final cam = Cam16.fromInt(colorToTest);
-    final color =
-        HctColor.from(cam.hue, cam.chroma, ColorUtils.lstarFromInt(colorToTest))
-            .toInt();
+    final color = HctColor.from(
+            cam.hue, cam.chroma, ColorUtils.lstarFromArgb(colorToTest))
+        .toInt();
     expect(colorToTest, equals(color));
   });
 
   test('gamutMap_green', () {
     final colorToTest = green;
     final cam = Cam16.fromInt(colorToTest);
-    final color =
-        HctColor.from(cam.hue, cam.chroma, ColorUtils.lstarFromInt(colorToTest))
-            .toInt();
+    final color = HctColor.from(
+            cam.hue, cam.chroma, ColorUtils.lstarFromArgb(colorToTest))
+        .toInt();
     expect(colorToTest, equals(color));
   });
 
   test('gamutMap_blue', () {
     final colorToTest = blue;
     final cam = Cam16.fromInt(colorToTest);
-    final color =
-        HctColor.from(cam.hue, cam.chroma, ColorUtils.lstarFromInt(colorToTest))
-            .toInt();
+    final color = HctColor.from(
+            cam.hue, cam.chroma, ColorUtils.lstarFromArgb(colorToTest))
+        .toInt();
     expect(colorToTest, equals(color));
   });
 
   test('gamutMap_white', () {
     final colorToTest = white;
     final cam = Cam16.fromInt(colorToTest);
-    final color =
-        HctColor.from(cam.hue, cam.chroma, ColorUtils.lstarFromInt(colorToTest))
-            .toInt();
+    final color = HctColor.from(
+            cam.hue, cam.chroma, ColorUtils.lstarFromArgb(colorToTest))
+        .toInt();
     expect(colorToTest, equals(color));
   });
 
   test('gamutMap_midgray', () {
     final colorToTest = green;
     final cam = Cam16.fromInt(colorToTest);
-    final color =
-        HctColor.from(cam.hue, cam.chroma, ColorUtils.lstarFromInt(colorToTest))
-            .toInt();
+    final color = HctColor.from(
+            cam.hue, cam.chroma, ColorUtils.lstarFromArgb(colorToTest))
+        .toInt();
     expect(colorToTest, equals(color));
   });
 }

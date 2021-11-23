@@ -21,7 +21,7 @@ class QuantizerMap implements Quantizer {
   Future<QuantizerResult> quantize(Iterable<int> pixels, int maxColors) async {
     final countByColor = <int, int>{};
     for (final pixel in pixels) {
-      final alpha = ColorUtils.alphaFromInt(pixel);
+      final alpha = ColorUtils.alphaFromArgb(pixel);
       if (alpha < 255) {
         continue;
       }

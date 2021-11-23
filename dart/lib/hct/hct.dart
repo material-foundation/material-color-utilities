@@ -38,7 +38,7 @@ class HctColor {
   /// HCT representation of [argb].
   static HctColor fromInt(int argb) {
     final cam = Cam16.fromInt(argb);
-    final tone = ColorUtils.lstarFromInt(argb);
+    final tone = ColorUtils.lstarFromArgb(argb);
     return HctColor._(cam.hue, cam.chroma, tone);
   }
 
@@ -57,7 +57,7 @@ class HctColor {
   /// hue and tone.
   set hue(double newHue) {
     _setInternalState(
-        getInt(ColorUtils.sanitizeDegrees(newHue), _chroma, _tone));
+        getInt(MathUtils.sanitizeDegreesDouble(newHue), _chroma, _tone));
   }
 
   double get chroma {
@@ -85,7 +85,7 @@ class HctColor {
   }
 
   HctColor._(double hue, double chroma, double tone)
-      : _hue = ColorUtils.sanitizeDegrees(hue),
+      : _hue = MathUtils.sanitizeDegreesDouble(hue),
         _chroma = chroma,
         _tone = MathUtils.clampDouble(0.0, 100.0, tone) {
     _setInternalState(toInt());
@@ -93,7 +93,7 @@ class HctColor {
 
   void _setInternalState(int argb) {
     final cam = Cam16.fromInt(argb);
-    final tone = ColorUtils.lstarFromInt(argb);
+    final tone = ColorUtils.lstarFromArgb(argb);
     _hue = cam.hue;
     _chroma = cam.chroma;
     _tone = tone;
@@ -132,7 +132,7 @@ int getIntInViewingConditions({
   required ViewingConditions frame,
 }) {
   if (chroma < 1.0 || lstar.round() <= 0.0 || lstar.round() >= 100.0) {
-    return ColorUtils.intFromLstar(lstar);
+    return ColorUtils.argbFromLstar(lstar);
   }
 
   hue = hue < 0
@@ -190,7 +190,7 @@ int getIntInViewingConditions({
   // with the desired L*. All values of L* are possible when there is 0 chroma. Return a color
   // with 0 chroma, i.e. a shade of gray, with the desired L*.
   if (answer == null) {
-    return ColorUtils.intFromLstar(lstar);
+    return ColorUtils.argbFromLstar(lstar);
   }
 
   return answer.viewed(frame);
@@ -209,7 +209,7 @@ Cam16? findCamByJ(
     final camBeforeClip =
         Cam16.fromJchInViewingConditions(mid, chroma, hue, frame);
     final clipped = camBeforeClip.viewed(frame);
-    final clippedLstar = ColorUtils.lstarFromInt(clipped);
+    final clippedLstar = ColorUtils.lstarFromArgb(clipped);
     final dL = (lstar - clippedLstar).abs();
     if (dL < _dlMax) {
       final camClipped = Cam16.fromIntInViewingConditions(clipped, frame);

@@ -200,9 +200,9 @@ public final class Cam16 {
     int red = (argb & 0x00ff0000) >> 16;
     int green = (argb & 0x0000ff00) >> 8;
     int blue = (argb & 0x000000ff);
-    float redL = ColorUtils.linearized(red / 255f) * 100f;
-    float greenL = ColorUtils.linearized(green / 255f) * 100f;
-    float blueL = ColorUtils.linearized(blue / 255f) * 100f;
+    float redL = (float) ColorUtils.linearized(red);
+    float greenL = (float) ColorUtils.linearized(green);
+    float blueL = (float) ColorUtils.linearized(blue);
     float x = 0.41233895f * redL + 0.35762064f * greenL + 0.18051042f * blueL;
     float y = 0.2126f * redL + 0.7152f * greenL + 0.0722f * blueL;
     float z = 0.01932141f * redL + 0.11916382f * greenL + 0.95034478f * blueL;
@@ -430,6 +430,6 @@ public final class Cam16 {
     float y = (rF * matrix[1][0]) + (gF * matrix[1][1]) + (bF * matrix[1][2]);
     float z = (rF * matrix[2][0]) + (gF * matrix[2][1]) + (bF * matrix[2][2]);
 
-    return ColorUtils.intFromXyzComponents(x, y, z);
+    return ColorUtils.argbFromXyz(x, y, z);
   }
 }

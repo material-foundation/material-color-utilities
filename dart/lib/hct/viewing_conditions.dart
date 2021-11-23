@@ -69,11 +69,13 @@ class ViewingConditions {
       required this.z});
 
   factory ViewingConditions.make(
-      {List<double> whitePoint = ColorUtils.whitePointD65,
+      {List<double>? whitePoint,
       double adaptingLuminance = -1.0,
       double backgroundLstar = 50.0,
       double surround = 2.0,
       bool discountingIlluminant = false}) {
+    whitePoint ??= ColorUtils.whitePointD65();
+
     adaptingLuminance = (adaptingLuminance > 0.0)
         ? adaptingLuminance
         : (200.0 / math.pi * ColorUtils.yFromLstar(50.0) / 100.0);

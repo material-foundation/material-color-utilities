@@ -21,12 +21,12 @@ class PointProviderLab implements PointProvider {
 
   @override
   List<double> fromInt(int argb) {
-    return ColorUtils.labFromInt(argb);
+    return ColorUtils.labFromArgb(argb);
   }
 
   @override
   int toInt(List<double> lab) {
-    return ColorUtils.intFromLab(lab[0], lab[1], lab[2]);
+    return ColorUtils.argbFromLab(lab[0], lab[1], lab[2]);
   }
 
   @override

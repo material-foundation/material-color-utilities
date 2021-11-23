@@ -64,7 +64,7 @@ public final class Hct {
    */
   public static Hct fromInt(int argb) {
     Cam16 cam = Cam16.fromInt(argb);
-    return new Hct(cam.getHue(), cam.getChroma(), ColorUtils.lstarFromInt(argb));
+    return new Hct(cam.getHue(), cam.getChroma(), (float) ColorUtils.lstarFromArgb(argb));
   }
 
   private Hct(float hue, float chroma, float tone) {
@@ -94,7 +94,7 @@ public final class Hct {
    * @param newHue 0 <= newHue < 360; invalid values are corrected.
    */
   public void setHue(float newHue) {
-    setInternalState(gamutMap(MathUtils.sanitizeDegrees(newHue), chroma, tone));
+    setInternalState(gamutMap((float) MathUtils.sanitizeDegreesDouble(newHue), chroma, tone));
   }
 
   /**
@@ -119,7 +119,7 @@ public final class Hct {
 
   private void setInternalState(int argb) {
     Cam16 cam = Cam16.fromInt(argb);
-    float tone = ColorUtils.lstarFromInt(argb);
+    float tone = (float) ColorUtils.lstarFromArgb(argb);
     hue = cam.getHue();
     chroma = cam.getChroma();
     this.tone = tone;
@@ -173,10 +173,10 @@ public final class Hct {
       float hue, float chroma, float tone, ViewingConditions viewingConditions) {
 
     if (chroma < 1.0 || Math.round(tone) <= 0.0 || Math.round(tone) >= 100.0) {
-      return ColorUtils.intFromLstar(tone);
+      return ColorUtils.argbFromLstar(tone);
     }
 
-    hue = MathUtils.sanitizeDegrees(hue);
+    hue = (float) MathUtils.sanitizeDegreesDouble(hue);
 
     float high = chroma;
     float mid = chroma;
@@ -208,7 +208,7 @@ public final class Hct {
     }
 
     if (answer == null) {
-      return ColorUtils.intFromLstar(tone);
+      return ColorUtils.argbFromLstar(tone);
     }
 
     return answer.viewed(viewingConditions);
@@ -232,7 +232,7 @@ public final class Hct {
       mid = low + (high - low) / 2;
       Cam16 camBeforeClip = Cam16.fromJch(mid, chroma, hue);
       int clipped = camBeforeClip.getInt();
-      float clippedLstar = ColorUtils.lstarFromInt(clipped);
+      float clippedLstar = (float) ColorUtils.lstarFromArgb(clipped);
       float dL = Math.abs(tone - clippedLstar);
 
       if (dL < DL_MAX) {

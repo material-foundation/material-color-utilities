@@ -72,9 +72,9 @@ public final class QuantizerWu implements Quantizer {
     for (Map.Entry<Integer, Integer> pair : pixels.entrySet()) {
       int pixel = pair.getKey();
       int count = pair.getValue();
-      int red = ColorUtils.redFromInt(pixel);
-      int green = ColorUtils.greenFromInt(pixel);
-      int blue = ColorUtils.blueFromInt(pixel);
+      int red = ColorUtils.redFromArgb(pixel);
+      int green = ColorUtils.greenFromArgb(pixel);
+      int blue = ColorUtils.blueFromArgb(pixel);
       int bitsToRemove = 8 - INDEX_BITS;
       int iR = (red >> bitsToRemove) + 1;
       int iG = (green >> bitsToRemove) + 1;

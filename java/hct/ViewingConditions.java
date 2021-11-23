@@ -34,7 +34,11 @@ public final class ViewingConditions {
   /** sRGB-like viewing conditions. */
   public static final ViewingConditions DEFAULT =
       ViewingConditions.make(
-          ColorUtils.whitePointD65(),
+          new float[] {
+            (float) ColorUtils.whitePointD65()[0],
+            (float) ColorUtils.whitePointD65()[1],
+            (float) ColorUtils.whitePointD65()[2]
+          },
           (float) (200.0f / Math.PI * ColorUtils.yFromLstar(50.0f) / 100.f),
           50.0f,
           2.0f,
@@ -124,8 +128,8 @@ public final class ViewingConditions {
     float f = 0.8f + (surround / 10.0f);
     float c =
         (f >= 0.9)
-            ? MathUtils.lerp(0.59f, 0.69f, ((f - 0.9f) * 10.0f))
-            : MathUtils.lerp(0.525f, 0.59f, ((f - 0.8f) * 10.0f));
+            ? (float) MathUtils.lerp(0.59f, 0.69f, ((f - 0.9f) * 10.0f))
+            : (float) MathUtils.lerp(0.525f, 0.59f, ((f - 0.8f) * 10.0f));
     float d =
         discountingIlluminant
             ? 1.0f
@@ -141,7 +145,7 @@ public final class ViewingConditions {
     float k4F = 1.0f - k4;
     float fl =
         (k4 * adaptingLuminance) + (0.1f * k4F * k4F * (float) Math.cbrt(5.0 * adaptingLuminance));
-    float n = ColorUtils.yFromLstar(backgroundLstar) / whitePoint[1];
+    float n = (float) (ColorUtils.yFromLstar(backgroundLstar) / whitePoint[1]);
     float z = 1.48f + (float) Math.sqrt(n);
     float nbb = 0.725f / (float) Math.pow(n, 0.2);
     float ncb = nbb;

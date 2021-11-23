@@ -28,14 +28,14 @@ public final class PointProviderLab implements PointProvider {
    */
   @Override
   public float[] fromInt(int argb) {
-    double[] lab = ColorUtils.labFromInt(argb);
+    double[] lab = ColorUtils.labFromArgb(argb);
     return new float[] {(float) lab[0], (float) lab[1], (float) lab[2]};
   }
 
   /** Convert a 3-element array to a color represented in ARGB. */
   @Override
   public int toInt(float[] lab) {
-    return ColorUtils.intFromLab(lab[0], lab[1], lab[2]);
+    return ColorUtils.argbFromLab(lab[0], lab[1], lab[2]);
   }
 
   /**

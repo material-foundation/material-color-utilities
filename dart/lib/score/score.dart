@@ -95,7 +95,7 @@ class Score {
 
       var excitedProportion = 0.0;
       for (var i = hue - 15; i < hue + 15; i++) {
-        final neighborHue = MathUtils.sanitizeDegrees(i);
+        final neighborHue = MathUtils.sanitizeDegreesInt(i);
         excitedProportion += hueProportions[neighborHue];
       }
       colorsToExcitedProportion[color] = excitedProportion;
@@ -160,7 +160,7 @@ class Score {
       final proportion = colorsToExcitedProportion[color]!;
 
       if (cam.chroma >= _cutoffChroma &&
-          ColorUtils.lstarFromInt(color) >= _cutoffTone &&
+          ColorUtils.lstarFromArgb(color) >= _cutoffTone &&
           proportion >= _cutoffExcitedProportion) {
         filtered.add(color);
       }

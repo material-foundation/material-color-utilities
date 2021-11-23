@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import 'package:matcher/matcher.dart';
-import 'package:material_color_utilities/utils/color_utils.dart';
+import 'package:material_color_utilities/utils/string_utils.dart';
 
 Matcher isColor(int color) => _ColorMatcher(color);
 
@@ -32,7 +32,7 @@ class _ColorMatcher extends Matcher {
 
   @override
   Description describe(Description description) {
-    return description.add('color equals ${ColorUtils.hexFromInt(_argb)}');
+    return description.add('color equals ${StringUtils.hexFromArgb(_argb)}');
   }
 
   @override
@@ -44,8 +44,8 @@ class _ColorMatcher extends Matcher {
   ) {
     return mismatchDescription
         .add('expected hex code\n  ')
-        .add(ColorUtils.hexFromInt(_argb))
+        .add(StringUtils.hexFromArgb(_argb))
         .add('\nbut got\n  ')
-        .add(ColorUtils.hexFromInt(item as int));
+        .add(StringUtils.hexFromArgb(item as int));
   }
 }

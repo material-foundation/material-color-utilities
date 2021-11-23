@@ -38,9 +38,9 @@ class Blend {
     final ucs = Blend.cam16ucs(from, to, amount);
     final ucsCam = Cam16.fromInt(ucs);
     final fromCam = Cam16.fromInt(from);
-    final blended =
-        HctColor.from(ucsCam.hue, fromCam.chroma, ColorUtils.lstarFromInt(from))
-            .toInt();
+    final blended = HctColor.from(
+            ucsCam.hue, fromCam.chroma, ColorUtils.lstarFromArgb(from))
+        .toInt();
     return blended;
   }
 

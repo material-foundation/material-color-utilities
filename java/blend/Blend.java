@@ -42,12 +42,13 @@ public final class Blend {
   public static int harmonize(int designColor, int sourceColor) {
     Hct fromHct = Hct.fromInt(designColor);
     Hct toHct = Hct.fromInt(sourceColor);
-    float differenceDegrees = MathUtils.differenceDegrees(fromHct.getHue(), toHct.getHue());
+    float differenceDegrees = (float) MathUtils.differenceDegrees(fromHct.getHue(), toHct.getHue());
     float rotationDegrees = min(differenceDegrees * HARMONIZE_PERCENTAGE, HARMONIZE_MAX_DEGREES);
     float outputHue =
-        MathUtils.sanitizeDegrees(
-            fromHct.getHue()
-                + rotationDegrees * rotationDirection(fromHct.getHue(), toHct.getHue()));
+        (float)
+            MathUtils.sanitizeDegreesDouble(
+                fromHct.getHue()
+                    + rotationDegrees * rotationDirection(fromHct.getHue(), toHct.getHue()));
     return Hct.from(outputHue, fromHct.getChroma(), fromHct.getTone()).toInt();
   }
 
@@ -64,7 +65,8 @@ public final class Blend {
     int ucs = blendCam16Ucs(from, to, amount);
     Cam16 ucsCam = Cam16.fromInt(ucs);
     Cam16 fromCam = Cam16.fromInt(from);
-    return Hct.from(ucsCam.getHue(), fromCam.getChroma(), ColorUtils.lstarFromInt(from)).toInt();
+    return Hct.from(ucsCam.getHue(), fromCam.getChroma(), (float) ColorUtils.lstarFromArgb(from))
+        .toInt();
   }
 
   /**

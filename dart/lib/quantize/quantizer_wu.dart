@@ -169,7 +169,7 @@ class QuantizerWu implements Quantizer {
         int r = (volume(cube, momentsR) / weight).round();
         int g = (volume(cube, momentsG) / weight).round();
         int b = (volume(cube, momentsB) / weight).round();
-        int color = ColorUtils.intFromRgb(r, g, b);
+        int color = ColorUtils.argbFromRgb(r, g, b);
         colors.add(color);
       }
     }

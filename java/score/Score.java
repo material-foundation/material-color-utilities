@@ -87,7 +87,7 @@ public final class Score {
 
       float excitedProportion = 0f;
       for (int j = (hue - 15); j < (hue + 15); j++) {
-        int neighborHue = MathUtils.sanitizeDegrees(j);
+        int neighborHue = MathUtils.sanitizeDegreesInt(j);
         excitedProportion += hueProportions[neighborHue];
       }
 
@@ -159,7 +159,7 @@ public final class Score {
       float proportion = colorsToExcitedProportion.get(color);
 
       if (cam.getChroma() >= CUTOFF_CHROMA
-          && ColorUtils.lstarFromInt(color) >= CUTOFF_TONE
+          && ColorUtils.lstarFromArgb(color) >= CUTOFF_TONE
           && proportion >= CUTOFF_EXCITED_PROPORTION) {
         filtered.add(color);
       }

@@ -35,6 +35,21 @@ import 'viewing_conditions.dart';
 /// For example, white under the traditional assumption of a midday sun white
 /// point is accurately measured as a slightly chromatic blue by CAM16.
 /// (roughly, hue 203, chroma 3, lightness 100)
+/// CAM16, a color appearance model. Colors are not just defined by their hex
+/// code, but rather, a hex code and viewing conditions.
+///
+/// CAM16 instances also have coordinates in the CAM16-UCS space, called J*, a*,
+/// b*, or jstar, astar, bstar in code. CAM16-UCS is included in the CAM16
+/// specification, and should be used when measuring distances between colors.
+///
+/// In traditional color spaces, a color can be identified solely by the
+/// observer's measurement of the color. Color appearance models such as CAM16
+/// also use information about the environment where the color was
+/// observed, known as the viewing conditions.
+///
+/// For example, white under the traditional assumption of a midday sun white
+/// point is accurately measured as a slightly chromatic blue by CAM16.
+/// (roughly, hue 203, chroma 3, lightness 100)
 class Cam16 {
   /// Like red, orange, yellow, green, etc.
   final double hue;
@@ -96,15 +111,11 @@ class Cam16 {
   static Cam16 fromIntInViewingConditions(
       int argb, ViewingConditions viewingConditions) {
     // Transform ARGB int to XYZ
-    final red = (argb & 0x00ff0000) >> 16;
-    final green = (argb & 0x0000ff00) >> 8;
-    final blue = (argb & 0x000000ff);
-    final redL = ColorUtils.linearized(red);
-    final greenL = ColorUtils.linearized(green);
-    final blueL = ColorUtils.linearized(blue);
-    final x = 0.41233895 * redL + 0.35762064 * greenL + 0.18051042 * blueL;
-    final y = 0.2126 * redL + 0.7152 * greenL + 0.0722 * blueL;
-    final z = 0.01932141 * redL + 0.11916382 * greenL + 0.95034478 * blueL;
+    final xyz = ColorUtils.xyzFromArgb(argb);
+    final x = xyz[0];
+    final y = xyz[1];
+    final z = xyz[2];
+
     // Transform XYZ to 'cone'/'rgb' responses
 
     final rC = 0.401288 * x + 0.650173 * y - 0.051461 * z;
@@ -297,7 +308,7 @@ class Cam16 {
     final y = 0.38752654 * rF + 0.62144744 * gF - 0.00897398 * bF;
     final z = -0.01584150 * rF - 0.03412294 * gF + 1.04996444 * bF;
 
-    final argb = ColorUtils.intFromXyz(x, y, z);
+    final argb = ColorUtils.argbFromXyz(x, y, z);
     return argb;
   }
 }
