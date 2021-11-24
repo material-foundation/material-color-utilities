@@ -21,6 +21,5 @@ environment:
   sdk: ">=2.13.4 <3.0.0"
 
 dev_dependencies:
-  test: ^1.16.0
-dependencies:
   matcher: ^0.12.0 # used by color_matcher.dart
+  test: ^1.16.0
