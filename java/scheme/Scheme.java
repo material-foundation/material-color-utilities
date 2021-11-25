@@ -20,8 +20,6 @@ import palettes.CorePalette;
 
 /** Represents a Material color scheme, a mapping of color roles to colors. */
 public class Scheme {
-  // Generated using https://www.jsonschema2pojo.org/
-
   private int primary;
   private int onPrimary;
   private int primaryContainer;
@@ -35,16 +33,20 @@ public class Scheme {
   private int tertiaryContainer;
   private int onTertiaryContainer;
   private int error;
+  private int onError;
+  private int errorContainer;
   private int onErrorContainer;
-  private int outline;
   private int background;
   private int onBackground;
   private int surface;
   private int onSurface;
   private int surfaceVariant;
   private int onSurfaceVariant;
+  private int outline;
+  private int shadow;
   private int inverseSurface;
   private int inverseOnSurface;
+  private int inversePrimary;
 
   public Scheme() {}
 
@@ -62,16 +64,20 @@ public class Scheme {
       int tertiaryContainer,
       int onTertiaryContainer,
       int error,
+      int onError,
+      int errorContainer,
       int onErrorContainer,
-      int outline,
       int background,
       int onBackground,
       int surface,
       int onSurface,
       int surfaceVariant,
       int onSurfaceVariant,
+      int outline,
+      int shadow,
       int inverseSurface,
-      int inverseOnSurface) {
+      int inverseOnSurface,
+      int inversePrimary) {
     super();
     this.primary = primary;
     this.onPrimary = onPrimary;
@@ -86,16 +92,20 @@ public class Scheme {
     this.tertiaryContainer = tertiaryContainer;
     this.onTertiaryContainer = onTertiaryContainer;
     this.error = error;
+    this.onError = onError;
+    this.errorContainer = errorContainer;
     this.onErrorContainer = onErrorContainer;
-    this.outline = outline;
     this.background = background;
     this.onBackground = onBackground;
     this.surface = surface;
     this.onSurface = onSurface;
     this.surfaceVariant = surfaceVariant;
     this.onSurfaceVariant = onSurfaceVariant;
+    this.outline = outline;
+    this.shadow = shadow;
     this.inverseSurface = inverseSurface;
     this.inverseOnSurface = inverseOnSurface;
+    this.inversePrimary = inversePrimary;
   }
 
   public static Scheme light(int argb) {
@@ -114,16 +124,20 @@ public class Scheme {
         .withTertiaryContainer(core.a3.tone(90))
         .withOnTertiaryContainer(core.a3.tone(10))
         .withError(core.error.tone(40))
-        .withOnErrorContainer(core.error.tone(100))
-        .withOutline(core.n2.tone(50))
-        .withBackground(core.n1.tone(90))
+        .withOnError(core.error.tone(100))
+        .withErrorContainer(core.error.tone(90))
+        .withOnErrorContainer(core.error.tone(10))
+        .withBackground(core.n1.tone(99))
         .withOnBackground(core.n1.tone(10))
         .withSurface(core.n1.tone(99))
-        .withOnSurface(core.n1.tone(0))
+        .withOnSurface(core.n1.tone(10))
         .withSurfaceVariant(core.n2.tone(90))
-        .withOnSurfaceVariant(core.n2.tone(80))
+        .withOnSurfaceVariant(core.n2.tone(30))
+        .withOutline(core.n2.tone(50))
+        .withShadow(core.n1.tone(0))
         .withInverseSurface(core.n1.tone(20))
-        .withInverseOnSurface(core.n1.tone(95));
+        .withInverseOnSurface(core.n1.tone(95))
+        .withInversePrimary(core.a1.tone(80));
   }
 
   public static Scheme dark(int argb) {
@@ -131,27 +145,31 @@ public class Scheme {
     return new Scheme()
         .withPrimary(core.a1.tone(80))
         .withOnPrimary(core.a1.tone(20))
-        .withPrimaryContainer(core.a1.tone(70))
-        .withOnPrimaryContainer(core.a1.tone(10))
+        .withPrimaryContainer(core.a1.tone(30))
+        .withOnPrimaryContainer(core.a1.tone(90))
         .withSecondary(core.a2.tone(80))
         .withOnSecondary(core.a2.tone(20))
-        .withSecondaryContainer(core.a2.tone(70))
-        .withOnSecondaryContainer(core.a2.tone(10))
+        .withSecondaryContainer(core.a2.tone(30))
+        .withOnSecondaryContainer(core.a2.tone(90))
         .withTertiary(core.a3.tone(80))
         .withOnTertiary(core.a3.tone(20))
-        .withTertiaryContainer(core.a3.tone(70))
-        .withOnTertiaryContainer(core.a3.tone(10))
+        .withTertiaryContainer(core.a3.tone(30))
+        .withOnTertiaryContainer(core.a3.tone(90))
         .withError(core.error.tone(80))
-        .withOnErrorContainer(core.error.tone(10))
-        .withOutline(core.n2.tone(60))
+        .withOnError(core.error.tone(20))
+        .withErrorContainer(core.error.tone(30))
+        .withOnErrorContainer(core.error.tone(80))
         .withBackground(core.n1.tone(10))
         .withOnBackground(core.n1.tone(90))
         .withSurface(core.n1.tone(10))
-        .withOnSurface(core.n1.tone(100))
+        .withOnSurface(core.n1.tone(90))
         .withSurfaceVariant(core.n2.tone(30))
         .withOnSurfaceVariant(core.n2.tone(80))
+        .withOutline(core.n2.tone(60))
+        .withShadow(core.n1.tone(0))
         .withInverseSurface(core.n1.tone(90))
-        .withInverseOnSurface(core.n1.tone(20));
+        .withInverseOnSurface(core.n1.tone(20))
+        .withInversePrimary(core.a1.tone(40));
   }
 
   public int getPrimary() {
@@ -323,6 +341,32 @@ public class Scheme {
     return this;
   }
 
+  public int getOnError() {
+    return onError;
+  }
+
+  public void setOnError(int onError) {
+    this.onError = onError;
+  }
+
+  public Scheme withOnError(int onError) {
+    this.onError = onError;
+    return this;
+  }
+
+  public int getErrorContainer() {
+    return errorContainer;
+  }
+
+  public void setErrorContainer(int errorContainer) {
+    this.errorContainer = errorContainer;
+  }
+
+  public Scheme withErrorContainer(int errorContainer) {
+    this.errorContainer = errorContainer;
+    return this;
+  }
+
   public int getOnErrorContainer() {
     return onErrorContainer;
   }
@@ -333,19 +377,6 @@ public class Scheme {
 
   public Scheme withOnErrorContainer(int onErrorContainer) {
     this.onErrorContainer = onErrorContainer;
-    return this;
-  }
-
-  public int getOutline() {
-    return outline;
-  }
-
-  public void setOutline(int outline) {
-    this.outline = outline;
-  }
-
-  public Scheme withOutline(int outline) {
-    this.outline = outline;
     return this;
   }
 
@@ -427,6 +458,32 @@ public class Scheme {
     return this;
   }
 
+  public int getOutline() {
+    return outline;
+  }
+
+  public void setOutline(int outline) {
+    this.outline = outline;
+  }
+
+  public Scheme withOutline(int outline) {
+    this.outline = outline;
+    return this;
+  }
+
+  public int getShadow() {
+    return shadow;
+  }
+
+  public void setShadow(int shadow) {
+    this.shadow = shadow;
+  }
+
+  public Scheme withShadow(int shadow) {
+    this.shadow = shadow;
+    return this;
+  }
+
   public int getInverseSurface() {
     return inverseSurface;
   }
@@ -453,176 +510,208 @@ public class Scheme {
     return this;
   }
 
+  public int getInversePrimary() {
+    return inversePrimary;
+  }
+
+  public void setInversePrimary(int inversePrimary) {
+    this.inversePrimary = inversePrimary;
+  }
+
+  public Scheme withInversePrimary(int inversePrimary) {
+    this.inversePrimary = inversePrimary;
+    return this;
+  }
+
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append(Scheme.class.getName())
-        .append('@')
-        .append(Integer.toHexString(System.identityHashCode(this)))
-        .append('[');
-    sb.append("primary");
-    sb.append('=');
-    sb.append(this.primary);
-    sb.append(',');
-    sb.append("onPrimary");
-    sb.append('=');
-    sb.append(this.onPrimary);
-    sb.append(',');
-    sb.append("primaryContainer");
-    sb.append('=');
-    sb.append(this.primaryContainer);
-    sb.append(',');
-    sb.append("onPrimaryContainer");
-    sb.append('=');
-    sb.append(this.onPrimaryContainer);
-    sb.append(',');
-    sb.append("secondary");
-    sb.append('=');
-    sb.append(this.secondary);
-    sb.append(',');
-    sb.append("onSecondary");
-    sb.append('=');
-    sb.append(this.onSecondary);
-    sb.append(',');
-    sb.append("secondaryContainer");
-    sb.append('=');
-    sb.append(this.secondaryContainer);
-    sb.append(',');
-    sb.append("onSecondaryContainer");
-    sb.append('=');
-    sb.append(this.onSecondaryContainer);
-    sb.append(',');
-    sb.append("tertiary");
-    sb.append('=');
-    sb.append(this.tertiary);
-    sb.append(',');
-    sb.append("onTertiary");
-    sb.append('=');
-    sb.append(this.onTertiary);
-    sb.append(',');
-    sb.append("tertiaryContainer");
-    sb.append('=');
-    sb.append(this.tertiaryContainer);
-    sb.append(',');
-    sb.append("onTertiaryContainer");
-    sb.append('=');
-    sb.append(this.onTertiaryContainer);
-    sb.append(',');
-    sb.append("error");
-    sb.append('=');
-    sb.append(this.error);
-    sb.append(',');
-    sb.append("onErrorContainer");
-    sb.append('=');
-    sb.append(this.onErrorContainer);
-    sb.append(',');
-    sb.append("outline");
-    sb.append('=');
-    sb.append(this.outline);
-    sb.append(',');
-    sb.append("background");
-    sb.append('=');
-    sb.append(this.background);
-    sb.append(',');
-    sb.append("onBackground");
-    sb.append('=');
-    sb.append(this.onBackground);
-    sb.append(',');
-    sb.append("surface");
-    sb.append('=');
-    sb.append(this.surface);
-    sb.append(',');
-    sb.append("onSurface");
-    sb.append('=');
-    sb.append(this.onSurface);
-    sb.append(',');
-    sb.append("surfaceVariant");
-    sb.append('=');
-    sb.append(this.surfaceVariant);
-    sb.append(',');
-    sb.append("onSurfaceVariant");
-    sb.append('=');
-    sb.append(this.onSurfaceVariant);
-    sb.append(',');
-    sb.append("inverseSurface");
-    sb.append('=');
-    sb.append(this.inverseSurface);
-    sb.append(',');
-    sb.append("inverseOnSurface");
-    sb.append('=');
-    sb.append(this.inverseOnSurface);
-    sb.append(',');
-    if (sb.charAt((sb.length() - 1)) == ',') {
-      sb.setCharAt((sb.length() - 1), ']');
-    } else {
-      sb.append(']');
+    return "Scheme{"
+        + "primary="
+        + primary
+        + ", onPrimary="
+        + onPrimary
+        + ", primaryContainer="
+        + primaryContainer
+        + ", onPrimaryContainer="
+        + onPrimaryContainer
+        + ", secondary="
+        + secondary
+        + ", onSecondary="
+        + onSecondary
+        + ", secondaryContainer="
+        + secondaryContainer
+        + ", onSecondaryContainer="
+        + onSecondaryContainer
+        + ", tertiary="
+        + tertiary
+        + ", onTertiary="
+        + onTertiary
+        + ", tertiaryContainer="
+        + tertiaryContainer
+        + ", onTertiaryContainer="
+        + onTertiaryContainer
+        + ", error="
+        + error
+        + ", onError="
+        + onError
+        + ", errorContainer="
+        + errorContainer
+        + ", onErrorContainer="
+        + onErrorContainer
+        + ", background="
+        + background
+        + ", onBackground="
+        + onBackground
+        + ", surface="
+        + surface
+        + ", onSurface="
+        + onSurface
+        + ", surfaceVariant="
+        + surfaceVariant
+        + ", onSurfaceVariant="
+        + onSurfaceVariant
+        + ", outline="
+        + outline
+        + ", shadow="
+        + shadow
+        + ", inverseSurface="
+        + inverseSurface
+        + ", inverseOnSurface="
+        + inverseOnSurface
+        + ", inversePrimary="
+        + inversePrimary
+        + '}';
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
     }
-    return sb.toString();
+    if (!(object instanceof Scheme)) {
+      return false;
+    }
+    if (!super.equals(object)) {
+      return false;
+    }
+
+    Scheme scheme = (Scheme) object;
+
+    if (primary != scheme.primary) {
+      return false;
+    }
+    if (onPrimary != scheme.onPrimary) {
+      return false;
+    }
+    if (primaryContainer != scheme.primaryContainer) {
+      return false;
+    }
+    if (onPrimaryContainer != scheme.onPrimaryContainer) {
+      return false;
+    }
+    if (secondary != scheme.secondary) {
+      return false;
+    }
+    if (onSecondary != scheme.onSecondary) {
+      return false;
+    }
+    if (secondaryContainer != scheme.secondaryContainer) {
+      return false;
+    }
+    if (onSecondaryContainer != scheme.onSecondaryContainer) {
+      return false;
+    }
+    if (tertiary != scheme.tertiary) {
+      return false;
+    }
+    if (onTertiary != scheme.onTertiary) {
+      return false;
+    }
+    if (tertiaryContainer != scheme.tertiaryContainer) {
+      return false;
+    }
+    if (onTertiaryContainer != scheme.onTertiaryContainer) {
+      return false;
+    }
+    if (error != scheme.error) {
+      return false;
+    }
+    if (onError != scheme.onError) {
+      return false;
+    }
+    if (errorContainer != scheme.errorContainer) {
+      return false;
+    }
+    if (onErrorContainer != scheme.onErrorContainer) {
+      return false;
+    }
+    if (background != scheme.background) {
+      return false;
+    }
+    if (onBackground != scheme.onBackground) {
+      return false;
+    }
+    if (surface != scheme.surface) {
+      return false;
+    }
+    if (onSurface != scheme.onSurface) {
+      return false;
+    }
+    if (surfaceVariant != scheme.surfaceVariant) {
+      return false;
+    }
+    if (onSurfaceVariant != scheme.onSurfaceVariant) {
+      return false;
+    }
+    if (outline != scheme.outline) {
+      return false;
+    }
+    if (shadow != scheme.shadow) {
+      return false;
+    }
+    if (inverseSurface != scheme.inverseSurface) {
+      return false;
+    }
+    if (inverseOnSurface != scheme.inverseOnSurface) {
+      return false;
+    }
+    if (inversePrimary != scheme.inversePrimary) {
+      return false;
+    }
+
+    return true;
   }
 
   @Override
   public int hashCode() {
-    int result = 1;
-    result = ((result * 31) + this.onPrimary);
-    result = ((result * 31) + this.onSurface);
-    result = ((result * 31) + this.surface);
-    result = ((result * 31) + this.onPrimaryContainer);
-    result = ((result * 31) + this.onTertiary);
-    result = ((result * 31) + this.inverseOnSurface);
-    result = ((result * 31) + this.primaryContainer);
-    result = ((result * 31) + this.onSecondaryContainer);
-    result = ((result * 31) + this.tertiaryContainer);
-    result = ((result * 31) + this.secondaryContainer);
-    result = ((result * 31) + this.tertiary);
-    result = ((result * 31) + this.onTertiaryContainer);
-    result = ((result * 31) + this.error);
-    result = ((result * 31) + this.onErrorContainer);
-    result = ((result * 31) + this.surfaceVariant);
-    result = ((result * 31) + this.secondary);
-    result = ((result * 31) + this.inverseSurface);
-    result = ((result * 31) + this.outline);
-    result = ((result * 31) + this.onSurfaceVariant);
-    result = ((result * 31) + this.background);
-    result = ((result * 31) + this.onBackground);
-    result = ((result * 31) + this.onSecondary);
-    result = ((result * 31) + this.primary);
+    int result = super.hashCode();
+    result = 31 * result + primary;
+    result = 31 * result + onPrimary;
+    result = 31 * result + primaryContainer;
+    result = 31 * result + onPrimaryContainer;
+    result = 31 * result + secondary;
+    result = 31 * result + onSecondary;
+    result = 31 * result + secondaryContainer;
+    result = 31 * result + onSecondaryContainer;
+    result = 31 * result + tertiary;
+    result = 31 * result + onTertiary;
+    result = 31 * result + tertiaryContainer;
+    result = 31 * result + onTertiaryContainer;
+    result = 31 * result + error;
+    result = 31 * result + onError;
+    result = 31 * result + errorContainer;
+    result = 31 * result + onErrorContainer;
+    result = 31 * result + background;
+    result = 31 * result + onBackground;
+    result = 31 * result + surface;
+    result = 31 * result + onSurface;
+    result = 31 * result + surfaceVariant;
+    result = 31 * result + onSurfaceVariant;
+    result = 31 * result + outline;
+    result = 31 * result + shadow;
+    result = 31 * result + inverseSurface;
+    result = 31 * result + inverseOnSurface;
+    result = 31 * result + inversePrimary;
     return result;
-  }
-
-  @Override
-  public boolean equals(Object other) {
-    if (other == null) {
-      return false;
-    }
-    if (other == this) {
-      return true;
-    }
-    if (!(other instanceof Scheme)) {
-      return false;
-    }
-    Scheme rhs = ((Scheme) other);
-    return (this.onPrimary == rhs.onPrimary)
-        && (this.onSurface == rhs.onSurface)
-        && (this.surface == rhs.surface)
-        && (this.onPrimaryContainer == rhs.onPrimaryContainer)
-        && (this.onTertiary == rhs.onTertiary)
-        && (this.inverseOnSurface == rhs.inverseOnSurface)
-        && (this.primaryContainer == rhs.primaryContainer)
-        && (this.onSecondaryContainer == rhs.onSecondaryContainer)
-        && (this.tertiaryContainer == rhs.tertiaryContainer)
-        && (this.secondaryContainer == rhs.secondaryContainer)
-        && (this.tertiary == rhs.tertiary)
-        && (this.onTertiaryContainer == rhs.onTertiaryContainer)
-        && (this.error == rhs.error)
-        && (this.onErrorContainer == rhs.onErrorContainer)
-        && (this.surfaceVariant == rhs.surfaceVariant)
-        && (this.secondary == rhs.secondary)
-        && (this.inverseSurface == rhs.inverseSurface)
-        && (this.outline == rhs.outline)
-        && (this.onSurfaceVariant == rhs.onSurfaceVariant)
-        && (this.background == rhs.background)
-        && (this.onBackground == rhs.onBackground)
-        && (this.onSecondary == rhs.onSecondary)
-        && (this.primary == rhs.primary);
   }
 }

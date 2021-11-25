@@ -34,7 +34,7 @@ void main() {
     expect(scheme.secondary, isColor(0xff625B71));
     expect(scheme.tertiary, isColor(0xff7D5260));
     expect(scheme.surface, isColor(0xfffffbfe));
-    expect(scheme.onSurface, isColor(0xff000000));
+    expect(scheme.onSurface, isColor(0xff1C1B1E));
   });
 
   test('3rd party dark scheme', () async {
@@ -43,6 +43,6 @@ void main() {
     expect(scheme.secondary, isColor(0xffCBC2DB));
     expect(scheme.tertiary, isColor(0xffEFB8C8));
     expect(scheme.surface, isColor(0xff1c1b1e));
-    expect(scheme.onSurface, isColor(0xffffffff));
+    expect(scheme.onSurface, isColor(0xffE6E1E5));
   });
 }

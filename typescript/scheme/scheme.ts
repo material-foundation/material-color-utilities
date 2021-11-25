@@ -57,7 +57,7 @@ export class Scheme {
   }
 
   get onTertiary(): number {
-    return this.props.onSecondary;
+    return this.props.onTertiary;
   }
 
   get tertiaryContainer(): number {
@@ -84,10 +84,6 @@ export class Scheme {
     return this.props.onErrorContainer;
   }
 
-  get outline(): number {
-    return this.props.outline;
-  }
-
   get background(): number {
     return this.props.background;
   }
@@ -112,12 +108,24 @@ export class Scheme {
     return this.props.onSurfaceVariant;
   }
 
+  get outline(): number {
+    return this.props.outline;
+  }
+
+  get shadow(): number {
+    return this.props.shadow;
+  }
+
   get inverseSurface(): number {
     return this.props.inverseSurface;
   }
 
   get inverseOnSurface(): number {
     return this.props.inverseOnSurface;
+  }
+
+  get inversePrimary(): number {
+    return this.props.inversePrimary;
   }
 
   /**
@@ -143,15 +151,17 @@ export class Scheme {
       onError: core.error.tone(100),
       errorContainer: core.error.tone(90),
       onErrorContainer: core.error.tone(10),
-      outline: core.n2.tone(50),
-      background: core.n1.tone(90),
+      background: core.n1.tone(99),
       onBackground: core.n1.tone(10),
       surface: core.n1.tone(99),
-      onSurface: core.n1.tone(0),
+      onSurface: core.n1.tone(10),
       surfaceVariant: core.n2.tone(90),
       onSurfaceVariant: core.n2.tone(30),
+      outline: core.n2.tone(50),
+      shadow: core.n1.tone(0),
       inverseSurface: core.n1.tone(20),
       inverseOnSurface: core.n1.tone(95),
+      inversePrimary: core.a1.tone(80)
     });
   }
 
@@ -164,29 +174,31 @@ export class Scheme {
     return new Scheme({
       primary: core.a1.tone(80),
       onPrimary: core.a1.tone(20),
-      primaryContainer: core.a1.tone(70),
-      onPrimaryContainer: core.a1.tone(10),
+      primaryContainer: core.a1.tone(30),
+      onPrimaryContainer: core.a1.tone(90),
       secondary: core.a2.tone(80),
       onSecondary: core.a2.tone(20),
-      secondaryContainer: core.a2.tone(70),
-      onSecondaryContainer: core.a2.tone(10),
+      secondaryContainer: core.a2.tone(30),
+      onSecondaryContainer: core.a2.tone(90),
       tertiary: core.a3.tone(80),
       onTertiary: core.a3.tone(20),
-      tertiaryContainer: core.a3.tone(70),
-      onTertiaryContainer: core.a3.tone(10),
+      tertiaryContainer: core.a3.tone(30),
+      onTertiaryContainer: core.a3.tone(90),
       error: core.error.tone(80),
       onError: core.error.tone(20),
-      errorContainer: core.error.tone(70),
-      onErrorContainer: core.error.tone(10),
-      outline: core.n2.tone(60),
+      errorContainer: core.error.tone(30),
+      onErrorContainer: core.error.tone(80),
       background: core.n1.tone(10),
       onBackground: core.n1.tone(90),
       surface: core.n1.tone(10),
-      onSurface: core.n1.tone(100),
+      onSurface: core.n1.tone(90),
       surfaceVariant: core.n2.tone(30),
       onSurfaceVariant: core.n2.tone(80),
+      outline: core.n2.tone(60),
+      shadow: core.n1.tone(0),
       inverseSurface: core.n1.tone(90),
-      inverseOnSurface: core.n1.tone(20)
+      inverseOnSurface: core.n1.tone(20),
+      inversePrimary: core.a1.tone(40)
     });
   }
 
@@ -207,14 +219,16 @@ export class Scheme {
     errorContainer: number,
     onError: number,
     onErrorContainer: number,
-    outline: number,
     background: number,
     onBackground: number,
     surface: number,
     onSurface: number,
     surfaceVariant: number,
     onSurfaceVariant: number,
+    outline: number,
+    shadow: number,
     inverseSurface: number,
-    inverseOnSurface: number
+    inverseOnSurface: number,
+    inversePrimary: number
   }) {}
 }

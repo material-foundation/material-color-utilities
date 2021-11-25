@@ -41,7 +41,7 @@ describe('scheme', () => {
     expect(scheme.secondary).matchesColor(0xff625B71);
     expect(scheme.tertiary).matchesColor(0xff7D5260);
     expect(scheme.surface).matchesColor(0xfffffbfe);
-    expect(scheme.onSurface).matchesColor(0xff000000);
+    expect(scheme.onSurface).matchesColor(0xff1c1b1e);
   });
 
   it('3rd party dark scheme', () => {
@@ -50,7 +50,7 @@ describe('scheme', () => {
     expect(scheme.secondary).matchesColor(0xffcbc2db);
     expect(scheme.tertiary).matchesColor(0xffefb8c8);
     expect(scheme.surface).matchesColor(0xff1c1b1e);
-    expect(scheme.onSurface).matchesColor(0xffffffff);
+    expect(scheme.onSurface).matchesColor(0xffe6e1e5);
   });
 });
 
