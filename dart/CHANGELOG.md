@@ -1,3 +1,8 @@
+## 0.1.2
+
+-   Update Scheme tonal values
+-   Move matcher to dev_dependencies
+
 ## 0.1.1
 
 -   Update description

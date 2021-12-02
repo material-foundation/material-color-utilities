@@ -14,7 +14,7 @@
 
 name: material_color_utilities
 description: Algorithms and utilities that power the Material Design 3 (M3) color system, including choosing theme colors from images and creating tones of colors; all in a new color space.
-version: 0.1.1
+version: 0.1.2
 repository: https://github.com/material-foundation/material-color-utilities
 
 environment:
