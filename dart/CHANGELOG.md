@@ -1,3 +1,7 @@
+## 0.1.3
+
+-   Export Scheme
+
 ## 0.1.2
 
 -   Update Scheme tonal values

@@ -25,4 +25,5 @@ export 'quantize/quantizer_celebi.dart';
 export 'quantize/quantizer_map.dart';
 export 'quantize/quantizer_wsmeans.dart';
 export 'quantize/quantizer_wu.dart';
+export 'scheme/scheme.dart';
 export 'score/score.dart';
