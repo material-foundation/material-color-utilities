@@ -6,18 +6,9 @@ Algorithms and utilities that power the Material Design 3 (M3) color system,
 including choosing theme colors from images and creating tones of colors; all in
 a new color space.
 
-See the main
-[README](https://github.com/material-foundation/material-color-utilities#readme)
-for more information.
-
 ## Getting started
 
-`dart pub add material_color_utilities` or `flutter pub add
-material_color_utilities`
-
-```dart
-import 'package:material_color_utilities:material_color_utilities.dart';
-```
+[README](https://github.com/material-foundation/material-color-utilities#readme).
 
 ## Contributing
 

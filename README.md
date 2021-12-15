@@ -4,18 +4,21 @@ Algorithms and utilities that power the Material Design 3 (M3) color system,
 including choosing theme colors from images and creating tones of colors; all in
 a new color space.
 
-## Code availability
+<video autoplay muted loop src="https://user-images.githubusercontent.com/6655696/146014425-8e8e04bc-e646-4cc2-a3e7-97497a3e1b09.mp4" data-canonical-src="https://user-images.githubusercontent.com/6655696/146014425-8e8e04bc-e646-4cc2-a3e7-97497a3e1b09.mp4" class="d-block rounded-bottom-2 width-fit" style="max-height:640px;"></video>
+
+## Library availability
 
 Language    | Availability  | Package
------------ | ------------- | -------
+----------- | ------------- | ------------------------------------------------------------------------------------------
 C/C++       | *Coming soon* |
 Dart        | ✅             | [`material_color_utilities`](https://pub.dev/packages/material_color_utilities)
-Java        | ✅             |
+Java        | ✅             | *Coming soon*
 Objective-C | *Coming soon* |
-TypeScript  | ✅             |
+TypeScript  | ✅             | *Coming soon*
 
-Need another platform/language?
-[Open an issue](https://github.com/material-foundation/material-color-utilities/issues/new?title=%5BLanguage%2FPlatform%20request%5D%20x).
+Need another platform/language? Check the
+[existing issues](https://github.com/material-foundation/material-color-utilities/labels/new%20library)
+or open a new one.
 
 ## Usage
 
@@ -26,16 +29,11 @@ Here's how to do that:
 
 *Coming soon*
 
-## Cheat sheet
+### Cheat sheet
 
 ![library cheat sheet](cheat_sheet.png)
 
-## Background
-
-Learn about the
-[M3 color system](https://m3.material.io/styles/color/the-color-system/key-colors-tones).
-
-## Components
+### Components
 
 The library is built out of multiple components
 
@@ -48,41 +46,46 @@ Material Design Components, Android System UI, etc.
 *   Not all consumers will need every component — ex. MDC doesn’t need
     quantization/scoring/image extraction
 
-### Quantize
+#### Quantize
 
 *   Turns a wallpaper into N colors
 *   Celebi, which runs Wu, then WSMeans
 
-### Score
+#### Score
 
 *   Rank colors for suitability for theming
 *   Quantize buckets a wallpaper into 128 colors
 *   Enables deduplicating and ranking that output.
 
-### Scheme
+#### Scheme
 
 *   Mapping from roles, i.e. names like primary, to colors.
 
-### Palettes
+#### Palettes
 
 *   Tonal Palette — range of colors that varies only in tone
 *   Core Palette — set of tonal palettes needed to create Material color schemes
 
-### HCT
+#### HCT
 
 *   Hue, chroma, tone
 *   A new color space based on CAM16 x L*
 *   Accounts for viewing conditions
 
-### Blend
+#### Blend
 
 *   Color interpolation in HCT
 *   Harmonizing, animations, gradients
 
-### Utils
+#### Utils
 
 *   Color — conversions between color spaces needed to implement HCT/CAM16
 *   Math — functions for ex. ensuring hue is between 0 and 360, clamping, etc.
+
+## Background
+
+Learn about the
+[M3 color system](https://m3.material.io/styles/color/the-color-system/key-colors-tones).
 
 ## Design Tooling
 
