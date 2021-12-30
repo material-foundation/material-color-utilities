@@ -8,7 +8,15 @@ a new color space.
 
 ## Getting started
 
-[README](https://github.com/material-foundation/material-color-utilities#readme).
+`dart pub add material_color_utilities` or `flutter pub add material_color_utilities`
+
+## Usage
+
+```dart
+import 'package:material_color_utilities:material_color_utilities.dart';
+```
+
+For more information, see the main [README](https://github.com/material-foundation/material-color-utilities#readme).
 
 ## Contributing
 
