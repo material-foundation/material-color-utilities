@@ -62,7 +62,7 @@ public class ColorUtils {
     return new double[][] {
       new double[] {0.41233895, 0.35762064, 0.18051042},
       new double[] {0.2126, 0.7152, 0.0722},
-      new double[] {0.01932141, 0.11916382, 0.95034478}
+      new double[] {0.01932141, 0.11916382, 0.95034478},
     };
   }
 
@@ -71,7 +71,7 @@ public class ColorUtils {
     return new double[][] {
       new double[] {3.2406, -1.5372, -0.4986},
       new double[] {-0.9689, 1.8758, 0.0415},
-      new double[] {0.0557, -0.204, 1.057}
+      new double[] {0.0557, -0.204, 1.057},
     };
   }
 
@@ -187,7 +187,7 @@ public class ColorUtils {
     return new double[] {95.047, 100.0, 108.883};
   }
 
-  public static double labF(double t) {
+  static double labF(double t) {
     double e = 216.0 / 24389.0;
     double kappa = 24389.0 / 27.0;
     if (t > e) {
@@ -197,7 +197,7 @@ public class ColorUtils {
     }
   }
 
-  public static double labInvf(double ft) {
+  static double labInvf(double ft) {
     double e = 216.0 / 24389.0;
     double kappa = 24389.0 / 27.0;
     double ft3 = ft * ft * ft;

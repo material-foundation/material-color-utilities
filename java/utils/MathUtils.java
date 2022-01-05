@@ -118,5 +118,6 @@ public class MathUtils {
     double c = row[0] * matrix[2][0] + row[1] * matrix[2][1] + row[2] * matrix[2][2];
     return new double[] {a, b, c};
   }
+
 }
 
