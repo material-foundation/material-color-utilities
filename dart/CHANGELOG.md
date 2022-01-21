@@ -1,3 +1,6 @@
+## 0.1.4
+-   Allow creation of Scheme from a CorePalette with lightFromCorePalette and darkFromCorePalette
+
 ## 0.1.3
 
 -   Export Scheme
