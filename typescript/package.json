@@ -1,5 +1,5 @@
 {
-  "name": "@material/color-utils",
+  "name": "@material/color-utilities",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
