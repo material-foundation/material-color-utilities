@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import {CAM16} from '../hct/cam16';
-import {HCT} from '../hct/hct';
-import * as mathUtils from '../utils/math_utils';
+import {CAM16} from '../hct/cam16.js';
+import {HCT} from '../hct/hct.js';
+import * as mathUtils from '../utils/math_utils.js';
 
 /**
  * Functions for blending in HCT and CAM16.

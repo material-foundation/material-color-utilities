@@ -17,4 +17,4 @@
 /**
  * Increment using semantic versioning when results of function calls change.
  */
-const LIBMONET_VERSION = '1.0.0';
+const LIBMONET_VERSION = '1.0.0.js';

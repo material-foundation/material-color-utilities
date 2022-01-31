@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import 'jasmine';
+import 'jasmine.js';
 
-import {Scheme} from './scheme';
-import {SchemeAndroid} from './scheme_android';
-import {customMatchers} from '../utils/test_utils';
+import {Scheme} from './scheme.js';
+import {SchemeAndroid} from './scheme_android.js';
+import {customMatchers} from '../utils/test_utils.js';
 
 beforeEach(() => {
   jasmine.addMatchers(customMatchers);

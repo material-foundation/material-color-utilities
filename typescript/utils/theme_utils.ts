@@ -1,8 +1,8 @@
-import { Blend } from "../blend/blend";
-import { CorePalette } from "../palettes/core_palette";
-import { TonalPalette } from "../palettes/tonal_palette";
-import { Scheme } from "../scheme/scheme";
-import { seedFromImage } from "./image_utils";
+import { Blend } from "../blend/blend.js";
+import { CorePalette } from "../palettes/core_palette.js";
+import { TonalPalette } from "../palettes/tonal_palette.js";
+import { Scheme } from "../scheme/scheme.js";
+import { seedFromImage } from "./image_utils.js";
 
 /**
  * Custom color used to pair with a theme
@@ -28,6 +28,7 @@ export interface ColorGroup {
  */
 export interface CustomColorGroup {
   color: CustomColor;
+  value: number;
   light: ColorGroup;
   dark: ColorGroup;
 }
@@ -118,6 +119,7 @@ export function customColor(
   const tones = palette.a1;
   return {
     color,
+    value,
     light: {
       color: tones.tone(40),
       onColor: tones.tone(100),

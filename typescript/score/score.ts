@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import {CAM16} from '../hct/cam16';
-import * as utils from '../utils/color_utils';
-import * as math from '../utils/math_utils';
+import {CAM16} from '../hct/cam16.js';
+import * as utils from '../utils/color_utils.js';
+import * as math from '../utils/math_utils.js';
 
 /**
  *  Given a large set of colors, remove colors that are unsuitable for a UI

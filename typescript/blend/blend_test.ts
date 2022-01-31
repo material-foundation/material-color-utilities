@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import 'jasmine';
+import 'jasmine.js';
 
-import {Blend} from './blend';
-import {customMatchers} from '../utils/test_utils';
+import {Blend} from './blend.js';
+import {customMatchers} from '../utils/test_utils.js';
 
 beforeEach(() => {
   jasmine.addMatchers(customMatchers);

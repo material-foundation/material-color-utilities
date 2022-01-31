@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as colorUtils from './color_utils';
+import * as colorUtils from './color_utils.js';
 
 /**
  * Utility methods for hexadecimal representations of colors.

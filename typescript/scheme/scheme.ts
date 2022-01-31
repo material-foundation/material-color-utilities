@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {CorePalette} from '../palettes/core_palette';
+import {CorePalette} from '../palettes/core_palette.js';
 
 /**
  * Represents a Material color scheme, a mapping of color roles to colors.

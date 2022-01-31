@@ -1,7 +1,7 @@
-import { QuantizerCelebi } from "../quantize/quantizer_celebi";
-import { Score } from "../score/score";
-import { argbFromRgb } from "./color_utils";
-import { hexFromArgb } from "./string_utils";
+import { QuantizerCelebi } from "../quantize/quantizer_celebi.js";
+import { Score } from "../score/score.js";
+import { argbFromRgb } from "./color_utils.js";
+import { hexFromArgb } from "./string_utils.js";
 
 /**
  * Get the seed from an image.

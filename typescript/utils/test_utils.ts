@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import 'jasmine';
+import 'jasmine.js';
 
-import {hexFromArgb} from './string_utils';
+import {hexFromArgb} from './string_utils.js';
 
 declare global {
   namespace jasmine {
