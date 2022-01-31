@@ -28,14 +28,14 @@ export class LabPointProvider implements PointProvider {
    * coordinates of the color.
    */
   fromInt(argb: number): number[] {
-    return utils.labFromInt(argb);
+    return utils.labFromArgb(argb);
   }
 
   /**
    * Convert a 3-element array to a color represented in ARGB.
    */
   toInt(point: number[]): number {
-    return utils.intFromLab(point[0], point[1], point[2]);
+    return utils.argbFromLab(point[0], point[1], point[2]);
   }
 
   /**

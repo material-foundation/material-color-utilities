@@ -27,37 +27,37 @@ package utils;
 public class ColorUtils {
   private ColorUtils() {}
 
-  /** Convert a color from RGB components to ARGB format. */
+  /** Converts a color from RGB components to ARGB format. */
   public static int argbFromRgb(int red, int green, int blue) {
     return (255 << 24) | ((red & 255) << 16) | ((green & 255) << 8) | (blue & 255);
   }
 
-  /** The alpha component of a color in ARGB format. */
+  /** Returns the alpha component of a color in ARGB format. */
   public static int alphaFromArgb(int argb) {
     return (argb >> 24) & 255;
   }
 
-  /** The red component of a color in ARGB format. */
+  /** Returns the red component of a color in ARGB format. */
   public static int redFromArgb(int argb) {
     return (argb >> 16) & 255;
   }
 
-  /** The green component of a color in ARGB format. */
+  /** Returns the green component of a color in ARGB format. */
   public static int greenFromArgb(int argb) {
     return (argb >> 8) & 255;
   }
 
-  /** The blue component of a color in ARGB format. */
+  /** Returns the blue component of a color in ARGB format. */
   public static int blueFromArgb(int argb) {
     return argb & 255;
   }
 
-  /** Whether a color in ARGB format is opaque. */
+  /** Returns whether a color in ARGB format is opaque. */
   public static boolean isOpaque(int argb) {
     return alphaFromArgb(argb) >= 255;
   }
 
-  /** The sRGB to XYZ transformation matrix. */
+  /** Returns the sRGB to XYZ transformation matrix. */
   public static double[][] srgbToXyz() {
     return new double[][] {
       new double[] {0.41233895, 0.35762064, 0.18051042},
@@ -66,7 +66,7 @@ public class ColorUtils {
     };
   }
 
-  /** The XYZ to sRGB transformation matrix. */
+  /** Returns the XYZ to sRGB transformation matrix. */
   public static double[][] xyzToSrgb() {
     return new double[][] {
       new double[] {3.2406, -1.5372, -0.4986},
@@ -110,8 +110,8 @@ public class ColorUtils {
   /**
    * Converts a color from ARGB representation to L*a*b* representation.
    *
-   * @param argb the ARGB representation of a color.
-   * @return a Lab object representing the color.
+   * @param argb the ARGB representation of a color
+   * @return a Lab object representing the color
    */
   public static double[] labFromArgb(int argb) {
     double[] whitePoint = whitePointD65();
@@ -128,6 +128,12 @@ public class ColorUtils {
     return new double[] {l, a, b};
   }
 
+  /**
+   * Converts an L* value to an ARGB representation.
+   *
+   * @param lstar L* in L*a*b*
+   * @return ARGB representation of grayscale color with lightness matching L*
+   */
   public static int argbFromLstar(double lstar) {
     double fy = (lstar + 16.0) / 116.0;
     double fz = fy;
@@ -143,6 +149,12 @@ public class ColorUtils {
     return argbFromXyz(x * whitePoint[0], y * whitePoint[1], z * whitePoint[2]);
   }
 
+  /**
+   * Computes the L* value of a color in ARGB representation.
+   *
+   * @param argb ARGB representation of a color
+   * @return L*, from L*a*b*, coordinate of the color
+   */
   public static double lstarFromArgb(int argb) {
     double y = xyzFromArgb(argb)[1] / 100.0;
     double e = 216.0 / 24389.0;
@@ -154,6 +166,17 @@ public class ColorUtils {
     }
   }
 
+  /**
+   * Converts an L* value to a Y value.
+   *
+   * <p>L* in L*a*b* and Y in XYZ measure the same quantity, luminance.
+   *
+   * <p>L* measures perceptual luminance, a linear scale. Y in XYZ measures relative luminance, a
+   * logarithmic scale.
+   *
+   * @param lstar L* in L*a*b*
+   * @return Y in XYZ
+   */
   public static double yFromLstar(double lstar) {
     double ke = 8.0;
     if (lstar > ke) {
@@ -163,6 +186,12 @@ public class ColorUtils {
     }
   }
 
+  /**
+   * Linearizes an RGB component.
+   *
+   * @param rgbComponent 0 <= rgb_component <= 255, represents R/G/B channel
+   * @return 0.0 <= output <= 100.0, color channel converted to linear RGB space
+   */
   public static double linearized(int rgbComponent) {
     double normalized = rgbComponent / 255.0;
     if (normalized <= 0.040449936) {
@@ -172,6 +201,12 @@ public class ColorUtils {
     }
   }
 
+  /**
+   * Delinearizes an RGB component.
+   *
+   * @param rgbComponent 0.0 <= rgb_component <= 100.0, represents linear R/G/B channel
+   * @return 0 <= output <= 255, color channel converted to regular RGB space
+   */
   public static int delinearized(double rgbComponent) {
     double normalized = rgbComponent / 100.0;
     double delinearized = 0.0;
@@ -183,6 +218,11 @@ public class ColorUtils {
     return MathUtils.clampInt(0, 255, (int) Math.round(delinearized * 255.0));
   }
 
+  /**
+   * Returns the standard white point; white on a sunny day.
+   *
+   * @return The white point
+   */
   public static double[] whitePointD65() {
     return new double[] {95.047, 100.0, 108.883};
   }

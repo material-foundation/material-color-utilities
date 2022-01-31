@@ -57,7 +57,7 @@ export class ViewingConditions {
    *       self-luminous objects like displays.
    */
   static make(
-      whitePoint = utils.WHITE_POINT_D65,
+      whitePoint = utils.whitePointD65(),
       adaptingLuminance = (200.0 / Math.PI) * utils.yFromLstar(50.0) / 100.0,
       backgroundLstar = 50.0, surround = 2.0,
       discountingIlluminant = false): ViewingConditions {

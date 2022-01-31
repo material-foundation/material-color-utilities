@@ -35,7 +35,7 @@ export class QuantizerMap {
     const countByColor = new Map<number, number>();
     for (let i = 0; i < pixels.length; i++) {
       const pixel = pixels[i];
-      const alpha = utils.alphaFromInt(pixel);
+      const alpha = utils.alphaFromArgb(pixel);
       if (alpha < 255) {
         continue;
       }

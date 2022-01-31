@@ -40,7 +40,7 @@ export class Blend {
     const differenceDegrees =
         mathUtils.differenceDegrees(fromHct.hue, toHct.hue);
     const rotationDegrees = Math.min(differenceDegrees * 0.5, 15.0);
-    const outputHue = mathUtils.sanitizeDegrees(
+    const outputHue = mathUtils.sanitizeDegreesDouble(
         fromHct.hue +
         rotationDegrees * Blend.rotationDirection(fromHct.hue, toHct.hue));
     return HCT.from(outputHue, fromHct.chroma, fromHct.tone).toInt();

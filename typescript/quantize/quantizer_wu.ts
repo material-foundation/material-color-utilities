@@ -66,9 +66,9 @@ export class QuantizerWu {
     const countByColor = QuantizerMap.quantize(pixels);
 
     for (const [pixel, count] of countByColor.entries()) {
-      const red = utils.redFromInt(pixel);
-      const green = utils.greenFromInt(pixel);
-      const blue = utils.blueFromInt(pixel);
+      const red = utils.redFromArgb(pixel);
+      const green = utils.greenFromArgb(pixel);
+      const blue = utils.blueFromArgb(pixel);
 
       const bitsToRemove = 8 - INDEX_BITS;
       const iR = (red >> bitsToRemove) + 1;

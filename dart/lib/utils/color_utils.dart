@@ -22,37 +22,37 @@ import 'package:material_color_utilities/utils/math_utils.dart';
 /// Utility methods for color science constants and color space
 /// conversions that aren't HCT or CAM16.
 class ColorUtils {
-  /// Convert a color from RGB components to ARGB format.
+  /// Converts a color from RGB components to ARGB format.
   static int argbFromRgb(int red, int green, int blue) {
     return 255 << 24 | (red & 255) << 16 | (green & 255) << 8 | blue & 255;
   }
 
-  /// The alpha component of a color in ARGB format.
+  /// Returns the alpha component of a color in ARGB format.
   static int alphaFromArgb(int argb) {
     return argb >> 24 & 255;
   }
 
-  /// The red component of a color in ARGB format.
+  /// Returns the red component of a color in ARGB format.
   static int redFromArgb(int argb) {
     return argb >> 16 & 255;
   }
 
-  /// The green component of a color in ARGB format.
+  /// Returns the green component of a color in ARGB format.
   static int greenFromArgb(int argb) {
     return argb >> 8 & 255;
   }
 
-  /// The blue component of a color in ARGB format.
+  /// Returns the blue component of a color in ARGB format.
   static int blueFromArgb(int argb) {
     return argb & 255;
   }
 
-  /// Whether a color in ARGB format is opaque.
+  /// Returns whether a color in ARGB format is opaque.
   static bool isOpaque(int argb) {
     return alphaFromArgb(argb) >= 255;
   }
 
-  /// The sRGB to XYZ transformation matrix.
+  /// Returns the sRGB to XYZ transformation matrix.
   static List<List<double>> srgbToXyz() {
     return [
       [0.41233895, 0.35762064, 0.18051042],
@@ -61,7 +61,7 @@ class ColorUtils {
     ];
   }
 
-  /// The XYZ to sRGB transformation matrix.
+  /// Returns the XYZ to sRGB transformation matrix.
   static List<List<double>> xyzToSrgb() {
     return [
       [3.2406, -1.5372, -0.4986],
@@ -107,8 +107,8 @@ class ColorUtils {
   /// representation.
   ///
   ///
-  /// [argb] the ARGB representation of a color.
-  /// Returns a Lab object representing the color.
+  /// [argb] the ARGB representation of a color
+  /// Returns a Lab object representing the color
   static List<double> labFromArgb(int argb) {
     final whitePoint = whitePointD65();
     final xyz = xyzFromArgb(argb);
@@ -124,6 +124,12 @@ class ColorUtils {
     return [l, a, b];
   }
 
+  /// Converts an L* value to an ARGB representation.
+  ///
+  ///
+  /// [lstar] L* in L*a*b*
+  /// Returns ARGB representation of grayscale color with lightness
+  /// matching L*
   static int argbFromLstar(double lstar) {
     final fy = (lstar + 16.0) / 116.0;
     final fz = fy;
@@ -143,6 +149,11 @@ class ColorUtils {
     );
   }
 
+  /// Computes the L* value of a color in ARGB representation.
+  ///
+  ///
+  /// [argb] ARGB representation of a color
+  /// Returns L*, from L*a*b*, coordinate of the color
   static double lstarFromArgb(int argb) {
     final y = xyzFromArgb(argb)[1] / 100.0;
     final e = 216.0 / 24389.0;
@@ -154,6 +165,16 @@ class ColorUtils {
     }
   }
 
+  /// Converts an L* value to a Y value.
+  ///
+  /// L* in L*a*b* and Y in XYZ measure the same quantity, luminance.
+  ///
+  /// L* measures perceptual luminance, a linear scale. Y in XYZ
+  /// measures relative luminance, a logarithmic scale.
+  ///
+  ///
+  /// [lstar] L* in L*a*b*
+  /// Returns Y in XYZ
   static double yFromLstar(double lstar) {
     final ke = 8.0;
     if (lstar > ke) {
@@ -163,6 +184,13 @@ class ColorUtils {
     }
   }
 
+  /// Linearizes an RGB component.
+  ///
+  ///
+  /// [rgbComponent] 0 <= rgb_component <= 255, represents R/G/B
+  /// channel
+  /// Returns 0.0 <= output <= 100.0, color channel converted to
+  /// linear RGB space
   static double linearized(int rgbComponent) {
     final normalized = rgbComponent / 255.0;
     if (normalized <= 0.040449936) {
@@ -172,6 +200,13 @@ class ColorUtils {
     }
   }
 
+  /// Delinearizes an RGB component.
+  ///
+  ///
+  /// [rgbComponent] 0.0 <= rgb_component <= 100.0, represents linear
+  /// R/G/B channel
+  /// Returns 0 <= output <= 255, color channel converted to regular
+  /// RGB space
   static int delinearized(double rgbComponent) {
     final normalized = rgbComponent / 100.0;
     var delinearized = 0.0;
@@ -183,6 +218,10 @@ class ColorUtils {
     return MathUtils.clampInt(0, 255, (delinearized * 255.0).round());
   }
 
+  /// Returns the standard white point; white on a sunny day.
+  ///
+  ///
+  /// Returns The white point
   static List<double> whitePointD65() {
     return [95.047, 100.0, 108.883];
   }

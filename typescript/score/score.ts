@@ -82,7 +82,7 @@ export class Score {
 
       let excitedProportion = 0;
       for (let i = (hue - 15); i < (hue + 15); i++) {
-        const neighborHue = math.sanitizeDegrees(i);
+        const neighborHue = math.sanitizeDegreesInt(i);
         excitedProportion += hueProportions[neighborHue];
       }
       colorsToExcitedProportion.set(color, excitedProportion);
@@ -148,7 +148,7 @@ export class Score {
     for (const [color, cam] of colorsToCam.entries()) {
       const proportion = colorsToExcitedProportion.get(color)!;
       if (cam.chroma >= Score.CUTOFF_CHROMA &&
-          utils.lstarFromInt(color) >= Score.CUTOFF_TONE &&
+          utils.lstarFromArgb(color) >= Score.CUTOFF_TONE &&
           proportion >= Score.CUTOFF_EXCITED_PROPORTION) {
         filtered.push(color);
       }

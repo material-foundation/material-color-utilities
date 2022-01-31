@@ -96,9 +96,9 @@ export class CAM16 {
     const red = (argb & 0x00ff0000) >> 16;
     const green = (argb & 0x0000ff00) >> 8;
     const blue = (argb & 0x000000ff);
-    const redL = utils.linearized(red / 255.0) * 100.0;
-    const greenL = utils.linearized(green / 255.0) * 100.0;
-    const blueL = utils.linearized(blue / 255.0) * 100.0;
+    const redL = utils.linearized(red);
+    const greenL = utils.linearized(green);
+    const blueL = utils.linearized(blue);
     const x = 0.41233895 * redL + 0.35762064 * greenL + 0.18051042 * blueL;
     const y = 0.2126 * redL + 0.7152 * greenL + 0.0722 * blueL;
     const z = 0.01932141 * redL + 0.11916382 * greenL + 0.95034478 * blueL;
@@ -286,7 +286,7 @@ export class CAM16 {
     const y = 0.38752654 * rF + 0.62144744 * gF - 0.00897398 * bF;
     const z = -0.01584150 * rF - 0.03412294 * gF + 1.04996444 * bF;
 
-    const argb = utils.intFromXyzComponents(x, y, z);
+    const argb = utils.argbFromXyz(x, y, z);
     return argb;
   }
 }

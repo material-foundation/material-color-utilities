@@ -16,7 +16,7 @@
 
 import 'jasmine';
 
-import {hexFromInt} from 'utils/color_utils';
+import {hexFromArgb} from 'utils/string_utils';
 
 declare global {
   namespace jasmine {
@@ -47,8 +47,8 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
         const pass = util.equals(actual, expected);
         return {
           pass,
-          message: `Expected color ${hexFromInt(actual)} to ${
-              pass ? 'NOT' : ''} match: ${hexFromInt(expected)}`,
+          message: `Expected color ${hexFromArgb(actual)} to ${
+              pass ? 'NOT' : ''} match: ${hexFromArgb(expected)}`,
         };
       },
     };

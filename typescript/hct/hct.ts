@@ -61,7 +61,7 @@ export class HCT {
    */
   static fromInt(argb: number) {
     const cam = CAM16.fromInt(argb);
-    const tone = utils.lstarFromInt(argb);
+    const tone = utils.lstarFromArgb(argb);
     return new HCT(cam.hue, cam.chroma, tone);
   }
 
@@ -84,7 +84,8 @@ export class HCT {
    */
   set hue(newHue: number) {
     this.setInternalState(getInt(
-        math.sanitizeDegrees(newHue), this.internalChroma, this.internalTone));
+        math.sanitizeDegreesDouble(newHue), this.internalChroma,
+        this.internalTone));
   }
 
   get chroma(): number {
@@ -124,7 +125,7 @@ export class HCT {
 
   private setInternalState(argb: number) {
     const cam = CAM16.fromInt(argb);
-    const tone = utils.lstarFromInt(argb);
+    const tone = utils.lstarFromArgb(argb);
     this.internalHue = cam.hue;
     this.internalChroma = cam.chroma;
     this.internalTone = tone;
@@ -165,8 +166,8 @@ const LIGHTNESS_SEARCH_ENDPOINT: number = 0.01;
  */
 function getInt(hue: number, chroma: number, tone: number): number {
   return getIntInViewingConditions(
-      math.sanitizeDegrees(hue), chroma, math.clamp(0.0, 100.0, tone),
-      ViewingConditions.DEFAULT);
+      math.sanitizeDegreesDouble(hue), chroma,
+      math.clampDouble(0.0, 100.0, tone), ViewingConditions.DEFAULT);
 }
 
 /**
@@ -180,10 +181,10 @@ function getIntInViewingConditions(
     hue: number, chroma: number, tone: number,
     viewingConditions: ViewingConditions): number {
   if (chroma < 1.0 || Math.round(tone) <= 0.0 || Math.round(tone) >= 100.0) {
-    return utils.intFromLstar(tone);
+    return utils.argbFromLstar(tone);
   }
 
-  hue = math.sanitizeDegrees(hue);
+  hue = math.sanitizeDegreesDouble(hue);
 
   let high = chroma;
   let mid = chroma;
@@ -215,7 +216,7 @@ function getIntInViewingConditions(
   }
 
   if (answer === null) {
-    return utils.intFromLstar(tone);
+    return utils.argbFromLstar(tone);
   }
 
   return answer.viewed(viewingConditions);
@@ -241,7 +242,7 @@ function findCamByJ(hue: number, chroma: number, tone: number): CAM16|null {
 
     const camBeforeClip = CAM16.fromJch(mid, chroma, hue);
     const clipped = camBeforeClip.viewedInSrgb();
-    const clippedLstar = utils.lstarFromInt(clipped);
+    const clippedLstar = utils.lstarFromArgb(clipped);
     const dL = Math.abs(tone - clippedLstar);
 
     if (dL < DL_MAX) {
