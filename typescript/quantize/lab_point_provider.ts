@@ -16,7 +16,7 @@
 
 import './point_provider';
 
-import * as utils from 'utils/color_utils';
+import * as utils from '../utils/color_utils';
 
 /**
  * Provides conversions needed for K-Means quantization. Converting input to

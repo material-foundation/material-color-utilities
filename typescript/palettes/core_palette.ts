@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {HCT} from 'hct/hct';
+import {HCT} from '../hct/hct';
 
 import {TonalPalette} from './tonal_palette';
 

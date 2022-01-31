@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import {CAM16} from 'hct/cam16';
-import * as utils from 'utils/color_utils';
-import * as math from 'utils/math_utils';
+import {CAM16} from '../hct/cam16';
+import * as utils from '../utils/color_utils';
+import * as math from '../utils/math_utils';
 
 /**
  *  Given a large set of colors, remove colors that are unsuitable for a UI

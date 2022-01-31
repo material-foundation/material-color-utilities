@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as utils from 'utils/color_utils';
+import * as utils from '../utils/color_utils';
 
 import {QuantizerMap} from './quantizer_map';
 

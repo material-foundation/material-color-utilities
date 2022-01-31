@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as utils from 'utils/color_utils';
-import * as math from 'utils/math_utils';
+import * as utils from '../utils/color_utils';
+import * as math from '../utils/math_utils';
 
 import {ViewingConditions} from './viewing_conditions';
 

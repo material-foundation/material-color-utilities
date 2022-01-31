@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as utils from 'utils/color_utils';
-import * as math from 'utils/math_utils';
+import * as utils from '../utils/color_utils';
+import * as math from '../utils/math_utils';
 
 /**
  * In traditional color spaces, a color can be identified solely by the
