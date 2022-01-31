@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import 'jasmine.js';
+import 'jasmine';
 
 import {Score} from './score.js';
 

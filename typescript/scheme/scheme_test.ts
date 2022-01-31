@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import 'jasmine.js';
+import 'jasmine';
 
 import {Scheme} from './scheme.js';
 import {SchemeAndroid} from './scheme_android.js';

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import 'jasmine.js';
+import 'jasmine';
 
 import {QuantizerCelebi} from './quantizer_celebi.js';
 

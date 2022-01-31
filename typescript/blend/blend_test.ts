@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import 'jasmine.js';
+import 'jasmine';
 
 import {Blend} from './blend.js';
 import {customMatchers} from '../utils/test_utils.js';

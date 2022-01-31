@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import 'jasmine.js';
+import 'jasmine';
 
 import {CorePalette} from './core_palette.js';
 import {TonalPalette} from './tonal_palette.js';
