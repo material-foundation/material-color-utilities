@@ -16,9 +16,9 @@
 
 import 'jasmine';
 
-import {Scheme} from './scheme.js';
-import {SchemeAndroid} from './scheme_android.js';
-import {customMatchers} from '../utils/test_utils.js';
+import {Scheme} from './scheme';
+import {SchemeAndroid} from './scheme_android';
+import {customMatchers} from '../utils/test_utils';
 
 beforeEach(() => {
   jasmine.addMatchers(customMatchers);

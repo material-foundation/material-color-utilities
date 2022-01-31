@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import {CAM16} from './cam16.js';
-import {HCT} from './hct.js';
-import {ViewingConditions} from './viewing_conditions.js';
+import {CAM16} from './cam16';
+import {HCT} from './hct';
+import {ViewingConditions} from './viewing_conditions';
 
 
 const RED = 0xffff0000;

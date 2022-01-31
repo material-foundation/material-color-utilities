@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {LabPointProvider} from './lab_point_provider.js';
+import {LabPointProvider} from './lab_point_provider';
 
 const MAX_ITERATIONS = 10;
 const MIN_MOVEMENT_DISTANCE = 3.0;

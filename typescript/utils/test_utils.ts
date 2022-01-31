@@ -16,7 +16,7 @@
 
 import 'jasmine';
 
-import {hexFromArgb} from './string_utils.js';
+import {hexFromArgb} from './string_utils';
 
 declare global {
   namespace jasmine {

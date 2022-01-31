@@ -16,8 +16,8 @@
 
 import 'jasmine';
 
-import {Blend} from './blend.js';
-import {customMatchers} from '../utils/test_utils.js';
+import {Blend} from './blend';
+import {customMatchers} from '../utils/test_utils';
 
 beforeEach(() => {
   jasmine.addMatchers(customMatchers);

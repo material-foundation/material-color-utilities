@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as utils from '../utils/color_utils.js';
+import * as utils from '../utils/color_utils';
 
 /**
  * Quantizes an image into a map, with keys of ARGB colors, and values of the

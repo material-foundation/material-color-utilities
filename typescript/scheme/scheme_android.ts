@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {CorePalette} from '../palettes/core_palette.js';
+import {CorePalette} from '../palettes/core_palette';
 
 /**
  * Represents an Android 12 color scheme, a mapping of color roles to colors.
