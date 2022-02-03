@@ -35,6 +35,19 @@ class HctColor {
     return HctColor._(hue, chroma, tone);
   }
 
+  @override
+  bool operator ==(o) {
+    if (o is! HctColor) {
+      return false;
+    }
+    return o._hue == _hue && o._chroma == _chroma && o._tone == _tone;
+  }
+
+  @override
+  String toString() {
+    return 'H${hue.round().toString()} C${chroma.round()} T${tone.round().toString()}';
+  }
+
   /// HCT representation of [argb].
   static HctColor fromInt(int argb) {
     final cam = Cam16.fromInt(argb);
