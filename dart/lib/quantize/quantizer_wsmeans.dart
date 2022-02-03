@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:math' as math show Random, min, sqrt;
+import 'dart:math' as math show Random, min;
 
 import 'point_provider.dart';
 import 'point_provider_lab.dart';
@@ -27,9 +27,9 @@ class DistanceAndIndex implements Comparable<DistanceAndIndex> {
   @override
   int compareTo(DistanceAndIndex other) {
     if (distance < other.distance) {
-      return 1;
-    } else if (distance > other.distance) {
       return -1;
+    } else if (distance > other.distance) {
+      return 1;
     } else {
       return 0;
     }
@@ -37,14 +37,21 @@ class DistanceAndIndex implements Comparable<DistanceAndIndex> {
 }
 
 class QuantizerWsmeans {
-  static const maxIterations = 10;
-  static const minMovementDistance = 3.0;
+  static const debug = false;
+
+  static void debugLog(String log) {
+    if (debug) {
+      print(log);
+    }
+  }
 
   static QuantizerResult quantize(
     Iterable<int> inputPixels,
     int maxColors, {
     List<int> startingClusters = const [],
     PointProvider pointProvider = const PointProviderLab(),
+    int maxIterations = 5,
+    bool returnInputPixelToClusterPixel = false,
   }) {
     final pixelToCount = <int, int>{};
     final points = <List<double>>[];
@@ -68,24 +75,44 @@ class QuantizerWsmeans {
     }
 
     var clusterCount = math.min(maxColors, pointCount);
-    if (startingClusters.isNotEmpty) {
-      clusterCount = math.min(clusterCount, startingClusters.length);
-    }
 
     final clusters =
         startingClusters.map((e) => pointProvider.fromInt(e)).toList();
     final additionalClustersNeeded = clusterCount - clusters.length;
-    if (startingClusters.isEmpty && additionalClustersNeeded > 0) {
+    if (additionalClustersNeeded > 0) {
       final random = math.Random(0x42688);
+      final indices = <int>[];
       for (var i = 0; i < additionalClustersNeeded; i++) {
-        final a = -100.0 + random.nextDouble() * 200.0;
-        final b = -100.0 + random.nextDouble() * 200.0;
-        final l = 0.0 + random.nextDouble() * 100.0;
+        // Use existing points rather than generating random centroids.
+        //
+        // KMeans is extremely sensitive to initial clusters. This quantizer
+        // is meant to be used with a Wu quantizer that provides initial
+        // centroids, but Wu is very slow on unscaled images and when extracting
+        // more than 256 colors.
+        //
+        // Here, we can safely assume that more than 256 colors were requested
+        // for extraction. Generating random centroids tends to lead to many
+        // "empty" centroids, as the random centroids are nowhere near any pixels
+        // in the image, and the centroids from Wu are very refined and close
+        // to pixels in the image.
+        //
+        // Rather than generate random centroids, we'll pick centroids that
+        // are actual pixels in the image, and avoid duplicating centroids.
 
-        clusters.add([l, a, b]);
+        var index = random.nextInt(points.length);
+        while (indices.contains(index)) {
+          index = random.nextInt(points.length);
+        }
+        indices.add(index);
       }
-    }
 
+      indices.forEach((index) {
+        clusters.add(points[index]);
+      });
+    }
+    debugLog(
+      'have ${clusters.length} starting clusters, ${points.length} points',
+    );
     final clusterIndexRandom = math.Random(0x42688);
     final clusterIndices =
         List<int>.generate(pointCount, (index) => index % clusterCount);
@@ -99,6 +126,26 @@ class QuantizerWsmeans {
 
     final pixelCountSums = List<int>.filled(clusterCount, 0);
     for (var iteration = 0; iteration < maxIterations; iteration++) {
+      if (debug) {
+        for (var i = 0; i < clusterCount; i++) {
+          pixelCountSums[i] = 0;
+        }
+        for (var i = 0; i < pointCount; i++) {
+          final clusterIndex = clusterIndices[i];
+          final count = counts[i];
+          pixelCountSums[clusterIndex] += count;
+        }
+        var emptyClusters = 0;
+        for (var cluster = 0; cluster < clusterCount; cluster++) {
+          if (pixelCountSums[cluster] == 0) {
+            emptyClusters++;
+          }
+        }
+        debugLog(
+          'starting iteration ${iteration + 1}; $emptyClusters clusters are empty of $clusterCount',
+        );
+      }
+
       var pointsMoved = 0;
       for (var i = 0; i < clusterCount; i++) {
         for (var j = i + 1; j < clusterCount; j++) {
@@ -133,19 +180,17 @@ class QuantizerWsmeans {
           }
         }
         if (newClusterIndex != -1) {
-          final distanceChange =
-              (math.sqrt(minimumDistance) - math.sqrt(previousDistance)).abs();
-          if (distanceChange > minMovementDistance) {
-            pointsMoved++;
-            clusterIndices[i] = newClusterIndex;
-          }
+          pointsMoved++;
+          clusterIndices[i] = newClusterIndex;
         }
       }
 
-      if (pointsMoved == 0 && iteration != 0) {
+      if (pointsMoved == 0 && iteration > 0) {
+        debugLog('terminated after $iteration k-means iterations');
         break;
       }
 
+      debugLog('iteration ${iteration + 1} moved $pointsMoved');
       final componentASums = List<double>.filled(clusterCount, 0);
       final componentBSums = List<double>.filled(clusterCount, 0);
       final componentCSums = List<double>.filled(clusterCount, 0);
@@ -191,7 +236,28 @@ class QuantizerWsmeans {
       clusterArgbs.add(possibleNewCluster);
       clusterPopulations.add(count);
     }
+    debugLog(
+      'kmeans finished and generated ${clusterArgbs.length} clusters; $clusterCount were requested',
+    );
 
-    return QuantizerResult(Map.fromIterables(clusterArgbs, clusterPopulations));
+    final inputPixelToClusterPixel = <int, int>{};
+    if (returnInputPixelToClusterPixel) {
+      final stopwatch = Stopwatch()..start();
+      for (var i = 0; i < pixels.length; i++) {
+        final inputPixel = pixels[i];
+        final clusterIndex = clusterIndices[i];
+        final cluster = clusters[clusterIndex];
+        final clusterPixel = pointProvider.toInt(cluster);
+        inputPixelToClusterPixel[inputPixel] = clusterPixel;
+      }
+      debugLog(
+        'took ${stopwatch.elapsedMilliseconds} ms to create input to cluster map',
+      );
+    }
+
+    return QuantizerResult(
+      Map.fromIterables(clusterArgbs, clusterPopulations),
+      inputPixelToClusterPixel: inputPixelToClusterPixel,
+    );
   }
 }
