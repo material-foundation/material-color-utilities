@@ -22,9 +22,10 @@ import 'viewing_conditions.dart';
 /// accurate color measurement system that can also accurately render what
 /// colors will appear as in different lighting environments.
 class HctColor {
-  double _hue;
-  double _chroma;
-  double _tone;
+  late double _hue;
+  late double _chroma;
+  late double _tone;
+  late int _argb;
 
   /// 0 <= [hue] < 360; invalid values are corrected.
   /// 0 <= [chroma] <= ?; Informally, colorfulness. The color returned may be
@@ -40,7 +41,7 @@ class HctColor {
     if (o is! HctColor) {
       return false;
     }
-    return o._hue == _hue && o._chroma == _chroma && o._tone == _tone;
+    return o._argb == _argb;
   }
 
   @override
@@ -56,7 +57,7 @@ class HctColor {
   }
 
   int toInt() {
-    return getInt(_hue, _chroma, _tone);
+    return _argb;
   }
 
   /// A number, in degrees, representing ex. red, orange, yellow, etc.
@@ -66,11 +67,17 @@ class HctColor {
   }
 
   /// 0 <= [newHue] < 360; invalid values are corrected.
-  /// Chroma may decrease because chroma has a different maximum for any given
-  /// hue and tone.
+  /// After setting hue, the color is mapped from HCT to the more
+  /// limited sRGB gamut for display. This will change its ARGB/integer
+  /// representation. If the HCT color is outside of the sRGB gamut, chroma
+  /// will decrease until it is inside the gamut.
   set hue(double newHue) {
-    _setInternalState(
-        getInt(MathUtils.sanitizeDegreesDouble(newHue), _chroma, _tone));
+    final cam16 =
+        getCam16(MathUtils.sanitizeDegreesDouble(newHue), chroma, tone);
+    _argb = cam16.viewed(ViewingConditions.sRgb);
+    _hue = cam16.hue;
+    _chroma = cam16.chroma;
+    _tone = ColorUtils.lstarFromArgb(_argb);
   }
 
   double get chroma {
@@ -78,10 +85,16 @@ class HctColor {
   }
 
   /// 0 <= [newChroma] <= ?
-  /// Chroma may decrease because chroma has a different maximum for any given
-  /// hue and tone.
+  /// After setting chroma, the color is mapped from HCT to the more
+  /// limited sRGB gamut for display. This will change its ARGB/integer
+  /// representation. If the HCT color is outside of the sRGB gamut, chroma
+  /// will decrease until it is inside the gamut.
   set chroma(double newChroma) {
-    _setInternalState(getInt(_hue, newChroma, _tone));
+    final cam16 = getCam16(hue, newChroma, tone);
+    _argb = cam16.viewed(ViewingConditions.sRgb);
+    _hue = cam16.hue;
+    _chroma = cam16.chroma;
+    _tone = ColorUtils.lstarFromArgb(_argb);
   }
 
   /// Lightness. Ranges from 0 to 100.
@@ -90,26 +103,25 @@ class HctColor {
   }
 
   /// 0 <= [newTone] <= 100; invalid values are corrected.
-  /// Chroma may decrease because chroma has a different maximum for any given
-  /// hue and tone.
+  /// After setting tone, the color is mapped from HCT to the more
+  /// limited sRGB gamut for display. This will change its ARGB/integer
+  /// representation. If the HCT color is outside of the sRGB gamut, chroma
+  /// will decrease until it is inside the gamut.
   set tone(double newTone) {
-    _setInternalState(
-        getInt(_hue, _chroma, MathUtils.clampDouble(0.0, 100.0, newTone)));
+    final cam16 =
+        getCam16(hue, chroma, MathUtils.clampDouble(0.0, 100.0, newTone));
+    _argb = cam16.viewed(ViewingConditions.sRgb);
+    _hue = cam16.hue;
+    _chroma = cam16.chroma;
+    _tone = ColorUtils.lstarFromArgb(_argb);
   }
 
-  HctColor._(double hue, double chroma, double tone)
-      : _hue = MathUtils.sanitizeDegreesDouble(hue),
-        _chroma = chroma,
-        _tone = MathUtils.clampDouble(0.0, 100.0, tone) {
-    _setInternalState(toInt());
-  }
-
-  void _setInternalState(int argb) {
-    final cam = Cam16.fromInt(argb);
-    final tone = ColorUtils.lstarFromArgb(argb);
-    _hue = cam.hue;
-    _chroma = cam.chroma;
-    _tone = tone;
+  HctColor._(double hue, double chroma, double tone) {
+    final cam16 = getCam16(hue, chroma, tone);
+    _argb = cam16.viewed(ViewingConditions.sRgb);
+    _hue = cam16.hue;
+    _chroma = cam16.chroma;
+    _tone = ColorUtils.lstarFromArgb(_argb);
   }
 }
 
@@ -133,19 +145,15 @@ const _deMaxError = 0.000000001;
 /// lightness in CAM16, is less than this, the binary search terminates.
 const lightnessSearchEndpoint = 0.01;
 
-int getInt(double hue, double chroma, double lstar) {
-  return getIntInViewingConditions(
-      hue: hue, chroma: chroma, lstar: lstar, frame: ViewingConditions.sRgb);
+Cam16 getCam16(double hue, double chroma, double lstar) {
+  return getCam16InViewingConditions(
+      hue, chroma, lstar, ViewingConditions.sRgb);
 }
 
-int getIntInViewingConditions({
-  required double hue,
-  required double chroma,
-  required double lstar,
-  required ViewingConditions frame,
-}) {
+Cam16 getCam16InViewingConditions(double hue, double chroma, double lstar,
+    ViewingConditions viewingConditions) {
   if (chroma < 1.0 || lstar.round() <= 0.0 || lstar.round() >= 100.0) {
-    return ColorUtils.argbFromLstar(lstar);
+    return Cam16.fromInt(ColorUtils.argbFromLstar(lstar));
   }
 
   hue = hue < 0
@@ -171,11 +179,11 @@ int getIntInViewingConditions({
   while ((low - high).abs() >= _chromaSearchEndpoint) {
     // Given the current chroma guess, mid, and the desired hue, find J, lightness in CAM16 color
     // space, that creates a color with L* = `lstar` in L*a*b*
-    var possibleAnswer = findCamByJ(hue, mid, lstar, frame);
+    var possibleAnswer = findCamByJ(hue, mid, lstar, viewingConditions);
 
     if (isFirstLoop) {
       if (possibleAnswer != null) {
-        return possibleAnswer.viewed(frame);
+        return possibleAnswer;
       } else {
         // If this binary search iteration was the first iteration, and this point has been reached,
         // it means the requested chroma was not available at the requested hue and L*. Proceed to a
@@ -203,10 +211,10 @@ int getIntInViewingConditions({
   // with the desired L*. All values of L* are possible when there is 0 chroma. Return a color
   // with 0 chroma, i.e. a shade of gray, with the desired L*.
   if (answer == null) {
-    return ColorUtils.argbFromLstar(lstar);
+    return Cam16.fromInt(ColorUtils.argbFromLstar(lstar));
   }
 
-  return answer.viewed(frame);
+  return answer;
 }
 
 Cam16? findCamByJ(
