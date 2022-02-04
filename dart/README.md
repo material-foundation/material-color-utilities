@@ -13,7 +13,7 @@ a new color space.
 ## Usage
 
 ```dart
-import 'package:material_color_utilities:material_color_utilities.dart';
+import 'package:material_color_utilities/material_color_utilities.dart';
 ```
 
 For more information, see the main [README](https://github.com/material-foundation/material-color-utilities#readme).
