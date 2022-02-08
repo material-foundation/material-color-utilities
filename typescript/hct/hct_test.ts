@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,10 +15,11 @@
  * limitations under the License.
  */
 
-import {CAM16} from 'hct/cam16';
-import {HCT} from 'hct/hct';
-import {ViewingConditions} from 'hct/viewing_conditions';
+import 'jasmine';
 
+import {CAM16} from './cam16';
+import {HCT} from './hct';
+import {ViewingConditions} from './viewing_conditions';
 
 const RED = 0xffff0000;
 const GREEN = 0xff00ff00;

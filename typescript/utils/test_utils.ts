@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +17,7 @@
 
 import 'jasmine';
 
-import {hexFromArgb} from 'utils/string_utils';
+import {hexFromArgb} from './string_utils';
 
 declare global {
   namespace jasmine {

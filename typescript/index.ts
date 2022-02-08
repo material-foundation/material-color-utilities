@@ -15,13 +15,19 @@
  * limitations under the License.
  */
 
-/**
- * An interface to allow use of different color spaces by
- * quantizers.
- */
-
-interface PointProvider {
-  toInt(point: number[]): number;
-  fromInt(argb: number): number[];
-  distance(from: number[], to: number[]): number;
-}
+export * from './blend/blend';
+export * from './hct/cam16';
+export * from './hct/hct';
+export * from './hct/viewing_conditions';
+export * from './palettes/core_palette';
+export * from './palettes/tonal_palette';
+export * from './quantize/quantizer_celebi';
+export * from './quantize/quantizer_map';
+export * from './quantize/quantizer_wsmeans';
+export * from './quantize/quantizer_wu';
+export * from './scheme/scheme';
+export * from './scheme/scheme_android';
+export * from './score/score';
+export * from './utils/color_utils';
+export * from './utils/math_utils';
+export * from './utils/string_utils';

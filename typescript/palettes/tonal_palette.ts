@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,7 @@
  * limitations under the License.
  */
 
-import {HCT} from 'hct/hct';
+import {HCT} from '../hct/hct';
 
 /**
  *  A convenience class for retrieving colors that are constant in hue and

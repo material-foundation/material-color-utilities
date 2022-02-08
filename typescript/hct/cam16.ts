@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +15,8 @@
  * limitations under the License.
  */
 
-import * as utils from 'utils/color_utils';
-import * as math from 'utils/math_utils';
+import * as utils from '../utils/color_utils';
+import * as math from '../utils/math_utils';
 
 import {ViewingConditions} from './viewing_conditions';
 

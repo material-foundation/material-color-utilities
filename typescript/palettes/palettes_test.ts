@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +17,8 @@
 
 import 'jasmine';
 
-import {CorePalette} from 'palettes/core_palette';
-import {TonalPalette} from 'palettes/tonal_palette';
+import {CorePalette} from './core_palette';
+import {TonalPalette} from './tonal_palette';
 
 describe('TonalPalette', () => {
   it('ofBlue', () => {

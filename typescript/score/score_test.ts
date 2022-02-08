@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +17,7 @@
 
 import 'jasmine';
 
-import {Score} from 'score/score';
+import {Score} from './score';
 
 describe('scoring', () => {
   it('prioritizes chroma when proportions equal', () => {

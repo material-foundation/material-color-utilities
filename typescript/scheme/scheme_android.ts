@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,7 @@
  * limitations under the License.
  */
 
-import {CorePalette} from 'palettes/core_palette';
+import {CorePalette} from '../palettes/core_palette';
 
 /**
  * Represents an Android 12 color scheme, a mapping of color roles to colors.

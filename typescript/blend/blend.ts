@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +15,9 @@
  * limitations under the License.
  */
 
-import {CAM16} from 'hct/cam16';
-import {HCT} from 'hct/hct';
-import * as mathUtils from 'utils/math_utils';
+import {CAM16} from '../hct/cam16';
+import {HCT} from '../hct/hct';
+import * as mathUtils from '../utils/math_utils';
 
 /**
  * Functions for blending in HCT and CAM16.

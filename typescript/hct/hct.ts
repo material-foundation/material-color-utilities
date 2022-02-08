@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,8 +31,8 @@
  * and a difference of 50 guarantees a contrast ratio >= 4.5.
  */
 
-import * as utils from 'utils/color_utils';
-import * as math from 'utils/math_utils';
+import * as utils from '../utils/color_utils';
+import * as math from '../utils/math_utils';
 
 import {CAM16} from './cam16';
 import {ViewingConditions} from './viewing_conditions';

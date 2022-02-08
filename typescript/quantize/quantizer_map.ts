@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,7 @@
  * limitations under the License.
  */
 
-import * as utils from 'utils/color_utils';
+import * as utils from '../utils/color_utils';
 
 /**
  * Quantizes an image into a map, with keys of ARGB colors, and values of the

@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +17,10 @@
 
 import 'jasmine';
 
-import {Scheme} from 'scheme/scheme';
-import {SchemeAndroid} from 'scheme/scheme_android';
-import {customMatchers} from 'utils/test_utils';
+import {customMatchers} from '../utils/test_utils';
+
+import {Scheme} from './scheme';
+import {SchemeAndroid} from './scheme_android';
 
 beforeEach(() => {
   jasmine.addMatchers(customMatchers);

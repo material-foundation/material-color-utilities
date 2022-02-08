@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +17,9 @@
 
 import 'jasmine';
 
-import {Blend} from 'blend/blend';
-import {customMatchers} from 'utils/test_utils';
+import {customMatchers} from '../utils/test_utils';
+
+import {Blend} from './blend';
 
 beforeEach(() => {
   jasmine.addMatchers(customMatchers);

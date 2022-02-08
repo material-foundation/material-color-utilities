@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +17,7 @@
 
 import './point_provider';
 
-import * as utils from 'utils/color_utils';
+import * as utils from '../utils/color_utils';
 
 /**
  * Provides conversions needed for K-Means quantization. Converting input to

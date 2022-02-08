@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +17,7 @@
 
 import 'jasmine';
 
-import {QuantizerCelebi} from 'quantize/quantizer_celebi';
+import {QuantizerCelebi} from './quantizer_celebi';
 
 const RED = 0xffff0000;
 const GREEN = 0xff00ff00;
