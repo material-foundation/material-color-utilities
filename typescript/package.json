@@ -10,8 +10,6 @@
     "color extraction",
     "theming"
   ],
-  "main": "index.ts",
-  "module": "index.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-foundation/material-color-utilities.git",
@@ -23,10 +21,15 @@
     "url": "https://github.com/material-foundation/material-color-utilities/issues"
   },
   "homepage": "https://github.com/material-foundation/material-color-utilities/tree/main/typescript",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
-    "postinstall": "npm run build",
     "build": "tsc",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@types/jasmine": "^3.10.3",

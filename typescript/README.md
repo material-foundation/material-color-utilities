@@ -1,6 +1,6 @@
 # material-color-utilities
 
-[![npm package version](https://badgen.net/npm/v/material-color-utilities)](https://npmjs.com/package/material-color-utilities)
+[![npm package version](https://badgen.net/npm/v/@guidezpl/material-color-utilities)](https://npmjs.com/package/@material/material-color-utilities)
 
 Algorithms and utilities that power the Material Design 3 (M3) color system,
 including choosing theme colors from images and creating tones of colors; all in
@@ -12,11 +12,18 @@ for more information.
 
 ## Getting started
 
-`npm add material-color-utilities` or `yarn add material-color-utilities`
+npm: `npm install @material/material-color-utilities`
+
+yarn: `yarn add @material/material-color-utilities`
 
 ```typescript
-// TODO(guidezpl): complete example
-import { CorePalette } from 'material-color-utilities/'
+import { HCT } from "@material/material-color-utilities";
+
+// Simple demonstration of HCT.
+const color = HCT.fromInt(0xff4285f4);
+console.log(`Hue: ${color.hue}`);
+console.log(`Chrome: ${color.chroma}`);
+console.log(`Tone: ${color.tone}`);
 ```
 
 ## Contributing

@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+      "target": "es2017",
+      "module": "es2015",
+      "moduleResolution": "node",
+      "lib": [
+          "es2017",
+          "dom",
+          "dom.iterable"
+      ],
+      "declaration": true,
+      "sourceMap": true,
+      "inlineSources": true,
+      "experimentalDecorators": true,
+      "skipLibCheck": true,
+      "noUnusedLocals": true,
+      "noFallthroughCasesInSwitch": true,
+      "noImplicitAny": false,
+      "outDir": "./dist",
+      "composite": true,
+      "importHelpers": true
+  },
+  "include": [
+      "**/*.ts"
+  ]
+}
