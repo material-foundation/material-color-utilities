@@ -30,4 +30,4 @@ build/
 
 # TS related
 node_modules
-typescript/lib
+typescript/dist
