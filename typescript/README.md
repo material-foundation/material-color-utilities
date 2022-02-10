@@ -12,9 +12,11 @@ for more information.
 
 ## Getting started
 
-npm: `npm install @material/material-color-utilities`
+`npm install @material/material-color-utilities`
 
-yarn: `yarn add @material/material-color-utilities`
+OR
+
+`yarn add @material/material-color-utilities`
 
 ```typescript
 import { HCT } from "@material/material-color-utilities";
