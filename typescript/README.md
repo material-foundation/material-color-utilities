@@ -1,6 +1,6 @@
 # material-color-utilities
 
-[![npm package version](https://badgen.net/npm/v/@guidezpl/material-color-utilities)](https://npmjs.com/package/@material/material-color-utilities)
+[![npm package](https://badgen.net/npm/v/@material/material-color-utilities)](https://npmjs.com/package/@material/material-color-utilities)
 
 Algorithms and utilities that power the Material Design 3 (M3) color system,
 including choosing theme colors from images and creating tones of colors; all in

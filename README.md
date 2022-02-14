@@ -11,10 +11,10 @@ a new color space.
 Language    | Availability  | Package
 ----------- | ------------- | ------------------------------------------------------------------------------------------
 C/C++       | *Coming soon* |
-Dart        | ✅             | [`material_color_utilities`](https://pub.dev/packages/material_color_utilities)
+Dart        | ✅             | [![pub package](https://img.shields.io/pub/v/material_color_utilities.svg)](https://pub.dev/packages/material_color_utilities)
 Java        | ✅             | *Coming soon*
 Objective-C | *Coming soon* |
-TypeScript  | ✅             | *Coming soon*
+TypeScript  | ✅             | [![npm package](https://badgen.net/npm/v/@material/material-color-utilities)](https://npmjs.com/package/@material/material-color-utilities)
 
 Need another platform/language? Check the
 [existing issues](https://github.com/material-foundation/material-color-utilities/labels/new%20library)
