@@ -31,3 +31,5 @@ export * from './score/score';
 export * from './utils/color_utils';
 export * from './utils/math_utils';
 export * from './utils/string_utils';
+export * from './utils/image_utils';
+export * from './utils/theme_utils';

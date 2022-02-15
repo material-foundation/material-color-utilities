@@ -232,4 +232,10 @@ export class Scheme {
     inverseOnSurface: number,
     inversePrimary: number
   }) {}
+
+  toJSON() {
+    return {
+      ...this.props
+    };
+  }
 }
