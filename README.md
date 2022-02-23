@@ -84,8 +84,7 @@ Material Design Components, Android System UI, etc.
 
 ## Background
 
-Learn about the
-[M3 color system](https://m3.material.io/styles/color/the-color-system/key-colors-tones).
+[The Science of Color & Design - Material Design](https://material.io/blog/science-of-color-design)
 
 ## Design Tooling
 
