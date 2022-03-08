@@ -62,7 +62,14 @@ public final class TonalPalette {
    * @param tone HCT tone, measured from 0 to 100.
    * @return ARGB representation of a color with that tone.
    */
+  // AndroidJdkLibsChecker is higher priority than ComputeIfAbsentUseValue (b/119581923)
+  @SuppressWarnings("ComputeIfAbsentUseValue")
   public int tone(int tone) {
-    return cache.computeIfAbsent(tone, k -> Hct.from(this.hue, this.chroma, tone).toInt());
+    Integer color = cache.get(tone);
+    if (color == null) {
+      color = Hct.from(this.hue, this.chroma, tone).toInt();
+      cache.put(tone, color);
+    }
+    return color;
   }
 }
