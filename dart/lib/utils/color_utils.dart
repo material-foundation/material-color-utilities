@@ -22,6 +22,20 @@ import 'package:material_color_utilities/utils/math_utils.dart';
 /// Utility methods for color science constants and color space
 /// conversions that aren't HCT or CAM16.
 class ColorUtils {
+  static final _SRGB_TO_XYZ = [
+    [0.41233895, 0.35762064, 0.18051042],
+    [0.2126, 0.7152, 0.0722],
+    [0.01932141, 0.11916382, 0.95034478],
+  ];
+
+  static final _XYZ_TO_SRGB = [
+    [3.2406, -1.5372, -0.4986],
+    [-0.9689, 1.8758, 0.0415],
+    [0.0557, -0.204, 1.057],
+  ];
+
+  static final _WHITE_POINT_D65 = [95.047, 100.0, 108.883];
+
   /// Converts a color from RGB components to ARGB format.
   static int argbFromRgb(int red, int green, int blue) {
     return 255 << 24 | (red & 255) << 16 | (green & 255) << 8 | blue & 255;
@@ -52,27 +66,9 @@ class ColorUtils {
     return alphaFromArgb(argb) >= 255;
   }
 
-  /// Returns the sRGB to XYZ transformation matrix.
-  static List<List<double>> srgbToXyz() {
-    return [
-      [0.41233895, 0.35762064, 0.18051042],
-      [0.2126, 0.7152, 0.0722],
-      [0.01932141, 0.11916382, 0.95034478],
-    ];
-  }
-
-  /// Returns the XYZ to sRGB transformation matrix.
-  static List<List<double>> xyzToSrgb() {
-    return [
-      [3.2406, -1.5372, -0.4986],
-      [-0.9689, 1.8758, 0.0415],
-      [0.0557, -0.204, 1.057],
-    ];
-  }
-
   /// Converts a color from ARGB to XYZ.
   static int argbFromXyz(double x, double y, double z) {
-    final linearRgb = MathUtils.matrixMultiply([x, y, z], xyzToSrgb());
+    final linearRgb = MathUtils.matrixMultiply([x, y, z], _XYZ_TO_SRGB);
     final r = delinearized(linearRgb[0]);
     final g = delinearized(linearRgb[1]);
     final b = delinearized(linearRgb[2]);
@@ -84,13 +80,13 @@ class ColorUtils {
     final r = linearized(redFromArgb(argb));
     final g = linearized(greenFromArgb(argb));
     final b = linearized(blueFromArgb(argb));
-    return MathUtils.matrixMultiply([r, g, b], srgbToXyz());
+    return MathUtils.matrixMultiply([r, g, b], _SRGB_TO_XYZ);
   }
 
   /// Converts a color represented in Lab color space into an ARGB
   /// integer.
   static int argbFromLab(double l, double a, double b) {
-    final whitePoint = whitePointD65();
+    final whitePoint = _WHITE_POINT_D65;
     final fy = (l + 16.0) / 116.0;
     final fx = a / 500.0 + fy;
     final fz = fy - b / 200.0;
@@ -110,7 +106,7 @@ class ColorUtils {
   /// [argb] the ARGB representation of a color
   /// Returns a Lab object representing the color
   static List<double> labFromArgb(int argb) {
-    final whitePoint = whitePointD65();
+    final whitePoint = _WHITE_POINT_D65;
     final xyz = xyzFromArgb(argb);
     final xNormalized = xyz[0] / whitePoint[0];
     final yNormalized = xyz[1] / whitePoint[1];
@@ -141,7 +137,7 @@ class ColorUtils {
     final cubeExceedEpsilon = fy * fy * fy > epsilon;
     final x = cubeExceedEpsilon ? fx * fx * fx : lstar / kappa;
     final z = cubeExceedEpsilon ? fz * fz * fz : lstar / kappa;
-    final whitePoint = whitePointD65();
+    final whitePoint = _WHITE_POINT_D65;
     return argbFromXyz(
       x * whitePoint[0],
       y * whitePoint[1],
@@ -223,7 +219,7 @@ class ColorUtils {
   ///
   /// Returns The white point
   static List<double> whitePointD65() {
-    return [95.047, 100.0, 108.883];
+    return _WHITE_POINT_D65;
   }
 
   static double _labF(double t) {
