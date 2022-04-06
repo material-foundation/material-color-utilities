@@ -45,7 +45,7 @@ void main() {
 
     test('blueToRed', () {
       final answer = Blend.harmonize(blue, red);
-      expect(answer, isColor(0xff5600DF));
+      expect(answer, isColor(0xff5600DE));
     });
 
     test('blueToYellow', () {

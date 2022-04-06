@@ -53,7 +53,7 @@ describe('harmonize', () => {
 
   it('blueToRed', () => {
     const answer = Blend.harmonize(BLUE, RED);
-    expect(answer).matchesColor(0xff5600DF);
+    expect(answer).matchesColor(0xff5600DE);
   });
 
   it('blueToYellow', () => {
