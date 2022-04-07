@@ -114,7 +114,6 @@ class ColorUtils {
   /// Converts a color from ARGB representation to L*a*b*
   /// representation.
   ///
-  ///
   /// [argb] the ARGB representation of a color
   /// Returns a Lab object representing the color
   static List<double> labFromArgb(int argb) {
@@ -133,7 +132,6 @@ class ColorUtils {
   }
 
   /// Converts an L* value to an ARGB representation.
-  ///
   ///
   /// [lstar] L* in L*a*b*
   /// Returns ARGB representation of grayscale color with lightness
@@ -159,7 +157,6 @@ class ColorUtils {
 
   /// Computes the L* value of a color in ARGB representation.
   ///
-  ///
   /// [argb] ARGB representation of a color
   /// Returns L*, from L*a*b*, coordinate of the color
   static double lstarFromArgb(int argb) {
@@ -180,7 +177,6 @@ class ColorUtils {
   /// L* measures perceptual luminance, a linear scale. Y in XYZ
   /// measures relative luminance, a logarithmic scale.
   ///
-  ///
   /// [lstar] L* in L*a*b*
   /// Returns Y in XYZ
   static double yFromLstar(double lstar) {
@@ -193,7 +189,6 @@ class ColorUtils {
   }
 
   /// Linearizes an RGB component.
-  ///
   ///
   /// [rgbComponent] 0 <= rgb_component <= 255, represents R/G/B
   /// channel
@@ -209,7 +204,6 @@ class ColorUtils {
   }
 
   /// Delinearizes an RGB component.
-  ///
   ///
   /// [rgbComponent] 0.0 <= rgb_component <= 100.0, represents linear
   /// R/G/B channel
@@ -227,7 +221,6 @@ class ColorUtils {
   }
 
   /// Returns the standard white point; white on a sunny day.
-  ///
   ///
   /// Returns The white point
   static List<double> whitePointD65() {

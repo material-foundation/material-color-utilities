@@ -24,8 +24,7 @@
 /**
  * The signum function.
  *
- *
- *  @return 1 if num > 0, -1 if num < 0, and 0 if num = 0
+ * @return 1 if num > 0, -1 if num < 0, and 0 if num = 0
  */
 export function signum(num: number): number {
   if (num < 0) {
@@ -42,8 +41,7 @@ export function signum(num: number): number {
 /**
  * The linear interpolation function.
  *
- *
- *  @return start if amount = 0 and stop if amount = 1
+ * @return start if amount = 0 and stop if amount = 1
  */
 export function lerp(start: number, stop: number, amount: number): number {
   return (1.0 - amount) * start + amount * stop;
@@ -52,9 +50,8 @@ export function lerp(start: number, stop: number, amount: number): number {
 /**
  * Clamps an integer between two integers.
  *
- *
- *  @return input when min <= input <= max, and either min or max
- *  otherwise.
+ * @return input when min <= input <= max, and either min or max
+ * otherwise.
  */
 export function clampInt(min: number, max: number, input: number): number {
   if (input < min) {
@@ -70,9 +67,8 @@ export function clampInt(min: number, max: number, input: number): number {
 /**
  * Clamps an integer between two floating-point numbers.
  *
- *
- *  @return input when min <= input <= max, and either min or max
- *  otherwise.
+ * @return input when min <= input <= max, and either min or max
+ * otherwise.
  */
 export function clampDouble(min: number, max: number, input: number): number {
   if (input < min) {
@@ -88,9 +84,8 @@ export function clampDouble(min: number, max: number, input: number): number {
 /**
  * Sanitizes a degree measure as an integer.
  *
- *
- *  @return a degree measure between 0 (inclusive) and 360
- *  (exclusive).
+ * @return a degree measure between 0 (inclusive) and 360
+ * (exclusive).
  */
 export function sanitizeDegreesInt(degrees: number): number {
   degrees = degrees % 360;
@@ -103,9 +98,8 @@ export function sanitizeDegreesInt(degrees: number): number {
 /**
  * Sanitizes a degree measure as a floating-point number.
  *
- *
- *  @return a degree measure between 0.0 (inclusive) and 360.0
- *  (exclusive).
+ * @return a degree measure between 0.0 (inclusive) and 360.0
+ * (exclusive).
  */
 export function sanitizeDegreesDouble(degrees: number): number {
   degrees = degrees % 360.0;

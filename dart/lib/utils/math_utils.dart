@@ -18,7 +18,6 @@
 class MathUtils {
   /// The signum function.
   ///
-  ///
   /// Returns 1 if num > 0, -1 if num < 0, and 0 if num = 0
   static int signum(double num) {
     if (num < 0) {
@@ -34,14 +33,12 @@ class MathUtils {
 
   /// The linear interpolation function.
   ///
-  ///
   /// Returns start if amount = 0 and stop if amount = 1
   static double lerp(double start, double stop, double amount) {
     return (1.0 - amount) * start + amount * stop;
   }
 
   /// Clamps an integer between two integers.
-  ///
   ///
   /// Returns input when min <= input <= max, and either min or max
   /// otherwise.
@@ -58,7 +55,6 @@ class MathUtils {
 
   /// Clamps an integer between two floating-point numbers.
   ///
-  ///
   /// Returns input when min <= input <= max, and either min or max
   /// otherwise.
   static double clampDouble(double min, double max, double input) {
@@ -74,7 +70,6 @@ class MathUtils {
 
   /// Sanitizes a degree measure as an integer.
   ///
-  ///
   /// Returns a degree measure between 0 (inclusive) and 360
   /// (exclusive).
   static int sanitizeDegreesInt(int degrees) {
@@ -86,7 +81,6 @@ class MathUtils {
   }
 
   /// Sanitizes a degree measure as a floating-point number.
-  ///
   ///
   /// Returns a degree measure between 0.0 (inclusive) and 360.0
   /// (exclusive).
