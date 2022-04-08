@@ -30,12 +30,10 @@ public class MathUtils {
   public static int signum(double num) {
     if (num < 0) {
       return -1;
+    } else if (num == 0) {
+      return 0;
     } else {
-      if (num == 0) {
-        return 0;
-      } else {
-        return 1;
-      }
+      return 1;
     }
   }
 
@@ -56,11 +54,10 @@ public class MathUtils {
   public static int clampInt(int min, int max, int input) {
     if (input < min) {
       return min;
-    } else {
-      if (input > max) {
-        return max;
-      }
+    } else if (input > max) {
+      return max;
     }
+
     return input;
   }
 
@@ -72,11 +69,10 @@ public class MathUtils {
   public static double clampDouble(double min, double max, double input) {
     if (input < min) {
       return min;
-    } else {
-      if (input > max) {
-        return max;
-      }
+    } else if (input > max) {
+      return max;
     }
+
     return input;
   }
 

@@ -29,12 +29,10 @@
 export function signum(num: number): number {
   if (num < 0) {
     return -1;
+  } else if (num === 0) {
+    return 0;
   } else {
-    if (num === 0) {
-      return 0;
-    } else {
-      return 1;
-    }
+    return 1;
   }
 }
 
@@ -56,11 +54,10 @@ export function lerp(start: number, stop: number, amount: number): number {
 export function clampInt(min: number, max: number, input: number): number {
   if (input < min) {
     return min;
-  } else {
-    if (input > max) {
-      return max;
-    }
+  } else if (input > max) {
+    return max;
   }
+
   return input;
 }
 
@@ -73,11 +70,10 @@ export function clampInt(min: number, max: number, input: number): number {
 export function clampDouble(min: number, max: number, input: number): number {
   if (input < min) {
     return min;
-  } else {
-    if (input > max) {
-      return max;
-    }
+  } else if (input > max) {
+    return max;
   }
+
   return input;
 }
 
