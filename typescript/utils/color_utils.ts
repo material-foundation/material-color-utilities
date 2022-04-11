@@ -99,10 +99,13 @@ export function isOpaque(argb: number): boolean {
  * Converts a color from ARGB to XYZ.
  */
 export function argbFromXyz(x: number, y: number, z: number): number {
-  const linearRgb = mathUtils.matrixMultiply([x, y, z], XYZ_TO_SRGB);
-  const r = delinearized(linearRgb[0]);
-  const g = delinearized(linearRgb[1]);
-  const b = delinearized(linearRgb[2]);
+  const matrix = XYZ_TO_SRGB;
+  const linearR = matrix[0][0] * x + matrix[0][1] * y + matrix[0][2] * z;
+  const linearG = matrix[1][0] * x + matrix[1][1] * y + matrix[1][2] * z;
+  const linearB = matrix[2][0] * x + matrix[2][1] * y + matrix[2][2] * z;
+  const r = delinearized(linearR);
+  const g = delinearized(linearG);
+  const b = delinearized(linearB);
   return argbFromRgb(r, g, b);
 }
 
@@ -142,11 +145,20 @@ export function argbFromLab(l: number, a: number, b: number): number {
  * @return a Lab object representing the color
  */
 export function labFromArgb(argb: number): number[] {
+  const linearR = linearized(redFromArgb(argb));
+  const linearG = linearized(greenFromArgb(argb));
+  const linearB = linearized(blueFromArgb(argb));
+  const matrix = SRGB_TO_XYZ;
+  const x =
+      matrix[0][0] * linearR + matrix[0][1] * linearG + matrix[0][2] * linearB;
+  const y =
+      matrix[1][0] * linearR + matrix[1][1] * linearG + matrix[1][2] * linearB;
+  const z =
+      matrix[2][0] * linearR + matrix[2][1] * linearG + matrix[2][2] * linearB;
   const whitePoint = WHITE_POINT_D65;
-  const xyz = xyzFromArgb(argb);
-  const xNormalized = xyz[0] / whitePoint[0];
-  const yNormalized = xyz[1] / whitePoint[1];
-  const zNormalized = xyz[2] / whitePoint[2];
+  const xNormalized = x / whitePoint[0];
+  const yNormalized = y / whitePoint[1];
+  const zNormalized = z / whitePoint[2];
   const fx = labF(xNormalized);
   const fy = labF(yNormalized);
   const fz = labF(zNormalized);

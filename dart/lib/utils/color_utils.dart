@@ -80,10 +80,13 @@ class ColorUtils {
 
   /// Converts a color from ARGB to XYZ.
   static int argbFromXyz(double x, double y, double z) {
-    final linearRgb = MathUtils.matrixMultiply([x, y, z], _XYZ_TO_SRGB);
-    final r = delinearized(linearRgb[0]);
-    final g = delinearized(linearRgb[1]);
-    final b = delinearized(linearRgb[2]);
+    final matrix = _XYZ_TO_SRGB;
+    final linearR = matrix[0][0] * x + matrix[0][1] * y + matrix[0][2] * z;
+    final linearG = matrix[1][0] * x + matrix[1][1] * y + matrix[1][2] * z;
+    final linearB = matrix[2][0] * x + matrix[2][1] * y + matrix[2][2] * z;
+    final r = delinearized(linearR);
+    final g = delinearized(linearG);
+    final b = delinearized(linearB);
     return argbFromRgb(r, g, b);
   }
 
@@ -117,11 +120,23 @@ class ColorUtils {
   /// [argb] the ARGB representation of a color
   /// Returns a Lab object representing the color
   static List<double> labFromArgb(int argb) {
+    final linearR = linearized(redFromArgb(argb));
+    final linearG = linearized(greenFromArgb(argb));
+    final linearB = linearized(blueFromArgb(argb));
+    final matrix = _SRGB_TO_XYZ;
+    final x = matrix[0][0] * linearR +
+        matrix[0][1] * linearG +
+        matrix[0][2] * linearB;
+    final y = matrix[1][0] * linearR +
+        matrix[1][1] * linearG +
+        matrix[1][2] * linearB;
+    final z = matrix[2][0] * linearR +
+        matrix[2][1] * linearG +
+        matrix[2][2] * linearB;
     final whitePoint = _WHITE_POINT_D65;
-    final xyz = xyzFromArgb(argb);
-    final xNormalized = xyz[0] / whitePoint[0];
-    final yNormalized = xyz[1] / whitePoint[1];
-    final zNormalized = xyz[2] / whitePoint[2];
+    final xNormalized = x / whitePoint[0];
+    final yNormalized = y / whitePoint[1];
+    final zNormalized = z / whitePoint[2];
     final fx = _labF(xNormalized);
     final fy = _labF(yNormalized);
     final fz = _labF(zNormalized);
