@@ -199,7 +199,7 @@ class ColorUtils {
     if (lstar > ke) {
       return pow((lstar + 16.0) / 116.0, 3.0).toDouble() * 100.0;
     } else {
-      return lstar / 24389.0 / 27.0 * 100.0;
+      return lstar / (24389.0 / 27.0) * 100.0;
     }
   }
 
