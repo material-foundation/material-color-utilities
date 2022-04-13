@@ -44,11 +44,6 @@ public final class QuantizerWsmeans {
       this.distance = -1;
     }
 
-    Distance(int index, double distance) {
-      this.index = index;
-      this.distance = distance;
-    }
-
     @Override
     public int compareTo(Distance other) {
       return ((Double) this.distance).compareTo(other.distance);
@@ -75,7 +70,7 @@ public final class QuantizerWsmeans {
   public static Map<Integer, Integer> quantize(
       int[] inputPixels, int[] startingClusters, int maxColors) {
     Map<Integer, Integer> pixelToCount = new HashMap<>();
-    float[][] points = new float[inputPixels.length][];
+    double[][] points = new double[inputPixels.length][];
     int[] pixels = new int[inputPixels.length];
     PointProvider pointProvider = new PointProviderLab();
 
@@ -106,7 +101,7 @@ public final class QuantizerWsmeans {
       clusterCount = min(clusterCount, startingClusters.length);
     }
 
-    float[][] clusters = new float[clusterCount][];
+    double[][] clusters = new double[clusterCount][];
     int clustersCreated = 0;
     for (int i = 0; i < startingClusters.length; i++) {
       clusters[i] = pointProvider.fromInt(startingClusters[i]);
@@ -140,7 +135,7 @@ public final class QuantizerWsmeans {
     for (int iteration = 0; iteration < MAX_ITERATIONS; iteration++) {
       for (int i = 0; i < clusterCount; i++) {
         for (int j = i + 1; j < clusterCount; j++) {
-          float distance = pointProvider.distance(clusters[i], clusters[j]);
+          double distance = pointProvider.distance(clusters[i], clusters[j]);
           distanceToIndexMatrix[j][i].distance = distance;
           distanceToIndexMatrix[j][i].index = i;
           distanceToIndexMatrix[i][j].distance = distance;
@@ -154,26 +149,26 @@ public final class QuantizerWsmeans {
 
       int pointsMoved = 0;
       for (int i = 0; i < pointCount; i++) {
-        float[] point = points[i];
+        double[] point = points[i];
         int previousClusterIndex = clusterIndices[i];
-        float[] previousCluster = clusters[previousClusterIndex];
-        float previousDistance = pointProvider.distance(point, previousCluster);
+        double[] previousCluster = clusters[previousClusterIndex];
+        double previousDistance = pointProvider.distance(point, previousCluster);
 
-        float minimumDistance = previousDistance;
+        double minimumDistance = previousDistance;
         int newClusterIndex = -1;
         for (int j = 0; j < clusterCount; j++) {
           if (distanceToIndexMatrix[previousClusterIndex][j].distance >= 4 * previousDistance) {
             continue;
           }
-          float distance = pointProvider.distance(point, clusters[j]);
+          double distance = pointProvider.distance(point, clusters[j]);
           if (distance < minimumDistance) {
             minimumDistance = distance;
             newClusterIndex = j;
           }
         }
         if (newClusterIndex != -1) {
-          float distanceChange =
-              (float) Math.abs(Math.sqrt(minimumDistance) - Math.sqrt(previousDistance));
+          double distanceChange =
+              Math.abs(Math.sqrt(minimumDistance) - Math.sqrt(previousDistance));
           if (distanceChange > MIN_MOVEMENT_DISTANCE) {
             pointsMoved++;
             clusterIndices[i] = newClusterIndex;
@@ -185,13 +180,13 @@ public final class QuantizerWsmeans {
         break;
       }
 
-      float[] componentASums = new float[clusterCount];
-      float[] componentBSums = new float[clusterCount];
-      float[] componentCSums = new float[clusterCount];
+      double[] componentASums = new double[clusterCount];
+      double[] componentBSums = new double[clusterCount];
+      double[] componentCSums = new double[clusterCount];
       Arrays.fill(pixelCountSums, 0);
       for (int i = 0; i < pointCount; i++) {
         int clusterIndex = clusterIndices[i];
-        float[] point = points[i];
+        double[] point = points[i];
         int count = counts[i];
         pixelCountSums[clusterIndex] += count;
         componentASums[clusterIndex] += (point[0] * count);
@@ -202,12 +197,12 @@ public final class QuantizerWsmeans {
       for (int i = 0; i < clusterCount; i++) {
         int count = pixelCountSums[i];
         if (count == 0) {
-          clusters[i] = new float[] {0f, 0f, 0f};
+          clusters[i] = new double[] {0., 0., 0.};
           continue;
         }
-        float a = componentASums[i] / count;
-        float b = componentBSums[i] / count;
-        float c = componentCSums[i] / count;
+        double a = componentASums[i] / count;
+        double b = componentBSums[i] / count;
+        double c = componentCSums[i] / count;
         clusters[i][0] = a;
         clusters[i][1] = b;
         clusters[i][2] = c;

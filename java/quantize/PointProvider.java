@@ -18,9 +18,9 @@ package quantize;
 
 /** An interface to allow use of different color spaces by quantizers. */
 public interface PointProvider {
-  public float[] fromInt(int argb);
+  public double[] fromInt(int argb);
 
-  public int toInt(float[] point);
+  public int toInt(double[] point);
 
-  public float distance(float[] a, float[] b);
+  public double distance(double[] a, double[] b);
 }

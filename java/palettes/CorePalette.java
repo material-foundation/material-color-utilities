@@ -43,12 +43,12 @@ public final class CorePalette {
 
   private CorePalette(int argb) {
     Hct hct = Hct.fromInt(argb);
-    float hue = hct.getHue();
-    this.a1 = TonalPalette.fromHueAndChroma(hue, max(48f, hct.getChroma()));
-    this.a2 = TonalPalette.fromHueAndChroma(hue, 16f);
-    this.a3 = TonalPalette.fromHueAndChroma(hue + 60f, 24f);
-    this.n1 = TonalPalette.fromHueAndChroma(hue, 4f);
-    this.n2 = TonalPalette.fromHueAndChroma(hue, 8f);
-    this.error = TonalPalette.fromHueAndChroma(25, 84f);
+    double hue = hct.getHue();
+    this.a1 = TonalPalette.fromHueAndChroma(hue, max(48., hct.getChroma()));
+    this.a2 = TonalPalette.fromHueAndChroma(hue, 16.);
+    this.a3 = TonalPalette.fromHueAndChroma(hue + 60., 24.);
+    this.n1 = TonalPalette.fromHueAndChroma(hue, 4.);
+    this.n2 = TonalPalette.fromHueAndChroma(hue, 8.);
+    this.error = TonalPalette.fromHueAndChroma(25, 84.);
   }
 }

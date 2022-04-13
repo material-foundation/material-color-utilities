@@ -32,13 +32,13 @@ import java.util.Map;
  * muddied, while curating the high cluster count to a much smaller number of appropriate choices.
  */
 public final class Score {
-  private static final float CUTOFF_CHROMA = 15f;
-  private static final float CUTOFF_EXCITED_PROPORTION = 0.01f;
-  private static final float CUTOFF_TONE = 10f;
-  private static final float TARGET_CHROMA = 48f;
-  private static final float WEIGHT_PROPORTION = 0.7f;
-  private static final float WEIGHT_CHROMA_ABOVE = 0.3f;
-  private static final float WEIGHT_CHROMA_BELOW = 0.1f;
+  private static final double CUTOFF_CHROMA = 15.;
+  private static final double CUTOFF_EXCITED_PROPORTION = 0.01;
+  private static final double CUTOFF_TONE = 10.;
+  private static final double TARGET_CHROMA = 48.;
+  private static final double WEIGHT_PROPORTION = 0.7;
+  private static final double WEIGHT_CHROMA_ABOVE = 0.3;
+  private static final double WEIGHT_CHROMA_BELOW = 0.1;
 
   private Score() {}
 
@@ -55,7 +55,7 @@ public final class Score {
    */
   public static List<Integer> score(Map<Integer, Integer> colorsToPopulation) {
     // Determine the total count of all colors.
-    float populationSum = 0f;
+    double populationSum = 0.;
     for (Map.Entry<Integer, Integer> entry : colorsToPopulation.entrySet()) {
       populationSum += entry.getValue();
     }
@@ -64,28 +64,28 @@ public final class Score {
     // count. Also, fill a cache of CAM16 colors representing each color, and
     // record the proportion of colors for each CAM16 hue.
     Map<Integer, Cam16> colorsToCam = new HashMap<>();
-    float[] hueProportions = new float[361];
+    double[] hueProportions = new double[361];
     for (Map.Entry<Integer, Integer> entry : colorsToPopulation.entrySet()) {
       int color = entry.getKey();
-      float population = (float) entry.getValue();
-      float proportion = population / populationSum;
+      double population = entry.getValue();
+      double proportion = population / populationSum;
 
       Cam16 cam = Cam16.fromInt(color);
       colorsToCam.put(color, cam);
 
-      int hue = Math.round(cam.getHue());
+      int hue = (int) Math.round(cam.getHue());
       hueProportions[hue] += proportion;
     }
 
     // Determine the proportion of the colors around each color, by summing the
     // proportions around each color's hue.
-    Map<Integer, Float> colorsToExcitedProportion = new HashMap<>();
+    Map<Integer, Double> colorsToExcitedProportion = new HashMap<>();
     for (Map.Entry<Integer, Cam16> entry : colorsToCam.entrySet()) {
       int color = entry.getKey();
       Cam16 cam = entry.getValue();
-      int hue = Math.round(cam.getHue());
+      int hue = (int) Math.round(cam.getHue());
 
-      float excitedProportion = 0f;
+      double excitedProportion = 0.;
       for (int j = (hue - 15); j < (hue + 15); j++) {
         int neighborHue = MathUtils.sanitizeDegreesInt(j);
         excitedProportion += hueProportions[neighborHue];
@@ -95,36 +95,36 @@ public final class Score {
     }
 
     // Score the colors by their proportion, as well as how chromatic they are.
-    Map<Integer, Float> colorsToScore = new HashMap<>();
+    Map<Integer, Double> colorsToScore = new HashMap<>();
     for (Map.Entry<Integer, Cam16> entry : colorsToCam.entrySet()) {
       int color = entry.getKey();
       Cam16 cam = entry.getValue();
 
-      float proportion = colorsToExcitedProportion.get(color);
-      float proportionScore = proportion * 100.0f * WEIGHT_PROPORTION;
+      double proportion = colorsToExcitedProportion.get(color);
+      double proportionScore = proportion * 100.0 * WEIGHT_PROPORTION;
 
-      float chromaWeight =
+      double chromaWeight =
           cam.getChroma() < TARGET_CHROMA ? WEIGHT_CHROMA_BELOW : WEIGHT_CHROMA_ABOVE;
-      float chromaScore = (cam.getChroma() - TARGET_CHROMA) * chromaWeight;
+      double chromaScore = (cam.getChroma() - TARGET_CHROMA) * chromaWeight;
 
-      float score = proportionScore + chromaScore;
+      double score = proportionScore + chromaScore;
       colorsToScore.put(color, score);
     }
 
     // Remove colors that are unsuitable, ex. very dark or unchromatic colors.
     // Also, remove colors that are very similar in hue.
     List<Integer> filteredColors = filter(colorsToExcitedProportion, colorsToCam);
-    Map<Integer, Float> filteredColorsToScore = new HashMap<>();
+    Map<Integer, Double> filteredColorsToScore = new HashMap<>();
     for (int color : filteredColors) {
       filteredColorsToScore.put(color, colorsToScore.get(color));
     }
 
     // Ensure the list of colors returned is sorted such that the first in the
     // list is the most suitable, and the last is the least suitable.
-    List<Map.Entry<Integer, Float>> entryList = new ArrayList<>(filteredColorsToScore.entrySet());
-    entryList.sort(Map.Entry.<Integer, Float>comparingByValue().reversed());
+    List<Map.Entry<Integer, Double>> entryList = new ArrayList<>(filteredColorsToScore.entrySet());
+    entryList.sort(Map.Entry.<Integer, Double>comparingByValue().reversed());
     List<Integer> colorsByScoreDescending = new ArrayList<>();
-    for (Map.Entry<Integer, Float> entry : entryList) {
+    for (Map.Entry<Integer, Double> entry : entryList) {
       int color = entry.getKey();
       Cam16 cam = colorsToCam.get(color);
       boolean duplicateHue = false;
@@ -151,12 +151,12 @@ public final class Score {
   }
 
   private static List<Integer> filter(
-      Map<Integer, Float> colorsToExcitedProportion, Map<Integer, Cam16> colorsToCam) {
+      Map<Integer, Double> colorsToExcitedProportion, Map<Integer, Cam16> colorsToCam) {
     List<Integer> filtered = new ArrayList<>();
     for (Map.Entry<Integer, Cam16> entry : colorsToCam.entrySet()) {
       int color = entry.getKey();
       Cam16 cam = entry.getValue();
-      float proportion = colorsToExcitedProportion.get(color);
+      double proportion = colorsToExcitedProportion.get(color);
 
       if (cam.getChroma() >= CUTOFF_CHROMA
           && ColorUtils.lstarFromArgb(color) >= CUTOFF_TONE

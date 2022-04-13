@@ -27,14 +27,14 @@ public final class PointProviderLab implements PointProvider {
    * Convert a color represented in ARGB to a 3-element array of L*a*b* coordinates of the color.
    */
   @Override
-  public float[] fromInt(int argb) {
+  public double[] fromInt(int argb) {
     double[] lab = ColorUtils.labFromArgb(argb);
-    return new float[] {(float) lab[0], (float) lab[1], (float) lab[2]};
+    return new double[] {lab[0], lab[1], lab[2]};
   }
 
   /** Convert a 3-element array to a color represented in ARGB. */
   @Override
-  public int toInt(float[] lab) {
+  public int toInt(double[] lab) {
     return ColorUtils.argbFromLab(lab[0], lab[1], lab[2]);
   }
 
@@ -47,10 +47,10 @@ public final class PointProviderLab implements PointProvider {
    * for each pixel in an image.
    */
   @Override
-  public float distance(float[] one, float[] two) {
-    float dL = (one[0] - two[0]);
-    float dA = (one[1] - two[1]);
-    float dB = (one[2] - two[2]);
+  public double distance(double[] one, double[] two) {
+    double dL = (one[0] - two[0]);
+    double dA = (one[1] - two[1]);
+    double dB = (one[2] - two[2]);
     return (dL * dL + dA * dA + dB * dB);
   }
 }
