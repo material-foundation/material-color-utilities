@@ -37,7 +37,7 @@ import {ViewingConditions} from './viewing_conditions';
  * point is accurately measured as a slightly chromatic blue by CAM16. (roughly,
  * hue 203, chroma 3, lightness 100)
  */
-export class CAM16 {
+export class Cam16 {
   /**
    * All of the CAM16 dimensions can be calculated from 3 of the dimensions, in
    * the following combinations:
@@ -68,7 +68,7 @@ export class CAM16 {
    * a*, b*, or jstar, astar, bstar in code. CAM16-UCS is included in the CAM16
    * specification, and is used to measure distances between colors.
    */
-  distance(other: CAM16): number {
+  distance(other: Cam16): number {
     const dJ = this.jstar - other.jstar;
     const dA = this.astar - other.astar;
     const dB = this.bstar - other.bstar;
@@ -82,8 +82,8 @@ export class CAM16 {
    * @return CAM16 color, assuming the color was viewed in default viewing
    *     conditions.
    */
-  static fromInt(argb: number): CAM16 {
-    return CAM16.fromIntInViewingConditions(argb, ViewingConditions.DEFAULT);
+  static fromInt(argb: number): Cam16 {
+    return Cam16.fromIntInViewingConditions(argb, ViewingConditions.DEFAULT);
   }
 
   /**
@@ -93,7 +93,7 @@ export class CAM16 {
    * @return CAM16 color.
    */
   static fromIntInViewingConditions(
-      argb: number, viewingConditions: ViewingConditions): CAM16 {
+      argb: number, viewingConditions: ViewingConditions): Cam16 {
     const red = (argb & 0x00ff0000) >> 16;
     const green = (argb & 0x0000ff00) >> 8;
     const blue = (argb & 0x000000ff);
@@ -154,7 +154,7 @@ export class CAM16 {
     const astar = mstar * Math.cos(hueRadians);
     const bstar = mstar * Math.sin(hueRadians);
 
-    return new CAM16(hue, c, j, q, m, s, jstar, astar, bstar);
+    return new Cam16(hue, c, j, q, m, s, jstar, astar, bstar);
   }
 
   /**
@@ -162,8 +162,8 @@ export class CAM16 {
    * @param c CAM16 chroma
    * @param h CAM16 hue
    */
-  static fromJch(j: number, c: number, h: number): CAM16 {
-    return CAM16.fromJchInViewingConditions(j, c, h, ViewingConditions.DEFAULT);
+  static fromJch(j: number, c: number, h: number): Cam16 {
+    return Cam16.fromJchInViewingConditions(j, c, h, ViewingConditions.DEFAULT);
   }
 
   /**
@@ -175,7 +175,7 @@ export class CAM16 {
    */
   static fromJchInViewingConditions(
       j: number, c: number, h: number,
-      viewingConditions: ViewingConditions): CAM16 {
+      viewingConditions: ViewingConditions): Cam16 {
     const q = (4.0 / viewingConditions.c) * Math.sqrt(j / 100.0) *
         (viewingConditions.aw + 4.0) * viewingConditions.fLRoot;
     const m = c * viewingConditions.fLRoot;
@@ -187,7 +187,7 @@ export class CAM16 {
     const mstar = (1.0 / 0.0228) * Math.log(1.0 + 0.0228 * m);
     const astar = mstar * Math.cos(hueRadians);
     const bstar = mstar * Math.sin(hueRadians);
-    return new CAM16(h, c, j, q, m, s, jstar, astar, bstar);
+    return new Cam16(h, c, j, q, m, s, jstar, astar, bstar);
   }
 
   /**
@@ -197,8 +197,8 @@ export class CAM16 {
    * @param bstar CAM16-UCS b dimension. Like a* in L*a*b*, it is a Cartesian
    *     coordinate on the X axis.
    */
-  static fromUcs(jstar: number, astar: number, bstar: number): CAM16 {
-    return CAM16.fromUcsInViewingConditions(
+  static fromUcs(jstar: number, astar: number, bstar: number): Cam16 {
+    return Cam16.fromUcsInViewingConditions(
         jstar, astar, bstar, ViewingConditions.DEFAULT);
   }
 
@@ -213,7 +213,7 @@ export class CAM16 {
    */
   static fromUcsInViewingConditions(
       jstar: number, astar: number, bstar: number,
-      viewingConditions: ViewingConditions): CAM16 {
+      viewingConditions: ViewingConditions): Cam16 {
     const a = astar;
     const b = bstar;
     const m = Math.sqrt(a * a + b * b);
@@ -224,7 +224,7 @@ export class CAM16 {
       h += 360.0;
     }
     const j = jstar / (1 - (jstar - 100) * 0.007);
-    return CAM16.fromJchInViewingConditions(j, c, h, viewingConditions);
+    return Cam16.fromJchInViewingConditions(j, c, h, viewingConditions);
   }
 
   /**
@@ -232,7 +232,7 @@ export class CAM16 {
    *     default viewing conditions, which are near-identical to the default
    *     viewing conditions for sRGB.
    */
-  viewedInSrgb(): number {
+  toInt(): number {
     return this.viewed(ViewingConditions.DEFAULT);
   }
 

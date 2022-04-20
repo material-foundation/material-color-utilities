@@ -69,9 +69,9 @@ public final class Cam16 {
    * distances between colors.
    */
   double distance(Cam16 other) {
-    double dJ = getJStar() - other.getJStar();
-    double dA = getAStar() - other.getAStar();
-    double dB = getBStar() - other.getBStar();
+    double dJ = getJstar() - other.getJstar();
+    double dA = getAstar() - other.getAstar();
+    double dB = getBstar() - other.getBstar();
     double dEPrime = Math.sqrt(dJ * dJ + dA * dA + dB * dB);
     double dE = 1.41 * Math.pow(dEPrime, 0.63);
     return dE;
@@ -124,17 +124,17 @@ public final class Cam16 {
   }
 
   /** Lightness coordinate in CAM16-UCS */
-  public double getJStar() {
+  public double getJstar() {
     return jstar;
   }
 
   /** a* coordinate in CAM16-UCS */
-  public double getAStar() {
+  public double getAstar() {
     return astar;
   }
 
   /** b* coordinate in CAM16-UCS */
-  public double getBStar() {
+  public double getBstar() {
     return bstar;
   }
 
@@ -360,7 +360,7 @@ public final class Cam16 {
    * ARGB representation of the color. Assumes the color was viewed in default viewing conditions,
    * which are near-identical to the default viewing conditions for sRGB.
    */
-  public int getInt() {
+  public int toInt() {
     return viewed(ViewingConditions.DEFAULT);
   }
 

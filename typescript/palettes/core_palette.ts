@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import {HCT} from '../hct/hct';
+import {Hct} from '../hct/hct';
 
 import {TonalPalette} from './tonal_palette';
 
@@ -40,7 +40,7 @@ export class CorePalette {
   }
 
   private constructor(argb: number) {
-    const hct = HCT.fromInt(argb);
+    const hct = Hct.fromInt(argb);
     const hue = hct.hue;
     this.a1 = TonalPalette.fromHueAndChroma(hue, Math.max(48, hct.chroma));
     this.a2 = TonalPalette.fromHueAndChroma(hue, 16);

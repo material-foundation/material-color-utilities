@@ -231,7 +231,7 @@ public final class Hct {
     while (Math.abs(low - high) > LIGHTNESS_SEARCH_ENDPOINT) {
       mid = low + (high - low) / 2;
       Cam16 camBeforeClip = Cam16.fromJch(mid, chroma, hue);
-      int clipped = camBeforeClip.getInt();
+      int clipped = camBeforeClip.toInt();
       double clippedLstar = ColorUtils.lstarFromArgb(clipped);
       double dL = Math.abs(tone - clippedLstar);
 

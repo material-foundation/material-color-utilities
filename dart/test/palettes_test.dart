@@ -21,7 +21,7 @@ void main() {
   group('TonalPalette', () {
     group('[.of constructor]', () {
       test('tones of blue', () async {
-        final hct = HctColor.fromInt(0xff0000ff);
+        final hct = Hct.fromInt(0xff0000ff);
         final tones = TonalPalette.of(hct.hue, hct.chroma);
 
         expect(tones.get(0), 0xff000000);
@@ -43,7 +43,7 @@ void main() {
       });
 
       test('asList', () {
-        final hct = HctColor.fromInt(0xff0000ff);
+        final hct = Hct.fromInt(0xff0000ff);
         final tones = TonalPalette.of(hct.hue, hct.chroma);
 
         expect(tones.asList, [
@@ -64,10 +64,10 @@ void main() {
       });
 
       test('operator == and hashCode', () {
-        final hctAB = HctColor.fromInt(0xff0000ff);
+        final hctAB = Hct.fromInt(0xff0000ff);
         final tonesA = TonalPalette.of(hctAB.hue, hctAB.chroma);
         final tonesB = TonalPalette.of(hctAB.hue, hctAB.chroma);
-        final hctC = HctColor.fromInt(0xff123456);
+        final hctC = Hct.fromInt(0xff123456);
         final tonesC = TonalPalette.of(hctC.hue, hctC.chroma);
 
         expect(tonesA, tonesB);

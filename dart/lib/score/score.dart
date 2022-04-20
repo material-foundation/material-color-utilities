@@ -60,8 +60,8 @@ class Score {
   /// a default fallback color will be provided, Google Blue. The default
   /// number of colors returned is 4, simply because thats the # of colors
   /// display in Android 12's wallpaper picker.
-  static List<int> score(Map<int, int> colorsToPopulation, {int desired = 4,
-      bool filter = true}) {
+  static List<int> score(Map<int, int> colorsToPopulation,
+      {int desired = 4, bool filter = true}) {
     var populationSum = 0.0;
     for (var population in colorsToPopulation.values) {
       populationSum += population;
@@ -71,14 +71,14 @@ class Score {
     // count. Also, fill a cache of CAM16 colors representing each color, and
     // record the proportion of colors for each CAM16 hue.
     final argbToRawProportion = <int, double>{};
-    final argbToHct = <int, HctColor>{};
+    final argbToHct = <int, Hct>{};
     final hueProportions = List<double>.filled(360, 0.0);
     for (var color in colorsToPopulation.keys) {
       final population = colorsToPopulation[color]!;
       final proportion = population / populationSum;
       argbToRawProportion[color] = proportion;
 
-      final hct = HctColor.fromInt(color);
+      final hct = Hct.fromInt(color);
       argbToHct[color] = hct;
 
       final hue = hct.hue.floor();
@@ -171,8 +171,8 @@ class Score {
   /// Remove any colors that are completely inappropriate choices for a theme
   /// colors, colors that are virtually grayscale, or whose hue represents
   /// a very small portion of the image.
-  static List<int> _filter(Map<int, double> colorsToExcitedProportion,
-      Map<int, HctColor> argbToHct) {
+  static List<int> _filter(
+      Map<int, double> colorsToExcitedProportion, Map<int, Hct> argbToHct) {
     final filtered = <int>[];
     for (var entry in argbToHct.entries) {
       final color = entry.key;
@@ -191,7 +191,7 @@ class Score {
     final totalPopulation =
         argbToCount.values.reduce((a, b) => a + b).floorToDouble();
     final argbToHct =
-        argbToCount.map((key, value) => MapEntry(key, HctColor.fromInt(key)));
+        argbToCount.map((key, value) => MapEntry(key, Hct.fromInt(key)));
     final hueProportions = List<double>.filled(360, 0.0);
     for (var argb in argbToHct.keys) {
       final cam = argbToHct[argb]!;

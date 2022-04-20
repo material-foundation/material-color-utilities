@@ -21,7 +21,7 @@ import 'viewing_conditions.dart';
 /// HCT, hue, chroma, and tone. A color system that provides a perceptually
 /// accurate color measurement system that can also accurately render what
 /// colors will appear as in different lighting environments.
-class HctColor {
+class Hct {
   late double _hue;
   late double _chroma;
   late double _tone;
@@ -32,13 +32,13 @@ class HctColor {
   ///    lower than the requested chroma. Chroma has a different maximum for any
   ///    given hue and tone.
   /// 0 <= [tone] <= 100; informally, lightness. Invalid values are corrected.
-  static HctColor from(double hue, double chroma, double tone) {
-    return HctColor._(hue, chroma, tone);
+  static Hct from(double hue, double chroma, double tone) {
+    return Hct._(hue, chroma, tone);
   }
 
   @override
   bool operator ==(o) {
-    if (o is! HctColor) {
+    if (o is! Hct) {
       return false;
     }
     return o._argb == _argb;
@@ -50,10 +50,10 @@ class HctColor {
   }
 
   /// HCT representation of [argb].
-  static HctColor fromInt(int argb) {
+  static Hct fromInt(int argb) {
     final cam = Cam16.fromInt(argb);
     final tone = ColorUtils.lstarFromArgb(argb);
-    return HctColor._(cam.hue, cam.chroma, tone);
+    return Hct._(cam.hue, cam.chroma, tone);
   }
 
   int toInt() {
@@ -116,7 +116,7 @@ class HctColor {
     _tone = ColorUtils.lstarFromArgb(_argb);
   }
 
-  HctColor._(double hue, double chroma, double tone) {
+  Hct._(double hue, double chroma, double tone) {
     final cam16 = getCam16(hue, chroma, tone);
     _argb = cam16.viewed(ViewingConditions.sRgb);
     _hue = cam16.hue;

@@ -17,8 +17,8 @@
 
 import 'jasmine';
 
-import {CAM16} from './cam16';
-import {HCT} from './hct';
+import {Cam16} from './cam16';
+import {Hct} from './hct';
 import {ViewingConditions} from './viewing_conditions';
 
 const RED = 0xffff0000;
@@ -29,7 +29,7 @@ const BLACK = 0xff000000;
 
 describe('CAM to ARGB', () => {
   it('red', () => {
-    const cam = CAM16.fromInt(RED);
+    const cam = Cam16.fromInt(RED);
 
     expect(cam.hue).toBeCloseTo(27.408, 0.001);
     expect(cam.chroma).toBeCloseTo(113.357, 0.001);
@@ -40,7 +40,7 @@ describe('CAM to ARGB', () => {
   });
 
   it('green', () => {
-    const cam = CAM16.fromInt(GREEN);
+    const cam = Cam16.fromInt(GREEN);
 
     expect(cam.hue).toBeCloseTo(142.139, 0.001);
     expect(cam.chroma).toBeCloseTo(108.410, 0.001);
@@ -51,7 +51,7 @@ describe('CAM to ARGB', () => {
   });
 
   it('blue', () => {
-    const cam = CAM16.fromInt(BLUE);
+    const cam = Cam16.fromInt(BLUE);
 
     expect(cam.hue).toBeCloseTo(282.788, 0.001);
     expect(cam.chroma).toBeCloseTo(87.230, 0.001);
@@ -62,7 +62,7 @@ describe('CAM to ARGB', () => {
   });
 
   it('white', () => {
-    const cam = CAM16.fromInt(WHITE);
+    const cam = Cam16.fromInt(WHITE);
 
     expect(cam.hue).toBeCloseTo(209.492, 0.001);
     expect(cam.chroma).toBeCloseTo(2.869, 0.001);
@@ -73,7 +73,7 @@ describe('CAM to ARGB', () => {
   });
 
   it('black', () => {
-    const cam = CAM16.fromInt(BLACK);
+    const cam = Cam16.fromInt(BLACK);
 
     expect(cam.hue).toBeCloseTo(0.0, 0.001);
     expect(cam.chroma).toBeCloseTo(0.0, 0.001);
@@ -86,41 +86,41 @@ describe('CAM to ARGB', () => {
 
 describe('CAM to ARGB to CAM', () => {
   it('red', () => {
-    const cam = CAM16.fromInt(RED);
-    const argb = cam.viewedInSrgb();
+    const cam = Cam16.fromInt(RED);
+    const argb = cam.toInt();
     expect(argb).toEqual(RED);
   });
 
   it('green', () => {
-    const cam = CAM16.fromInt(GREEN);
-    const argb = cam.viewedInSrgb();
+    const cam = Cam16.fromInt(GREEN);
+    const argb = cam.toInt();
     expect(argb).toEqual(GREEN);
   });
 
   it('blue', () => {
-    const cam = CAM16.fromInt(BLUE);
-    const argb = cam.viewedInSrgb();
+    const cam = Cam16.fromInt(BLUE);
+    const argb = cam.toInt();
     expect(argb).toEqual(BLUE);
   });
 });
 
 describe('ARGB to HCT', () => {
   it('green', () => {
-    const hct = HCT.fromInt(GREEN);
+    const hct = Hct.fromInt(GREEN);
     expect(hct.hue).toBeCloseTo(142.139, 2);
     expect(hct.chroma).toBeCloseTo(108.410, 2);
     expect(hct.tone).toBeCloseTo(87.737, 2);
   });
 
   it('blue', () => {
-    const hct = HCT.fromInt(BLUE);
+    const hct = Hct.fromInt(BLUE);
     expect(hct.hue).toBeCloseTo(282.788, 2);
     expect(hct.chroma).toBeCloseTo(87.230, 2);
     expect(hct.tone).toBeCloseTo(32.302, 2);
   });
 
   it('blue tone 90', () => {
-    const hct = HCT.from(282.788, 87.230, 90.0);
+    const hct = Hct.from(282.788, 87.230, 90.0);
     expect(hct.hue).toBeCloseTo(280.729, 2);
     expect(hct.chroma).toBeCloseTo(19.247, 2);
     expect(hct.tone).toBeCloseTo(89.961, 2);

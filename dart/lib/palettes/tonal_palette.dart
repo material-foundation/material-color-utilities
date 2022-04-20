@@ -101,7 +101,7 @@ class TonalPalette {
     }
     final chroma = (tone >= 90.0) ? math.min(_chroma!, 40.0) : _chroma!;
     return _cache.putIfAbsent(
-        tone, () => HctColor.from(_hue!, chroma, tone.toDouble()).toInt());
+        tone, () => Hct.from(_hue!, chroma, tone.toDouble()).toInt());
   }
 
   @override

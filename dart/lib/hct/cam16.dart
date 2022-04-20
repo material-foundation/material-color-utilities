@@ -248,7 +248,7 @@ class Cam16 {
 
   /// ARGB representation of color, assuming the color was viewed in default
   /// viewing conditions.
-  int get viewedInSRgb {
+  int toInt() {
     return viewed(ViewingConditions.sRgb);
   }
 
