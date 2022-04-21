@@ -20,6 +20,8 @@ import hct.Cam16;
 import utils.ColorUtils;
 import utils.MathUtils;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,7 +124,7 @@ public final class Score {
     // Ensure the list of colors returned is sorted such that the first in the
     // list is the most suitable, and the last is the least suitable.
     List<Map.Entry<Integer, Double>> entryList = new ArrayList<>(filteredColorsToScore.entrySet());
-    entryList.sort(Map.Entry.<Integer, Double>comparingByValue().reversed());
+    Collections.sort(entryList, new ScoredComparator());
     List<Integer> colorsByScoreDescending = new ArrayList<>();
     for (Map.Entry<Integer, Double> entry : entryList) {
       int color = entry.getKey();
@@ -165,5 +167,14 @@ public final class Score {
       }
     }
     return filtered;
+  }
+
+  static class ScoredComparator implements Comparator<Map.Entry<Integer, Double>> {
+    public ScoredComparator() {}
+
+    @Override
+    public int compare(Map.Entry<Integer, Double> entry1, Map.Entry<Integer, Double> entry2) {
+      return -entry1.getValue().compareTo(entry2.getValue());
+    }
   }
 }
