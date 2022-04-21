@@ -58,6 +58,14 @@ class ColorUtils {
     return argb >> 24 & 255;
   }
 
+  /// Converts a color from linear RGB components to ARGB format.
+  static int argbFromLinrgb(List<double> linrgb) {
+    final r = ColorUtils.delinearized(linrgb[0]);
+    final g = ColorUtils.delinearized(linrgb[1]);
+    final b = ColorUtils.delinearized(linrgb[2]);
+    return ColorUtils.argbFromRgb(r, g, b);
+  }
+
   /// Returns the red component of a color in ARGB format.
   static int redFromArgb(int argb) {
     return argb >> 16 & 255;

@@ -32,10 +32,9 @@
  */
 
 import * as utils from '../utils/color_utils';
-import * as math from '../utils/math_utils';
 
 import {Cam16} from './cam16';
-import {ViewingConditions} from './viewing_conditions';
+import {CamSolver} from './cam_solver';
 
 
 /**
@@ -52,8 +51,13 @@ export class Hct {
    * @param tone 0 <= tone <= 100; invalid values are corrected.
    * @return HCT representation of a color in default viewing conditions.
    */
+
+  internalHue: number;
+  internalChroma: number;
+  internalTone: number;
+
   static from(hue: number, chroma: number, tone: number) {
-    return new Hct(hue, chroma, tone);
+    return new Hct(CamSolver.solveToInt(hue, chroma, tone));
   }
 
   /**
@@ -61,13 +65,11 @@ export class Hct {
    * @return HCT representation of a color in default viewing conditions
    */
   static fromInt(argb: number) {
-    const cam = Cam16.fromInt(argb);
-    const tone = utils.lstarFromArgb(argb);
-    return new Hct(cam.hue, cam.chroma, tone);
+    return new Hct(argb);
   }
 
   toInt(): number {
-    return getInt(this.internalHue, this.internalChroma, this.internalTone);
+    return this.argb;
   }
 
   /**
@@ -84,9 +86,13 @@ export class Hct {
    * hue and tone.
    */
   set hue(newHue: number) {
-    this.setInternalState(getInt(
-        math.sanitizeDegreesDouble(newHue), this.internalChroma,
-        this.internalTone));
+    this.setInternalState(
+        CamSolver.solveToInt(
+            newHue,
+            this.internalChroma,
+            this.internalTone,
+            ),
+    );
   }
 
   get chroma(): number {
@@ -100,7 +106,12 @@ export class Hct {
    */
   set chroma(newChroma: number) {
     this.setInternalState(
-        getInt(this.internalHue, newChroma, this.internalTone));
+        CamSolver.solveToInt(
+            this.internalHue,
+            newChroma,
+            this.internalTone,
+            ),
+    );
   }
 
   /** Lightness. Ranges from 0 to 100. */
@@ -115,158 +126,27 @@ export class Hct {
    */
   set tone(newTone: number) {
     this.setInternalState(
-        getInt(this.internalHue, this.internalChroma, newTone));
+        CamSolver.solveToInt(
+            this.internalHue,
+            this.internalChroma,
+            newTone,
+            ),
+    );
   }
 
-  private constructor(
-      private internalHue: number, private internalChroma: number,
-      private internalTone: number) {
-    this.setInternalState(this.toInt());
+  private constructor(private argb: number) {
+    const cam = Cam16.fromInt(argb);
+    this.internalHue = cam.hue;
+    this.internalChroma = cam.chroma;
+    this.internalTone = utils.lstarFromArgb(argb);
+    this.argb = argb;
   }
 
   private setInternalState(argb: number) {
     const cam = Cam16.fromInt(argb);
-    const tone = utils.lstarFromArgb(argb);
     this.internalHue = cam.hue;
     this.internalChroma = cam.chroma;
-    this.internalTone = tone;
+    this.internalTone = utils.lstarFromArgb(argb);
+    this.argb = argb;
   }
-}
-
-
-/**
- * When the delta between the floor & ceiling of a binary search for maximum
- * chroma at a hue and tone is less than this, the binary search terminates.
- */
-const CHROMA_SEARCH_ENDPOINT: number = 0.4;
-
-/**
- * The maximum color distance, in CAM16-UCS, between a requested color and the
- * color returned.
- */
-const DE_MAX: number = 1.0;
-
-/** The maximum difference between the requested L* and the L* returned. */
-const DL_MAX: number = 0.2;
-
-/**
- * When the delta between the floor & ceiling of a binary search for J,
- * lightness in CAM16, is less than this, the binary search terminates.
- */
-const LIGHTNESS_SEARCH_ENDPOINT: number = 0.01;
-
-/**
- * @param hue a number, in degrees, representing ex. red, orange, yellow, etc.
- *     Ranges from 0 <= hue < 360.
- * @param chroma Informally, colorfulness. Ranges from 0 to roughly 150.
- *    Like all perceptually accurate color systems, chroma has a different
- *    maximum for any given hue and tone, so the color returned may be lower
- *    than the requested chroma.
- * @param tone Lightness. Ranges from 0 to 100.
- * @return ARGB representation of a color in default viewing conditions
- */
-function getInt(hue: number, chroma: number, tone: number): number {
-  return getIntInViewingConditions(
-      math.sanitizeDegreesDouble(hue), chroma,
-      math.clampDouble(0.0, 100.0, tone), ViewingConditions.DEFAULT);
-}
-
-/**
- * @param hue CAM16 hue.
- * @param chroma CAM16 chroma.
- * @param tone L*a*b* lightness.
- * @param viewingConditions Information about the environment where the color
- *     was observed.
- */
-function getIntInViewingConditions(
-    hue: number, chroma: number, tone: number,
-    viewingConditions: ViewingConditions): number {
-  if (chroma < 1.0 || Math.round(tone) <= 0.0 || Math.round(tone) >= 100.0) {
-    return utils.argbFromLstar(tone);
-  }
-
-  hue = math.sanitizeDegreesDouble(hue);
-
-  let high = chroma;
-  let mid = chroma;
-  let low = 0.0;
-  let isFirstLoop = true;
-
-  let answer = null;
-  while (Math.abs(low - high) >= CHROMA_SEARCH_ENDPOINT) {
-    const possibleAnswer = findCamByJ(hue, mid, tone);
-
-    if (isFirstLoop) {
-      if (possibleAnswer != null) {
-        return possibleAnswer.viewed(viewingConditions);
-      } else {
-        isFirstLoop = false;
-        mid = low + (high - low) / 2.0;
-        continue;
-      }
-    }
-
-    if (possibleAnswer === null) {
-      high = mid;
-    } else {
-      answer = possibleAnswer;
-      low = mid;
-    }
-
-    mid = low + (high - low) / 2.0;
-  }
-
-  if (answer === null) {
-    return utils.argbFromLstar(tone);
-  }
-
-  return answer.viewed(viewingConditions);
-}
-
-/**
- * @param hue CAM16 hue
- * @param chroma CAM16 chroma
- * @param tone L*a*b* lightness
- * @return CAM16 instance within error tolerance of the provided dimensions,
- *     or null.
- */
-function findCamByJ(hue: number, chroma: number, tone: number): Cam16|null {
-  let low = 0.0;
-  let high = 100.0;
-  let mid = 0.0;
-  let bestdL = 1000.0;
-  let bestdE = 1000.0;
-
-  let bestCam = null;
-  while (Math.abs(low - high) > LIGHTNESS_SEARCH_ENDPOINT) {
-    mid = low + (high - low) / 2;
-
-    const camBeforeClip = Cam16.fromJch(mid, chroma, hue);
-    const clipped = camBeforeClip.toInt();
-    const clippedLstar = utils.lstarFromArgb(clipped);
-    const dL = Math.abs(tone - clippedLstar);
-
-    if (dL < DL_MAX) {
-      const camClipped = Cam16.fromInt(clipped);
-      const dE = camClipped.distance(
-          Cam16.fromJch(camClipped.j, camClipped.chroma, hue));
-      if (dE <= DE_MAX && dE <= bestdE) {
-        bestdL = dL;
-        bestdE = dE;
-        bestCam = camClipped;
-      }
-    }
-
-    if (bestdL === 0 && bestdE === 0) {
-      break;
-    }
-
-    if (clippedLstar < tone) {
-      low = mid;
-    } else {
-      high = mid;
-    }
-  }
-
-  return bestCam;
 }

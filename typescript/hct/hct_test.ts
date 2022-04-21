@@ -121,9 +121,9 @@ describe('ARGB to HCT', () => {
 
   it('blue tone 90', () => {
     const hct = Hct.from(282.788, 87.230, 90.0);
-    expect(hct.hue).toBeCloseTo(280.729, 2);
-    expect(hct.chroma).toBeCloseTo(19.247, 2);
-    expect(hct.tone).toBeCloseTo(89.961, 2);
+    expect(hct.hue).toBeCloseTo(282.239, 2);
+    expect(hct.chroma).toBeCloseTo(19.144, 2);
+    expect(hct.tone).toBeCloseTo(90.035, 2);
   });
 });
 

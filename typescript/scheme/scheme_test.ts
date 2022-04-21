@@ -29,58 +29,58 @@ beforeEach(() => {
 describe('scheme', () => {
   it('blue light scheme', () => {
     const scheme = Scheme.light(0xff0000ff);
-    expect(scheme.primary).matchesColor(0xff333CFF);
+    expect(scheme.primary).matchesColor(0xff343DFF);
   });
 
   it('blue dark scheme', () => {
     const scheme = Scheme.dark(0xff0000ff);
-    expect(scheme.primary).matchesColor(0xffBDC2FF);
+    expect(scheme.primary).matchesColor(0xffBEC2FF);
   });
 
   it('3rd party light scheme', () => {
     const scheme = Scheme.light(0xff6750A4);
     expect(scheme.primary).matchesColor(0xff6750A4);
     expect(scheme.secondary).matchesColor(0xff625B71);
-    expect(scheme.tertiary).matchesColor(0xff7D5260);
-    expect(scheme.surface).matchesColor(0xfffffbfe);
+    expect(scheme.tertiary).matchesColor(0xff7E5260);
+    expect(scheme.surface).matchesColor(0xfffffbff);
     expect(scheme.onSurface).matchesColor(0xff1c1b1e);
   });
 
   it('3rd party dark scheme', () => {
     const scheme = Scheme.dark(0xff6750A4);
-    expect(scheme.primary).matchesColor(0xffd0bcff);
+    expect(scheme.primary).matchesColor(0xffcfbcff);
     expect(scheme.secondary).matchesColor(0xffcbc2db);
     expect(scheme.tertiary).matchesColor(0xffefb8c8);
     expect(scheme.surface).matchesColor(0xff1c1b1e);
-    expect(scheme.onSurface).matchesColor(0xffe6e1e5);
+    expect(scheme.onSurface).matchesColor(0xffe6e1e6);
   });
 });
 
 describe('android scheme', () => {
   it('blue light scheme', () => {
     const scheme = SchemeAndroid.light(0xff0000ff);
-    expect(scheme.colorAccentPrimary).matchesColor(0xffdfe0ff);
+    expect(scheme.colorAccentPrimary).matchesColor(0xffe0e0ff);
   });
 
   it('blue dark scheme', () => {
     const scheme = SchemeAndroid.dark(0xff0000ff);
-    expect(scheme.colorAccentPrimary).matchesColor(0xffdfe0ff);
+    expect(scheme.colorAccentPrimary).matchesColor(0xffe0e0ff);
   });
 
   it('3rd party light scheme', () => {
     const scheme = SchemeAndroid.light(0xff6750A4);
-    expect(scheme.colorAccentPrimary).matchesColor(0xffeaddff);
+    expect(scheme.colorAccentPrimary).matchesColor(0xffe9ddff);
     expect(scheme.colorAccentSecondary).matchesColor(0xffe8def8);
-    expect(scheme.colorAccentTertiary).matchesColor(0xffffd8e4);
-    expect(scheme.colorSurface).matchesColor(0xfffdf8fc);
+    expect(scheme.colorAccentTertiary).matchesColor(0xffffd9e3);
+    expect(scheme.colorSurface).matchesColor(0xfffdf8fd);
     expect(scheme.textColorPrimary).matchesColor(0xff1c1b1e);
   });
 
   it('3rd party dark scheme', () => {
     const scheme = SchemeAndroid.dark(0xff6750A4);
-    expect(scheme.colorAccentPrimary).matchesColor(0xffeaddff);
+    expect(scheme.colorAccentPrimary).matchesColor(0xffe9ddff);
     expect(scheme.colorAccentSecondary).matchesColor(0xffe8def8);
-    expect(scheme.colorAccentTertiary).matchesColor(0xffffd8e4);
+    expect(scheme.colorAccentTertiary).matchesColor(0xffffd9e3);
     expect(scheme.colorSurface).matchesColor(0xff313033);
     expect(scheme.textColorPrimary).matchesColor(0xfff4eff4);
   });

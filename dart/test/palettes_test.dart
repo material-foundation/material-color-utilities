@@ -25,21 +25,21 @@ void main() {
         final tones = TonalPalette.of(hct.hue, hct.chroma);
 
         expect(tones.get(0), 0xff000000);
-        expect(tones.get(10), 0xff00006f);
-        expect(tones.get(20), 0xff0000ad);
-        expect(tones.get(30), 0xff0000f0);
-        expect(tones.get(40), 0xff333cff);
-        expect(tones.get(50), 0xff5964ff);
-        expect(tones.get(60), 0xff7a85ff);
-        expect(tones.get(70), 0xff9ca4ff);
-        expect(tones.get(80), 0xffbdc2ff);
-        expect(tones.get(90), 0xffdfe0ff);
-        expect(tones.get(95), 0xfff0efff);
-        expect(tones.get(99), 0xfffefbff);
+        expect(tones.get(10), 0xff00006e);
+        expect(tones.get(20), 0xff0001ac);
+        expect(tones.get(30), 0xff0000ef);
+        expect(tones.get(40), 0xff343dff);
+        expect(tones.get(50), 0xff5a64ff);
+        expect(tones.get(60), 0xff7c84ff);
+        expect(tones.get(70), 0xff9da3ff);
+        expect(tones.get(80), 0xffbec2ff);
+        expect(tones.get(90), 0xffe0e0ff);
+        expect(tones.get(95), 0xfff1efff);
+        expect(tones.get(99), 0xfffffbff);
         expect(tones.get(100), 0xffffffff);
 
         /// Tone not in [TonalPalette.commonTones]
-        expect(tones.get(3), 0xff00003e);
+        expect(tones.get(3), 0xff00003c);
       });
 
       test('asList', () {
@@ -48,17 +48,17 @@ void main() {
 
         expect(tones.asList, [
           0xff000000,
-          0xff00006f,
-          0xff0000ad,
-          0xff0000f0,
-          0xff333cff,
-          0xff5964ff,
-          0xff7a85ff,
-          0xff9ca4ff,
-          0xffbdc2ff,
-          0xffdfe0ff,
-          0xfff0efff,
-          0xfffefbff,
+          0xff00006e,
+          0xff0001ac,
+          0xff0000ef,
+          0xff343dff,
+          0xff5a64ff,
+          0xff7c84ff,
+          0xff9da3ff,
+          0xffbec2ff,
+          0xffe0e0ff,
+          0xfff1efff,
+          0xfffffbff,
           0xffffffff,
         ]);
       });

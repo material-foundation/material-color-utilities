@@ -33,61 +33,61 @@ const YELLOW = 0xffffff00;
 describe('harmonize', () => {
   it('redToBlue', () => {
     const answer = Blend.harmonize(RED, BLUE);
-    expect(answer).matchesColor(0xffFB0054);
+    expect(answer).matchesColor(0xffFB0057);
   });
 
   it('redToGreen', () => {
     const answer = Blend.harmonize(RED, GREEN);
-    expect(answer).matchesColor(0xffDA5400);
+    expect(answer).matchesColor(0xffD85600);
   });
 
   it('redToYellow', () => {
     const answer = Blend.harmonize(RED, YELLOW);
-    expect(answer).matchesColor(0xffDA5400);
+    expect(answer).matchesColor(0xffD85600);
   });
 
   it('blueToGreen', () => {
     const answer = Blend.harmonize(BLUE, GREEN);
-    expect(answer).matchesColor(0xff0047A7);
+    expect(answer).matchesColor(0xff0047A3);
   });
 
   it('blueToRed', () => {
     const answer = Blend.harmonize(BLUE, RED);
-    expect(answer).matchesColor(0xff5600DE);
+    expect(answer).matchesColor(0xff5700DC);
   });
 
   it('blueToYellow', () => {
     const answer = Blend.harmonize(BLUE, YELLOW);
-    expect(answer).matchesColor(0xff0047A7);
+    expect(answer).matchesColor(0xff0047A3);
   });
 
   it('greenToBlue', () => {
     const answer = Blend.harmonize(GREEN, BLUE);
-    expect(answer).matchesColor(0xff00FC91);
+    expect(answer).matchesColor(0xff00FC94);
   });
 
   it('greenToRed', () => {
     const answer = Blend.harmonize(GREEN, RED);
-    expect(answer).matchesColor(0xffADF000);
+    expect(answer).matchesColor(0xffB1F000);
   });
 
   it('greenToYellow', () => {
     const answer = Blend.harmonize(GREEN, YELLOW);
-    expect(answer).matchesColor(0xffADF000);
+    expect(answer).matchesColor(0xffB1F000);
   });
 
   it('yellowToBlue', () => {
     const answer = Blend.harmonize(YELLOW, BLUE);
-    expect(answer).matchesColor(0xffEBFFB2);
+    expect(answer).matchesColor(0xffEBFFBA);
   });
 
   it('yellowToGreen', () => {
     const answer = Blend.harmonize(YELLOW, GREEN);
-    expect(answer).matchesColor(0xffEBFFB2);
+    expect(answer).matchesColor(0xffEBFFBA);
   });
 
   it('yellowToRed', () => {
     const answer = Blend.harmonize(YELLOW, RED);
-    expect(answer).matchesColor(0xffFFF6DC);
+    expect(answer).matchesColor(0xffFFF6E3);
   });
 });

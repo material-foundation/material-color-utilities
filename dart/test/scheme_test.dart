@@ -20,29 +20,29 @@ import './utils/color_matcher.dart';
 void main() {
   test('blue light scheme', () {
     final scheme = Scheme.light(0xff0000ff);
-    expect(scheme.primary, isColor(0xff333CFF));
+    expect(scheme.primary, isColor(0xff343DFF));
   });
 
   test('blue dark scheme', () {
     final scheme = Scheme.dark(0xff0000ff);
-    expect(scheme.primary, isColor(0xffBDC2FF));
+    expect(scheme.primary, isColor(0xffBEC2FF));
   });
 
   test('3rd party light scheme', () async {
     final scheme = Scheme.light(0xff6750A4);
     expect(scheme.primary, isColor(0xff6750A4));
     expect(scheme.secondary, isColor(0xff625B71));
-    expect(scheme.tertiary, isColor(0xff7D5260));
-    expect(scheme.surface, isColor(0xfffffbfe));
+    expect(scheme.tertiary, isColor(0xff7E5260));
+    expect(scheme.surface, isColor(0xffFFFBFF));
     expect(scheme.onSurface, isColor(0xff1C1B1E));
   });
 
   test('3rd party dark scheme', () async {
     final scheme = Scheme.dark(0xff6750A4);
-    expect(scheme.primary, isColor(0xffd0bcff));
+    expect(scheme.primary, isColor(0xffCFBCFF));
     expect(scheme.secondary, isColor(0xffCBC2DB));
     expect(scheme.tertiary, isColor(0xffEFB8C8));
     expect(scheme.surface, isColor(0xff1c1b1e));
-    expect(scheme.onSurface, isColor(0xffE6E1E5));
+    expect(scheme.onSurface, isColor(0xffE6E1E6));
   });
 }
