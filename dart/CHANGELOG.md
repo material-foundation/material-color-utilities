@@ -1,3 +1,7 @@
+## 0.1.5
+-   Fix README import
+-   Link to dynamic_color packages
+
 ## 0.1.4
 -   Allow creation of Scheme from a CorePalette with lightFromCorePalette and darkFromCorePalette
 
