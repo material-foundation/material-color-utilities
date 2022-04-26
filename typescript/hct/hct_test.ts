@@ -31,56 +31,56 @@ describe('CAM to ARGB', () => {
   it('red', () => {
     const cam = Cam16.fromInt(RED);
 
-    expect(cam.hue).toBeCloseTo(27.408, 0.001);
-    expect(cam.chroma).toBeCloseTo(113.357, 0.001);
-    expect(cam.j).toBeCloseTo(46.445, 0.001);
-    expect(cam.m).toBeCloseTo(89.494, 0.001);
-    expect(cam.s).toBeCloseTo(91.889, 0.001);
-    expect(cam.q).toBeCloseTo(105.988, 0.001);
+    expect(cam.hue).toBeCloseTo(27.408, 3);
+    expect(cam.chroma).toBeCloseTo(113.358, 3);
+    expect(cam.j).toBeCloseTo(46.445, 3);
+    expect(cam.m).toBeCloseTo(89.494, 3);
+    expect(cam.s).toBeCloseTo(91.890, 3);
+    expect(cam.q).toBeCloseTo(105.989, 3);
   });
 
   it('green', () => {
     const cam = Cam16.fromInt(GREEN);
 
-    expect(cam.hue).toBeCloseTo(142.139, 0.001);
-    expect(cam.chroma).toBeCloseTo(108.410, 0.001);
-    expect(cam.j).toBeCloseTo(79.331, 0.001);
-    expect(cam.m).toBeCloseTo(85.587, 0.001);
-    expect(cam.s).toBeCloseTo(78.604, 0.001);
-    expect(cam.q).toBeCloseTo(138.520, 0.001);
+    expect(cam.hue).toBeCloseTo(142.140, 3);
+    expect(cam.chroma).toBeCloseTo(108.410, 3);
+    expect(cam.j).toBeCloseTo(79.332, 3);
+    expect(cam.m).toBeCloseTo(85.588, 3);
+    expect(cam.s).toBeCloseTo(78.605, 3);
+    expect(cam.q).toBeCloseTo(138.520, 3);
   });
 
   it('blue', () => {
     const cam = Cam16.fromInt(BLUE);
 
-    expect(cam.hue).toBeCloseTo(282.788, 0.001);
-    expect(cam.chroma).toBeCloseTo(87.230, 0.001);
-    expect(cam.j).toBeCloseTo(25.465, 0.001);
-    expect(cam.m).toBeCloseTo(68.867, 0.001);
-    expect(cam.s).toBeCloseTo(93.674, 0.001);
-    expect(cam.q).toBeCloseTo(78.481, 0.001);
+    expect(cam.hue).toBeCloseTo(282.788, 3);
+    expect(cam.chroma).toBeCloseTo(87.231, 3);
+    expect(cam.j).toBeCloseTo(25.466, 3);
+    expect(cam.m).toBeCloseTo(68.867, 3);
+    expect(cam.s).toBeCloseTo(93.675, 3);
+    expect(cam.q).toBeCloseTo(78.481, 3);
   });
 
   it('white', () => {
     const cam = Cam16.fromInt(WHITE);
 
-    expect(cam.hue).toBeCloseTo(209.492, 0.001);
-    expect(cam.chroma).toBeCloseTo(2.869, 0.001);
-    expect(cam.j).toBeCloseTo(100.0, 0.001);
-    expect(cam.m).toBeCloseTo(2.265, 0.001);
-    expect(cam.s).toBeCloseTo(12.068, 0.001);
-    expect(cam.q).toBeCloseTo(155.521, 0.001);
+    expect(cam.hue).toBeCloseTo(209.492, 3);
+    expect(cam.chroma).toBeCloseTo(2.869, 3);
+    expect(cam.j).toBeCloseTo(100.0, 3);
+    expect(cam.m).toBeCloseTo(2.265, 3);
+    expect(cam.s).toBeCloseTo(12.068, 3);
+    expect(cam.q).toBeCloseTo(155.521, 3);
   });
 
   it('black', () => {
     const cam = Cam16.fromInt(BLACK);
 
-    expect(cam.hue).toBeCloseTo(0.0, 0.001);
-    expect(cam.chroma).toBeCloseTo(0.0, 0.001);
-    expect(cam.j).toBeCloseTo(0.0, 0.001);
-    expect(cam.m).toBeCloseTo(0.0, 0.001);
-    expect(cam.s).toBeCloseTo(0.0, 0.001);
-    expect(cam.q).toBeCloseTo(0.0, 0.001);
+    expect(cam.hue).toBeCloseTo(0.0, 3);
+    expect(cam.chroma).toBeCloseTo(0.0, 3);
+    expect(cam.j).toBeCloseTo(0.0, 3);
+    expect(cam.m).toBeCloseTo(0.0, 3);
+    expect(cam.s).toBeCloseTo(0.0, 3);
+    expect(cam.q).toBeCloseTo(0.0, 3);
   });
 });
 
@@ -131,17 +131,17 @@ describe('ARGB to HCT', () => {
 describe('viewing conditions', () => {
   it('default', () => {
     const vc = ViewingConditions.DEFAULT;
-    expect(vc.n).toBeCloseTo(0.184, 0.001);
-    expect(vc.aw).toBeCloseTo(29.980, 0.001);
-    expect(vc.nbb).toBeCloseTo(1.016, 0.001);
-    expect(vc.ncb).toBeCloseTo(1.016, 0.001);
-    expect(vc.c).toBeCloseTo(0.69, 0.001);
-    expect(vc.nc).toBeCloseTo(1.0, 0.001);
-    expect(vc.rgbD[0]).toBeCloseTo(1.021, 0.001);
-    expect(vc.rgbD[1]).toBeCloseTo(0.986, 0.001);
-    expect(vc.rgbD[2]).toBeCloseTo(0.933, 0.001);
-    expect(vc.fl).toBeCloseTo(0.388, 0.001);
-    expect(vc.fLRoot).toBeCloseTo(0.789, 0.001);
-    expect(vc.z).toBeCloseTo(1.909, 0.001);
+    expect(vc.n).toBeCloseTo(0.184, 3);
+    expect(vc.aw).toBeCloseTo(29.981, 3);
+    expect(vc.nbb).toBeCloseTo(1.017, 3);
+    expect(vc.ncb).toBeCloseTo(1.017, 3);
+    expect(vc.c).toBeCloseTo(0.69, 3);
+    expect(vc.nc).toBeCloseTo(1.0, 3);
+    expect(vc.rgbD[0]).toBeCloseTo(1.021, 3);
+    expect(vc.rgbD[1]).toBeCloseTo(0.986, 3);
+    expect(vc.rgbD[2]).toBeCloseTo(0.934, 3);
+    expect(vc.fl).toBeCloseTo(0.388, 3);
+    expect(vc.fLRoot).toBeCloseTo(0.789, 3);
+    expect(vc.z).toBeCloseTo(1.909, 3);
   });
 });
