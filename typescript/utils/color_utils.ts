@@ -61,13 +61,6 @@ export function argbFromRgb(red: number, green: number, blue: number): number {
 }
 
 /**
- * Returns the alpha component of a color in ARGB format.
- */
-export function alphaFromArgb(argb: number): number {
-  return argb >> 24 & 255;
-}
-
-/**
  * Converts a color from linear RGB components to ARGB format.
  */
 export function argbFromLinrgb(linrgb: number[]): number {
@@ -75,6 +68,13 @@ export function argbFromLinrgb(linrgb: number[]): number {
   const g = delinearized(linrgb[1]);
   const b = delinearized(linrgb[2]);
   return argbFromRgb(r, g, b);
+}
+
+/**
+ * Returns the alpha component of a color in ARGB format.
+ */
+export function alphaFromArgb(argb: number): number {
+  return argb >> 24 & 255;
 }
 
 /**

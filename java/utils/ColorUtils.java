@@ -268,6 +268,5 @@ public class ColorUtils {
       return (116 * ft - 16) / kappa;
     }
   }
-
 }
 

@@ -53,17 +53,17 @@ class ColorUtils {
     return 255 << 24 | (red & 255) << 16 | (green & 255) << 8 | blue & 255;
   }
 
+  /// Converts a color from linear RGB components to ARGB format.
+  static int argbFromLinrgb(List<double> linrgb) {
+    final r = delinearized(linrgb[0]);
+    final g = delinearized(linrgb[1]);
+    final b = delinearized(linrgb[2]);
+    return argbFromRgb(r, g, b);
+  }
+
   /// Returns the alpha component of a color in ARGB format.
   static int alphaFromArgb(int argb) {
     return argb >> 24 & 255;
-  }
-
-  /// Converts a color from linear RGB components to ARGB format.
-  static int argbFromLinrgb(List<double> linrgb) {
-    final r = ColorUtils.delinearized(linrgb[0]);
-    final g = ColorUtils.delinearized(linrgb[1]);
-    final b = ColorUtils.delinearized(linrgb[2]);
-    return ColorUtils.argbFromRgb(r, g, b);
   }
 
   /// Returns the red component of a color in ARGB format.
