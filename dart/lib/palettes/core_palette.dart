@@ -44,6 +44,19 @@ class CorePalette {
         neutral = TonalPalette.of(hue, 4),
         neutralVariant = TonalPalette.of(hue, 8);
 
+  /// Create a content [CorePalette] from a source ARGB color.
+  static CorePalette contentOf(int argb) {
+    final cam = Cam16.fromInt(argb);
+    return CorePalette._contentOf(cam.hue, cam.chroma);
+  }
+
+  CorePalette._contentOf(double hue, double chroma)
+      : primary = TonalPalette.of(hue, chroma),
+        secondary = TonalPalette.of(hue, chroma / 3),
+        tertiary = TonalPalette.of(hue + 60, chroma / 2),
+        neutral = TonalPalette.of(hue, math.min(chroma / 12, 4)),
+        neutralVariant = TonalPalette.of(hue, math.min(chroma / 6, 8));
+
   /// Create a [CorePalette] from a fixed-size list of ARGB color ints
   /// representing concatenated tonal palettes.
   ///

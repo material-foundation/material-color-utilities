@@ -36,17 +36,33 @@ export class CorePalette {
    * @param argb ARGB representation of a color
    */
   static of(argb: number): CorePalette {
-    return new CorePalette(argb);
+    return new CorePalette(argb, false);
   }
 
-  private constructor(argb: number) {
+  /**
+   * @param argb ARGB representation of a color
+   */
+  static contentOf(argb: number): CorePalette {
+    return new CorePalette(argb, true);
+  }
+
+  private constructor(argb: number, isContent: boolean) {
     const hct = Hct.fromInt(argb);
     const hue = hct.hue;
-    this.a1 = TonalPalette.fromHueAndChroma(hue, Math.max(48, hct.chroma));
-    this.a2 = TonalPalette.fromHueAndChroma(hue, 16);
-    this.a3 = TonalPalette.fromHueAndChroma(hue + 60, 24);
-    this.n1 = TonalPalette.fromHueAndChroma(hue, 4);
-    this.n2 = TonalPalette.fromHueAndChroma(hue, 8);
+    const chroma = hct.chroma;
+    if (isContent) {
+      this.a1 = TonalPalette.fromHueAndChroma(hue, chroma);
+      this.a2 = TonalPalette.fromHueAndChroma(hue, chroma / 3);
+      this.a3 = TonalPalette.fromHueAndChroma(hue + 60, chroma / 2);
+      this.n1 = TonalPalette.fromHueAndChroma(hue, Math.min(chroma / 12, 4));
+      this.n2 = TonalPalette.fromHueAndChroma(hue, Math.min(chroma / 6, 8));
+    } else {
+      this.a1 = TonalPalette.fromHueAndChroma(hue, Math.max(48, chroma));
+      this.a2 = TonalPalette.fromHueAndChroma(hue, 16);
+      this.a3 = TonalPalette.fromHueAndChroma(hue + 60, 24);
+      this.n1 = TonalPalette.fromHueAndChroma(hue, 4);
+      this.n2 = TonalPalette.fromHueAndChroma(hue, 8);
+    }
     this.error = TonalPalette.fromHueAndChroma(25, 84);
   }
 }

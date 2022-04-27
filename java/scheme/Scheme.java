@@ -111,7 +111,22 @@ public class Scheme {
   }
 
   public static Scheme light(int argb) {
-    CorePalette core = CorePalette.of(argb);
+    return lightFromCorePalette(CorePalette.of(argb));
+  }
+
+  public static Scheme dark(int argb) {
+    return darkFromCorePalette(CorePalette.of(argb));
+  }
+
+  public static Scheme lightContent(int argb) {
+    return lightFromCorePalette(CorePalette.contentOf(argb));
+  }
+
+  public static Scheme darkContent(int argb) {
+    return darkFromCorePalette(CorePalette.contentOf(argb));
+  }
+
+  private static Scheme lightFromCorePalette(CorePalette core) {
     return new Scheme()
         .withPrimary(core.a1.tone(40))
         .withOnPrimary(core.a1.tone(100))
@@ -142,8 +157,7 @@ public class Scheme {
         .withInversePrimary(core.a1.tone(80));
   }
 
-  public static Scheme dark(int argb) {
-    CorePalette core = CorePalette.of(argb);
+  private static Scheme darkFromCorePalette(CorePalette core) {
     return new Scheme()
         .withPrimary(core.a1.tone(80))
         .withOnPrimary(core.a1.tone(20))

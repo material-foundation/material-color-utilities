@@ -81,6 +81,12 @@ class Scheme {
 
   static Scheme dark(int color) => darkFromCorePalette(CorePalette.of(color));
 
+  static Scheme lightContent(int color) =>
+      lightFromCorePalette(CorePalette.contentOf(color));
+
+  static Scheme darkContent(int color) =>
+      darkFromCorePalette(CorePalette.contentOf(color));
+
   static Scheme lightFromCorePalette(CorePalette palette) => Scheme(
         primary: palette.primary.get(40),
         onPrimary: palette.primary.get(100),

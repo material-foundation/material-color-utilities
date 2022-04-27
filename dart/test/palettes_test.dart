@@ -142,5 +142,63 @@ void main() {
       expect(corePaletteA.hashCode, corePaletteB.hashCode);
       expect(corePaletteB.hashCode, isNot(corePaletteC.hashCode));
     });
+
+    test('of blue', () {
+      final core = CorePalette.of(0xff0000ff);
+
+      expect(core.primary.get(100), 0xffffffff);
+      expect(core.primary.get(95), 0xfff1efff);
+      expect(core.primary.get(90), 0xffe0e0ff);
+      expect(core.primary.get(80), 0xffbec2ff);
+      expect(core.primary.get(70), 0xff9da3ff);
+      expect(core.primary.get(60), 0xff7c84ff);
+      expect(core.primary.get(50), 0xff5a64ff);
+      expect(core.primary.get(40), 0xff343dff);
+      expect(core.primary.get(30), 0xff0000ef);
+      expect(core.primary.get(20), 0xff0001ac);
+      expect(core.primary.get(10), 0xff00006e);
+      expect(core.primary.get(0), 0xff000000);
+      expect(core.secondary.get(100), 0xffffffff);
+      expect(core.secondary.get(95), 0xfff1efff);
+      expect(core.secondary.get(90), 0xffe1e0f9);
+      expect(core.secondary.get(80), 0xffc5c4dd);
+      expect(core.secondary.get(70), 0xffa9a9c1);
+      expect(core.secondary.get(60), 0xff8f8fa6);
+      expect(core.secondary.get(50), 0xff75758b);
+      expect(core.secondary.get(40), 0xff5c5d72);
+      expect(core.secondary.get(30), 0xff444559);
+      expect(core.secondary.get(20), 0xff2e2f42);
+      expect(core.secondary.get(10), 0xff191a2c);
+      expect(core.secondary.get(0), 0xff000000);
+    });
+
+    test('content of blue', () {
+      final core = CorePalette.contentOf(0xff0000ff);
+
+      expect(core.primary.get(100), 0xffffffff);
+      expect(core.primary.get(95), 0xfff1efff);
+      expect(core.primary.get(90), 0xffe0e0ff);
+      expect(core.primary.get(80), 0xffbec2ff);
+      expect(core.primary.get(70), 0xff9da3ff);
+      expect(core.primary.get(60), 0xff7c84ff);
+      expect(core.primary.get(50), 0xff5a64ff);
+      expect(core.primary.get(40), 0xff343dff);
+      expect(core.primary.get(30), 0xff0000ef);
+      expect(core.primary.get(20), 0xff0001ac);
+      expect(core.primary.get(10), 0xff00006e);
+      expect(core.primary.get(0), 0xff000000);
+      expect(core.secondary.get(100), 0xffffffff);
+      expect(core.secondary.get(95), 0xfff1efff);
+      expect(core.secondary.get(90), 0xffe0e0ff);
+      expect(core.secondary.get(80), 0xffc1c3f4);
+      expect(core.secondary.get(70), 0xffa5a7d7);
+      expect(core.secondary.get(60), 0xff8b8dbb);
+      expect(core.secondary.get(50), 0xff7173a0);
+      expect(core.secondary.get(40), 0xff585b86);
+      expect(core.secondary.get(30), 0xff40436d);
+      expect(core.secondary.get(20), 0xff2a2d55);
+      expect(core.secondary.get(10), 0xff14173f);
+      expect(core.secondary.get(0), 0xff000000);
+    });
   });
 }

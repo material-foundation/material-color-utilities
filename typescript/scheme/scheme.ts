@@ -136,7 +136,34 @@ export class Scheme {
    * @return Light Material color scheme, based on the color's hue.
    */
   static light(argb: number): Scheme {
-    const core = CorePalette.of(argb);
+    return Scheme.lightFromCorePalette(CorePalette.of(argb));
+  }
+
+  /**
+   * @param argb ARGB representation of a color.
+   * @return Dark Material color scheme, based on the color's hue.
+   */
+  static dark(argb: number): Scheme {
+    return Scheme.darkFromCorePalette(CorePalette.of(argb));
+  }
+
+  /**
+   * @param argb ARGB representation of a color.
+   * @return Light Material content color scheme, based on the color's hue.
+   */
+  static lightContent(argb: number): Scheme {
+    return Scheme.lightFromCorePalette(CorePalette.contentOf(argb));
+  }
+
+  /**
+   * @param argb ARGB representation of a color.
+   * @return Dark Material content color scheme, based on the color's hue.
+   */
+  static darkContent(argb: number): Scheme {
+    return Scheme.darkFromCorePalette(CorePalette.contentOf(argb));
+  }
+
+  private static lightFromCorePalette(core: CorePalette): Scheme {
     return new Scheme({
       primary: core.a1.tone(40),
       onPrimary: core.a1.tone(100),
@@ -168,12 +195,7 @@ export class Scheme {
     });
   }
 
-  /**
-   * @param argb ARGB representation of a color.
-   * @return Dark Material color scheme, based on the color's hue.
-   */
-  static dark(argb: number): Scheme {
-    const core = CorePalette.of(argb);
+  private static darkFromCorePalette(core: CorePalette): Scheme {
     return new Scheme({
       primary: core.a1.tone(80),
       onPrimary: core.a1.tone(20),
