@@ -17,7 +17,7 @@
 import 'package:material_color_utilities/palettes/core_palette.dart';
 
 /// Prefer [ColorScheme]. This class is the same concept as Flutter's
-/// ColorScheme class, inlined into libmonet to ensure parity across languages.
+/// ColorScheme class, inlined to ensure parity across languages.
 class Scheme {
   final int primary;
   final int onPrimary;
