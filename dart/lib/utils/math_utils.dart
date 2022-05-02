@@ -88,6 +88,23 @@ class MathUtils {
     return degrees;
   }
 
+  /// Sign of direction change needed to travel from one angle to
+  /// another.
+  ///
+  /// For angles that are 180 degrees apart from each other, both
+  /// directions have the same travel distance, so either direction is
+  /// shortest. The value 1.0 is returned in this case.
+  ///
+  /// [from] The angle travel starts from, in degrees.
+  /// [to] The angle travel ends at, in degrees.
+  /// Returns -1 if decreasing from leads to the shortest travel
+  /// distance, 1 if increasing from leads to the shortest travel
+  /// distance.
+  static double rotationDirection(double from, double to) {
+    final increasingDifference = sanitizeDegreesDouble(to - from);
+    return increasingDifference <= 180.0 ? 1.0 : -1.0;
+  }
+
   /// Distance of two points on a circle, represented using degrees.
   static double differenceDegrees(double a, double b) {
     return 180.0 - ((a - b).abs() - 180.0).abs();

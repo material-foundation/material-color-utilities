@@ -38,7 +38,7 @@ class Blend {
         MathUtils.differenceDegrees(fromHct.hue, toHct.hue);
     final rotationDegrees = min(differenceDegrees * 0.5, 15.0);
     final outputHue = MathUtils.sanitizeDegreesDouble(fromHct.hue +
-        rotationDegrees * _rotationDirection(fromHct.hue, toHct.hue));
+        rotationDegrees * MathUtils.rotationDirection(fromHct.hue, toHct.hue));
     return Hct.from(outputHue, fromHct.chroma, fromHct.tone).toInt();
   }
 
@@ -82,29 +82,5 @@ class Blend {
     final astar = fromA + (toA - fromA) * amount;
     final bstar = fromB + (toB - fromB) * amount;
     return Cam16.fromUcs(jstar, astar, bstar).toInt();
-  }
-
-  /// Sign of direction change needed to travel from one angle to
-  /// another.
-  ///
-  /// [from] The angle travel starts from, in degrees.
-  /// [to] The angle travel ends at, in degrees.
-  /// Returns -1 if decreasing from leads to the shortest travel
-  /// distance, 1 if increasing from leads to the shortest travel
-  /// distance.
-  static double _rotationDirection(double from, double to) {
-    final a = to - from;
-    final b = to - from + 360.0;
-    final c = to - from - 360.0;
-    final aAbs = a.abs();
-    final bAbs = b.abs();
-    final cAbs = c.abs();
-    if (aAbs <= bAbs && aAbs <= cAbs) {
-      return a >= 0.0 ? 1.0 : -1.0;
-    } else if (bAbs <= aAbs && bAbs <= cAbs) {
-      return b >= 0.0 ? 1.0 : -1.0;
-    } else {
-      return c >= 0.0 ? 1.0 : -1.0;
-    }
   }
 }

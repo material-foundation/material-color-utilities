@@ -106,6 +106,25 @@ export function sanitizeDegreesDouble(degrees: number): number {
 }
 
 /**
+ * Sign of direction change needed to travel from one angle to
+ * another.
+ *
+ * For angles that are 180 degrees apart from each other, both
+ * directions have the same travel distance, so either direction is
+ * shortest. The value 1.0 is returned in this case.
+ *
+ * @param from The angle travel starts from, in degrees.
+ * @param to The angle travel ends at, in degrees.
+ * @return -1 if decreasing from leads to the shortest travel
+ * distance, 1 if increasing from leads to the shortest travel
+ * distance.
+ */
+export function rotationDirection(from: number, to: number): number {
+  const increasingDifference = sanitizeDegreesDouble(to - from);
+  return increasingDifference <= 180.0 ? 1.0 : -1.0;
+}
+
+/**
  * Distance of two points on a circle, represented using degrees.
  */
 export function differenceDegrees(a: number, b: number): number {

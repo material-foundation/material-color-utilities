@@ -51,7 +51,7 @@ export class Blend {
     const rotationDegrees = Math.min(differenceDegrees * 0.5, 15.0);
     const outputHue = mathUtils.sanitizeDegreesDouble(
         fromHct.hue +
-        rotationDegrees * Blend.rotationDirection(fromHct.hue, toHct.hue));
+        rotationDegrees * mathUtils.rotationDirection(fromHct.hue, toHct.hue));
     return Hct.from(outputHue, fromHct.chroma, fromHct.tone).toInt();
   }
 
@@ -99,31 +99,5 @@ export class Blend {
     const astar = fromA + (toA - fromA) * amount;
     const bstar = fromB + (toB - fromB) * amount;
     return Cam16.fromUcs(jstar, astar, bstar).toInt();
-  }
-
-  /**
-   * Sign of direction change needed to travel from one angle to
-   * another.
-   *
-   * @param from The angle travel starts from, in degrees.
-   * @param to The angle travel ends at, in degrees.
-   * @return -1 if decreasing from leads to the shortest travel
-   * distance, 1 if increasing from leads to the shortest travel
-   * distance.
-   */
-  private static rotationDirection(from: number, to: number): number {
-    const a = to - from;
-    const b = to - from + 360.0;
-    const c = to - from - 360.0;
-    const aAbs = Math.abs(a);
-    const bAbs = Math.abs(b);
-    const cAbs = Math.abs(c);
-    if (aAbs <= bAbs && aAbs <= cAbs) {
-      return a >= 0.0 ? 1.0 : -1.0;
-    } else if (bAbs <= aAbs && bAbs <= cAbs) {
-      return b >= 0.0 ? 1.0 : -1.0;
-    } else {
-      return c >= 0.0 ? 1.0 : -1.0;
-    }
   }
 }
