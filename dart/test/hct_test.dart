@@ -138,4 +138,36 @@ void main() {
             .toInt();
     expect(colorToTest, equals(color));
   });
+
+  test('HCT returns a sufficiently close color', () {
+    for (var hue = 15; hue < 360; hue += 30) {
+      for (var chroma = 0; chroma <= 100; chroma += 10) {
+        for (var tone = 20; tone <= 80; tone += 10) {
+          final hctRequestDescription = 'H$hue C$chroma T$tone';
+          final hctColor = Hct.from(
+            hue.toDouble(),
+            chroma.toDouble(),
+            tone.toDouble(),
+          );
+          if (chroma > 0) {
+            expect(
+              hctColor.hue,
+              closeTo(hue, 4.0),
+              reason: 'Hue should be close for $hctRequestDescription',
+            );
+          }
+          expect(
+            hctColor.chroma,
+            inInclusiveRange(0.0, chroma + 2.5),
+            reason: 'Chroma should be close or less for $hctRequestDescription',
+          );
+          expect(
+            hctColor.tone,
+            closeTo(tone, 0.5),
+            reason: 'Tone should be close for $hctRequestDescription',
+          );
+        }
+      }
+    }
+  });
 }
