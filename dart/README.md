@@ -2,7 +2,7 @@
 
 [![pub package](https://img.shields.io/pub/v/material_color_utilities.svg)](https://pub.dev/packages/material_color_utilities)
 
-Algorithms and utilities that power the Material Design 3 (M3) color system,
+Algorithms and utilities that power the Material Design 3 color system,
 including choosing theme colors from images and creating tones of colors; all in
 a new color space.
 

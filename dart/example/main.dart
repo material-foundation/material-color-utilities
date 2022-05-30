@@ -16,10 +16,8 @@ import 'package:material_color_utilities/material_color_utilities.dart';
 
 void main() {
   // Simple demonstration of HCT.
-  final color = HctColor.fromInt(0xFF4285F4);
+  final color = Hct.fromInt(0xFF4285F4);
   print('Hue: ${color.hue}');
   print('Chroma: ${color.chroma}');
   print('Tone: ${color.tone}');
 }
-
-// TODO(guidezpl): add image pipeline example
