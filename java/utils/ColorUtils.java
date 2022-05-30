@@ -156,18 +156,9 @@ public class ColorUtils {
    * @return ARGB representation of grayscale color with lightness matching L*
    */
   public static int argbFromLstar(double lstar) {
-    double fy = (lstar + 16.0) / 116.0;
-    double fz = fy;
-    double fx = fy;
-    double kappa = 24389.0 / 27.0;
-    double epsilon = 216.0 / 24389.0;
-    boolean lExceedsEpsilonKappa = lstar > 8.0;
-    double y = lExceedsEpsilonKappa ? fy * fy * fy : lstar / kappa;
-    boolean cubeExceedEpsilon = fy * fy * fy > epsilon;
-    double x = cubeExceedEpsilon ? fx * fx * fx : lstar / kappa;
-    double z = cubeExceedEpsilon ? fz * fz * fz : lstar / kappa;
-    double[] whitePoint = WHITE_POINT_D65;
-    return argbFromXyz(x * whitePoint[0], y * whitePoint[1], z * whitePoint[2]);
+    double y = yFromLstar(lstar);
+    int component = delinearized(y);
+    return argbFromRgb(component, component, component);
   }
 
   /**
@@ -177,14 +168,8 @@ public class ColorUtils {
    * @return L*, from L*a*b*, coordinate of the color
    */
   public static double lstarFromArgb(int argb) {
-    double y = xyzFromArgb(argb)[1] / 100.0;
-    double e = 216.0 / 24389.0;
-    if (y <= e) {
-      return 24389.0 / 27.0 * y;
-    } else {
-      double yIntermediate = Math.pow(y, 1.0 / 3.0);
-      return 116.0 * yIntermediate - 16.0;
-    }
+    double y = xyzFromArgb(argb)[1];
+    return 116.0 * labF(y / 100.0) - 16.0;
   }
 
   /**
@@ -199,12 +184,7 @@ public class ColorUtils {
    * @return Y in XYZ
    */
   public static double yFromLstar(double lstar) {
-    double ke = 8.0;
-    if (lstar > ke) {
-      return Math.pow((lstar + 16.0) / 116.0, 3.0) * 100.0;
-    } else {
-      return lstar / (24389.0 / 27.0) * 100.0;
-    }
+    return 100.0 * labInvf((lstar + 16.0) / 116.0);
   }
 
   /**

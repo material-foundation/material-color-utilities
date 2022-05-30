@@ -160,22 +160,9 @@ class ColorUtils {
   /// Returns ARGB representation of grayscale color with lightness
   /// matching L*
   static int argbFromLstar(double lstar) {
-    final fy = (lstar + 16.0) / 116.0;
-    final fz = fy;
-    final fx = fy;
-    final kappa = 24389.0 / 27.0;
-    final epsilon = 216.0 / 24389.0;
-    final lExceedsEpsilonKappa = lstar > 8.0;
-    final y = lExceedsEpsilonKappa ? fy * fy * fy : lstar / kappa;
-    final cubeExceedEpsilon = fy * fy * fy > epsilon;
-    final x = cubeExceedEpsilon ? fx * fx * fx : lstar / kappa;
-    final z = cubeExceedEpsilon ? fz * fz * fz : lstar / kappa;
-    final whitePoint = _WHITE_POINT_D65;
-    return argbFromXyz(
-      x * whitePoint[0],
-      y * whitePoint[1],
-      z * whitePoint[2],
-    );
+    final y = yFromLstar(lstar);
+    final component = delinearized(y);
+    return argbFromRgb(component, component, component);
   }
 
   /// Computes the L* value of a color in ARGB representation.
@@ -183,14 +170,8 @@ class ColorUtils {
   /// [argb] ARGB representation of a color
   /// Returns L*, from L*a*b*, coordinate of the color
   static double lstarFromArgb(int argb) {
-    final y = xyzFromArgb(argb)[1] / 100.0;
-    final e = 216.0 / 24389.0;
-    if (y <= e) {
-      return 24389.0 / 27.0 * y;
-    } else {
-      final yIntermediate = pow(y, 1.0 / 3.0).toDouble();
-      return 116.0 * yIntermediate - 16.0;
-    }
+    final y = xyzFromArgb(argb)[1];
+    return 116.0 * _labF(y / 100.0) - 16.0;
   }
 
   /// Converts an L* value to a Y value.
@@ -203,12 +184,7 @@ class ColorUtils {
   /// [lstar] L* in L*a*b*
   /// Returns Y in XYZ
   static double yFromLstar(double lstar) {
-    final ke = 8.0;
-    if (lstar > ke) {
-      return pow((lstar + 16.0) / 116.0, 3.0).toDouble() * 100.0;
-    } else {
-      return lstar / (24389.0 / 27.0) * 100.0;
-    }
+    return 100.0 * _labInvf((lstar + 16.0) / 116.0);
   }
 
   /// Linearizes an RGB component.

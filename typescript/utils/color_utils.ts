@@ -186,22 +186,9 @@ export function labFromArgb(argb: number): number[] {
  * matching L*
  */
 export function argbFromLstar(lstar: number): number {
-  const fy = (lstar + 16.0) / 116.0;
-  const fz = fy;
-  const fx = fy;
-  const kappa = 24389.0 / 27.0;
-  const epsilon = 216.0 / 24389.0;
-  const lExceedsEpsilonKappa = lstar > 8.0;
-  const y = lExceedsEpsilonKappa ? fy * fy * fy : lstar / kappa;
-  const cubeExceedEpsilon = fy * fy * fy > epsilon;
-  const x = cubeExceedEpsilon ? fx * fx * fx : lstar / kappa;
-  const z = cubeExceedEpsilon ? fz * fz * fz : lstar / kappa;
-  const whitePoint = WHITE_POINT_D65;
-  return argbFromXyz(
-      x * whitePoint[0],
-      y * whitePoint[1],
-      z * whitePoint[2],
-  );
+  const y = yFromLstar(lstar);
+  const component = delinearized(y);
+  return argbFromRgb(component, component, component);
 }
 
 /**
@@ -211,14 +198,8 @@ export function argbFromLstar(lstar: number): number {
  * @return L*, from L*a*b*, coordinate of the color
  */
 export function lstarFromArgb(argb: number): number {
-  const y = xyzFromArgb(argb)[1] / 100.0;
-  const e = 216.0 / 24389.0;
-  if (y <= e) {
-    return 24389.0 / 27.0 * y;
-  } else {
-    const yIntermediate = Math.pow(y, 1.0 / 3.0);
-    return 116.0 * yIntermediate - 16.0;
-  }
+  const y = xyzFromArgb(argb)[1];
+  return 116.0 * labF(y / 100.0) - 16.0;
 }
 
 /**
@@ -233,12 +214,7 @@ export function lstarFromArgb(argb: number): number {
  * @return Y in XYZ
  */
 export function yFromLstar(lstar: number): number {
-  const ke = 8.0;
-  if (lstar > ke) {
-    return Math.pow((lstar + 16.0) / 116.0, 3.0) * 100.0;
-  } else {
-    return lstar / (24389.0 / 27.0) * 100.0;
-  }
+  return 100.0 * labInvf((lstar + 16.0) / 116.0);
 }
 
 /**

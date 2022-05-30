@@ -112,6 +112,29 @@ void main() {
     }
   });
 
+  test('rgb_to_lstar_to_y_commutes', () {
+    for (final r in rgbRange) {
+      for (final g in rgbRange) {
+        for (final b in rgbRange) {
+          final argb = ColorUtils.argbFromRgb(r, g, b);
+          final lstar = ColorUtils.lstarFromArgb(argb);
+          final y = ColorUtils.yFromLstar(lstar);
+          final y2 = ColorUtils.xyzFromArgb(argb)[1];
+          expect(y, closeTo(y2, 1e-5));
+        }
+      }
+    }
+  });
+
+  test('lstar_to_rgb_to_y_commutes', () {
+    for (final lstar in _range(0, 100, 1001)) {
+      final argb = ColorUtils.argbFromLstar(lstar);
+      final y = ColorUtils.xyzFromArgb(argb)[1];
+      final y2 = ColorUtils.yFromLstar(lstar);
+      expect(y, closeTo(y2, 1));
+    }
+  });
+
   test('linearize_delinearize', () {
     for (final rgbComponent in fullRgbRange) {
       final converted =
