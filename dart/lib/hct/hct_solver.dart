@@ -21,7 +21,7 @@ import 'package:material_color_utilities/hct/cam16.dart';
 import 'package:material_color_utilities/hct/viewing_conditions.dart';
 
 /// A class that solves the HCT equation.
-class CamSolver {
+class HctSolver {
   static final _SCALED_DISCOUNT_FROM_LINRGB = [
     [
       0.001200833568784504,

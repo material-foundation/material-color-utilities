@@ -53,7 +53,7 @@ public final class Hct {
    * @return HCT representation of a color in default viewing conditions.
    */
   public static Hct from(double hue, double chroma, double tone) {
-    int argb = CamSolver.solveToInt(hue, chroma, tone);
+    int argb = HctSolver.solveToInt(hue, chroma, tone);
     return new Hct(argb);
   }
 
@@ -94,7 +94,7 @@ public final class Hct {
    * @param newHue 0 <= newHue < 360; invalid values are corrected.
    */
   public void setHue(double newHue) {
-    setInternalState(CamSolver.solveToInt(newHue, chroma, tone));
+    setInternalState(HctSolver.solveToInt(newHue, chroma, tone));
   }
 
   /**
@@ -104,7 +104,7 @@ public final class Hct {
    * @param newChroma 0 <= newChroma < ?
    */
   public void setChroma(double newChroma) {
-    setInternalState(CamSolver.solveToInt(hue, newChroma, tone));
+    setInternalState(HctSolver.solveToInt(hue, newChroma, tone));
   }
 
   /**
@@ -114,7 +114,7 @@ public final class Hct {
    * @param newTone 0 <= newTone <= 100; invalid valids are corrected.
    */
   public void setTone(double newTone) {
-    setInternalState(CamSolver.solveToInt(hue, chroma, newTone));
+    setInternalState(HctSolver.solveToInt(hue, chroma, newTone));
   }
 
   private void setInternalState(int argb) {

@@ -34,7 +34,7 @@
 import * as utils from '../utils/color_utils';
 
 import {Cam16} from './cam16';
-import {CamSolver} from './cam_solver';
+import {HctSolver} from './hct_solver';
 
 
 /**
@@ -57,7 +57,7 @@ export class Hct {
   internalTone: number;
 
   static from(hue: number, chroma: number, tone: number) {
-    return new Hct(CamSolver.solveToInt(hue, chroma, tone));
+    return new Hct(HctSolver.solveToInt(hue, chroma, tone));
   }
 
   /**
@@ -87,7 +87,7 @@ export class Hct {
    */
   set hue(newHue: number) {
     this.setInternalState(
-        CamSolver.solveToInt(
+        HctSolver.solveToInt(
             newHue,
             this.internalChroma,
             this.internalTone,
@@ -106,7 +106,7 @@ export class Hct {
    */
   set chroma(newChroma: number) {
     this.setInternalState(
-        CamSolver.solveToInt(
+        HctSolver.solveToInt(
             this.internalHue,
             newChroma,
             this.internalTone,
@@ -126,7 +126,7 @@ export class Hct {
    */
   set tone(newTone: number) {
     this.setInternalState(
-        CamSolver.solveToInt(
+        HctSolver.solveToInt(
             this.internalHue,
             this.internalChroma,
             newTone,

@@ -32,7 +32,7 @@ import {ViewingConditions} from './viewing_conditions';
 /**
  * A class that solves the HCT equation.
  */
-export class CamSolver {
+export class HctSolver {
   static SCALED_DISCOUNT_FROM_LINRGB = [
     [
       0.001200833568784504,
@@ -203,10 +203,10 @@ export class CamSolver {
    */
   private static hueOf(linrgb: number[]): number {
     const scaledDiscount =
-        mathUtils.matrixMultiply(linrgb, CamSolver.SCALED_DISCOUNT_FROM_LINRGB);
-    const rA = CamSolver.chromaticAdaptation(scaledDiscount[0]);
-    const gA = CamSolver.chromaticAdaptation(scaledDiscount[1]);
-    const bA = CamSolver.chromaticAdaptation(scaledDiscount[2]);
+        mathUtils.matrixMultiply(linrgb, HctSolver.SCALED_DISCOUNT_FROM_LINRGB);
+    const rA = HctSolver.chromaticAdaptation(scaledDiscount[0]);
+    const gA = HctSolver.chromaticAdaptation(scaledDiscount[1]);
+    const bA = HctSolver.chromaticAdaptation(scaledDiscount[2]);
     // redness-greenness
     const a = (11.0 * rA + -12.0 * gA + bA) / 11.0;
     // yellowness-blueness
@@ -215,8 +215,8 @@ export class CamSolver {
   }
 
   private static areInCyclicOrder(a: number, b: number, c: number): boolean {
-    const deltaAB = CamSolver.sanitizeRadians(b - a);
-    const deltaAC = CamSolver.sanitizeRadians(c - a);
+    const deltaAB = HctSolver.sanitizeRadians(b - a);
+    const deltaAC = HctSolver.sanitizeRadians(c - a);
     return deltaAB < deltaAC;
   }
 
@@ -259,8 +259,8 @@ export class CamSolver {
       target: number[],
       axis: number,
       ): number[] {
-    const t = CamSolver.intercept(source[axis], coordinate, target[axis]);
-    return CamSolver.lerpPoint(source, t, target);
+    const t = HctSolver.intercept(source[axis], coordinate, target[axis]);
+    return HctSolver.lerpPoint(source, t, target);
   }
 
   private static isBounded(x: number): boolean {
@@ -278,16 +278,16 @@ export class CamSolver {
    * [-1.0, -1.0, -1.0] is returned.
    */
   private static nthVertex(y: number, n: number): number[] {
-    const kR = CamSolver.Y_FROM_LINRGB[0];
-    const kG = CamSolver.Y_FROM_LINRGB[1];
-    const kB = CamSolver.Y_FROM_LINRGB[2];
+    const kR = HctSolver.Y_FROM_LINRGB[0];
+    const kG = HctSolver.Y_FROM_LINRGB[1];
+    const kB = HctSolver.Y_FROM_LINRGB[2];
     const coordA = n % 4 <= 1 ? 0.0 : 100.0;
     const coordB = n % 2 === 0 ? 0.0 : 100.0;
     if (n < 4) {
       const g = coordA;
       const b = coordB;
       const r = (y - g * kG - b * kB) / kR;
-      if (CamSolver.isBounded(r)) {
+      if (HctSolver.isBounded(r)) {
         return [r, g, b];
       } else {
         return [-1.0, -1.0, -1.0];
@@ -296,7 +296,7 @@ export class CamSolver {
       const b = coordA;
       const r = coordB;
       const g = (y - r * kR - b * kB) / kG;
-      if (CamSolver.isBounded(g)) {
+      if (HctSolver.isBounded(g)) {
         return [r, g, b];
       } else {
         return [-1.0, -1.0, -1.0];
@@ -305,7 +305,7 @@ export class CamSolver {
       const r = coordA;
       const g = coordB;
       const b = (y - r * kR - g * kG) / kB;
-      if (CamSolver.isBounded(b)) {
+      if (HctSolver.isBounded(b)) {
         return [r, g, b];
       } else {
         return [-1.0, -1.0, -1.0];
@@ -330,11 +330,11 @@ export class CamSolver {
     let initialized = false;
     let uncut = true;
     for (let n = 0; n < 12; n++) {
-      const mid = CamSolver.nthVertex(y, n);
+      const mid = HctSolver.nthVertex(y, n);
       if (mid[0] < 0) {
         continue;
       }
-      const midHue = CamSolver.hueOf(mid);
+      const midHue = HctSolver.hueOf(mid);
       if (!initialized) {
         left = mid;
         right = mid;
@@ -343,9 +343,9 @@ export class CamSolver {
         initialized = true;
         continue;
       }
-      if (uncut || CamSolver.areInCyclicOrder(leftHue, midHue, rightHue)) {
+      if (uncut || HctSolver.areInCyclicOrder(leftHue, midHue, rightHue)) {
         uncut = false;
-        if (CamSolver.areInCyclicOrder(leftHue, targetHue, midHue)) {
+        if (HctSolver.areInCyclicOrder(leftHue, targetHue, midHue)) {
           right = mid;
           rightHue = midHue;
         } else {
@@ -382,35 +382,35 @@ export class CamSolver {
    * @return The desired color, in linear RGB coordinates.
    */
   private static bisectToLimit(y: number, targetHue: number): number[] {
-    const segment = CamSolver.bisectToSegment(y, targetHue);
+    const segment = HctSolver.bisectToSegment(y, targetHue);
     let left = segment[0];
-    let leftHue = CamSolver.hueOf(left);
+    let leftHue = HctSolver.hueOf(left);
     let right = segment[1];
     for (let axis = 0; axis < 3; axis++) {
       if (left[axis] !== right[axis]) {
         let lPlane = -1;
         let rPlane = 255;
         if (left[axis] < right[axis]) {
-          lPlane = CamSolver.criticalPlaneBelow(
-              CamSolver.trueDelinearized(left[axis]));
-          rPlane = CamSolver.criticalPlaneAbove(
-              CamSolver.trueDelinearized(right[axis]));
+          lPlane = HctSolver.criticalPlaneBelow(
+              HctSolver.trueDelinearized(left[axis]));
+          rPlane = HctSolver.criticalPlaneAbove(
+              HctSolver.trueDelinearized(right[axis]));
         } else {
-          lPlane = CamSolver.criticalPlaneAbove(
-              CamSolver.trueDelinearized(left[axis]));
-          rPlane = CamSolver.criticalPlaneBelow(
-              CamSolver.trueDelinearized(right[axis]));
+          lPlane = HctSolver.criticalPlaneAbove(
+              HctSolver.trueDelinearized(left[axis]));
+          rPlane = HctSolver.criticalPlaneBelow(
+              HctSolver.trueDelinearized(right[axis]));
         }
         for (let i = 0; i < 8; i++) {
           if (Math.abs(rPlane - lPlane) <= 1) {
             break;
           } else {
             const mPlane = Math.floor((lPlane + rPlane) / 2.0);
-            const midPlaneCoordinate = CamSolver.CRITICAL_PLANES[mPlane];
+            const midPlaneCoordinate = HctSolver.CRITICAL_PLANES[mPlane];
             const mid =
-                CamSolver.setCoordinate(left, midPlaneCoordinate, right, axis);
-            const midHue = CamSolver.hueOf(mid);
-            if (CamSolver.areInCyclicOrder(leftHue, targetHue, midHue)) {
+                HctSolver.setCoordinate(left, midPlaneCoordinate, right, axis);
+            const midHue = HctSolver.hueOf(mid);
+            if (HctSolver.areInCyclicOrder(leftHue, targetHue, midHue)) {
               right = mid;
               rPlane = mPlane;
             } else {
@@ -422,7 +422,7 @@ export class CamSolver {
         }
       }
     }
-    return CamSolver.midpoint(left, right);
+    return HctSolver.midpoint(left, right);
   }
 
   private static inverseChromaticAdaptation(adapted: number): number {
@@ -476,12 +476,12 @@ export class CamSolver {
       const rA = (460.0 * p2 + 451.0 * a + 288.0 * b) / 1403.0;
       const gA = (460.0 * p2 - 891.0 * a - 261.0 * b) / 1403.0;
       const bA = (460.0 * p2 - 220.0 * a - 6300.0 * b) / 1403.0;
-      const rCScaled = CamSolver.inverseChromaticAdaptation(rA);
-      const gCScaled = CamSolver.inverseChromaticAdaptation(gA);
-      const bCScaled = CamSolver.inverseChromaticAdaptation(bA);
+      const rCScaled = HctSolver.inverseChromaticAdaptation(rA);
+      const gCScaled = HctSolver.inverseChromaticAdaptation(gA);
+      const bCScaled = HctSolver.inverseChromaticAdaptation(bA);
       const linrgb = mathUtils.matrixMultiply(
           [rCScaled, gCScaled, bCScaled],
-          CamSolver.LINRGB_FROM_SCALED_DISCOUNT,
+          HctSolver.LINRGB_FROM_SCALED_DISCOUNT,
       );
       // ===========================================================
       // Operations inlined from Cam16 to avoid repeated calculation
@@ -489,9 +489,9 @@ export class CamSolver {
       if (linrgb[0] < 0 || linrgb[1] < 0 || linrgb[2] < 0) {
         return 0;
       }
-      const kR = CamSolver.Y_FROM_LINRGB[0];
-      const kG = CamSolver.Y_FROM_LINRGB[1];
-      const kB = CamSolver.Y_FROM_LINRGB[2];
+      const kR = HctSolver.Y_FROM_LINRGB[0];
+      const kG = HctSolver.Y_FROM_LINRGB[1];
+      const kB = HctSolver.Y_FROM_LINRGB[2];
       const fnj = kR * linrgb[0] + kG * linrgb[1] + kB * linrgb[2];
       if (fnj <= 0) {
         return 0;
@@ -528,11 +528,11 @@ export class CamSolver {
     hueDegrees = mathUtils.sanitizeDegreesDouble(hueDegrees);
     const hueRadians = hueDegrees / 180 * Math.PI;
     const y = colorUtils.yFromLstar(lstar);
-    const exactAnswer = CamSolver.findResultByJ(hueRadians, chroma, y);
+    const exactAnswer = HctSolver.findResultByJ(hueRadians, chroma, y);
     if (exactAnswer !== 0) {
       return exactAnswer;
     }
-    const linrgb = CamSolver.bisectToLimit(y, hueRadians);
+    const linrgb = HctSolver.bisectToLimit(y, hueRadians);
     return colorUtils.argbFromLinrgb(linrgb);
   }
 
@@ -549,6 +549,6 @@ export class CamSolver {
    * sufficiently close, and chroma will be maximized.
    */
   static solveToCam(hueDegrees: number, chroma: number, lstar: number): Cam16 {
-    return Cam16.fromInt(CamSolver.solveToInt(hueDegrees, chroma, lstar));
+    return Cam16.fromInt(HctSolver.solveToInt(hueDegrees, chroma, lstar));
   }
 }

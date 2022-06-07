@@ -22,8 +22,8 @@ import utils.ColorUtils;
 import utils.MathUtils;
 
 /** A class that solves the HCT equation. */
-public class CamSolver {
-  private CamSolver() {}
+public class HctSolver {
+  private HctSolver() {}
 
   static final double[][] SCALED_DISCOUNT_FROM_LINRGB =
       new double[][] {

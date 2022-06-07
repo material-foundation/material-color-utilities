@@ -2,6 +2,7 @@
 
 -   Add support for content color
 -   Correct `repository` in pubspec
+-   Rename `CamSolver` to `HctSolver`
 
 ## 0.1.5
 
