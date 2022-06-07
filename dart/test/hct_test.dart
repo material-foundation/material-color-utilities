@@ -16,6 +16,7 @@ import 'package:material_color_utilities/hct/cam16.dart';
 import 'package:material_color_utilities/hct/hct.dart';
 import 'package:material_color_utilities/hct/viewing_conditions.dart';
 import 'package:material_color_utilities/utils/color_utils.dart';
+import 'package:material_color_utilities/utils/string_utils.dart';
 import 'package:test/test.dart';
 
 const black = 0xff000000;
@@ -24,6 +25,15 @@ const red = 0xffff0000;
 const green = 0xff00ff00;
 const blue = 0xff0000ff;
 const midgray = 0xff777777;
+
+bool _colorIsOnBoundary(int argb) {
+  return ColorUtils.redFromArgb(argb) == 0 ||
+      ColorUtils.redFromArgb(argb) == 255 ||
+      ColorUtils.greenFromArgb(argb) == 0 ||
+      ColorUtils.greenFromArgb(argb) == 255 ||
+      ColorUtils.blueFromArgb(argb) == 0 ||
+      ColorUtils.blueFromArgb(argb) == 255;
+}
 
 void main() {
   test('conversions_areReflexive', () {
@@ -149,6 +159,7 @@ void main() {
             chroma.toDouble(),
             tone.toDouble(),
           );
+
           if (chroma > 0) {
             expect(
               hctColor.hue,
@@ -156,11 +167,24 @@ void main() {
               reason: 'Hue should be close for $hctRequestDescription',
             );
           }
+
           expect(
             hctColor.chroma,
             inInclusiveRange(0.0, chroma + 2.5),
             reason: 'Chroma should be close or less for $hctRequestDescription',
           );
+
+          if (hctColor.chroma < chroma - 2.5) {
+            expect(
+              _colorIsOnBoundary(hctColor.toInt()),
+              true,
+              reason: 'HCT request for non-sRGB color should return '
+                  'a color on the boundary of the sRGB cube '
+                  'for $hctRequestDescription, but got '
+                  '${StringUtils.hexFromArgb(hctColor.toInt())} instead',
+            );
+          }
+
           expect(
             hctColor.tone,
             closeTo(tone, 0.5),

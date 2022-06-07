@@ -17,6 +17,8 @@
 
 import 'jasmine';
 
+import * as colorUtils from '../utils/color_utils';
+
 import {Cam16} from './cam16';
 import {Hct} from './hct';
 import {ViewingConditions} from './viewing_conditions';
@@ -143,5 +145,39 @@ describe('viewing conditions', () => {
     expect(vc.fl).toBeCloseTo(0.388, 3);
     expect(vc.fLRoot).toBeCloseTo(0.789, 3);
     expect(vc.z).toBeCloseTo(1.909, 3);
+  });
+});
+
+function colorIsOnBoundary(argb: number): boolean {
+  return colorUtils.redFromArgb(argb) === 0 ||
+      colorUtils.redFromArgb(argb) === 255 ||
+      colorUtils.greenFromArgb(argb) === 0 ||
+      colorUtils.greenFromArgb(argb) === 255 ||
+      colorUtils.blueFromArgb(argb) === 0 ||
+      colorUtils.blueFromArgb(argb) === 255;
+}
+
+describe('CamSolver', () => {
+  it('returns a sufficiently close color', () => {
+    for (let hue = 15; hue < 360; hue += 30) {
+      for (let chroma = 0; chroma <= 100; chroma += 10) {
+        for (let tone = 20; tone <= 80; tone += 10) {
+          const hctColor = Hct.from(hue, chroma, tone);
+
+          if (chroma > 0) {
+            expect(Math.abs(hctColor.hue - hue)).toBeLessThanOrEqual(4.0);
+          }
+
+          expect(hctColor.chroma).toBeGreaterThanOrEqual(0);
+          expect(hctColor.chroma).toBeLessThanOrEqual(chroma + 2.5);
+
+          if (hctColor.chroma < chroma - 2.5) {
+            expect(colorIsOnBoundary(hctColor.toInt())).toBe(true);
+          }
+
+          expect(Math.abs(hctColor.tone - tone)).toBeLessThanOrEqual(0.5);
+        }
+      }
+    }
   });
 });
