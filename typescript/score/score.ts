@@ -50,7 +50,8 @@ export class Score {
    *     were not suitable for a theme, a default fallback color will be
    *     provided, Google Blue.
    */
-  static score(colorsToPopulation: Map<number, number>): number[] {
+  static score(colorsToPopulation: Map<number, number>, contentColor = false):
+      number[] {
     // Determine the total count of all colors.
     let populationSum = 0;
     for (const population of colorsToPopulation.values()) {
@@ -106,7 +107,9 @@ export class Score {
 
     // Remove colors that are unsuitable, ex. very dark or unchromatic colors.
     // Also, remove colors that are very similar in hue.
-    const filteredColors = Score.filter(colorsToExcitedProportion, colorsToCam);
+    const filteredColors = contentColor ?
+        Score.filterContent(colorsToCam) :
+        Score.filter(colorsToExcitedProportion, colorsToCam);
     const dedupedColorsToScore = new Map<number, number>();
     for (const color of filteredColors) {
       let duplicateHue = false;
@@ -155,5 +158,9 @@ export class Score {
       }
     }
     return filtered;
+  }
+
+  private static filterContent(colorsToCam: Map<number, Cam16>): number[] {
+    return Array.from(colorsToCam.keys());
   }
 }

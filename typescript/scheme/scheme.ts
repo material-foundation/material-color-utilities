@@ -163,7 +163,10 @@ export class Scheme {
     return Scheme.darkFromCorePalette(CorePalette.contentOf(argb));
   }
 
-  private static lightFromCorePalette(core: CorePalette): Scheme {
+  /**
+   * Light scheme from core palette
+   */
+  static lightFromCorePalette(core: CorePalette): Scheme {
     return new Scheme({
       primary: core.a1.tone(40),
       onPrimary: core.a1.tone(100),
@@ -195,7 +198,10 @@ export class Scheme {
     });
   }
 
-  private static darkFromCorePalette(core: CorePalette): Scheme {
+  /**
+   * Dark scheme from core palette
+   */
+  static darkFromCorePalette(core: CorePalette): Scheme {
     return new Scheme({
       primary: core.a1.tone(80),
       onPrimary: core.a1.tone(20),

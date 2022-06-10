@@ -127,6 +127,40 @@ export class SchemeAndroid {
    */
   static light(argb: number): SchemeAndroid {
     const core = CorePalette.of(argb);
+    return SchemeAndroid.lightFromCorePalette(core);
+  }
+
+  /**
+   * @param argb ARGB representation of a color.
+   * @return Dark Material color scheme, based on the color's hue.
+   */
+  static dark(argb: number): SchemeAndroid {
+    const core = CorePalette.of(argb);
+    return SchemeAndroid.darkFromCorePalette(core);
+  }
+
+  /**
+   * @param argb ARGB representation of a color.
+   * @return Light Android color scheme, based on the color's hue.
+   */
+  static lightContent(argb: number): SchemeAndroid {
+    const core = CorePalette.contentOf(argb);
+    return SchemeAndroid.lightFromCorePalette(core);
+  }
+
+  /**
+   * @param argb ARGB representation of a color.
+   * @return Dark Android color scheme, based on the color's hue.
+   */
+  static darkContent(argb: number): SchemeAndroid {
+    const core = CorePalette.contentOf(argb);
+    return SchemeAndroid.darkFromCorePalette(core);
+  }
+
+  /**
+   * Light scheme from core palette
+   */
+  static lightFromCorePalette(core: CorePalette): SchemeAndroid {
     return new SchemeAndroid({
       colorAccentPrimary: core.a1.tone(90),
       colorAccentPrimaryVariant: core.a1.tone(40),
@@ -157,11 +191,9 @@ export class SchemeAndroid {
   }
 
   /**
-   * @param argb ARGB representation of a color.
-   * @return Dark Material color scheme, based on the color's hue.
+   * Dark scheme from core palette
    */
-  static dark(argb: number): SchemeAndroid {
-    const core = CorePalette.of(argb);
+  static darkFromCorePalette(core: CorePalette): SchemeAndroid {
     return new SchemeAndroid({
       colorAccentPrimary: core.a1.tone(90),
       colorAccentPrimaryVariant: core.a1.tone(70),
@@ -218,4 +250,8 @@ export class SchemeAndroid {
     volumeBackground: number,
     scrim: number
   }) {}
+
+  toJSON() {
+    return {...this.props};
+  }
 }
