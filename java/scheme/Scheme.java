@@ -18,9 +18,12 @@
 
 package scheme;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.CheckReturnValue;
 import palettes.CorePalette;
 
 /** Represents a Material color scheme, a mapping of color roles to colors. */
+@CheckReturnValue
 public class Scheme {
   private int primary;
   private int onPrimary;
@@ -196,6 +199,7 @@ public class Scheme {
     this.primary = primary;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withPrimary(int primary) {
     this.primary = primary;
     return this;
@@ -209,6 +213,7 @@ public class Scheme {
     this.onPrimary = onPrimary;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withOnPrimary(int onPrimary) {
     this.onPrimary = onPrimary;
     return this;
@@ -222,6 +227,7 @@ public class Scheme {
     this.primaryContainer = primaryContainer;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withPrimaryContainer(int primaryContainer) {
     this.primaryContainer = primaryContainer;
     return this;
@@ -235,6 +241,7 @@ public class Scheme {
     this.onPrimaryContainer = onPrimaryContainer;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withOnPrimaryContainer(int onPrimaryContainer) {
     this.onPrimaryContainer = onPrimaryContainer;
     return this;
@@ -248,6 +255,7 @@ public class Scheme {
     this.secondary = secondary;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withSecondary(int secondary) {
     this.secondary = secondary;
     return this;
@@ -261,6 +269,7 @@ public class Scheme {
     this.onSecondary = onSecondary;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withOnSecondary(int onSecondary) {
     this.onSecondary = onSecondary;
     return this;
@@ -274,6 +283,7 @@ public class Scheme {
     this.secondaryContainer = secondaryContainer;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withSecondaryContainer(int secondaryContainer) {
     this.secondaryContainer = secondaryContainer;
     return this;
@@ -287,6 +297,7 @@ public class Scheme {
     this.onSecondaryContainer = onSecondaryContainer;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withOnSecondaryContainer(int onSecondaryContainer) {
     this.onSecondaryContainer = onSecondaryContainer;
     return this;
@@ -300,6 +311,7 @@ public class Scheme {
     this.tertiary = tertiary;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withTertiary(int tertiary) {
     this.tertiary = tertiary;
     return this;
@@ -313,6 +325,7 @@ public class Scheme {
     this.onTertiary = onTertiary;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withOnTertiary(int onTertiary) {
     this.onTertiary = onTertiary;
     return this;
@@ -326,6 +339,7 @@ public class Scheme {
     this.tertiaryContainer = tertiaryContainer;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withTertiaryContainer(int tertiaryContainer) {
     this.tertiaryContainer = tertiaryContainer;
     return this;
@@ -339,6 +353,7 @@ public class Scheme {
     this.onTertiaryContainer = onTertiaryContainer;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withOnTertiaryContainer(int onTertiaryContainer) {
     this.onTertiaryContainer = onTertiaryContainer;
     return this;
@@ -352,6 +367,7 @@ public class Scheme {
     this.error = error;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withError(int error) {
     this.error = error;
     return this;
@@ -365,6 +381,7 @@ public class Scheme {
     this.onError = onError;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withOnError(int onError) {
     this.onError = onError;
     return this;
@@ -378,6 +395,7 @@ public class Scheme {
     this.errorContainer = errorContainer;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withErrorContainer(int errorContainer) {
     this.errorContainer = errorContainer;
     return this;
@@ -391,6 +409,7 @@ public class Scheme {
     this.onErrorContainer = onErrorContainer;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withOnErrorContainer(int onErrorContainer) {
     this.onErrorContainer = onErrorContainer;
     return this;
@@ -404,6 +423,7 @@ public class Scheme {
     this.background = background;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withBackground(int background) {
     this.background = background;
     return this;
@@ -417,6 +437,7 @@ public class Scheme {
     this.onBackground = onBackground;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withOnBackground(int onBackground) {
     this.onBackground = onBackground;
     return this;
@@ -430,6 +451,7 @@ public class Scheme {
     this.surface = surface;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withSurface(int surface) {
     this.surface = surface;
     return this;
@@ -443,6 +465,7 @@ public class Scheme {
     this.onSurface = onSurface;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withOnSurface(int onSurface) {
     this.onSurface = onSurface;
     return this;
@@ -456,6 +479,7 @@ public class Scheme {
     this.surfaceVariant = surfaceVariant;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withSurfaceVariant(int surfaceVariant) {
     this.surfaceVariant = surfaceVariant;
     return this;
@@ -469,6 +493,7 @@ public class Scheme {
     this.onSurfaceVariant = onSurfaceVariant;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withOnSurfaceVariant(int onSurfaceVariant) {
     this.onSurfaceVariant = onSurfaceVariant;
     return this;
@@ -482,6 +507,7 @@ public class Scheme {
     this.outline = outline;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withOutline(int outline) {
     this.outline = outline;
     return this;
@@ -495,6 +521,7 @@ public class Scheme {
     this.shadow = shadow;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withShadow(int shadow) {
     this.shadow = shadow;
     return this;
@@ -508,6 +535,7 @@ public class Scheme {
     this.inverseSurface = inverseSurface;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withInverseSurface(int inverseSurface) {
     this.inverseSurface = inverseSurface;
     return this;
@@ -521,6 +549,7 @@ public class Scheme {
     this.inverseOnSurface = inverseOnSurface;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withInverseOnSurface(int inverseOnSurface) {
     this.inverseOnSurface = inverseOnSurface;
     return this;
@@ -534,6 +563,7 @@ public class Scheme {
     this.inversePrimary = inversePrimary;
   }
 
+  @CanIgnoreReturnValue
   public Scheme withInversePrimary(int inversePrimary) {
     this.inversePrimary = inversePrimary;
     return this;
