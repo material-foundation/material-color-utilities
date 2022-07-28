@@ -29,6 +29,7 @@
     "dist/**/*"
   ],
   "scripts": {
+    "postinstall": "npm run build",
     "build": "tsc",
     "watch": "tsc -w",
     "prepublishOnly": "npm run build"
