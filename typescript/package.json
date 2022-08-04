@@ -22,24 +22,25 @@
     "url": "https://github.com/material-foundation/material-color-utilities/issues"
   },
   "homepage": "https://github.com/material-foundation/material-color-utilities/tree/main/typescript",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
+  "main": "./dist/material-color-utilities.umd.js",
+  "module": "./dist/material-color-utilities.es.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist/**/*"
   ],
   "scripts": {
     "postinstall": "npm run build",
-    "build": "tsc",
+    "build": "tsc && vite build",
     "watch": "tsc -w",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@types/jasmine": "^3.10.3",
     "jasmine": "^4.0.2",
-    "typescript": "^4.5.5"
+    "typescript": "^4.5.5",
+    "vite": "^3.0.4"
   },
-  "publishConfig":{
-    "registry":"https://wombat-dressing-room.appspot.com"
+  "publishConfig": {
+    "registry": "https://wombat-dressing-room.appspot.com"
   }
 }

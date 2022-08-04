@@ -31,3 +31,4 @@ build/
 # TS related
 node_modules
 typescript/dist
+*.d.ts
