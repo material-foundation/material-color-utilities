@@ -48,7 +48,9 @@ public class Scheme {
   private int surfaceVariant;
   private int onSurfaceVariant;
   private int outline;
+  private int outlineVariant;
   private int shadow;
+  private int scrim;
   private int inverseSurface;
   private int inverseOnSurface;
   private int inversePrimary;
@@ -79,7 +81,9 @@ public class Scheme {
       int surfaceVariant,
       int onSurfaceVariant,
       int outline,
+      int outlineVariant,
       int shadow,
+      int scrim,
       int inverseSurface,
       int inverseOnSurface,
       int inversePrimary) {
@@ -107,7 +111,9 @@ public class Scheme {
     this.surfaceVariant = surfaceVariant;
     this.onSurfaceVariant = onSurfaceVariant;
     this.outline = outline;
+    this.outlineVariant = outlineVariant;
     this.shadow = shadow;
+    this.scrim = scrim;
     this.inverseSurface = inverseSurface;
     this.inverseOnSurface = inverseOnSurface;
     this.inversePrimary = inversePrimary;
@@ -154,7 +160,9 @@ public class Scheme {
         .withSurfaceVariant(core.n2.tone(90))
         .withOnSurfaceVariant(core.n2.tone(30))
         .withOutline(core.n2.tone(50))
+        .withOutlineVariant(core.n2.tone(80))
         .withShadow(core.n1.tone(0))
+        .withScrim(core.n1.tone(0))
         .withInverseSurface(core.n1.tone(20))
         .withInverseOnSurface(core.n1.tone(95))
         .withInversePrimary(core.a1.tone(80));
@@ -185,7 +193,9 @@ public class Scheme {
         .withSurfaceVariant(core.n2.tone(30))
         .withOnSurfaceVariant(core.n2.tone(80))
         .withOutline(core.n2.tone(60))
+        .withOutlineVariant(core.n2.tone(30))
         .withShadow(core.n1.tone(0))
+        .withScrim(core.n1.tone(0))
         .withInverseSurface(core.n1.tone(90))
         .withInverseOnSurface(core.n1.tone(20))
         .withInversePrimary(core.a1.tone(40));
@@ -513,6 +523,20 @@ public class Scheme {
     return this;
   }
 
+  public int getOutlineVariant() {
+    return outlineVariant;
+  }
+
+  public void setOutlineVariant(int outlineVariant) {
+    this.outlineVariant = outlineVariant;
+  }
+
+  @CanIgnoreReturnValue
+  public Scheme withOutlineVariant(int outlineVariant) {
+    this.outlineVariant = outlineVariant;
+    return this;
+  }
+
   public int getShadow() {
     return shadow;
   }
@@ -524,6 +548,20 @@ public class Scheme {
   @CanIgnoreReturnValue
   public Scheme withShadow(int shadow) {
     this.shadow = shadow;
+    return this;
+  }
+
+  public int getScrim() {
+    return scrim;
+  }
+
+  public void setScrim(int scrim) {
+    this.scrim = scrim;
+  }
+
+  @CanIgnoreReturnValue
+  public Scheme withScrim(int scrim) {
+    this.scrim = scrim;
     return this;
   }
 
@@ -618,8 +656,12 @@ public class Scheme {
         + onSurfaceVariant
         + ", outline="
         + outline
+        + ", outlineVariant="
+        + outlineVariant
         + ", shadow="
         + shadow
+        + ", scrim="
+        + scrim
         + ", inverseSurface="
         + inverseSurface
         + ", inverseOnSurface="
@@ -712,7 +754,13 @@ public class Scheme {
     if (outline != scheme.outline) {
       return false;
     }
+    if (outlineVariant != scheme.outlineVariant) {
+      return false;
+    }
     if (shadow != scheme.shadow) {
+      return false;
+    }
+    if (scrim != scheme.scrim) {
       return false;
     }
     if (inverseSurface != scheme.inverseSurface) {
@@ -754,7 +802,9 @@ public class Scheme {
     result = 31 * result + surfaceVariant;
     result = 31 * result + onSurfaceVariant;
     result = 31 * result + outline;
+    result = 31 * result + outlineVariant;
     result = 31 * result + shadow;
+    result = 31 * result + scrim;
     result = 31 * result + inverseSurface;
     result = 31 * result + inverseOnSurface;
     result = 31 * result + inversePrimary;

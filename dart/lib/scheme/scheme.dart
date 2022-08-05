@@ -42,7 +42,9 @@ class Scheme {
   final int surfaceVariant;
   final int onSurfaceVariant;
   final int outline;
+  final int outlineVariant;
   final int shadow;
+  final int scrim;
   final int inverseSurface;
   final int inverseOnSurface;
   final int inversePrimary;
@@ -71,7 +73,9 @@ class Scheme {
     required this.surfaceVariant,
     required this.onSurfaceVariant,
     required this.outline,
+    required this.outlineVariant,
     required this.shadow,
+    required this.scrim,
     required this.inverseSurface,
     required this.inverseOnSurface,
     required this.inversePrimary,
@@ -111,7 +115,9 @@ class Scheme {
         surfaceVariant: palette.neutralVariant.get(90),
         onSurfaceVariant: palette.neutralVariant.get(30),
         outline: palette.neutralVariant.get(50),
+        outlineVariant: palette.neutralVariant.get(80),
         shadow: palette.neutral.get(0),
+        scrim: palette.neutral.get(0),
         inverseSurface: palette.neutral.get(20),
         inverseOnSurface: palette.neutral.get(95),
         inversePrimary: palette.primary.get(80),
@@ -141,7 +147,9 @@ class Scheme {
         surfaceVariant: palette.neutralVariant.get(30),
         onSurfaceVariant: palette.neutralVariant.get(80),
         outline: palette.neutralVariant.get(60),
+        outlineVariant: palette.neutralVariant.get(30),
         shadow: palette.neutral.get(0),
+        scrim: palette.neutral.get(0),
         inverseSurface: palette.neutral.get(90),
         inverseOnSurface: palette.neutral.get(20),
         inversePrimary: palette.primary.get(40),

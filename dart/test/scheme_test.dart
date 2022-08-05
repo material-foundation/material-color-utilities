@@ -71,7 +71,9 @@ void main() {
     expect(scheme.surfaceVariant, isColor(0xffeedee7));
     expect(scheme.onSurfaceVariant, isColor(0xff4e444b));
     expect(scheme.outline, isColor(0xff80747b));
+    expect(scheme.outlineVariant, isColor(0xffd2c2cb));
     expect(scheme.shadow, isColor(0xff000000));
+    expect(scheme.scrim, isColor(0xff000000));
     expect(scheme.inverseSurface, isColor(0xff342f32));
     expect(scheme.inverseOnSurface, isColor(0xfff8eef2));
     expect(scheme.inversePrimary, isColor(0xffffabee));
@@ -102,7 +104,9 @@ void main() {
     expect(scheme.surfaceVariant, isColor(0xff4e444b));
     expect(scheme.onSurfaceVariant, isColor(0xffd2c2cb));
     expect(scheme.outline, isColor(0xff9a8d95));
+    expect(scheme.outlineVariant, isColor(0xff4e444b));
     expect(scheme.shadow, isColor(0xff000000));
+    expect(scheme.scrim, isColor(0xff000000));
     expect(scheme.inverseSurface, isColor(0xffeae0e4));
     expect(scheme.inverseOnSurface, isColor(0xff342f32));
     expect(scheme.inversePrimary, isColor(0xffab00a2));
@@ -133,7 +137,9 @@ void main() {
     expect(scheme.surfaceVariant, isColor(0xffeedee7));
     expect(scheme.onSurfaceVariant, isColor(0xff4e444b));
     expect(scheme.outline, isColor(0xff80747b));
+    expect(scheme.outlineVariant, isColor(0xffd2c2cb));
     expect(scheme.shadow, isColor(0xff000000));
+    expect(scheme.scrim, isColor(0xff000000));
     expect(scheme.inverseSurface, isColor(0xff342f32));
     expect(scheme.inverseOnSurface, isColor(0xfff8eef2));
     expect(scheme.inversePrimary, isColor(0xffffabee));
@@ -164,7 +170,9 @@ void main() {
     expect(scheme.surfaceVariant, isColor(0xff4e444b));
     expect(scheme.onSurfaceVariant, isColor(0xffd2c2cb));
     expect(scheme.outline, isColor(0xff9a8d95));
+    expect(scheme.outlineVariant, isColor(0xff4e444b));
     expect(scheme.shadow, isColor(0xff000000));
+    expect(scheme.scrim, isColor(0xff000000));
     expect(scheme.inverseSurface, isColor(0xffeae0e4));
     expect(scheme.inverseOnSurface, isColor(0xff342f32));
     expect(scheme.inversePrimary, isColor(0xffab00a2));

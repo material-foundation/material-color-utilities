@@ -1,8 +1,9 @@
-## NEXT
+## 0.2.0
 
 -   Add support for content color
 -   Correct `repository` in pubspec
 -   Rename `CamSolver` to `HctSolver`
+-   Add `outlineVariant` and `scrim` colors
 
 ## 0.1.5
 
