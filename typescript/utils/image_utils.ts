@@ -34,12 +34,17 @@ export async function sourceColorFromImage(image: HTMLImageElement) {
     if (!context) {
         return reject(new Error('Could not get canvas context'));
     }
-    image.onload = () => {
+    const fin = () => {
       canvas.width = image.width;
       canvas.height = image.height;
       context.drawImage(image, 0, 0);
       resolve(context.getImageData(0, 0, image.width, image.height).data);
     };
+    if (image.complete) {
+      fin();
+    } else {
+      image.onload = fin;
+    }
   });
 
   // Convert Image data to Pixel Array
