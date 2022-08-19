@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "module": "esnext",
-        "target": "es5",
+        "target": "ES2017",
         "lib": [
             "es2017",
             "dom",
@@ -10,10 +10,9 @@
         "declaration": true,
         "emitDeclarationOnly": true,
         "outDir": "./types",
-        "rootDir": "./src",
         "strict": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
         "moduleResolution": "node",
@@ -24,5 +23,8 @@
     "include": [
         "**/*.ts"
     ],
-    "exclude": []
+    "exclude": [
+        "node_modules",
+        "types",
+    ]
 }
