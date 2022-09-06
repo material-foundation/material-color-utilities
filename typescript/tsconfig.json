@@ -12,6 +12,7 @@
         "outDir": "./types",
         "strict": true,
         "noUnusedLocals": false,
+        "skipLibCheck": true,
         "noUnusedParameters": false,
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
