@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import './point_provider';
+import type { PointProvider } from './point_provider';
 
 import * as utils from '../utils/color_utils';
 
