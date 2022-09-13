@@ -20,11 +20,7 @@
         "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
         "useDefineForClassFields": false,
-        "skipLibCheck": true,
-        "types": [
-            "node",
-            "jasmine",
-        ]
+        "skipLibCheck": true
     },
     "include": [
         "**/*.ts"
