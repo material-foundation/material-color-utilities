@@ -28,6 +28,7 @@
     "exclude": [
         "dist",
         "**/*.d.ts",
-        "**/*_test.ts"
+        "**/*_test.ts",
+        "utils/test_utils.ts"
     ]
 }
