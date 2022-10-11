@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-import {QuantizerCelebi} from '../quantize/quantizer_celebi';
-import {Score} from '../score/score';
+import {QuantizerCelebi} from '../quantize/quantizer_celebi.js';
+import {Score} from '../score/score.js';
 
-import {argbFromRgb} from './color_utils';
+import {argbFromRgb} from './color_utils.js';
 
 /**
  * Get the source color from an image.

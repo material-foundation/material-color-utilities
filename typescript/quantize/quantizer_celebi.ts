@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-import {QuantizerWsmeans} from './quantizer_wsmeans';
-import {QuantizerWu} from './quantizer_wu';
+import {QuantizerWsmeans} from './quantizer_wsmeans.js';
+import {QuantizerWu} from './quantizer_wu.js';
 
 /**
  * An image quantizer that improves on the quality of a standard K-Means

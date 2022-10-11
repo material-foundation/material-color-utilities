@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-import {Hct} from '../hct/hct';
+import {Hct} from '../hct/hct.js';
 
-import {TonalPalette} from './tonal_palette';
+import {TonalPalette} from './tonal_palette.js';
 
 /**
  * An intermediate concept between the key color for a UI theme, and a full

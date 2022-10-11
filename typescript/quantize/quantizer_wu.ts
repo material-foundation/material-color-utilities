@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-import * as utils from '../utils/color_utils';
+import * as utils from '../utils/color_utils.js';
 
-import {QuantizerMap} from './quantizer_map';
+import {QuantizerMap} from './quantizer_map.js';
 
 const INDEX_BITS = 5;
 const SIDE_LENGTH = 33;    // ((1 << INDEX_INDEX_BITS) + 1)

@@ -17,9 +17,9 @@
 
 import 'jasmine';
 
-import * as colorUtils from '../utils/color_utils';
+import * as colorUtils from '../utils/color_utils.js';
 
-import {Hct} from './hct';
+import {Hct} from './hct.js';
 
 // Testing 512 out of 16_777_216 colors.
 
