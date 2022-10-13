@@ -24,9 +24,9 @@ import {Cam16} from './cam16';
 import {ViewingConditions} from './viewing_conditions';
 
 
-// libmonet is designed to have a consistent API across platforms
-// and modular components that can be moved around easily. Using a class as a
-// namespace facilitates this.
+// material_color_utilities is designed to have a consistent API across
+// platforms and modular components that can be moved around easily. Using a
+// class as a namespace facilitates this.
 //
 // tslint:disable:class-as-namespace
 /**

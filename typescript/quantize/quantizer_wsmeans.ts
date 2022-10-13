@@ -32,9 +32,9 @@ const MIN_MOVEMENT_DISTANCE = 3.0;
  * paper, Improving the Performance of K-Means for Color Quantization.
  * https://arxiv.org/abs/1101.0395
  */
-// libmonet is designed to have a consistent API across platforms
-// and modular components that can be moved around easily. Using a class as a
-// namespace facilitates this.
+// material_color_utilities is designed to have a consistent API across
+// platforms and modular components that can be moved around easily. Using a
+// class as a namespace facilitates this.
 //
 // tslint:disable-next-line:class-as-namespace
 export class QuantizerWsmeans {

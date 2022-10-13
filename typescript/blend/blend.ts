@@ -22,9 +22,9 @@ import {Hct} from '../hct/hct';
 import * as colorUtils from '../utils/color_utils';
 import * as mathUtils from '../utils/math_utils';
 
-// libmonet is designed to have a consistent API across platforms
-// and modular components that can be moved around easily. Using a class as a
-// namespace facilitates this.
+// material_color_utilities is designed to have a consistent API across
+// platforms and modular components that can be moved around easily. Using a
+// class as a namespace facilitates this.
 //
 // tslint:disable:class-as-namespace
 
