@@ -32,16 +32,9 @@ TEST(WuTest, FullImage) {
     pixels[i] = i % 8000;
   }
 
-  uint16_t colors_created = 0;
-
   uint16_t max_colors = 128;
 
-  clock_t begin = clock();
   QuantizeWu(pixels, max_colors);
-  clock_t end = clock();
-  double time_spent = static_cast<double>(end - begin) / CLOCKS_PER_SEC;
-  LOG(ERROR) << "Wu FullImage took " << time_spent << " and created "
-             << colors_created << " colors";
 }
 
 TEST(WuTest, TwoRedThreeGreen) {

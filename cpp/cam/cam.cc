@@ -21,7 +21,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "base/logging.h"
 #include "material_color_utilities/cpp/cam/hct_solver.h"
 #include "material_color_utilities/cpp/cam/viewing_conditions.h"
 #include "material_color_utilities/cpp/utils/utils.h"

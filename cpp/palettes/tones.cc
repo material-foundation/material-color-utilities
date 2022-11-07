@@ -18,7 +18,6 @@
 
 #include <cstdlib>
 
-#include "base/logging.h"
 #include "material_color_utilities/cpp/cam/cam.h"
 
 namespace material_color_utilities {

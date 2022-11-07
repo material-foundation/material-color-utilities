@@ -43,8 +43,6 @@ TEST(WsmeansTest, FullImage) {
     double time_spent = static_cast<double>(end - begin) / CLOCKS_PER_SEC;
     sum += time_spent;
   }
-
-  LOG(ERROR) << "Average time elapsed: " << (sum / iterations) << " ms";
 }
 
 TEST(WsmeansTest, OneRedAndO) {

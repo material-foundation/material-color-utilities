@@ -27,7 +27,6 @@
 #include <unordered_set>
 #include <vector>
 
-#include "base/logging.h"
 #include "absl/container/flat_hash_map.h"
 #include "material_color_utilities/cpp/quantize/lab.h"
 
@@ -144,7 +143,6 @@ QuantizerResult QuantizeWsmeans(const std::vector<Argb>& input_pixels,
     // Reassign points
     bool color_moved = false;
     for (int i = 0; i < points.size(); i++) {
-      CHECK_LE(points.size(), cluster_indices.size());
       Lab point = points[i];
 
       int previous_cluster_index = cluster_indices[i];
