@@ -203,15 +203,6 @@ TEST(UtilsTest, HexFromArgb) {
   EXPECT_EQ(HexFromArgb(0xff010204), "ff010204");
 }
 
-TEST(UtilsTest, YFromLstar) {
-  EXPECT_THAT(YFromLstar(0.0), DoubleNear(0.0, 1e-4));
-  EXPECT_THAT(YFromLstar(1.0), DoubleNear(0.110706, 1e-4));
-  EXPECT_THAT(YFromLstar(2.0), DoubleNear(0.221411, 1e-4));
-  EXPECT_THAT(YFromLstar(8.0), DoubleNear(0.885645, 1e-4));
-  EXPECT_THAT(YFromLstar(50.0), DoubleNear(18.4187, 1e-4));
-  EXPECT_THAT(YFromLstar(100.0), DoubleNear(100.0, 1e-4));
-}
-
 TEST(UtilsTest, IntFromLstar) {
   // Given an L* brightness value in [0, 100], IntFromLstar returns a greyscale
   // color in ARGB format with that brightness.
@@ -275,6 +266,82 @@ TEST(UtilsTest, ArgbLstarRoundtripProperty) {
             0xfffefefe);
   EXPECT_EQ(static_cast<uint32_t>(IntFromLstar(LstarFromArgb(0xffffffff))),
             0xffffffff);
+}
+
+TEST(UtilsTest, YFromLstar) {
+  EXPECT_THAT(YFromLstar(0.0), DoubleNear(0.0, 1e-5));
+  EXPECT_THAT(YFromLstar(0.1), DoubleNear(0.0110705, 1e-5));
+  EXPECT_THAT(YFromLstar(0.2), DoubleNear(0.0221411, 1e-5));
+  EXPECT_THAT(YFromLstar(0.3), DoubleNear(0.0332116, 1e-5));
+  EXPECT_THAT(YFromLstar(0.4), DoubleNear(0.0442822, 1e-5));
+  EXPECT_THAT(YFromLstar(0.5), DoubleNear(0.0553528, 1e-5));
+  EXPECT_THAT(YFromLstar(1.0), DoubleNear(0.1107056, 1e-5));
+  EXPECT_THAT(YFromLstar(2.0), DoubleNear(0.2214112, 1e-5));
+  EXPECT_THAT(YFromLstar(3.0), DoubleNear(0.3321169, 1e-5));
+  EXPECT_THAT(YFromLstar(4.0), DoubleNear(0.4428225, 1e-5));
+  EXPECT_THAT(YFromLstar(5.0), DoubleNear(0.5535282, 1e-5));
+  EXPECT_THAT(YFromLstar(8.0), DoubleNear(0.8856451, 1e-5));
+  EXPECT_THAT(YFromLstar(10.0), DoubleNear(1.1260199, 1e-5));
+  EXPECT_THAT(YFromLstar(15.0), DoubleNear(1.9085832, 1e-5));
+  EXPECT_THAT(YFromLstar(20.0), DoubleNear(2.9890524, 1e-5));
+  EXPECT_THAT(YFromLstar(25.0), DoubleNear(4.4154767, 1e-5));
+  EXPECT_THAT(YFromLstar(30.0), DoubleNear(6.2359055, 1e-5));
+  EXPECT_THAT(YFromLstar(40.0), DoubleNear(11.2509737, 1e-5));
+  EXPECT_THAT(YFromLstar(50.0), DoubleNear(18.4186518, 1e-5));
+  EXPECT_THAT(YFromLstar(60.0), DoubleNear(28.1233342, 1e-5));
+  EXPECT_THAT(YFromLstar(70.0), DoubleNear(40.7494157, 1e-5));
+  EXPECT_THAT(YFromLstar(80.0), DoubleNear(56.6812907, 1e-5));
+  EXPECT_THAT(YFromLstar(90.0), DoubleNear(76.3033539, 1e-5));
+  EXPECT_THAT(YFromLstar(95.0), DoubleNear(87.6183294, 1e-5));
+  EXPECT_THAT(YFromLstar(99.0), DoubleNear(97.4360239, 1e-5));
+  EXPECT_THAT(YFromLstar(100.0), DoubleNear(100.0, 1e-5));
+}
+
+TEST(UtilsTest, LstarFromY) {
+  EXPECT_THAT(LstarFromY(0.0), DoubleNear(0.0, 1e-5));
+  EXPECT_THAT(LstarFromY(0.1), DoubleNear(0.9032962, 1e-5));
+  EXPECT_THAT(LstarFromY(0.2), DoubleNear(1.8065925, 1e-5));
+  EXPECT_THAT(LstarFromY(0.3), DoubleNear(2.7098888, 1e-5));
+  EXPECT_THAT(LstarFromY(0.4), DoubleNear(3.6131851, 1e-5));
+  EXPECT_THAT(LstarFromY(0.5), DoubleNear(4.5164814, 1e-5));
+  EXPECT_THAT(LstarFromY(0.8856451), DoubleNear(8.0, 1e-5));
+  EXPECT_THAT(LstarFromY(1.0), DoubleNear(8.9914424, 1e-5));
+  EXPECT_THAT(LstarFromY(2.0), DoubleNear(15.4872443, 1e-5));
+  EXPECT_THAT(LstarFromY(3.0), DoubleNear(20.0438970, 1e-5));
+  EXPECT_THAT(LstarFromY(4.0), DoubleNear(23.6714419, 1e-5));
+  EXPECT_THAT(LstarFromY(5.0), DoubleNear(26.7347653, 1e-5));
+  EXPECT_THAT(LstarFromY(10.0), DoubleNear(37.8424304, 1e-5));
+  EXPECT_THAT(LstarFromY(15.0), DoubleNear(45.6341970, 1e-5));
+  EXPECT_THAT(LstarFromY(20.0), DoubleNear(51.8372115, 1e-5));
+  EXPECT_THAT(LstarFromY(25.0), DoubleNear(57.0754208, 1e-5));
+  EXPECT_THAT(LstarFromY(30.0), DoubleNear(61.6542222, 1e-5));
+  EXPECT_THAT(LstarFromY(40.0), DoubleNear(69.4695307, 1e-5));
+  EXPECT_THAT(LstarFromY(50.0), DoubleNear(76.0692610, 1e-5));
+  EXPECT_THAT(LstarFromY(60.0), DoubleNear(81.8381891, 1e-5));
+  EXPECT_THAT(LstarFromY(70.0), DoubleNear(86.9968642, 1e-5));
+  EXPECT_THAT(LstarFromY(80.0), DoubleNear(91.6848609, 1e-5));
+  EXPECT_THAT(LstarFromY(90.0), DoubleNear(95.9967686, 1e-5));
+  EXPECT_THAT(LstarFromY(95.0), DoubleNear(98.0335184, 1e-5));
+  EXPECT_THAT(LstarFromY(99.0), DoubleNear(99.6120372, 1e-5));
+  EXPECT_THAT(LstarFromY(100.0), DoubleNear(100.0, 1e-5));
+}
+
+TEST(UtilsTest, YLstarRoundtripProperty) {
+  // Confirms that Y -> L* -> Y preserves original value.
+  for (double y = 0.0; y <= 100.0; y += 0.1) {
+    double lstar = LstarFromY(y);
+    double reconstructedY = YFromLstar(lstar);
+    EXPECT_THAT(reconstructedY, DoubleNear(y, 1e-8));
+  }
+}
+
+TEST(UtilsTest, LstarYRoundtripProperty) {
+  // Confirms that L* -> Y -> L* preserves original value.
+  for (double lstar = 0.0; lstar <= 100.0; lstar += 0.1) {
+    double y = YFromLstar(lstar);
+    double reconstructedLstar = LstarFromY(y);
+    EXPECT_THAT(reconstructedLstar, DoubleNear(lstar, 1e-8));
+  }
 }
 
 }  // namespace

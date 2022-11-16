@@ -166,6 +166,20 @@ int Delinearized(const double rgb_component);
 double YFromLstar(const double lstar);
 
 /**
+ * Converts a Y value to an L* value.
+ *
+ * L* in L*a*b* and Y in XYZ measure the same quantity, luminance.
+ *
+ * L* measures perceptual luminance, a linear scale. Y in XYZ
+ * measures relative luminance, a logarithmic scale.
+ *
+ * @param y Y in XYZ. 0.0 <= Y <= 100.0
+ *
+ * @return L* in L*a*b*. 0.0 <= L* <= 100.0
+ */
+double LstarFromY(const double y);
+
+/**
  * Converts an L* value to an ARGB representation.
  *
  * @param lstar L* in L*a*b*. 0.0 <= L* <= 100.0

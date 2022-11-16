@@ -80,14 +80,8 @@ double LstarFromArgb(Argb argb) {
   double red_l = Linearized(red);
   double green_l = Linearized(green);
   double blue_l = Linearized(blue);
-  double y = (0.2126 * red_l + 0.7152 * green_l + 0.0722 * blue_l) / 100.0;
-  double e = 216.0 / 24389.0;
-  if (y <= e) {
-    return ((24389.0 / 27.0) * y);
-  } else {
-    double y_intermediate = std::pow(y, 1.0 / 3.0);
-    return (116.0 * y_intermediate) - 16.0;
-  }
+  double y = 0.2126 * red_l + 0.7152 * green_l + 0.0722 * blue_l;
+  return LstarFromY(y);
 }
 
 double YFromLstar(double lstar) {
@@ -98,6 +92,16 @@ double YFromLstar(double lstar) {
     return cube * 100.0;
   } else {
     return lstar / (24389.0 / 27.0) * 100.0;
+  }
+}
+
+double LstarFromY(double y) {
+  static const double e = 216.0 / 24389.0;
+  double yNormalized = y / 100.0;
+  if (yNormalized <= e) {
+    return (24389.0 / 27.0) * yNormalized;
+  } else {
+    return 116.0 * std::pow(yNormalized, 1.0 / 3.0) - 16.0;
   }
 }
 
