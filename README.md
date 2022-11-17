@@ -10,7 +10,7 @@ a new color space.
 
 Language    | Availability  | Package
 ----------- | ------------- | ------------------------------------------------------------------------------------------
-C/C++       | *Coming soon* |
+C++         | ✅             |
 Dart        | ✅             | [![pub package](https://img.shields.io/pub/v/material_color_utilities.svg)](https://pub.dev/packages/material_color_utilities)
 Java        | ✅             | *Coming soon*
 Objective-C | *Coming soon* |

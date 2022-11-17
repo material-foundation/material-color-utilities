@@ -187,6 +187,19 @@ class ColorUtils {
     return 100.0 * _labInvf((lstar + 16.0) / 116.0);
   }
 
+  /// Converts a Y value to an L* value.
+  ///
+  /// L* in L*a*b* and Y in XYZ measure the same quantity, luminance.
+  ///
+  /// L* measures perceptual luminance, a linear scale. Y in XYZ
+  /// measures relative luminance, a logarithmic scale.
+  ///
+  /// [y] Y in XYZ
+  /// Returns L* in L*a*b*
+  static double lstarFromY(double y) {
+    return _labF(y / 100.0) * 116.0 - 16.0;
+  }
+
   /// Linearizes an RGB component.
   ///
   /// [rgbComponent] 0 <= rgb_component <= 255, represents R/G/B
