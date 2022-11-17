@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef MATERIAL_COLOR_UTILITIES_CPP_QUANTIZE_LAB_H_
-#define MATERIAL_COLOR_UTILITIES_CPP_QUANTIZE_LAB_H_
+#ifndef CPP_QUANTIZE_LAB_H_
+#define CPP_QUANTIZE_LAB_H_
 
 #include <algorithm>
 #include <cmath>
@@ -28,7 +28,7 @@
 #include <unordered_set>
 #include <vector>
 
-#include "material_color_utilities/cpp/utils/utils.h"
+#include "cpp/utils/utils.h"
 
 namespace material_color_utilities {
 
@@ -54,4 +54,4 @@ Argb IntFromLab(const Lab lab);
 Lab LabFromInt(const Argb argb);
 
 }  // namespace material_color_utilities
-#endif  // MATERIAL_COLOR_UTILITIES_CPP_QUANTIZE_LAB_H_
+#endif  // CPP_QUANTIZE_LAB_H_

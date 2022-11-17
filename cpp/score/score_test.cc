@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "material_color_utilities/cpp/score/score.h"
+#include "cpp/score/score.h"
 
 #include <map>
 #include <vector>

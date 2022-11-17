@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef MATERIAL_COLOR_UTILITIES_CPP_CAM_CAM_H_
-#define MATERIAL_COLOR_UTILITIES_CPP_CAM_CAM_H_
+#ifndef CPP_CAM_CAM_H_
+#define CPP_CAM_CAM_H_
 
-#include "material_color_utilities/cpp/cam/viewing_conditions.h"
-#include "material_color_utilities/cpp/utils/utils.h"
+#include "cpp/cam/viewing_conditions.h"
+#include "cpp/utils/utils.h"
 
 namespace material_color_utilities {
 
@@ -44,4 +44,4 @@ Cam CamFromUcsAndViewingConditions(double jstar, double astar, double bstar,
                                    const ViewingConditions &viewing_conditions);
 
 }  // namespace material_color_utilities
-#endif  // MATERIAL_COLOR_UTILITIES_CPP_CAM_CAM_H_
+#endif  // CPP_CAM_CAM_H_

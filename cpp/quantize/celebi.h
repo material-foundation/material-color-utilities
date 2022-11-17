@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-#ifndef MATERIAL_COLOR_UTILITIES_CPP_QUANTIZE_CELEBI_H_
-#define MATERIAL_COLOR_UTILITIES_CPP_QUANTIZE_CELEBI_H_
+#ifndef CPP_QUANTIZE_CELEBI_H_
+#define CPP_QUANTIZE_CELEBI_H_
 
 #include <stdint.h>
 #include <stdlib.h>
 
 #include <vector>
 
-#include "material_color_utilities/cpp/quantize/wsmeans.h"
-#include "material_color_utilities/cpp/utils/utils.h"
+#include "cpp/quantize/wsmeans.h"
+#include "cpp/utils/utils.h"
 
 namespace material_color_utilities {
 
@@ -32,4 +32,4 @@ QuantizerResult QuantizeCelebi(const std::vector<Argb>& pixels,
 
 }  // namespace material_color_utilities
 
-#endif  // MATERIAL_COLOR_UTILITIES_CPP_QUANTIZE_CELEBI_H_
+#endif  // CPP_QUANTIZE_CELEBI_H_

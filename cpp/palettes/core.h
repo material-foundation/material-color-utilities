@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef MATERIAL_COLOR_UTILITIES_CPP_PALETTES_CORE_H_
-#define MATERIAL_COLOR_UTILITIES_CPP_PALETTES_CORE_H_
+#ifndef CPP_PALETTES_CORE_H_
+#define CPP_PALETTES_CORE_H_
 
-#include "material_color_utilities/cpp/palettes/tones.h"
+#include "cpp/palettes/tones.h"
 
 namespace material_color_utilities {
 
@@ -68,4 +68,4 @@ class CorePalette {
 
 }  // namespace material_color_utilities
 
-#endif  // MATERIAL_COLOR_UTILITIES_CPP_PALETTES_CORE_H_
+#endif  // CPP_PALETTES_CORE_H_

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef MATERIAL_COLOR_UTILITIES_CPP_PALETTES_TONES_H_
-#define MATERIAL_COLOR_UTILITIES_CPP_PALETTES_TONES_H_
+#ifndef CPP_PALETTES_TONES_H_
+#define CPP_PALETTES_TONES_H_
 
-#include "material_color_utilities/cpp/utils/utils.h"
+#include "cpp/utils/utils.h"
 
 namespace material_color_utilities {
 
@@ -40,4 +40,4 @@ class TonalPalette {
 };
 
 }  // namespace material_color_utilities
-#endif  // MATERIAL_COLOR_UTILITIES_CPP_PALETTES_TONES_H_
+#endif  // CPP_PALETTES_TONES_H_

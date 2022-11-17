@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "material_color_utilities/cpp/cam/cam.h"
+#include "cpp/cam/cam.h"
 
 #include "testing/base/public/gmock.h"
 #include "testing/base/public/gunit.h"

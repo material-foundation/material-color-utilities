@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "material_color_utilities/cpp/quantize/wu.h"
+#include "cpp/quantize/wu.h"
 
 #include <stdlib.h>
 
@@ -26,7 +26,7 @@
 #include <ostream>
 #include <vector>
 
-#include "material_color_utilities/cpp/utils/utils.h"
+#include "cpp/utils/utils.h"
 
 namespace material_color_utilities {
 

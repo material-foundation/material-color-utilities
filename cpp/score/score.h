@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#ifndef MATERIAL_COLOR_UTILITIES_CPP_SCORE_SCORE_H_
-#define MATERIAL_COLOR_UTILITIES_CPP_SCORE_SCORE_H_
+#ifndef CPP_SCORE_SCORE_H_
+#define CPP_SCORE_SCORE_H_
 
 #include <map>
 #include <vector>
 
-#include "material_color_utilities/cpp/utils/utils.h"
+#include "cpp/utils/utils.h"
 
 namespace material_color_utilities {
 
@@ -28,4 +28,4 @@ std::vector<Argb> RankedSuggestions(
     const std::map<Argb, int>& argb_to_population);
 }  // namespace material_color_utilities
 
-#endif  // MATERIAL_COLOR_UTILITIES_CPP_SCORE_SCORE_H_
+#endif  // CPP_SCORE_SCORE_H_

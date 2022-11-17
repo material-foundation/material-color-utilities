@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef MATERIAL_COLOR_UTILITIES_CPP_UTILS_UTILS_H_
-#define MATERIAL_COLOR_UTILITIES_CPP_UTILS_UTILS_H_
+#ifndef CPP_UTILS_UTILS_H_
+#define CPP_UTILS_UTILS_H_
 
 #include <cstdint>
 #include <string>
@@ -201,4 +201,4 @@ int Signum(double num);
 Vec3 MatrixMultiply(Vec3 input, const double matrix[3][3]);
 
 }  // namespace material_color_utilities
-#endif  // MATERIAL_COLOR_UTILITIES_CPP_UTILS_UTILS_H_
+#endif  // CPP_UTILS_UTILS_H_

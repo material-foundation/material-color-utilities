@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef MATERIAL_COLOR_UTILITIES_CPP_CAM_HCT_H_
-#define MATERIAL_COLOR_UTILITIES_CPP_CAM_HCT_H_
+#ifndef CPP_CAM_HCT_H_
+#define CPP_CAM_HCT_H_
 
-#include "material_color_utilities/cpp/utils/utils.h"
+#include "cpp/utils/utils.h"
 
 namespace material_color_utilities {
 
@@ -129,4 +129,4 @@ class Hct {
 
 }  // namespace material_color_utilities
 
-#endif  // MATERIAL_COLOR_UTILITIES_CPP_CAM_HCT_H_
+#endif  // CPP_CAM_HCT_H_
