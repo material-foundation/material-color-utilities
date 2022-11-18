@@ -18,7 +18,7 @@ package quantize;
 
 import utils.ColorUtils;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +51,7 @@ public final class QuantizerWu implements Quantizer {
     createMoments();
     CreateBoxesResult createBoxesResult = createBoxes(colorCount);
     List<Integer> colors = createResult(createBoxesResult.resultCount);
-    HashMap<Integer, Integer> resultMap = new HashMap<>();
+    Map<Integer, Integer> resultMap = new LinkedHashMap<>();
     for (int color : colors) {
       resultMap.put(color, 0);
     }
@@ -199,7 +199,7 @@ public final class QuantizerWu implements Quantizer {
 
     int hypotenuse = dr * dr + dg * dg + db * db;
     int volume = volume(cube, weights);
-    return xx - (hypotenuse / volume);
+    return xx - hypotenuse / ((double) volume);
   }
 
   Boolean cut(Box one, Box two) {

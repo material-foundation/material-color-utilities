@@ -19,8 +19,9 @@ package quantize;
 import static java.lang.Math.min;
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * An image quantizer that improves on the speed of a standard K-Means algorithm by implementing
@@ -69,7 +70,10 @@ public final class QuantizerWsmeans {
    */
   public static Map<Integer, Integer> quantize(
       int[] inputPixels, int[] startingClusters, int maxColors) {
-    Map<Integer, Integer> pixelToCount = new HashMap<>();
+    // Uses a seeded random number generator to ensure consistent results.
+    Random random = new Random(0x42688);
+
+    Map<Integer, Integer> pixelToCount = new LinkedHashMap<>();
     double[][] points = new double[inputPixels.length][];
     int[] pixels = new int[inputPixels.length];
     PointProvider pointProvider = new PointProviderLab();
@@ -115,7 +119,7 @@ public final class QuantizerWsmeans {
 
     int[] clusterIndices = new int[pointCount];
     for (int i = 0; i < pointCount; i++) {
-      clusterIndices[i] = (int) Math.floor(Math.random() * clusterCount);
+      clusterIndices[i] = random.nextInt(clusterCount);
     }
 
     int[][] indexMatrix = new int[clusterCount][];
@@ -209,7 +213,7 @@ public final class QuantizerWsmeans {
       }
     }
 
-    Map<Integer, Integer> argbToPopulation = new HashMap<>();
+    Map<Integer, Integer> argbToPopulation = new LinkedHashMap<>();
     for (int i = 0; i < clusterCount; i++) {
       int count = pixelCountSums[i];
       if (count == 0) {
