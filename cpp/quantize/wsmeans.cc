@@ -217,9 +217,9 @@ QuantizerResult QuantizeWsmeans(const std::vector<Argb>& input_pixels,
     }
     Argb possible_new_cluster = IntFromLab(clusters[i]);
     int use_new_cluster = 1;
-    for (size_t i = 0; i < swatches.size(); i++) {
-      if (swatches[i].argb == possible_new_cluster) {
-        swatches[i].population += count;
+    for (size_t j = 0; j < swatches.size(); j++) {
+      if (swatches[j].argb == possible_new_cluster) {
+        swatches[j].population += count;
         use_new_cluster = 0;
         break;
       }

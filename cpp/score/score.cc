@@ -94,8 +94,8 @@ std::vector<Argb> RankedSuggestions(
   for (int i = 0; i < input_size; i++) {
     int hue = round(colors[i].cam.hue);
     for (int j = (hue - 15); j < (hue + 15); j++) {
-      int hue = SanitizeDegreesInt(j);
-      colors[i].excited_proportion += hue_proportions[hue];
+      int sanitized_hue = SanitizeDegreesInt(j);
+      colors[i].excited_proportion += hue_proportions[sanitized_hue];
     }
   }
 
