@@ -27,7 +27,7 @@ namespace {
 
 TEST(CelebiTest, FullImage) {
   std::vector<Argb> pixels(12544);
-  for (int i = 0; i < pixels.size(); i++) {
+  for (size_t i = 0; i < pixels.size(); i++) {
     // Creates 128 distinct colors
     pixels[i] = i % 8000;
   }
@@ -49,7 +49,7 @@ TEST(CelebiTest, OneRed) {
   std::vector<Argb> pixels;
   pixels.push_back(0xffff0000);
   QuantizerResult result = QuantizeCelebi(pixels, 256);
-  EXPECT_EQ(result.color_to_count.size(), 1);
+  EXPECT_EQ(result.color_to_count.size(), 1u);
   EXPECT_EQ(result.color_to_count[0xffff0000], 1);
 }
 
@@ -57,7 +57,7 @@ TEST(CelebiTest, OneGreen) {
   std::vector<Argb> pixels;
   pixels.push_back(0xff00ff00);
   QuantizerResult result = QuantizeCelebi(pixels, 256);
-  EXPECT_EQ(result.color_to_count.size(), 1);
+  EXPECT_EQ(result.color_to_count.size(), 1u);
   EXPECT_EQ(result.color_to_count[0xff00ff00], 1);
 }
 
@@ -65,7 +65,7 @@ TEST(CelebiTest, OneBlue) {
   std::vector<Argb> pixels;
   pixels.push_back(0xff0000ff);
   QuantizerResult result = QuantizeCelebi(pixels, 256);
-  EXPECT_EQ(result.color_to_count.size(), 1);
+  EXPECT_EQ(result.color_to_count.size(), 1u);
   EXPECT_EQ(result.color_to_count[0xff0000ff], 1);
 }
 
@@ -75,7 +75,7 @@ TEST(CelebiTest, FiveBlue) {
     pixels.push_back(0xff0000ff);
   }
   QuantizerResult result = QuantizeCelebi(pixels, 256);
-  EXPECT_EQ(result.color_to_count.size(), 1);
+  EXPECT_EQ(result.color_to_count.size(), 1u);
   EXPECT_EQ(result.color_to_count[0xff0000ff], 5);
 }
 
@@ -85,7 +85,7 @@ TEST(CelebiTest, OneRedOneGreenOneBlue) {
   pixels.push_back(0xff00ff00);
   pixels.push_back(0xff0000ff);
   QuantizerResult result = QuantizeCelebi(pixels, 256);
-  EXPECT_EQ(result.color_to_count.size(), 3);
+  EXPECT_EQ(result.color_to_count.size(), 3u);
   EXPECT_EQ(result.color_to_count[0xffff0000], 1);
   EXPECT_EQ(result.color_to_count[0xff00ff00], 1);
   EXPECT_EQ(result.color_to_count[0xff0000ff], 1);
@@ -99,7 +99,7 @@ TEST(CelebiTest, TwoRedThreeGreen) {
   pixels.push_back(0xff00ff00);
   pixels.push_back(0xff00ff00);
   QuantizerResult result = QuantizeCelebi(pixels, 256);
-  EXPECT_EQ(result.color_to_count.size(), 2);
+  EXPECT_EQ(result.color_to_count.size(), 2u);
   EXPECT_EQ(result.color_to_count[0xffff0000], 2);
   EXPECT_EQ(result.color_to_count[0xff00ff00], 3);
 }

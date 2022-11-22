@@ -25,7 +25,7 @@ namespace material_color_utilities {
 namespace {
 TEST(WsmeansTest, FullImage) {
   std::vector<Argb> pixels(12544);
-  for (int i = 0; i < pixels.size(); i++) {
+  for (size_t i = 0; i < pixels.size(); i++) {
     // Creates 128 distinct colors
     pixels[i] = i % 8000;
   }
@@ -50,7 +50,7 @@ TEST(WsmeansTest, OneRedAndO) {
   pixels.push_back(0xff141216);
   std::vector<Argb> starting_clusters;
   QuantizerResult result = QuantizeWsmeans(pixels, starting_clusters, 256);
-  EXPECT_EQ(result.color_to_count.size(), 1);
+  EXPECT_EQ(result.color_to_count.size(), 1u);
   EXPECT_EQ(result.color_to_count[0xff141216], 1);
 }
 
@@ -59,7 +59,7 @@ TEST(WsmeansTest, OneRed) {
   pixels.push_back(0xffff0000);
   std::vector<Argb> starting_clusters;
   QuantizerResult result = QuantizeWsmeans(pixels, starting_clusters, 256);
-  EXPECT_EQ(result.color_to_count.size(), 1);
+  EXPECT_EQ(result.color_to_count.size(), 1u);
   EXPECT_EQ(result.color_to_count[0xffff0000], 1);
 }
 
@@ -68,7 +68,7 @@ TEST(WsmeansTest, OneGreen) {
   pixels.push_back(0xff00ff00);
   std::vector<Argb> starting_clusters;
   QuantizerResult result = QuantizeWsmeans(pixels, starting_clusters, 256);
-  EXPECT_EQ(result.color_to_count.size(), 1);
+  EXPECT_EQ(result.color_to_count.size(), 1u);
   EXPECT_EQ(result.color_to_count[0xff00ff00], 1);
 }
 
@@ -77,7 +77,7 @@ TEST(WsmeansTest, OneBlue) {
   pixels.push_back(0xff0000ff);
   std::vector<Argb> starting_clusters;
   QuantizerResult result = QuantizeWsmeans(pixels, starting_clusters, 256);
-  EXPECT_EQ(result.color_to_count.size(), 1);
+  EXPECT_EQ(result.color_to_count.size(), 1u);
   EXPECT_EQ(result.color_to_count[0xff0000ff], 1);
 }
 
@@ -88,7 +88,7 @@ TEST(WsmeansTest, FiveBlue) {
   }
   std::vector<Argb> starting_clusters;
   QuantizerResult result = QuantizeWsmeans(pixels, starting_clusters, 256);
-  EXPECT_EQ(result.color_to_count.size(), 1);
+  EXPECT_EQ(result.color_to_count.size(), 1u);
   EXPECT_EQ(result.color_to_count[0xff0000ff], 5);
 }
 

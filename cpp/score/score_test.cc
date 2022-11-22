@@ -31,7 +31,7 @@ TEST(ScoreTest, MostChromaWins) {
 
   std::vector<Argb> ranked = RankedSuggestions(argb_to_population);
 
-  EXPECT_EQ(ranked.size(), 1);
+  EXPECT_EQ(ranked.size(), 1u);
   EXPECT_EQ(ranked[0], 0xff0000ff);
 }
 
@@ -41,7 +41,7 @@ TEST(ScoreTest, MostChromaWins2) {
 
   std::vector<Argb> ranked = RankedSuggestions(argb_to_population);
 
-  EXPECT_EQ(ranked.size(), 3);
+  EXPECT_EQ(ranked.size(), 3u);
   EXPECT_EQ(ranked[0], 0xffff0000);
   EXPECT_EQ(ranked[1], 0xff00ff00);
   EXPECT_EQ(ranked[2], 0xff0000ff);
@@ -52,7 +52,7 @@ TEST(ScoreTest, DedupesNearbyHues) {
 
   std::vector<Argb> ranked = RankedSuggestions(argb_to_population);
 
-  EXPECT_EQ(ranked.size(), 1);
+  EXPECT_EQ(ranked.size(), 1u);
   EXPECT_EQ(ranked[0], 0xff008772);
 }
 
@@ -61,7 +61,7 @@ TEST(ScoreTest, UsesGblueFallback) {
 
   std::vector<Argb> ranked = RankedSuggestions(argb_to_population);
 
-  EXPECT_EQ(ranked.size(), 1);
+  EXPECT_EQ(ranked.size(), 1u);
   EXPECT_EQ(ranked[0], 0xff4285f4);
 }
 

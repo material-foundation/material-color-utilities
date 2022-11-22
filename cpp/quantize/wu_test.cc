@@ -27,7 +27,7 @@ namespace {
 
 TEST(WuTest, FullImage) {
   std::vector<Argb> pixels(12544);
-  for (int i = 0; i < pixels.size(); i++) {
+  for (size_t i = 0; i < pixels.size(); i++) {
     // Creates 128 distinct colors
     pixels[i] = i % 8000;
   }
@@ -45,14 +45,14 @@ TEST(WuTest, TwoRedThreeGreen) {
   pixels.push_back(0xff00ff00);
   pixels.push_back(0xff00ff00);
   std::vector<Argb> result = QuantizeWu(pixels, 256);
-  EXPECT_EQ(result.size(), 2);
+  EXPECT_EQ(result.size(), 2u);
 }
 
 TEST(WuTest, OneRed) {
   std::vector<Argb> pixels;
   pixels.push_back(0xffff0000);
   std::vector<Argb> result = QuantizeWu(pixels, 256);
-  EXPECT_EQ(result.size(), 1);
+  EXPECT_EQ(result.size(), 1u);
   EXPECT_EQ(result[0], 0xffff0000);
 }
 
@@ -60,7 +60,7 @@ TEST(WuTest, OneGreen) {
   std::vector<Argb> pixels;
   pixels.push_back(0xff00ff00);
   std::vector<Argb> result = QuantizeWu(pixels, 256);
-  EXPECT_EQ(result.size(), 1);
+  EXPECT_EQ(result.size(), 1u);
   EXPECT_EQ(result[0], 0xff00ff00);
 }
 
@@ -68,7 +68,7 @@ TEST(WuTest, OneBlue) {
   std::vector<Argb> pixels;
   pixels.push_back(0xff0000ff);
   std::vector<Argb> result = QuantizeWu(pixels, 256);
-  EXPECT_EQ(result.size(), 1);
+  EXPECT_EQ(result.size(), 1u);
   EXPECT_EQ(result[0], 0xff0000ff);
 }
 
@@ -78,7 +78,7 @@ TEST(WuTest, FiveBlue) {
     pixels.push_back(0xff0000ff);
   }
   std::vector<Argb> result = QuantizeWu(pixels, 256);
-  EXPECT_EQ(result.size(), 1);
+  EXPECT_EQ(result.size(), 1u);
   EXPECT_EQ(result[0], 0xff0000ff);
 }
 
@@ -86,7 +86,7 @@ TEST(WuTest, OneRedAndO) {
   std::vector<Argb> pixels;
   pixels.push_back(0xff141216);
   std::vector<Argb> result = QuantizeWu(pixels, 256);
-  EXPECT_EQ(result.size(), 1);
+  EXPECT_EQ(result.size(), 1u);
   EXPECT_EQ(result[0], 0xff141216);
 }
 
@@ -96,7 +96,7 @@ TEST(WuTest, RedGreenBlue) {
   pixels.push_back(0xff00ff00);
   pixels.push_back(0xff0000ff);
   std::vector<Argb> result = QuantizeWu(pixels, 256);
-  EXPECT_EQ(result.size(), 3);
+  EXPECT_EQ(result.size(), 3u);
   EXPECT_EQ(result[0], 0xff0000ff);
   EXPECT_EQ(result[1], 0xffff0000);
   EXPECT_EQ(result[2], 0xff00ff00);

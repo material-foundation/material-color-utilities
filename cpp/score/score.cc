@@ -121,7 +121,7 @@ std::vector<Argb> RankedSuggestions(
     }
 
     bool is_duplicate_color = false;
-    for (int j = 0; j < selected_colors.size(); j++) {
+    for (size_t j = 0; j < selected_colors.size(); j++) {
       if (ColorsAreTooClose(selected_colors[j], colors[i])) {
         is_duplicate_color = true;
         break;
@@ -142,7 +142,7 @@ std::vector<Argb> RankedSuggestions(
 
   std::vector<Argb> return_value(selected_colors.size());
 
-  for (int j = 0; j < selected_colors.size(); j++) {
+  for (size_t j = 0; j < selected_colors.size(); j++) {
     return_value[j] = selected_colors[j].argb;
   }
 
