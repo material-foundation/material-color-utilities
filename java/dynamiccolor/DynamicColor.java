@@ -57,6 +57,7 @@ public final class DynamicColor {
   public final Function<DynamicScheme, Double> hue;
   public final Function<DynamicScheme, Double> chroma;
   public final Function<DynamicScheme, Double> tone;
+  public final Function<DynamicScheme, Double> opacity;
 
   public final Function<DynamicScheme, DynamicColor> background;
   public final Function<DynamicScheme, Double> toneMinContrast;
@@ -99,6 +100,7 @@ public final class DynamicColor {
       Function<DynamicScheme, Double> hue,
       Function<DynamicScheme, Double> chroma,
       Function<DynamicScheme, Double> tone,
+      Function<DynamicScheme, Double> opacity,
       Function<DynamicScheme, DynamicColor> background,
       Function<DynamicScheme, Double> toneMinContrast,
       Function<DynamicScheme, Double> toneMaxContrast,
@@ -106,6 +108,7 @@ public final class DynamicColor {
     this.hue = hue;
     this.chroma = chroma;
     this.tone = tone;
+    this.opacity = opacity;
     this.background = background;
     this.toneMinContrast = toneMinContrast;
     this.toneMaxContrast = toneMaxContrast;
@@ -243,6 +246,7 @@ public final class DynamicColor {
         scheme -> palette.apply(scheme).getHue(),
         scheme -> palette.apply(scheme).getChroma(),
         tone,
+        null,
         background,
         scheme -> toneMinContrastDefault(tone, background, scheme, toneDeltaConstraint),
         scheme -> toneMaxContrastDefault(tone, background, scheme, toneDeltaConstraint),
@@ -250,7 +254,13 @@ public final class DynamicColor {
   }
 
   public int getArgb(DynamicScheme scheme) {
-    return getHct(scheme).toInt();
+    final int argb = getHct(scheme).toInt();
+    if (opacity == null) {
+      return argb;
+    }
+    final double percentage = opacity.apply(scheme);
+    final int alpha = MathUtils.clampInt(0, 255, (int) Math.round(percentage * 255));
+    return (argb & 0x00ffffff) | (alpha << 24);
   }
 
   public Hct getHct(DynamicScheme scheme) {
