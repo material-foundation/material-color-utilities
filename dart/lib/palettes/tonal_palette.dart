@@ -46,7 +46,9 @@ class TonalPalette {
   static final commonSize = commonTones.length;
 
   final double? _hue;
+  double get hue => _hue ?? 0.0;
   final double? _chroma;
+  double get chroma => _chroma ?? 0.0;
   final Map<int, int> _cache;
 
   TonalPalette._fromHueAndChroma(double hue, double chroma)
