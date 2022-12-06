@@ -19,6 +19,8 @@ import 'package:material_color_utilities/utils/color_utils.dart';
 import 'package:material_color_utilities/utils/string_utils.dart';
 import 'package:test/test.dart';
 
+import './utils/color_matcher.dart';
+
 const black = 0xff000000;
 const white = 0xffffffff;
 const red = 0xffff0000;
@@ -193,5 +195,154 @@ void main() {
         }
       }
     }
+  });
+
+  group('CAM16 to XYZ', () {
+    test('without array', () {
+      final colorToTest = red;
+      final cam = Cam16.fromInt(colorToTest);
+      final xyz = cam.xyzInViewingConditions(ViewingConditions.sRgb);
+      expect(xyz[0], closeTo(41.23, 0.01));
+      expect(xyz[1], closeTo(21.26, 0.01));
+      expect(xyz[2], closeTo(1.93, 0.01));
+    });
+
+    test('with array', () {
+      final colorToTest = red;
+      final cam = Cam16.fromInt(colorToTest);
+      final xyz =
+          cam.xyzInViewingConditions(ViewingConditions.sRgb, array: [0, 0, 0]);
+      expect(xyz[0], closeTo(41.23, 0.01));
+      expect(xyz[1], closeTo(21.26, 0.01));
+      expect(xyz[2], closeTo(1.93, 0.01));
+    });
+  });
+
+  group('Color Relativity', () {
+    test('red in black', () {
+      final colorToTest = red;
+      final hct = Hct.fromInt(colorToTest);
+      expect(
+          hct
+              .inViewingConditions(ViewingConditions.make(backgroundLstar: 0.0))
+              .toInt(),
+          isColor(0xff9F5C51));
+    });
+
+    test('red in white', () {
+      final colorToTest = red;
+      final hct = Hct.fromInt(colorToTest);
+      expect(
+          hct
+              .inViewingConditions(
+                  ViewingConditions.make(backgroundLstar: 100.0))
+              .toInt(),
+          isColor(0xffFF5D48));
+    });
+
+    test('green in black', () {
+      final colorToTest = green;
+      final hct = Hct.fromInt(colorToTest);
+      expect(
+          hct
+              .inViewingConditions(ViewingConditions.make(backgroundLstar: 0.0))
+              .toInt(),
+          isColor(0xffACD69D));
+    });
+
+    test('green in white', () {
+      final colorToTest = green;
+      final hct = Hct.fromInt(colorToTest);
+      expect(
+          hct
+              .inViewingConditions(
+                  ViewingConditions.make(backgroundLstar: 100.0))
+              .toInt(),
+          isColor(0xff8EFF77));
+    });
+
+    test('blue in black', () {
+      final colorToTest = blue;
+      final hct = Hct.fromInt(colorToTest);
+      expect(
+          hct
+              .inViewingConditions(ViewingConditions.make(backgroundLstar: 0.0))
+              .toInt(),
+          isColor(0xff343654));
+    });
+
+    test('blue in white', () {
+      final colorToTest = blue;
+      final hct = Hct.fromInt(colorToTest);
+      expect(
+          hct
+              .inViewingConditions(
+                  ViewingConditions.make(backgroundLstar: 100.0))
+              .toInt(),
+          isColor(0xff3F49FF));
+    });
+
+    test('white in black', () {
+      final colorToTest = white;
+      final hct = Hct.fromInt(colorToTest);
+      expect(
+          hct
+              .inViewingConditions(ViewingConditions.make(backgroundLstar: 0.0))
+              .toInt(),
+          isColor(0xffFFFFFF));
+    });
+
+    test('white in white', () {
+      final colorToTest = white;
+      final hct = Hct.fromInt(colorToTest);
+      expect(
+          hct
+              .inViewingConditions(
+                  ViewingConditions.make(backgroundLstar: 100.0))
+              .toInt(),
+          isColor(0xffFFFFFF));
+    });
+
+    test('midgray in black', () {
+      final colorToTest = midgray;
+      final hct = Hct.fromInt(colorToTest);
+      expect(
+          hct
+              .inViewingConditions(ViewingConditions.make(backgroundLstar: 0.0))
+              .toInt(),
+          isColor(0xff605F5F));
+    });
+
+    test('midgray in white', () {
+      final colorToTest = midgray;
+      final hct = Hct.fromInt(colorToTest);
+      expect(
+          hct
+              .inViewingConditions(
+                  ViewingConditions.make(backgroundLstar: 100.0))
+              .toInt(),
+          isColor(0xff8E8E8E));
+    });
+
+    test('black in black', () {
+      final colorToTest = black;
+      final hct = Hct.fromInt(colorToTest);
+      expect(
+          hct
+              .inViewingConditions(ViewingConditions.make(backgroundLstar: 0.0))
+              .toInt(),
+          isColor(0xff000000));
+    });
+
+    test('black in white', () {
+      final colorToTest = black;
+      final hct = Hct.fromInt(colorToTest);
+      expect(
+          hct
+              .inViewingConditions(
+                  ViewingConditions.make(backgroundLstar: 100.0))
+              .toInt(),
+          isColor(0xff000000));
+    });
   });
 }

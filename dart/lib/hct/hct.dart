@@ -16,6 +16,7 @@ import 'package:material_color_utilities/utils/color_utils.dart';
 
 import 'cam16.dart';
 import 'hct_solver.dart';
+import 'viewing_conditions.dart';
 
 /// HCT, hue, chroma, and tone. A color system that provides a perceptually
 /// accurate color measurement system that can also accurately render what
@@ -118,5 +119,41 @@ class Hct {
     _hue = cam16.hue;
     _chroma = cam16.chroma;
     _tone = ColorUtils.lstarFromArgb(_argb);
+  }
+
+  /// Translate a color into different [ViewingConditions].
+  ///
+  /// Colors change appearance. They look different with lights on versus off,
+  /// the same color, as in hex code, on white looks different when on black.
+  /// This is called color relativity, most famously explicated by Josef Albers
+  /// in Interaction of Color.
+  ///
+  /// In color science, color appearance models can account for this and
+  /// calculate the appearance of a color in different settings. HCT is based on
+  /// CAM16, a color appearance model, and uses it to make these calculations.
+  ///
+  /// See [ViewingConditions.make] for parameters affecting color appearance.
+  Hct inViewingConditions(ViewingConditions vc) {
+    // 1. Use CAM16 to find XYZ coordinates of color in specified VC.
+    final cam16 = Cam16.fromInt(toInt());
+    final viewedInVc = cam16.xyzInViewingConditions(vc);
+
+    // 2. Create CAM16 of those XYZ coordinates in default VC.
+    final recastInVc = Cam16.fromXyzInViewingConditions(
+      viewedInVc[0],
+      viewedInVc[1],
+      viewedInVc[2],
+      ViewingConditions.make(),
+    );
+
+    // 3. Create HCT from:
+    // - CAM16 using default VC with XYZ coordinates in specified VC.
+    // - L* converted from Y in XYZ coordinates in specified VC.
+    final recastHct = Hct.from(
+      recastInVc.hue,
+      recastInVc.chroma,
+      ColorUtils.lstarFromY(viewedInVc[1]),
+    );
+    return recastHct;
   }
 }
