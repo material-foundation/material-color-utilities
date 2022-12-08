@@ -12,15 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'dart:math' as math;
+import 'package:material_color_utilities/dislike/dislike_analyzer.dart';
 import 'package:material_color_utilities/dynamiccolor/dynamic_color.dart';
 import 'package:material_color_utilities/dynamiccolor/tone_delta_constraint.dart';
+import 'package:material_color_utilities/hct/hct.dart';
+import 'package:material_color_utilities/hct/viewing_conditions.dart';
 import 'package:material_color_utilities/scheme/dynamic_scheme.dart';
+import 'package:material_color_utilities/scheme/variant.dart';
+
+bool _isFidelity(DynamicScheme scheme) => scheme.variant == Variant.fidelity;
 
 /// Tokens, or named colors, in the Material Design system.
 class MaterialDynamicColors {
   static const double contentAccentToneDelta = 15.0;
   static DynamicColor highestSurface(DynamicScheme s) {
     return s.isDark ? surfaceLight : surfaceDark;
+  }
+
+  static ViewingConditions viewingConditionsForAlbers(DynamicScheme scheme) {
+    return ViewingConditions.make(backgroundLstar: scheme.isDark ? 30 : 80);
   }
 
   static DynamicColor background = DynamicColor.fromPalette(
@@ -116,14 +127,24 @@ class MaterialDynamicColors {
 
   static DynamicColor primaryContainer = DynamicColor.fromPalette(
     palette: (s) => s.primaryPalette,
-    tone: (s) => s.isDark ? 30 : 90,
     background: (s) => highestSurface(s),
+    tone: (s) {
+      if (!_isFidelity(s)) {
+        return s.isDark ? 30 : 90;
+      }
+      return _performAlbers(s.sourceColorHct, s);
+    },
   );
 
   static DynamicColor onPrimaryContainer = DynamicColor.fromPalette(
     palette: (s) => s.primaryPalette,
-    tone: (s) => s.isDark ? 90 : 10,
     background: (s) => primaryContainer,
+    tone: (s) {
+      if (!_isFidelity(s)) {
+        return s.isDark ? 90 : 10;
+      }
+      return DynamicColor.foregroundTone(primaryContainer.tone(s), 4.5);
+    },
   );
 
   static DynamicColor secondary = DynamicColor.fromPalette(
@@ -145,14 +166,28 @@ class MaterialDynamicColors {
 
   static DynamicColor secondaryContainer = DynamicColor.fromPalette(
     palette: (s) => s.secondaryPalette,
-    tone: (s) => s.isDark ? 30 : 90,
     background: (s) => highestSurface(s),
+    tone: (s) {
+      final initialTone = s.isDark ? 30.0 : 90.0;
+      if (!_isFidelity(s)) {
+        return initialTone;
+      }
+      var answer = _findDesiredChromaByTone(s.secondaryPalette.hue,
+          s.secondaryPalette.chroma, initialTone, s.isDark ? false : true);
+      answer = _performAlbers(s.secondaryPalette.getHct(answer), s);
+      return answer;
+    },
   );
 
   static DynamicColor onSecondaryContainer = DynamicColor.fromPalette(
     palette: (s) => s.secondaryPalette,
-    tone: (s) => s.isDark ? 90 : 10,
     background: (s) => secondaryContainer,
+    tone: (s) {
+      if (!_isFidelity(s)) {
+        return s.isDark ? 90 : 10;
+      }
+      return DynamicColor.foregroundTone(secondaryContainer.tone(s), 4.5);
+    },
   );
 
   static DynamicColor tertiary = DynamicColor.fromPalette(
@@ -174,14 +209,28 @@ class MaterialDynamicColors {
 
   static DynamicColor tertiaryContainer = DynamicColor.fromPalette(
     palette: (s) => s.tertiaryPalette,
-    tone: (s) => s.isDark ? 30 : 90,
     background: (s) => highestSurface(s),
+    tone: (s) {
+      if (!_isFidelity(s)) {
+        return s.isDark ? 30 : 90;
+      }
+
+      final albersTone =
+          _performAlbers(s.tertiaryPalette.getHct(s.sourceColorHct.tone), s);
+      final proposedHct = s.tertiaryPalette.getHct(albersTone);
+      return DislikeAnalyzer.fixIfDisliked(proposedHct).tone;
+    },
   );
 
   static DynamicColor onTertiaryContainer = DynamicColor.fromPalette(
     palette: (s) => s.tertiaryPalette,
-    tone: (s) => s.isDark ? 90 : 10,
     background: (s) => tertiaryContainer,
+    tone: (s) {
+      if (!_isFidelity(s)) {
+        return s.isDark ? 90 : 10;
+      }
+      return DynamicColor.foregroundTone(tertiaryContainer.tone(s), 4.5);
+    },
   );
 
   static DynamicColor error = DynamicColor.fromPalette(
@@ -212,4 +261,44 @@ class MaterialDynamicColors {
     tone: (s) => s.isDark ? 90 : 10,
     background: (s) => errorContainer,
   );
+
+  static double _findDesiredChromaByTone(
+      double hue, double chroma, double tone, bool byDecreasingTone) {
+    var answer = tone;
+
+    Hct closestToChroma = Hct.from(hue, chroma, tone);
+    if (closestToChroma.chroma < chroma) {
+      double chromaPeak = closestToChroma.chroma;
+      while (closestToChroma.chroma < chroma) {
+        answer += byDecreasingTone ? -1.0 : 1.0;
+        final potentialSolution = Hct.from(hue, chroma, answer);
+        if (chromaPeak > potentialSolution.chroma) {
+          break;
+        }
+        if ((potentialSolution.chroma - chroma).abs() < 0.4) {
+          break;
+        }
+
+        final potentialDelta = (potentialSolution.chroma - chroma).abs();
+        final currentDelta = (closestToChroma.chroma - chroma).abs();
+        if (potentialDelta < currentDelta) {
+          closestToChroma = potentialSolution;
+        }
+        chromaPeak = math.max(chromaPeak, potentialSolution.chroma);
+      }
+    }
+
+    return answer;
+  }
+
+  static double _performAlbers(Hct prealbers, DynamicScheme scheme) {
+    final albersd =
+        prealbers.inViewingConditions(viewingConditionsForAlbers(scheme));
+    if (DynamicColor.tonePrefersLightForeground(prealbers.tone) &&
+        !DynamicColor.toneAllowsLightForeground(albersd.tone)) {
+      return DynamicColor.enableLightForeground(prealbers.tone);
+    } else {
+      return DynamicColor.enableLightForeground(albersd.tone);
+    }
+  }
 }

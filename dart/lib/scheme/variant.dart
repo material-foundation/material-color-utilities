@@ -20,5 +20,6 @@ enum Variant {
   neutral,
   tonalSpot,
   vibrant,
-  expressive;
+  expressive,
+  fidelity;
 }

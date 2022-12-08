@@ -66,6 +66,11 @@ class TonalPalette {
     return TonalPalette._fromHueAndChroma(hue, chroma);
   }
 
+  /// Create a Tonal Palette from hue and chroma of [hct].
+  static TonalPalette fromHct(Hct hct) {
+    return TonalPalette._fromHueAndChroma(hct.hue, hct.chroma);
+  }
+
   /// Create colors from a fixed-size list of ARGB color ints.
   ///
   /// Inverse of [TonalPalette.asList].
@@ -104,6 +109,20 @@ class TonalPalette {
     final chroma = (tone >= 90.0) ? math.min(_chroma!, 40.0) : _chroma!;
     return _cache.putIfAbsent(
         tone, () => Hct.from(_hue!, chroma, tone.toDouble()).toInt());
+  }
+
+  Hct getHct(double tone) {
+    if (_hue == null || _chroma == null) {
+      if (!_cache.containsKey(tone)) {
+        throw (ArgumentError.value(
+          tone,
+          'tone',
+          'When a TonalPalette is created with fromList, tone must be one of '
+              '$commonTones',
+        ));
+      }
+    }
+    return Hct.from(_hue!, _chroma!, tone);
   }
 
   @override
