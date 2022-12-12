@@ -102,10 +102,42 @@ class MaterialDynamicColors {
     background: (s) => surfaceVariant,
   );
 
+  static DynamicColor surfaceInverse = DynamicColor.fromPalette(
+    palette: (s) => s.neutralPalette,
+    tone: (s) => s.isDark ? 90 : 30,
+  );
+
+  static DynamicColor onSurfaceInverse = DynamicColor.fromPalette(
+    palette: (s) => s.neutralPalette,
+    tone: (s) => s.isDark ? 20 : 95,
+    background: (s) => surfaceInverse,
+  );
+
   static DynamicColor outline = DynamicColor.fromPalette(
     palette: (s) => s.neutralVariantPalette,
     tone: (s) => 50,
     background: (s) => highestSurface(s),
+  );
+
+  static DynamicColor outlineVariant = DynamicColor.fromPalette(
+    palette: (s) => s.neutralVariantPalette,
+    tone: (s) => s.isDark ? 30 : 80,
+    background: (s) => highestSurface(s),
+  );
+
+  static DynamicColor shadow = DynamicColor.fromPalette(
+    palette: (s) => s.neutralPalette,
+    tone: (s) => 0,
+  );
+
+  static DynamicColor scrim = DynamicColor.fromPalette(
+    palette: (s) => s.neutralPalette,
+    tone: (s) => 0,
+  );
+
+  static DynamicColor surfaceTint = DynamicColor.fromPalette(
+    palette: (s) => s.primaryPalette,
+    tone: (s) => s.isDark ? 80 : 40,
   );
 
   static DynamicColor primary = DynamicColor.fromPalette(
@@ -145,6 +177,18 @@ class MaterialDynamicColors {
       }
       return DynamicColor.foregroundTone(primaryContainer.tone(s), 4.5);
     },
+  );
+
+  static DynamicColor primaryInverse = DynamicColor.fromPalette(
+    palette: (s) => s.primaryPalette,
+    tone: (s) => s.isDark ? 40 : 80,
+    background: (s) => surfaceInverse,
+  );
+
+  static DynamicColor onPrimaryInverse = DynamicColor.fromPalette(
+    palette: (s) => s.primaryPalette,
+    tone: (s) => s.isDark ? 100 : 20,
+    background: (s) => primaryInverse,
   );
 
   static DynamicColor secondary = DynamicColor.fromPalette(
