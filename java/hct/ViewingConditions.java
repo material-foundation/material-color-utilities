@@ -113,12 +113,15 @@ public final class ViewingConditions {
    *     such as knowing an apple is still red in green light. default = false, the eye does not
    *     perform this process on self-luminous objects like displays.
    */
-  static ViewingConditions make(
+  public static ViewingConditions make(
       double[] whitePoint,
       double adaptingLuminance,
       double backgroundLstar,
       double surround,
       boolean discountingIlluminant) {
+    // A background of pure black is non-physical and leads to infinities that represent the idea
+    // that any color viewed in pure black can't be seen.
+    backgroundLstar = Math.max(0.1, backgroundLstar);
     // Transform white point XYZ to 'cone'/'rgb' responses
     double[][] matrix = Cam16.XYZ_TO_CAM16RGB;
     double[] xyz = whitePoint;
