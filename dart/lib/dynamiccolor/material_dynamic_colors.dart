@@ -21,7 +21,8 @@ import 'package:material_color_utilities/hct/viewing_conditions.dart';
 import 'package:material_color_utilities/scheme/dynamic_scheme.dart';
 import 'package:material_color_utilities/scheme/variant.dart';
 
-bool _isFidelity(DynamicScheme scheme) => scheme.variant == Variant.fidelity;
+bool _isFidelity(DynamicScheme scheme) =>
+    scheme.variant == Variant.fidelity || scheme.variant == Variant.content;
 
 /// Tokens, or named colors, in the Material Design system.
 class MaterialDynamicColors {
