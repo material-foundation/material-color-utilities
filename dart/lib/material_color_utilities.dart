@@ -15,6 +15,7 @@
 library material_color_utilities;
 
 export 'blend/blend.dart';
+export 'dynamiccolor/material_dynamic_colors.dart';
 export 'hct/cam16.dart';
 export 'hct/hct.dart';
 export 'hct/viewing_conditions.dart';
@@ -26,4 +27,5 @@ export 'quantize/quantizer_map.dart';
 export 'quantize/quantizer_wsmeans.dart';
 export 'quantize/quantizer_wu.dart';
 export 'scheme/scheme.dart';
+export 'scheme/scheme_tonal_spot.dart';
 export 'score/score.dart';
