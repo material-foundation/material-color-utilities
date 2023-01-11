@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:math' as math;
-
 import 'package:material_color_utilities/hct/hct.dart';
 
 /// Check and/or fix universally disliked colors.
@@ -47,7 +45,7 @@ class DislikeAnalyzer {
       return Hct.from(
         hct.hue,
         hct.chroma,
-        math.max(hct.tone, 70.0),
+        70.0,
       );
     }
 
