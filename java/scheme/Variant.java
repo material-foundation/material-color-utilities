@@ -22,5 +22,6 @@ public enum Variant {
   TONAL_SPOT,
   VIBRANT,
   EXPRESSIVE,
-  FIDELITY
+  FIDELITY,
+  CONTENT
 }
