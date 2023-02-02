@@ -1,5 +1,7 @@
 # material-color-utilities
 
+**NOTICE TO ALL CONTRIBUTORS: ENSURE THAT IMPORT STATEMENTS END IN `.js` TO ENSURE CONTINUED COMPATIBILITY WITH NODE, CHROME, FIREFOX, SAFARI, AND THEIR DERIVATIVES.**
+
 [![npm package](https://badgen.net/npm/v/@material/material-color-utilities)](https://npmjs.com/package/@material/material-color-utilities)
 
 Algorithms and utilities that power the Material Design 3 (M3) color system,

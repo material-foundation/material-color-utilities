@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-import {Hct} from '../hct/hct';
-import {TonalPalette} from '../palettes/tonal_palette';
-import * as math from '../utils/math_utils';
+import {Hct} from '../hct/hct.js';
+import {TonalPalette} from '../palettes/tonal_palette.js';
+import * as math from '../utils/math_utils.js';
 
 /**
  * Constructed by a set of values representing the current UI state (such as
