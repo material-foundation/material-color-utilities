@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef MATERIAL_COLOR_UTILITIES_CPP_CAM_VIEWING_CONDITIONS_H_
-#define MATERIAL_COLOR_UTILITIES_CPP_CAM_VIEWING_CONDITIONS_H_
+#ifndef CPP_CAM_VIEWING_CONDITIONS_H_
+#define CPP_CAM_VIEWING_CONDITIONS_H_
 
 namespace material_color_utilities {
 
@@ -63,4 +63,4 @@ static const ViewingConditions kDefaultViewingConditions = (ViewingConditions){
 };
 
 }  // namespace material_color_utilities
-#endif  // MATERIAL_COLOR_UTILITIES_CPP_CAM_VIEWING_CONDITIONS_H_
+#endif  // CPP_CAM_VIEWING_CONDITIONS_H_

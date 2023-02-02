@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "material_color_utilities/cpp/utils/utils.h"
+#include "cpp/utils/utils.h"
 
 #include <math.h>
 

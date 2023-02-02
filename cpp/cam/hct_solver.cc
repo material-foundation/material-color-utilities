@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#include "material_color_utilities/cpp/cam/hct_solver.h"
+#include "cpp/cam/hct_solver.h"
 
 #include <math.h>
 
-#include "material_color_utilities/cpp/cam/viewing_conditions.h"
-#include "material_color_utilities/cpp/utils/utils.h"
+#include "cpp/cam/viewing_conditions.h"
+#include "cpp/utils/utils.h"
 
 namespace material_color_utilities {
 

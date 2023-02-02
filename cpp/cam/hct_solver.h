@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef MATERIAL_COLOR_UTILITIES_CPP_CAM_HCT_SOLVER_H_
-#define MATERIAL_COLOR_UTILITIES_CPP_CAM_HCT_SOLVER_H_
+#ifndef CPP_CAM_HCT_SOLVER_H_
+#define CPP_CAM_HCT_SOLVER_H_
 
-#include "material_color_utilities/cpp/cam/cam.h"
+#include "cpp/cam/cam.h"
 
 namespace material_color_utilities {
 
@@ -25,4 +25,4 @@ Argb SolveToInt(double hue_degrees, double chroma, double lstar);
 Cam SolveToCam(double hue_degrees, double chroma, double lstar);
 
 }  // namespace material_color_utilities
-#endif  // MATERIAL_COLOR_UTILITIES_CPP_CAM_HCT_SOLVER_H_
+#endif  // CPP_CAM_HCT_SOLVER_H_

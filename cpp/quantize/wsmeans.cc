@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "material_color_utilities/cpp/quantize/wsmeans.h"
+#include "cpp/quantize/wsmeans.h"
 
 #include <algorithm>
 #include <cmath>
@@ -28,7 +28,7 @@
 #include <vector>
 
 #include "absl/container/flat_hash_map.h"
-#include "material_color_utilities/cpp/quantize/lab.h"
+#include "cpp/quantize/lab.h"
 
 constexpr int kMaxIterations = 100;
 constexpr double kMinDeltaE = 3.0;
@@ -108,7 +108,7 @@ QuantizerResult QuantizeWsmeans(const std::vector<Argb>& input_pixels,
   cluster_indices.reserve(points.size());
 
   srand(42688);
-  for (int i = 0; i < points.size(); i++) {
+  for (size_t i = 0; i < points.size(); i++) {
     cluster_indices.push_back(rand() % cluster_count);
   }
 
@@ -142,7 +142,7 @@ QuantizerResult QuantizeWsmeans(const std::vector<Argb>& input_pixels,
 
     // Reassign points
     bool color_moved = false;
-    for (int i = 0; i < points.size(); i++) {
+    for (size_t i = 0; i < points.size(); i++) {
       Lab point = points[i];
 
       int previous_cluster_index = cluster_indices[i];
@@ -184,7 +184,7 @@ QuantizerResult QuantizeWsmeans(const std::vector<Argb>& input_pixels,
       pixel_count_sums[i] = 0;
     }
 
-    for (int i = 0; i < points.size(); i++) {
+    for (size_t i = 0; i < points.size(); i++) {
       int clusterIndex = cluster_indices[i];
       Lab point = points[i];
       int count = pixel_to_count[pixels[i]];
@@ -217,9 +217,9 @@ QuantizerResult QuantizeWsmeans(const std::vector<Argb>& input_pixels,
     }
     Argb possible_new_cluster = IntFromLab(clusters[i]);
     int use_new_cluster = 1;
-    for (int i = 0; i < swatches.size(); i++) {
-      if (swatches[i].argb == possible_new_cluster) {
-        swatches[i].population += count;
+    for (size_t j = 0; j < swatches.size(); j++) {
+      if (swatches[j].argb == possible_new_cluster) {
+        swatches[j].population += count;
         use_new_cluster = 0;
         break;
       }
@@ -236,12 +236,12 @@ QuantizerResult QuantizeWsmeans(const std::vector<Argb>& input_pixels,
   // Constructs the quantizer result to return.
 
   std::map<Argb, int> color_to_count;
-  for (int i = 0; i < swatches.size(); i++) {
+  for (size_t i = 0; i < swatches.size(); i++) {
     color_to_count[swatches[i].argb] = swatches[i].population;
   }
 
   std::map<Argb, Argb> input_pixel_to_cluster_pixel;
-  for (int i = 0; i < points.size(); i++) {
+  for (size_t i = 0; i < points.size(); i++) {
     int pixel = pixels[i];
     int cluster_index = cluster_indices[i];
     int cluster_argb = cluster_argbs[cluster_index];

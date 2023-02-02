@@ -42,8 +42,7 @@ export class TonalPalette {
     return new TonalPalette(hue, chroma);
   }
 
-  private constructor(
-      private readonly hue: number, private readonly chroma: number) {}
+  private constructor(readonly hue: number, readonly chroma: number) {}
 
   /**
    * @param tone HCT tone, measured from 0 to 100.

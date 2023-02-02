@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "material_color_utilities/cpp/quantize/wu.h"
+#include "cpp/quantize/wu.h"
 
 #include <stdlib.h>
 
@@ -26,7 +26,7 @@
 #include <ostream>
 #include <vector>
 
-#include "material_color_utilities/cpp/utils/utils.h"
+#include "cpp/utils/utils.h"
 
 namespace material_color_utilities {
 
@@ -62,7 +62,7 @@ int GetIndex(int r, int g, int b) {
 void ConstructHistogram(const std::vector<Argb>& pixels, IntArray& weights,
                         IntArray& m_r, IntArray& m_g, IntArray& m_b,
                         DoubleArray& moments) {
-  for (int i = 0; i < pixels.size(); i++) {
+  for (size_t i = 0; i < pixels.size(); i++) {
     Argb pixel = pixels[i];
     int red = RedFromInt(pixel);
     int green = GreenFromInt(pixel);

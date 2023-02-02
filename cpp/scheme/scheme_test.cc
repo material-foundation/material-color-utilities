@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#include "material_color_utilities/cpp/scheme/scheme.h"
+#include "cpp/scheme/scheme.h"
 
 #include "testing/base/public/gunit.h"
-#include "material_color_utilities/cpp/utils/utils.h"
+#include "cpp/utils/utils.h"
 
 namespace material_color_utilities {
 

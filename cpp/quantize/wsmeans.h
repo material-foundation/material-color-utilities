@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-#ifndef MATERIAL_COLOR_UTILITIES_CPP_QUANTIZE_WSMEANS_H_
-#define MATERIAL_COLOR_UTILITIES_CPP_QUANTIZE_WSMEANS_H_
+#ifndef CPP_QUANTIZE_WSMEANS_H_
+#define CPP_QUANTIZE_WSMEANS_H_
 #include <stdint.h>
 
 #include <map>
 #include <vector>
 
-#include "material_color_utilities/cpp/utils/utils.h"
+#include "cpp/utils/utils.h"
 
 namespace material_color_utilities {
 
@@ -35,4 +35,4 @@ QuantizerResult QuantizeWsmeans(const std::vector<Argb>& input_pixels,
                                 uint16_t max_colors);
 }  // namespace material_color_utilities
 
-#endif  // MATERIAL_COLOR_UTILITIES_CPP_QUANTIZE_WSMEANS_H_
+#endif  // CPP_QUANTIZE_WSMEANS_H_

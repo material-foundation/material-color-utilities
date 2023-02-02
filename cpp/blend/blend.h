@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#ifndef MATERIAL_COLOR_UTILITIES_CPP_BLEND_BLEND_H_
-#define MATERIAL_COLOR_UTILITIES_CPP_BLEND_BLEND_H_
+#ifndef CPP_BLEND_BLEND_H_
+#define CPP_BLEND_BLEND_H_
 
 #include <cstdint>
 
-#include "material_color_utilities/cpp/utils/utils.h"
+#include "cpp/utils/utils.h"
 
 namespace material_color_utilities {
 
@@ -28,4 +28,4 @@ Argb BlendHctHue(const Argb from, const Argb to, const double amount);
 Argb BlendCam16Ucs(const Argb from, const Argb to, const double amount);
 
 }  // namespace material_color_utilities
-#endif  // MATERIAL_COLOR_UTILITIES_CPP_BLEND_BLEND_H_
+#endif  // CPP_BLEND_BLEND_H_

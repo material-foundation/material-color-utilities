@@ -68,6 +68,14 @@ class ViewingConditions {
       required this.fLRoot,
       required this.z});
 
+  /// Convenience constructor for [ViewingConditions].
+  ///
+  /// Parameters affecting color appearance include:
+  /// [whitePoint]: coordinates of white in XYZ color space.
+  /// [adaptingLuminance]: light strength, in lux.
+  /// [backgroundLstar]: average luminance of 10 degrees around color.
+  /// [surround]: brightness of the entire environment.
+  /// [discountingIlluminant]: whether eyes have adjusted to lighting.
   factory ViewingConditions.make(
       {List<double>? whitePoint,
       double adaptingLuminance = -1.0,
@@ -79,7 +87,9 @@ class ViewingConditions {
     adaptingLuminance = (adaptingLuminance > 0.0)
         ? adaptingLuminance
         : (200.0 / math.pi * ColorUtils.yFromLstar(50.0) / 100.0);
-    backgroundLstar = math.max(30.0, backgroundLstar);
+    // A background of pure black is non-physical and leads to infinities that
+    // represent the idea that any color viewed in pure black can't be seen.
+    backgroundLstar = math.max(0.1, backgroundLstar);
     // Transform test illuminant white in XYZ to 'cone'/'rgb' responses
     final xyz = whitePoint;
     final rW = xyz[0] * 0.401288 + xyz[1] * 0.650173 + xyz[2] * -0.051461;

@@ -86,7 +86,7 @@ class Cam16 {
   /// Prefer using a static method that constructs from 3 of those dimensions.
   /// This constructor is intended for those methods to use to return all
   /// possible dimensions.
-  const Cam16(this.hue, this.chroma, this.j, this.q, this.m, this.s, this.jstar,
+  Cam16(this.hue, this.chroma, this.j, this.q, this.m, this.s, this.jstar,
       this.astar, this.bstar);
 
   /// CAM16 instances also have coordinates in the CAM16-UCS space, called J*,
@@ -115,7 +115,13 @@ class Cam16 {
     final x = xyz[0];
     final y = xyz[1];
     final z = xyz[2];
+    return fromXyzInViewingConditions(x, y, z, viewingConditions);
+  }
 
+  /// Given color expressed in XYZ and viewed in [viewingConditions], convert to
+  /// CAM16.
+  static Cam16 fromXyzInViewingConditions(
+      double x, double y, double z, ViewingConditions viewingConditions) {
     // Transform XYZ to 'cone'/'rgb' responses
 
     final rC = 0.401288 * x + 0.650173 * y - 0.051461 * z;
@@ -252,9 +258,21 @@ class Cam16 {
     return viewed(ViewingConditions.sRgb);
   }
 
+  // Avoid allocations during conversion by pre-allocating an array.
+  final _viewedArray = <double>[0, 0, 0];
+
   /// ARGB representation of a color, given the color was viewed in
   /// [viewingConditions]
   int viewed(ViewingConditions viewingConditions) {
+    final xyz = xyzInViewingConditions(viewingConditions, array: _viewedArray);
+    final argb = ColorUtils.argbFromXyz(
+        _viewedArray[0], _viewedArray[1], _viewedArray[2]);
+    return argb;
+  }
+
+  /// XYZ representation of CAM16 seen in [viewingConditions].
+  List<double> xyzInViewingConditions(ViewingConditions viewingConditions,
+      {List<double>? array}) {
     final alpha =
         (chroma == 0.0 || j == 0.0) ? 0.0 : chroma / math.sqrt(j / 100.0);
 
@@ -308,7 +326,13 @@ class Cam16 {
     final y = 0.38752654 * rF + 0.62144744 * gF - 0.00897398 * bF;
     final z = -0.01584150 * rF - 0.03412294 * gF + 1.04996444 * bF;
 
-    final argb = ColorUtils.argbFromXyz(x, y, z);
-    return argb;
+    if (array != null) {
+      array[0] = x;
+      array[1] = y;
+      array[2] = z;
+      return array;
+    } else {
+      return [x, y, z];
+    }
   }
 }
