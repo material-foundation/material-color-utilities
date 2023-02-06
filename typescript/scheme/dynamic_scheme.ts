@@ -19,6 +19,45 @@ import {Hct} from '../hct/hct';
 import {TonalPalette} from '../palettes/tonal_palette';
 import * as math from '../utils/math_utils';
 
+import {Variant} from './variant';
+
+/**
+ * @param sourceColorArgb The source color of the theme as an ARGB 32-bit
+ *     integer.
+ * @param variant The variant, or style, of the theme.
+ * @param contrastLevel Value from -1 to 1. -1 represents minimum contrast,
+ * 0 represents standard (i.e. the design as spec'd), and 1 represents maximum
+ * contrast.
+ * @param isDark Whether the scheme is in dark mode or light mode.
+ * @param primaryPalette Given a tone, produces a color. Hue and chroma of the
+ * color are specified in the design specification of the variant. Usually
+ * colorful.
+ * @param secondaryPalette Given a tone, produces a color. Hue and chroma of
+ * the color are specified in the design specification of the variant. Usually
+ * less colorful.
+ * @param tertiaryPalette Given a tone, produces a color. Hue and chroma of
+ * the color are specified in the design specification of the variant. Usually
+ * a different hue from primary and colorful.
+ * @param neutralPalette Given a tone, produces a color. Hue and chroma of the
+ * color are specified in the design specification of the variant. Usually not
+ * colorful at all, intended for background & surface colors.
+ * @param neutralVariantPalette Given a tone, produces a color. Hue and chroma
+ * of the color are specified in the design specification of the variant.
+ * Usually not colorful, but slightly more colorful than Neutral. Intended for
+ * backgrounds & surfaces.
+ */
+interface DynamicSchemeOptions {
+  sourceColorArgb: number;
+  variant: Variant;
+  contrastLevel: number;
+  isDark: boolean;
+  primaryPalette: TonalPalette;
+  secondaryPalette: TonalPalette;
+  tertiaryPalette: TonalPalette;
+  neutralPalette: TonalPalette;
+  neutralVariantPalette: TonalPalette;
+}
+
 /**
  * Constructed by a set of values representing the current UI state (such as
  * whether or not its dark theme, what the theme style is, etc.), and
@@ -34,51 +73,69 @@ export class DynamicScheme {
    * Given a tone, produces a reddish, colorful, color.
    */
   errorPalette: TonalPalette;
+
+  /** The source color of the theme as an ARGB 32-bit integer. */
+  readonly sourceColorArgb: number;
+
+  /** The variant, or style, of the theme. */
+  readonly variant: Variant;
+
   /**
-   * @param sourceColorArgb The source color of the theme as an ARGB integer.
-   * @param variant The variant, or style, of the theme.
-   * @param contrastLevel Value from -1 to 1. -1 represents minimum contrast,
-   * 0 represents standard (i.e. the design as spec'd), and 1 represents maximum
-   * contrast.
-   * @param isDark Whether the scheme is in dark mode or light mode.
-   * @param primaryPalette Given a tone, produces a color. Hue and chroma of the
+   * Value from -1 to 1. -1 represents minimum contrast. 0 represents standard
+   * (i.e. the design as spec'd), and 1 represents maximum contrast.
+   */
+  readonly contrastLevel: number;
+
+  /** Whether the scheme is in dark mode or light mode. */
+  readonly isDark: boolean;
+
+  /**
+   * Given a tone, produces a color. Hue and chroma of the
    * color are specified in the design specification of the variant. Usually
    * colorful.
-   * @param secondaryPalette Given a tone, produces a color. Hue and chroma of
+   */
+  readonly primaryPalette: TonalPalette;
+
+  /**
+   * Given a tone, produces a color. Hue and chroma of
    * the color are specified in the design specification of the variant. Usually
    * less colorful.
-   * @param tertiaryPalette Given a tone, produces a color. Hue and chroma of
+   */
+  readonly secondaryPalette: TonalPalette;
+
+  /**
+   * Given a tone, produces a color. Hue and chroma of
    * the color are specified in the design specification of the variant. Usually
    * a different hue from primary and colorful.
-   * @param neutralPalette Given a tone, produces a color. Hue and chroma of the
+   */
+  readonly tertiaryPalette: TonalPalette;
+
+  /**
+   * Given a tone, produces a color. Hue and chroma of the
    * color are specified in the design specification of the variant. Usually not
    * colorful at all, intended for background & surface colors.
-   * @param neutralVariantPalette Given a tone, produces a color. Hue and chroma
+   */
+  readonly neutralPalette: TonalPalette;
+
+  /**
+   * Given a tone, produces a color. Hue and chroma
    * of the color are specified in the design specification of the variant.
    * Usually not colorful, but slightly more colorful than Neutral. Intended for
    * backgrounds & surfaces.
    */
-  constructor(
-      readonly sourceColorArgb: number,
-      readonly variant: Variant,
-      readonly contrastLevel: number,
-      readonly isDark: boolean,
-      readonly primaryPalette: TonalPalette,
-      readonly secondaryPalette: TonalPalette,
-      readonly tertiaryPalette: TonalPalette,
-      readonly neutralPalette: TonalPalette,
-      readonly neutralVariantPalette: TonalPalette,
-  ) {
-    this.sourceColorArgb = sourceColorArgb;
-    this.variant = variant;
-    this.contrastLevel = contrastLevel;
-    this.isDark = isDark;
-    this.sourceColorHct = Hct.fromInt(sourceColorArgb);
-    this.primaryPalette = primaryPalette;
-    this.secondaryPalette = secondaryPalette;
-    this.tertiaryPalette = tertiaryPalette;
-    this.neutralPalette = neutralPalette;
-    this.neutralVariantPalette = neutralVariantPalette;
+  readonly neutralVariantPalette: TonalPalette;
+
+  constructor(args: DynamicSchemeOptions) {
+    this.sourceColorArgb = args.sourceColorArgb;
+    this.variant = args.variant;
+    this.contrastLevel = args.contrastLevel;
+    this.isDark = args.isDark;
+    this.sourceColorHct = Hct.fromInt(args.sourceColorArgb);
+    this.primaryPalette = args.primaryPalette;
+    this.secondaryPalette = args.secondaryPalette;
+    this.tertiaryPalette = args.tertiaryPalette;
+    this.neutralPalette = args.neutralPalette;
+    this.neutralVariantPalette = args.neutralVariantPalette;
     this.errorPalette = TonalPalette.fromHueAndChroma(25.0, 84.0);
   }
 
@@ -103,7 +160,7 @@ export class DynamicScheme {
       return math.sanitizeDegreesDouble(sourceColor.hue + rotations[0]);
     }
     const size = hues.length;
-    for (let i = 0; i <= (size - 2); i++) {
+    for (let i = 0; i <= size - 2; i++) {
       const thisHue = hues[i];
       const nextHue = hues[i + 1];
       if (thisHue < sourceHue && sourceHue < nextHue) {
