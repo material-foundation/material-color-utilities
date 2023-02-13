@@ -38,6 +38,11 @@ bool _colorIsOnBoundary(int argb) {
 }
 
 void main() {
+  test('==, hashCode basics', () {
+    expect(Hct.fromInt(123), Hct.fromInt(123));
+    expect(Hct.fromInt(123).hashCode, Hct.fromInt(123).hashCode);
+  });
+
   test('conversions_areReflexive', () {
     final cam = Cam16.fromInt(red);
     final color = cam.viewed(ViewingConditions.standard);

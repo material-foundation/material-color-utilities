@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import 'dart:math' as math;
+import 'package:collection/equality.dart';
 
 import 'package:material_color_utilities/hct/hct.dart';
 
@@ -128,18 +129,27 @@ class TonalPalette {
   @override
   bool operator ==(Object other) {
     if (other is TonalPalette) {
-      if (_hue != null && _chroma != null) {
+      if (_hue != null &&
+          _chroma != null &&
+          other._hue != null &&
+          other._chroma != null) {
+        // Both created with .of or .fromHct
         return _hue == other._hue && _chroma == other._chroma;
       } else {
-        return _cache.values.toSet().containsAll(other._cache.values);
+        return ListEquality().equals(asList, other.asList);
       }
     }
     return false;
   }
 
   @override
-  int get hashCode =>
-      Object.hash(_hue, _chroma) ^ Object.hashAll(_cache.values);
+  int get hashCode {
+    if (_hue != null && _chroma != null) {
+      return Object.hash(_hue, _chroma);
+    } else {
+      return Object.hashAll(asList);
+    }
+  }
 
   @override
   String toString() {

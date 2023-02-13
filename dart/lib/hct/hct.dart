@@ -46,6 +46,9 @@ class Hct {
   }
 
   @override
+  int get hashCode => _argb.hashCode;
+
+  @override
   String toString() {
     return 'H${hue.round().toString()} C${chroma.round()} T${tone.round().toString()}';
   }

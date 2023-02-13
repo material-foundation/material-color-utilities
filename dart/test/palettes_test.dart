@@ -19,6 +19,33 @@ import 'package:test/test.dart';
 
 void main() {
   group('TonalPalette', () {
+    group('[.of and .fromList constructors]', () {
+      // Regression test for https://github.com/material-foundation/material-color-utilities/issues/56
+      test('operator ==', () {
+        final a1 = TonalPalette.of(1, 1);
+        final a2 = TonalPalette.of(1, 1);
+        final b1 = TonalPalette.fromList(
+            TonalPalette.commonTones.map((e) => 0xDEADBEEF).toList());
+        final b2 = TonalPalette.fromList(
+            TonalPalette.commonTones.map((e) => 0xDEADBEEF).toList());
+        expect(a1 == b1, isFalse);
+        expect(b1 == a1, isFalse);
+        expect(a1 != b1, isTrue);
+        expect(b1 != a1, isTrue);
+        expect(a1 == a2, isTrue);
+        expect(b1 == b2, isTrue);
+
+        final c1 = TonalPalette.fromList(
+            TonalPalette.commonTones.map((e) => 123).toList());
+
+        final c2 = TonalPalette.fromList(
+            TonalPalette.commonTones.map((e) => e < 15 ? 456 : 123).toList());
+
+        expect(c1.get(50), c2.get(50));
+        expect(c1 == c2, isFalse);
+      });
+    });
+
     group('[.of constructor]', () {
       test('tones of blue', () async {
         final hct = Hct.fromInt(0xff0000ff);
