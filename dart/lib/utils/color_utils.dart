@@ -22,13 +22,13 @@ import 'package:material_color_utilities/utils/math_utils.dart';
 /// Utility methods for color science constants and color space
 /// conversions that aren't HCT or CAM16.
 class ColorUtils {
-  static final _SRGB_TO_XYZ = [
+  static final _srgbToXyz = [
     [0.41233895, 0.35762064, 0.18051042],
     [0.2126, 0.7152, 0.0722],
     [0.01932141, 0.11916382, 0.95034478],
   ];
 
-  static final _XYZ_TO_SRGB = [
+  static final _xyzToSrgb = [
     [
       3.2413774792388685,
       -1.5376652402851851,
@@ -46,7 +46,7 @@ class ColorUtils {
     ],
   ];
 
-  static final _WHITE_POINT_D65 = [95.047, 100.0, 108.883];
+  static final _whitePointD65 = [95.047, 100.0, 108.883];
 
   /// Converts a color from RGB components to ARGB format.
   static int argbFromRgb(int red, int green, int blue) {
@@ -88,7 +88,7 @@ class ColorUtils {
 
   /// Converts a color from ARGB to XYZ.
   static int argbFromXyz(double x, double y, double z) {
-    final matrix = _XYZ_TO_SRGB;
+    final matrix = _xyzToSrgb;
     final linearR = matrix[0][0] * x + matrix[0][1] * y + matrix[0][2] * z;
     final linearG = matrix[1][0] * x + matrix[1][1] * y + matrix[1][2] * z;
     final linearB = matrix[2][0] * x + matrix[2][1] * y + matrix[2][2] * z;
@@ -103,13 +103,13 @@ class ColorUtils {
     final r = linearized(redFromArgb(argb));
     final g = linearized(greenFromArgb(argb));
     final b = linearized(blueFromArgb(argb));
-    return MathUtils.matrixMultiply([r, g, b], _SRGB_TO_XYZ);
+    return MathUtils.matrixMultiply([r, g, b], _srgbToXyz);
   }
 
   /// Converts a color represented in Lab color space into an ARGB
   /// integer.
   static int argbFromLab(double l, double a, double b) {
-    final whitePoint = _WHITE_POINT_D65;
+    final whitePoint = _whitePointD65;
     final fy = (l + 16.0) / 116.0;
     final fx = a / 500.0 + fy;
     final fz = fy - b / 200.0;
@@ -131,7 +131,7 @@ class ColorUtils {
     final linearR = linearized(redFromArgb(argb));
     final linearG = linearized(greenFromArgb(argb));
     final linearB = linearized(blueFromArgb(argb));
-    final matrix = _SRGB_TO_XYZ;
+    final matrix = _srgbToXyz;
     final x = matrix[0][0] * linearR +
         matrix[0][1] * linearG +
         matrix[0][2] * linearB;
@@ -141,7 +141,7 @@ class ColorUtils {
     final z = matrix[2][0] * linearR +
         matrix[2][1] * linearG +
         matrix[2][2] * linearB;
-    final whitePoint = _WHITE_POINT_D65;
+    final whitePoint = _whitePointD65;
     final xNormalized = x / whitePoint[0];
     final yNormalized = y / whitePoint[1];
     final zNormalized = z / whitePoint[2];
@@ -236,7 +236,7 @@ class ColorUtils {
   ///
   /// Returns The white point
   static List<double> whitePointD65() {
-    return _WHITE_POINT_D65;
+    return _whitePointD65;
   }
 
   static double _labF(double t) {

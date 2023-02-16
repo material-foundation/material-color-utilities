@@ -22,7 +22,7 @@ import 'package:material_color_utilities/hct/viewing_conditions.dart';
 
 /// A class that solves the HCT equation.
 class HctSolver {
-  static final _SCALED_DISCOUNT_FROM_LINRGB = [
+  static final _scaledDiscountFromLinrgb = [
     [
       0.001200833568784504,
       0.002389694492170889,
@@ -40,7 +40,7 @@ class HctSolver {
     ],
   ];
 
-  static final _LINRGB_FROM_SCALED_DISCOUNT = [
+  static final _linrgbFromScaledDiscount = [
     [
       1373.2198709594231,
       -1100.4251190754821,
@@ -58,9 +58,9 @@ class HctSolver {
     ],
   ];
 
-  static final _Y_FROM_LINRGB = [0.2126, 0.7152, 0.0722];
+  static final _yFromLinrgb = [0.2126, 0.7152, 0.0722];
 
-  static final _CRITICAL_PLANES = [
+  static final _criticalPlanes = [
     0.015176349177441876,
     0.045529047532325624,
     0.07588174588720938,
@@ -352,7 +352,7 @@ class HctSolver {
   /// radians.
   static double _hueOf(List<double> linrgb) {
     final scaledDiscount =
-        MathUtils.matrixMultiply(linrgb, _SCALED_DISCOUNT_FROM_LINRGB);
+        MathUtils.matrixMultiply(linrgb, _scaledDiscountFromLinrgb);
     final rA = _chromaticAdaptation(scaledDiscount[0]);
     final gA = _chromaticAdaptation(scaledDiscount[1]);
     final bA = _chromaticAdaptation(scaledDiscount[2]);
@@ -417,9 +417,9 @@ class HctSolver {
   /// If this possible vertex lies outside of the cube, [-1.0, -1.0,
   /// -1.0] is returned.
   static List<double> _nthVertex(double y, int n) {
-    final kR = _Y_FROM_LINRGB[0];
-    final kG = _Y_FROM_LINRGB[1];
-    final kB = _Y_FROM_LINRGB[2];
+    final kR = _yFromLinrgb[0];
+    final kG = _yFromLinrgb[1];
+    final kB = _yFromLinrgb[2];
     final coordA = n % 4 <= 1 ? 0.0 : 100.0;
     final coordB = n % 2 == 0 ? 0.0 : 100.0;
     if (n < 4) {
@@ -534,7 +534,7 @@ class HctSolver {
             break;
           } else {
             final mPlane = ((lPlane + rPlane) / 2.0).floor();
-            final midPlaneCoordinate = _CRITICAL_PLANES[mPlane];
+            final midPlaneCoordinate = _criticalPlanes[mPlane];
             final mid = _setCoordinate(left, midPlaneCoordinate, right, axis);
             final midHue = _hueOf(mid);
             if (_areInCyclicOrder(leftHue, targetHue, midHue)) {
@@ -608,7 +608,7 @@ class HctSolver {
       final bCScaled = _inverseChromaticAdaptation(bA);
       final linrgb = MathUtils.matrixMultiply(
         [rCScaled, gCScaled, bCScaled],
-        _LINRGB_FROM_SCALED_DISCOUNT,
+        _linrgbFromScaledDiscount,
       );
       // ===========================================================
       // Operations inlined from Cam16 to avoid repeated calculation
@@ -616,9 +616,9 @@ class HctSolver {
       if (linrgb[0] < 0 || linrgb[1] < 0 || linrgb[2] < 0) {
         return 0;
       }
-      final kR = _Y_FROM_LINRGB[0];
-      final kG = _Y_FROM_LINRGB[1];
-      final kB = _Y_FROM_LINRGB[2];
+      final kR = _yFromLinrgb[0];
+      final kG = _yFromLinrgb[1];
+      final kB = _yFromLinrgb[2];
       final fnj = kR * linrgb[0] + kG * linrgb[1] + kB * linrgb[2];
       if (fnj <= 0) {
         return 0;
