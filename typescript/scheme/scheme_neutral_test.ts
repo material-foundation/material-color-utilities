@@ -17,11 +17,11 @@
 
 import 'jasmine';
 
-import {MaterialDynamicColors} from '../dynamiccolor/material_dynamic_colors';
-import {Hct} from '../hct/hct';
-import {customMatchers} from '../utils/test_utils';
+import {MaterialDynamicColors} from '../dynamiccolor/material_dynamic_colors.js';
+import {Hct} from '../hct/hct.js';
+import {customMatchers} from '../utils/test_utils.js';
 
-import {SchemeNeutral} from './scheme_neutral';
+import {SchemeNeutral} from './scheme_neutral.js';
 
 beforeEach(() => {
   jasmine.addMatchers(customMatchers);

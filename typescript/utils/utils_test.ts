@@ -17,8 +17,8 @@
 
 import 'jasmine';
 
-import * as colorUtils from './color_utils';
-import * as mathUtils from './math_utils';
+import * as colorUtils from './color_utils.js';
+import * as mathUtils from './math_utils.js';
 
 function rotationDirection(from: number, to: number): number {
   const a = to - from;

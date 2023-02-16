@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-import {Hct} from '../hct/hct';
-import {TonalPalette} from '../palettes/tonal_palette';
-import * as math from '../utils/math_utils';
+import {Hct} from '../hct/hct.js';
+import {TonalPalette} from '../palettes/tonal_palette.js';
+import * as math from '../utils/math_utils.js';
 
-import {Variant} from './variant';
+import {Variant} from './variant.js';
 
 /**
  * @param sourceColorArgb The source color of the theme as an ARGB 32-bit

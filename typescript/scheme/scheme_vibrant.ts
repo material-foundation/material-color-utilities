@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-import {Hct} from '../hct/hct';
-import {TonalPalette} from '../palettes/tonal_palette';
+import {Hct} from '../hct/hct.js';
+import {TonalPalette} from '../palettes/tonal_palette.js';
 
-import {DynamicScheme} from './dynamic_scheme';
-import {Variant} from './variant';
+import {DynamicScheme} from './dynamic_scheme.js';
+import {Variant} from './variant.js';
 
 /**
  * A Dynamic Color theme that maxes out colorfulness at each position in the

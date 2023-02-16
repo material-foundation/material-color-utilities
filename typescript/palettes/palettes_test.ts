@@ -17,8 +17,8 @@
 
 import 'jasmine';
 
-import {CorePalette} from './core_palette';
-import {TonalPalette} from './tonal_palette';
+import {CorePalette} from './core_palette.js';
+import {TonalPalette} from './tonal_palette.js';
 
 describe('TonalPalette', () => {
   it('ofBlue', () => {

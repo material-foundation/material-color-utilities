@@ -17,11 +17,11 @@
 
 import 'jasmine';
 
-import * as colorUtils from '../utils/color_utils';
+import * as colorUtils from '../utils/color_utils.js';
 
-import {Cam16} from './cam16';
-import {Hct} from './hct';
-import {ViewingConditions} from './viewing_conditions';
+import {Cam16} from './cam16.js';
+import {Hct} from './hct.js';
+import {ViewingConditions} from './viewing_conditions.js';
 
 const RED = 0xffff0000;
 const GREEN = 0xff00ff00;

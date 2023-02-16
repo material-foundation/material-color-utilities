@@ -17,7 +17,7 @@
 
 import 'jasmine';
 
-import {Score} from './score';
+import {Score} from './score.js';
 
 describe('scoring', () => {
   it('prioritizes chroma when proportions equal', () => {

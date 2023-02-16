@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-import {DynamicScheme} from '../scheme/dynamic_scheme';
+import {DynamicScheme} from '../scheme/dynamic_scheme.js';
 
-import {DynamicColor} from './dynamic_color';
-import {ToneDeltaConstraint} from './tone_delta_constraint';
+import {DynamicColor} from './dynamic_color.js';
+import {ToneDeltaConstraint} from './tone_delta_constraint.js';
 
 
 /**

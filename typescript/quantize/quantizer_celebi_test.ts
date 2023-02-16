@@ -17,7 +17,7 @@
 
 import 'jasmine';
 
-import {QuantizerCelebi} from './quantizer_celebi';
+import {QuantizerCelebi} from './quantizer_celebi.js';
 
 const RED = 0xffff0000;
 const GREEN = 0xff00ff00;

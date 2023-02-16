@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-import {Contrast} from '../contrast/contrast';
-import {Hct} from '../hct/hct';
-import {TonalPalette} from '../palettes/tonal_palette';
-import {DynamicScheme} from '../scheme/dynamic_scheme';
-import * as math from '../utils/math_utils';
+import {Contrast} from '../contrast/contrast.js';
+import {Hct} from '../hct/hct.js';
+import {TonalPalette} from '../palettes/tonal_palette.js';
+import {DynamicScheme} from '../scheme/dynamic_scheme.js';
+import * as math from '../utils/math_utils.js';
 
-import {ToneDeltaConstraint} from './tone_delta_constraint';
+import {ToneDeltaConstraint} from './tone_delta_constraint.js';
 
 /**
  * @param palette Function that provides a TonalPalette given

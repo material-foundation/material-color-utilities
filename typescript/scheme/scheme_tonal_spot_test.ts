@@ -17,11 +17,11 @@
 
 import 'jasmine';
 
-import {MaterialDynamicColors} from '../dynamiccolor/material_dynamic_colors';
-import {Hct} from '../hct/hct';
-import {customMatchers} from '../utils/test_utils';
+import {MaterialDynamicColors} from '../dynamiccolor/material_dynamic_colors.js';
+import {Hct} from '../hct/hct.js';
+import {customMatchers} from '../utils/test_utils.js';
 
-import {SchemeTonalSpot} from './scheme_tonal_spot';
+import {SchemeTonalSpot} from './scheme_tonal_spot.js';
 
 beforeEach(() => {
   jasmine.addMatchers(customMatchers);

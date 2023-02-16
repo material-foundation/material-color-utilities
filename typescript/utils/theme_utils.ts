@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-import {Blend} from '../blend/blend';
-import {CorePalette} from '../palettes/core_palette';
-import {TonalPalette} from '../palettes/tonal_palette';
-import {Scheme} from '../scheme/scheme';
+import {Blend} from '../blend/blend.js';
+import {CorePalette} from '../palettes/core_palette.js';
+import {TonalPalette} from '../palettes/tonal_palette.js';
+import {Scheme} from '../scheme/scheme.js';
 
-import {sourceColorFromImage} from './image_utils';
-import {hexFromArgb} from './string_utils';
+import {sourceColorFromImage} from './image_utils.js';
+import {hexFromArgb} from './string_utils.js';
 
 /**
  * Custom color used to pair with a theme
