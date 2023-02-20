@@ -39,27 +39,17 @@ every component — ex. MDC doesn’t need quantization/scoring/image extraction
 
 | Components       | Purpose                                                   |
 | ---------------- | --------------------------------------------------------- |
-| **blend**        | Interpolate, harmonize, animate, and gradate colors in    |
-:                  : HCT                                                       :
-| **contrast**     | Measure contrast, obtain contrastful colors               |
-| **dislike**      | Check and fix universally disliked colors                 |
-| **dynamiccolor** | Obtain colors that adjust based on UI state (dark theme,  |
-:                  : style, preferences, contrast requirements, etc.)          :
-| **hct**          | A new color space (hue, chrome, tone) based on CAM16 x    |
-:                  : L*, that accounts for viewing conditions                  :
-| **palettes**     | Tonal palette — range of colors that varies only in tone  |
-:                  : <br>Core palette — set of tonal palettes needed to create :
-:                  : Material color schemes                                    :
-| **quantize**     | Turn an image into N colors; composed of Celebi, which    |
-:                  : runs Wu, then WSMeans                                     :
-| **scheme**       | Create static and dynamic color schemes from a single     |
-:                  : color or a core palette                                   :
-| **score**        | Rank colors for suitability for theming                   |
-| **temperature**  | Obtain analogous and complementary colors                 |
-| **utilities**    | Color — convert between color spaces needed to implement  |
-:                  : HCT/CAM16 <br>Math — functions for ex. ensuring hue is    :
-:                  : between 0 and 360, clamping, etc. <br>String - convert    :
-:                  : between strings and integers                              :
+| **blend**        | Interpolate, harmonize, animate, and gradate colors in HCT                                                      
+| **contrast**     | Measure contrast, obtain contrastful colors               
+| **dislike**      | Check and fix universally disliked colors                 
+| **dynamiccolor** | Obtain colors that adjust based on UI state (dark theme, style, preferences, contrast requirements, etc.)          
+| **hct**          | A new color space (hue, chrome, tone) based on CAM16 x L*, that accounts for viewing conditions   
+| **palettes**     | Tonal palette — range of colors that varies only in tone <br>Core palette — set of tonal palettes needed to create Material color schemes                                    
+| **quantize**     | Turn an image into N colors; composed of Celebi, which runs Wu, then WSMeans 
+| **scheme**       | Create static and dynamic color schemes from a single color or a core palette                                   
+| **score**        | Rank colors for suitability for theming                   
+| **temperature**  | Obtain analogous and complementary colors                 
+| **utilities**    | Color - convert between color spaces needed to implement HCT/CAM16 <br>Math - functions for ex. ensuring hue is between 0 and 360, clamping, etc. <br>String - convert between strings and integers                              
 
 ## Background
 
