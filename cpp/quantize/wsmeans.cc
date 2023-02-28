@@ -210,12 +210,15 @@ QuantizerResult QuantizeWsmeans(const std::vector<Argb>& input_pixels,
 
   std::vector<Swatch> swatches;
   std::vector<Argb> cluster_argbs;
+  std::vector<Argb> all_cluster_argbs;
   for (int i = 0; i < cluster_count; i++) {
+    Argb possible_new_cluster = IntFromLab(clusters[i]);
+    all_cluster_argbs.push_back(possible_new_cluster);
+
     int count = pixel_count_sums[i];
     if (count == 0) {
       continue;
     }
-    Argb possible_new_cluster = IntFromLab(clusters[i]);
     int use_new_cluster = 1;
     for (size_t j = 0; j < swatches.size(); j++) {
       if (swatches[j].argb == possible_new_cluster) {
@@ -244,7 +247,7 @@ QuantizerResult QuantizeWsmeans(const std::vector<Argb>& input_pixels,
   for (size_t i = 0; i < points.size(); i++) {
     int pixel = pixels[i];
     int cluster_index = cluster_indices[i];
-    int cluster_argb = cluster_argbs[cluster_index];
+    int cluster_argb = all_cluster_argbs[cluster_index];
     input_pixel_to_cluster_pixel[pixel] = cluster_argb;
   }
 
