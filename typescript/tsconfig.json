@@ -20,7 +20,6 @@
       "composite": true,
       "importHelpers": true
   },
-  "include": [
-      "**/*.ts"
-  ]
+  "include": ["**/*.ts"],
+  "exclude": ["**/*_test.ts"]
 }

@@ -20,6 +20,18 @@ import {Hct} from '../hct/hct.js';
 import {TonalPalette} from './tonal_palette.js';
 
 /**
+ * Set of colors to generate a [CorePalette] from
+ */
+export interface CorePaletteColors {
+  primary: number;
+  secondary?: number;
+  tertiary?: number;
+  neutral?: number;
+  neutralVariant?: number;
+  error?: number;
+}
+
+/**
  * An intermediate concept between the key color for a UI theme, and a full
  * color scheme. 5 sets of tones are generated, all except one use the same hue
  * as the key color, and all vary in chroma.
@@ -44,6 +56,48 @@ export class CorePalette {
    */
   static contentOf(argb: number): CorePalette {
     return new CorePalette(argb, true);
+  }
+
+  /**
+   * Create a [CorePalette] from a set of colors
+   */
+  static fromColors(colors: CorePaletteColors): CorePalette {
+    return CorePalette.createPaletteFromColors(false, colors);
+  }
+
+  /**
+   * Create a content [CorePalette] from a set of colors
+   */
+  static contentFromColors(colors: CorePaletteColors): CorePalette {
+    return CorePalette.createPaletteFromColors(true, colors);
+  }
+
+  private static createPaletteFromColors(
+      content: boolean,
+      colors: CorePaletteColors,
+  ) {
+    const palette = new CorePalette(colors.primary, content);
+    if (colors.secondary) {
+      const p = new CorePalette(colors.secondary, content);
+      palette.a2 = p.a1;
+    }
+    if (colors.tertiary) {
+      const p = new CorePalette(colors.tertiary, content);
+      palette.a3 = p.a1;
+    }
+    if (colors.error) {
+      const p = new CorePalette(colors.error, content);
+      palette.error = p.a1;
+    }
+    if (colors.neutral) {
+      const p = new CorePalette(colors.neutral, content);
+      palette.n1 = p.n1;
+    }
+    if (colors.neutralVariant) {
+      const p = new CorePalette(colors.neutralVariant, content);
+      palette.n2 = p.n2;
+    }
+    return palette;
   }
 
   private constructor(argb: number, isContent: boolean) {
