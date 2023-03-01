@@ -184,22 +184,18 @@ class DynamicColor {
     double? minRatio;
     double? maxRatio;
     if (bg != null) {
-      final bgHasBg = bg.background(scheme) == null;
+      final bgHasBg = bg.background(scheme) != null;
       standardRatio = Contrast.ratioOfTones(tone(scheme), bg.tone(scheme));
       if (decreasingContrast) {
         final minContrastRatio = Contrast.ratioOfTones(
             toneMinContrast(scheme), bg.toneMinContrast(scheme));
-        minRatio = bgHasBg ? null : minContrastRatio;
+        minRatio = bgHasBg ? minContrastRatio : null;
         maxRatio = standardRatio;
       } else {
         final maxContrastRatio = Contrast.ratioOfTones(
             toneMaxContrast(scheme), bg.toneMaxContrast(scheme));
-        minRatio = bg.background(scheme) == null
-            ? null
-            : math.min(maxContrastRatio, standardRatio);
-        maxRatio = bg.background(scheme) == null
-            ? null
-            : math.max(maxContrastRatio, standardRatio);
+        minRatio = bgHasBg ? math.min(maxContrastRatio, standardRatio) : null;
+        maxRatio = bgHasBg ? math.max(maxContrastRatio, standardRatio) : null;
       }
     }
 

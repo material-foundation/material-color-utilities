@@ -90,7 +90,7 @@ interface BaseOptions {
  * color is in the current UI state. Used to determine the tone of the
  * background.
  * @param desiredTone Function with inputs of contrast ratio with background at
- * default contrast and the background tone at current constrast level. Outputs
+ * default contrast and the background tone at current contrast level. Outputs
  * tone.
  * @param [background] Optional, function with input of DynamicScheme that
  * returns a DynamicColor that is the background of the color whose tone is
@@ -329,22 +329,18 @@ export class DynamicColor {
     let minRatio: number|null;
     let maxRatio: number|null;
     if (bg != null) {
-      const bgHasBg = bg?.background?.(scheme) == null;
+      const bgHasBg = bg?.background?.(scheme) != null;
       standardRatio = Contrast.ratioOfTones(this.tone(scheme), bg.tone(scheme));
       if (decreasingContrast) {
         const minContrastRatio = Contrast.ratioOfTones(
             this.toneMinContrast(scheme), bg.toneMinContrast(scheme));
-        minRatio = bgHasBg ? null : minContrastRatio;
+        minRatio = bgHasBg ? minContrastRatio : null;
         maxRatio = standardRatio;
       } else {
         const maxContrastRatio = Contrast.ratioOfTones(
             this.toneMaxContrast(scheme), bg.toneMaxContrast(scheme));
-        minRatio = bg?.background?.(scheme) == null ?
-            null :
-            Math.min(maxContrastRatio, standardRatio);
-        maxRatio = bg?.background?.(scheme) == null ?
-            null :
-            Math.max(maxContrastRatio, standardRatio);
+        minRatio = bgHasBg ? Math.min(maxContrastRatio, standardRatio) : null;
+        maxRatio = bgHasBg ? Math.max(maxContrastRatio, standardRatio) : null;
       }
     }
 
