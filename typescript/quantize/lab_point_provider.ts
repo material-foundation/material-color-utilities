@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import './point_provider';
+import { PointProvider } from './point_provider.js';
 
 import * as utils from '../utils/color_utils.js';
 
