@@ -98,6 +98,54 @@ final _textSurfacePairs = [
 ];
 
 void main() {
+  test('Values are correct', () {
+    expect(
+      MaterialDynamicColors.onPrimaryContainer.getArgb(SchemeFidelity(
+        sourceColorHct: Hct.fromInt(0xFFFF0000),
+        isDark: false,
+        contrastLevel: 0.5,
+      )),
+      equals(0xFFFFE5E1),
+    );
+    expect(
+      MaterialDynamicColors.onSecondaryContainer.getArgb(SchemeContent(
+        sourceColorHct: Hct.fromInt(0xFF0000FF),
+        isDark: false,
+        contrastLevel: 0.5,
+      )),
+      equals(0xFFFFFCFF),
+    );
+    expect(
+      MaterialDynamicColors.onTertiaryContainer.getArgb(SchemeContent(
+        sourceColorHct: Hct.fromInt(0xFFFFFF00),
+        isDark: true,
+        contrastLevel: -0.5,
+      )),
+      equals(0xFF616600),
+    );
+    expect(
+      MaterialDynamicColors.surfaceInverse.getArgb(SchemeContent(
+          sourceColorHct: Hct.fromInt(0xFF0000FF),
+          isDark: false,
+          contrastLevel: 0.0)),
+      equals(0xFF464652),
+    );
+    expect(
+      MaterialDynamicColors.primaryInverse.getArgb(SchemeContent(
+          sourceColorHct: Hct.fromInt(0xFFFF0000),
+          isDark: false,
+          contrastLevel: -0.5)),
+      equals(0xFFFF8C7A),
+    );
+    expect(
+      MaterialDynamicColors.outlineVariant.getArgb(SchemeContent(
+          sourceColorHct: Hct.fromInt(0xFFFFFF00),
+          isDark: true,
+          contrastLevel: 0.0)),
+      equals(0xFF484831),
+    );
+  });
+
   // Parametric test, ensuring that dynamic schemes respect contrast
   // between text-surface pairs.
 
