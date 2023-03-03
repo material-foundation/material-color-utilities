@@ -29,5 +29,10 @@ pubspec.lock
 build/
 
 # TS related
-node_modules
 typescript/dist
+node_modules/
+*.js
+*.map
+*.d.ts
+!types/*.d.ts
+.wireit/
