@@ -35,7 +35,7 @@
   "scripts": {
     "build": "wireit",
     "build:ts": "wireit",
-    "prepublishOnly": "wireit"
+    "prepublishOnly": "npm run build"
   },
   "wireit": {
     "build": {

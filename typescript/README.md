@@ -50,15 +50,6 @@ applyTheme(theme, {target: document.body, dark: systemDark});
 
 ```
 
-## Troubleshooting
-
-If using node make sure to use the following flag:
-
-```
-node --experimental-specifier-resolution=node
-```
-
-
 ## Contributing
 
 This repo is not accepting external contributions, but feature requests and bug
