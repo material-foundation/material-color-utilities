@@ -1,6 +1,6 @@
 {
   "name": "@material/material-color-utilities",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "publishConfig": {
     "access": "public"
   },
@@ -32,6 +32,15 @@
     "!**/*_test.*",
     "!.wireit/**"
   ],
+  "main": "index.js",
+  "module": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js"
+    }
+  },
   "scripts": {
     "build": "wireit",
     "build:ts": "wireit",
@@ -39,17 +48,11 @@
   },
   "wireit": {
     "build": {
-      "dependencies": [
-        "build:ts"
-      ]
+      "dependencies": ["build:ts"]
     },
     "build:ts": {
       "command": "tsc --pretty",
-      "files": [
-        "tsconfig.json",
-        "**/*.ts",
-        "!**/*.d.ts"
-      ],
+      "files": ["tsconfig.json", "**/*.ts", "!**/*.d.ts"],
       "output": [
         ".tsbuildinfo",
         "**/*.js",

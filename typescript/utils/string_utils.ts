@@ -25,7 +25,7 @@ import * as colorUtils from './color_utils.js';
  * @param argb ARGB representation of a color.
  * @return Hex string representing color, ex. #ff0000 for red.
  */
-export const hexFromArgb = (argb: number) => {
+export function hexFromArgb(argb: number) {
   const r = colorUtils.redFromArgb(argb);
   const g = colorUtils.greenFromArgb(argb);
   const b = colorUtils.blueFromArgb(argb);
@@ -39,7 +39,7 @@ export const hexFromArgb = (argb: number) => {
   }
 
   return '#' + outParts.join('');
-};
+}
 
 /**
  * @param hex String representing color as hex code. Accepts strings with or
@@ -47,7 +47,7 @@ export const hexFromArgb = (argb: number) => {
  *     hex characters.
  * @return ARGB representation of color.
  */
-export const argbFromHex = (hex: string) => {
+export function argbFromHex(hex: string) {
   hex = hex.replace('#', '');
   const isThree = hex.length === 3;
   const isSix = hex.length === 6;
@@ -75,7 +75,7 @@ export const argbFromHex = (hex: string) => {
   return (
       ((255 << 24) | ((r & 0x0ff) << 16) | ((g & 0x0ff) << 8) | (b & 0x0ff)) >>>
       0);
-};
+}
 
 function parseIntHex(value: string) {
   // tslint:disable-next-line:ban
