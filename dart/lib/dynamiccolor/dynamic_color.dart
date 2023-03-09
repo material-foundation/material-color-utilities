@@ -13,12 +13,14 @@
 // limitations under the License.
 
 import 'dart:math' as math;
+
 import 'package:material_color_utilities/contrast/contrast.dart';
-import 'package:material_color_utilities/dynamiccolor/tone_delta_constraint.dart';
 import 'package:material_color_utilities/hct/hct.dart';
 import 'package:material_color_utilities/palettes/tonal_palette.dart';
 import 'package:material_color_utilities/scheme/dynamic_scheme.dart';
 import 'package:material_color_utilities/utils/math_utils.dart';
+
+import 'src/tone_delta_constraint.dart';
 
 /// A color that adjusts itself based on UI state provided by [DynamicScheme].
 ///

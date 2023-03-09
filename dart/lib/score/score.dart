@@ -15,15 +15,14 @@
 import 'package:material_color_utilities/hct/hct.dart';
 import 'package:material_color_utilities/utils/math_utils.dart';
 
-///
-class ArgbAndScore implements Comparable<ArgbAndScore> {
+class _ArgbAndScore implements Comparable<_ArgbAndScore> {
   int argb;
   double score;
 
-  ArgbAndScore(this.argb, this.score);
+  _ArgbAndScore(this.argb, this.score);
 
   @override
-  int compareTo(ArgbAndScore other) {
+  int compareTo(_ArgbAndScore other) {
     if (score > other.score) {
       return -1;
     } else if (score == other.score) {
@@ -123,12 +122,12 @@ class Score {
       argbToScore[color] = score;
     }
 
-    final argbAndScoreSorted = argbToScore.entries
+    final _argbAndScoreSorted = argbToScore.entries
         .map((entry) => [entry.key, entry.value])
         .toList(growable: false);
-    argbAndScoreSorted.sort((a, b) => a[1].compareTo(b[1]) * -1);
+    _argbAndScoreSorted.sort((a, b) => a[1].compareTo(b[1]) * -1);
     final argbsScoreSorted =
-        argbAndScoreSorted.map((e) => e[0]).toList(growable: false);
+        _argbAndScoreSorted.map((e) => e[0]).toList(growable: false);
     final finalColorsToScore = <num, double>{};
     for (var differenceDegrees = 90.0;
         differenceDegrees >= 15.0;
@@ -157,7 +156,7 @@ class Score {
     // Ensure the list of colors returned is sorted such that the first in the
     // list is the most suitable, and the last is the least suitable.
     final colorsByScoreDescending = finalColorsToScore.entries
-        .map((entry) => ArgbAndScore(entry.key.toInt(), entry.value))
+        .map((entry) => _ArgbAndScore(entry.key.toInt(), entry.value))
         .toList();
     colorsByScoreDescending.sort();
 

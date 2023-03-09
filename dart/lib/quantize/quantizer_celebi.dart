@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'point_provider_lab.dart';
 import 'quantizer.dart';
 import 'quantizer_wsmeans.dart';
 import 'quantizer_wu.dart';
+import 'src/point_provider_lab.dart';
 
 class QuantizerCelebi implements Quantizer {
   @override

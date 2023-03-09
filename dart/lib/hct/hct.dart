@@ -15,7 +15,7 @@
 import 'package:material_color_utilities/utils/color_utils.dart';
 
 import 'cam16.dart';
-import 'hct_solver.dart';
+import 'src/hct_solver.dart';
 import 'viewing_conditions.dart';
 
 /// HCT, hue, chroma, and tone. A color system that provides a perceptually

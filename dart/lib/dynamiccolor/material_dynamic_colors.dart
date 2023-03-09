@@ -13,13 +13,15 @@
 // limitations under the License.
 
 import 'dart:math' as math;
+
 import 'package:material_color_utilities/dislike/dislike_analyzer.dart';
-import 'package:material_color_utilities/dynamiccolor/dynamic_color.dart';
-import 'package:material_color_utilities/dynamiccolor/tone_delta_constraint.dart';
 import 'package:material_color_utilities/hct/hct.dart';
 import 'package:material_color_utilities/hct/viewing_conditions.dart';
 import 'package:material_color_utilities/scheme/dynamic_scheme.dart';
 import 'package:material_color_utilities/scheme/variant.dart';
+
+import 'dynamic_color.dart';
+import 'src/tone_delta_constraint.dart';
 
 bool _isFidelity(DynamicScheme scheme) =>
     scheme.variant == Variant.fidelity || scheme.variant == Variant.content;

@@ -14,9 +14,9 @@
 
 import 'dart:math' as math show Random, min;
 
-import 'point_provider.dart';
-import 'point_provider_lab.dart';
 import 'quantizer.dart';
+import 'src/point_provider.dart';
+import 'src/point_provider_lab.dart';
 
 class DistanceAndIndex implements Comparable<DistanceAndIndex> {
   double distance;

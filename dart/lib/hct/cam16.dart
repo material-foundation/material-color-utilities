@@ -265,8 +265,7 @@ class Cam16 {
   /// [viewingConditions]
   int viewed(ViewingConditions viewingConditions) {
     final xyz = xyzInViewingConditions(viewingConditions, array: _viewedArray);
-    final argb = ColorUtils.argbFromXyz(
-        _viewedArray[0], _viewedArray[1], _viewedArray[2]);
+    final argb = ColorUtils.argbFromXyz(xyz[0], xyz[1], xyz[2]);
     return argb;
   }
 
