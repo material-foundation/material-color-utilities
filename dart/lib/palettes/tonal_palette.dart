@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import 'dart:math' as math;
-import 'package:collection/equality.dart';
+import 'package:collection/collection.dart' show ListEquality;
 
 import 'package:material_color_utilities/hct/hct.dart';
 

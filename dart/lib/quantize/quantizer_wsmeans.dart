@@ -113,7 +113,6 @@ class QuantizerWsmeans {
     debugLog(
       'have ${clusters.length} starting clusters, ${points.length} points',
     );
-    final clusterIndexRandom = math.Random(0x42688);
     final clusterIndices =
         List<int>.generate(pointCount, (index) => index % clusterCount);
     final indexMatrix = List<List<int>>.generate(

@@ -30,6 +30,9 @@ screenshots:
 environment:
   sdk: ">=2.17.0 <4.0.0"
 
+dependencies:
+  collection: ^1.15.0 # used by tonal_palette.dart
+
 dev_dependencies:
   matcher: ^0.12.0 # used by color_matcher.dart
   lints: ^2.0.1
