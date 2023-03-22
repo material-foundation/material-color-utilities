@@ -23,16 +23,11 @@
 namespace material_color_utilities {
 
 bool IsDisliked(Hct hct) {
-  const double hue_start = 90.0;
-  const double hue_end = 111.0;
-  const double chroma_start = 16.0;
-  const double tone_start = 65.0;
-
   double roundedHue = std::round(hct.get_hue());
 
-  bool hue_passes = roundedHue >= hue_start && roundedHue <= hue_end;
-  bool chroma_passes = std::round(hct.get_chroma()) > chroma_start;
-  bool tone_passes = std::round(hct.get_tone()) < tone_start;
+  bool hue_passes = roundedHue >= 90.0 && roundedHue <= 111.0;
+  bool chroma_passes = std::round(hct.get_chroma()) > 16.0;
+  bool tone_passes = std::round(hct.get_tone()) < 65.0;
 
   return hue_passes && chroma_passes && tone_passes;
 }

@@ -66,5 +66,11 @@ void main() {
         expect(DislikeAnalyzer.isDisliked(likable), false);
       }
     });
+
+    test('tone 67 not disliked', () {
+      final color = Hct.from(100.0, 50.0, 67.0);
+      expect(DislikeAnalyzer.isDisliked(color), false);
+      expect(DislikeAnalyzer.fixIfDisliked(color).toInt(), color.toInt());
+    });
   });
 }

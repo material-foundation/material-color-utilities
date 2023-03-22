@@ -65,6 +65,13 @@ INSTANTIATE_TEST_SUITE_P(DislikeTest, BileFixingTest,
                          Values(0xff95884B, 0xff716B40, 0xffB08E00, 0xff4C4308,
                                 0xff464521));
 
+
+TEST(DislikeTest, Tone67Liked) {
+  Hct color = Hct(100.0, 50.0, 67.0);
+  EXPECT_FALSE(IsDisliked(color));
+  EXPECT_EQ(FixIfDisliked(color).ToInt(), color.ToInt());
+}
+
 }  // namespace
 
 }  // namespace material_color_utilities
