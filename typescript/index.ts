@@ -16,6 +16,10 @@
  */
 
 export * from './blend/blend.js';
+export * from './contrast/contrast.js';
+export * from './dislike/dislike_analyzer.js';
+export * from './dynamiccolor/dynamic_color.js';
+export * from './dynamiccolor/material_dynamic_colors.js';
 export * from './hct/cam16.js';
 export * from './hct/hct.js';
 export * from './hct/viewing_conditions.js';
@@ -25,8 +29,14 @@ export * from './quantize/quantizer_celebi.js';
 export * from './quantize/quantizer_map.js';
 export * from './quantize/quantizer_wsmeans.js';
 export * from './quantize/quantizer_wu.js';
+export * from './scheme/dynamic_scheme.js';
 export * from './scheme/scheme.js';
 export * from './scheme/scheme_android.js';
+export * from './scheme/scheme_expressive.js';
+export * from './scheme/scheme_monochrome.js';
+export * from './scheme/scheme_neutral.js';
+export * from './scheme/scheme_tonal_spot.js';
+export * from './scheme/scheme_vibrant.js';
 export * from './score/score.js';
 export * from './utils/color_utils.js';
 export * from './utils/math_utils.js';
