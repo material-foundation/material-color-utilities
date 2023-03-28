@@ -29,6 +29,14 @@ namespace material_color_utilities {
 
 QuantizerResult QuantizeCelebi(const std::vector<Argb>& pixels,
                                uint16_t max_colors) {
+  if (max_colors == 0 || pixels.empty()) {
+    return QuantizerResult();
+  }
+
+  if (max_colors > 256) {
+    max_colors = 256;
+  }
+
   int pixel_count = pixels.size();
 
   std::vector<Argb> opaque_pixels;

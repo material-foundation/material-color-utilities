@@ -104,5 +104,28 @@ TEST(CelebiTest, TwoRedThreeGreen) {
   EXPECT_EQ(result.color_to_count[0xff00ff00], 3);
 }
 
+TEST(CelebiTest, NoColors) {
+  std::vector<Argb> pixels;
+  pixels.push_back(0xFFFFFFFF);
+  QuantizerResult result = QuantizeCelebi(pixels, 0);
+  EXPECT_TRUE(result.color_to_count.empty());
+  EXPECT_TRUE(result.input_pixel_to_cluster_pixel.empty());
+}
+
+TEST(CelebiTest, SingleTransparent) {
+  std::vector<Argb> pixels;
+  pixels.push_back(0x20F93013);
+  QuantizerResult result = QuantizeCelebi(pixels, 1);
+  EXPECT_TRUE(result.color_to_count.empty());
+  EXPECT_TRUE(result.input_pixel_to_cluster_pixel.empty());
+}
+
+TEST(CelebiTest, TooManyColors) {
+  std::vector<Argb> pixels;
+  QuantizerResult result = QuantizeCelebi(pixels, 32767);
+  EXPECT_TRUE(result.color_to_count.empty());
+  EXPECT_TRUE(result.input_pixel_to_cluster_pixel.empty());
+}
+
 }  // namespace
 }  // namespace material_color_utilities

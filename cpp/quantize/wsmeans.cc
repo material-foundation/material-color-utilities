@@ -54,6 +54,15 @@ struct DistanceToIndex {
 QuantizerResult QuantizeWsmeans(const std::vector<Argb>& input_pixels,
                                 const std::vector<Argb>& starting_clusters,
                                 uint16_t max_colors) {
+  if (max_colors == 0 || input_pixels.empty()) {
+    return QuantizerResult();
+  }
+
+  if (max_colors > 256) {
+    // If colors is outside the range, just set it the max.
+    max_colors = 256;
+  }
+
   uint32_t pixel_count = input_pixels.size();
   absl::flat_hash_map<Argb, int> pixel_to_count;
   std::vector<uint32_t> pixels;

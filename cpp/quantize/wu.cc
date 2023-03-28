@@ -294,7 +294,7 @@ bool Cut(Box& box1, Box& box2, const IntArray& weights, const IntArray& m_r,
 
 std::vector<Argb> QuantizeWu(const std::vector<Argb>& pixels,
                              uint16_t max_colors) {
-  if (max_colors <= 0 || max_colors > 256) {
+  if (max_colors <= 0 || max_colors > 256 || pixels.empty()) {
     return std::vector<Argb>();
   }
 
