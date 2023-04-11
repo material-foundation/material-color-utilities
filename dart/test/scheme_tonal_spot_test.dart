@@ -458,4 +458,48 @@ void main() {
     expect(
         MaterialDynamicColors.onSurface.getArgb(scheme), isColor(0xffe5e2ea));
   });
+
+  test('lightTheme colors are correct', () {
+    final scheme = SchemeTonalSpot(
+      sourceColorHct: Hct.fromInt(0xff0000ff),
+      isDark: false,
+      contrastLevel: 0.0,
+    );
+    expect(MaterialDynamicColors.surfaceInverse.getArgb(scheme),
+        isColor(0xff47464c));
+    expect(MaterialDynamicColors.onSurfaceInverse.getArgb(scheme),
+        isColor(0xfff2eff7));
+    expect(MaterialDynamicColors.outlineVariant.getArgb(scheme),
+        isColor(0xffc7c5d0));
+    expect(MaterialDynamicColors.shadow.getArgb(scheme), isColor(0xff000000));
+    expect(MaterialDynamicColors.scrim.getArgb(scheme), isColor(0xff000000));
+    expect(
+        MaterialDynamicColors.surfaceTint.getArgb(scheme), isColor(0xff545999));
+    expect(MaterialDynamicColors.primaryInverse.getArgb(scheme),
+        isColor(0xffbec2ff));
+    expect(MaterialDynamicColors.onPrimaryInverse.getArgb(scheme),
+        isColor(0xff252968));
+  });
+
+  test('darkTheme colors are correct', () {
+    final scheme = SchemeTonalSpot(
+      sourceColorHct: Hct.fromInt(0xff0000ff),
+      isDark: true,
+      contrastLevel: 0.0,
+    );
+    expect(MaterialDynamicColors.surfaceInverse.getArgb(scheme),
+        isColor(0xffe4e1e9));
+    expect(MaterialDynamicColors.onSurfaceInverse.getArgb(scheme),
+        isColor(0xff303036));
+    expect(MaterialDynamicColors.outlineVariant.getArgb(scheme),
+        isColor(0xff46464f));
+    expect(MaterialDynamicColors.shadow.getArgb(scheme), isColor(0xff000000));
+    expect(MaterialDynamicColors.scrim.getArgb(scheme), isColor(0xff000000));
+    expect(
+        MaterialDynamicColors.surfaceTint.getArgb(scheme), isColor(0xffbec2ff));
+    expect(MaterialDynamicColors.primaryInverse.getArgb(scheme),
+        isColor(0xff545999));
+    expect(MaterialDynamicColors.onPrimaryInverse.getArgb(scheme),
+        isColor(0xffffffff));
+  });
 }

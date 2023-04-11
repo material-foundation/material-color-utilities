@@ -537,4 +537,52 @@ describe('scheme tonal spot test', () => {
     expect(MaterialDynamicColors.onSurface.getArgb(scheme))
         .matchesColor(0xffe5e2ea);
   });
+
+  it('lightTheme colors are correct', () => {
+    const scheme = new SchemeTonalSpot(
+        Hct.fromInt(0xff0000ff),
+        false,
+        0.0,
+    );
+    expect(MaterialDynamicColors.surfaceInverse.getArgb(scheme))
+        .matchesColor(0xff47464c);
+    expect(MaterialDynamicColors.onSurfaceInverse.getArgb(scheme))
+        .matchesColor(0xfff2eff7);
+    expect(MaterialDynamicColors.outlineVariant.getArgb(scheme))
+        .matchesColor(0xffc7c5d0);
+    expect(MaterialDynamicColors.shadow.getArgb(scheme))
+        .matchesColor(0xff000000);
+    expect(MaterialDynamicColors.scrim.getArgb(scheme))
+        .matchesColor(0xff000000);
+    expect(MaterialDynamicColors.surfaceTint.getArgb(scheme))
+        .matchesColor(0xff545999);
+    expect(MaterialDynamicColors.primaryInverse.getArgb(scheme))
+        .matchesColor(0xffbec2ff);
+    expect(MaterialDynamicColors.onPrimaryInverse.getArgb(scheme))
+        .matchesColor(0xff252968);
+  });
+
+  it('darkTheme colors are correct', () => {
+    const scheme = new SchemeTonalSpot(
+        Hct.fromInt(0xff0000ff),
+        true,
+        0.0,
+    );
+    expect(MaterialDynamicColors.surfaceInverse.getArgb(scheme))
+        .matchesColor(0xffe4e1e9);
+    expect(MaterialDynamicColors.onSurfaceInverse.getArgb(scheme))
+        .matchesColor(0xff303036);
+    expect(MaterialDynamicColors.outlineVariant.getArgb(scheme))
+        .matchesColor(0xff46464f);
+    expect(MaterialDynamicColors.shadow.getArgb(scheme))
+        .matchesColor(0xff000000);
+    expect(MaterialDynamicColors.scrim.getArgb(scheme))
+        .matchesColor(0xff000000);
+    expect(MaterialDynamicColors.surfaceTint.getArgb(scheme))
+        .matchesColor(0xffbec2ff);
+    expect(MaterialDynamicColors.primaryInverse.getArgb(scheme))
+        .matchesColor(0xff545999);
+    expect(MaterialDynamicColors.onPrimaryInverse.getArgb(scheme))
+        .matchesColor(0xffffffff);
+  });
 });

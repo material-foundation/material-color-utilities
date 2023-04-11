@@ -26,4 +26,6 @@ export enum Variant {
   TONAL_SPOT,
   VIBRANT,
   EXPRESSIVE,
+  FIDELITY,
+  CONTENT,
 }

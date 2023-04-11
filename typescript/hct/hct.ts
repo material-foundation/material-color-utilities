@@ -35,6 +35,7 @@ import * as utils from '../utils/color_utils.js';
 
 import {Cam16} from './cam16.js';
 import {HctSolver} from './hct_solver.js';
+import {ViewingConditions} from './viewing_conditions.js';
 
 
 /**
@@ -148,5 +149,43 @@ export class Hct {
     this.internalChroma = cam.chroma;
     this.internalTone = utils.lstarFromArgb(argb);
     this.argb = argb;
+  }
+
+  /**
+   * Translates a color into different [ViewingConditions].
+   *
+   * Colors change appearance. They look different with lights on versus off,
+   * the same color, as in hex code, on white looks different when on black.
+   * This is called color relativity, most famously explicated by Josef Albers
+   * in Interaction of Color.
+   *
+   * In color science, color appearance models can account for this and
+   * calculate the appearance of a color in different settings. HCT is based on
+   * CAM16, a color appearance model, and uses it to make these calculations.
+   *
+   * See [ViewingConditions.make] for parameters affecting color appearance.
+   */
+  inViewingConditions(vc: ViewingConditions): Hct {
+    // 1. Use CAM16 to find XYZ coordinates of color in specified VC.
+    const cam = Cam16.fromInt(this.toInt());
+    const viewedInVc = cam.xyzInViewingConditions(vc);
+
+    // 2. Create CAM16 of those XYZ coordinates in default VC.
+    const recastInVc = Cam16.fromXyzInViewingConditions(
+        viewedInVc[0],
+        viewedInVc[1],
+        viewedInVc[2],
+        ViewingConditions.make(),
+    );
+
+    // 3. Create HCT from:
+    // - CAM16 using default VC with XYZ coordinates in specified VC.
+    // - L* converted from Y in XYZ coordinates in specified VC.
+    const recastHct = Hct.from(
+        recastInVc.hue,
+        recastInVc.chroma,
+        utils.lstarFromY(viewedInVc[1]),
+    );
+    return recastHct;
   }
 }

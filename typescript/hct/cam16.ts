@@ -290,4 +290,129 @@ export class Cam16 {
     const argb = utils.argbFromXyz(x, y, z);
     return argb;
   }
+
+  /// Given color expressed in XYZ and viewed in [viewingConditions], convert to
+  /// CAM16.
+  static fromXyzInViewingConditions(
+      x: number, y: number, z: number,
+      viewingConditions: ViewingConditions): Cam16 {
+    // Transform XYZ to 'cone'/'rgb' responses
+
+    const rC = 0.401288 * x + 0.650173 * y - 0.051461 * z;
+    const gC = -0.250268 * x + 1.204414 * y + 0.045854 * z;
+    const bC = -0.002079 * x + 0.048952 * y + 0.953127 * z;
+
+    // Discount illuminant
+    const rD = viewingConditions.rgbD[0] * rC;
+    const gD = viewingConditions.rgbD[1] * gC;
+    const bD = viewingConditions.rgbD[2] * bC;
+
+    // chromatic adaptation
+    const rAF = Math.pow(viewingConditions.fl * Math.abs(rD) / 100.0, 0.42);
+    const gAF = Math.pow(viewingConditions.fl * Math.abs(gD) / 100.0, 0.42);
+    const bAF = Math.pow(viewingConditions.fl * Math.abs(bD) / 100.0, 0.42);
+    const rA = math.signum(rD) * 400.0 * rAF / (rAF + 27.13);
+    const gA = math.signum(gD) * 400.0 * gAF / (gAF + 27.13);
+    const bA = math.signum(bD) * 400.0 * bAF / (bAF + 27.13);
+
+    // redness-greenness
+    const a = (11.0 * rA + -12.0 * gA + bA) / 11.0;
+    // yellowness-blueness
+    const b = (rA + gA - 2.0 * bA) / 9.0;
+
+    // auxiliary components
+    const u = (20.0 * rA + 20.0 * gA + 21.0 * bA) / 20.0;
+    const p2 = (40.0 * rA + 20.0 * gA + bA) / 20.0;
+
+    // hue
+    const atan2 = Math.atan2(b, a);
+    const atanDegrees = atan2 * 180.0 / Math.PI;
+    const hue = atanDegrees < 0 ? atanDegrees + 360.0 :
+        atanDegrees >= 360      ? atanDegrees - 360 :
+                                  atanDegrees;
+    const hueRadians = hue * Math.PI / 180.0;
+
+    // achromatic response to color
+    const ac = p2 * viewingConditions.nbb;
+
+    // CAM16 lightness and brightness
+    const J = 100.0 *
+        Math.pow(
+            ac / viewingConditions.aw,
+            viewingConditions.c * viewingConditions.z);
+    const Q = (4.0 / viewingConditions.c) * Math.sqrt(J / 100.0) *
+        (viewingConditions.aw + 4.0) * (viewingConditions.fLRoot);
+
+    const huePrime = (hue < 20.14) ? hue + 360 : hue;
+    const eHue =
+        (1.0 / 4.0) * (Math.cos(huePrime * Math.PI / 180.0 + 2.0) + 3.8);
+    const p1 =
+        50000.0 / 13.0 * eHue * viewingConditions.nc * viewingConditions.ncb;
+    const t = p1 * Math.sqrt(a * a + b * b) / (u + 0.305);
+    const alpha = Math.pow(t, 0.9) *
+        Math.pow(1.64 - Math.pow(0.29, viewingConditions.n), 0.73);
+    // CAM16 chroma, colorfulness, chroma
+    const C = alpha * Math.sqrt(J / 100.0);
+    const M = C * viewingConditions.fLRoot;
+    const s = 50.0 *
+        Math.sqrt((alpha * viewingConditions.c) / (viewingConditions.aw + 4.0));
+
+    // CAM16-UCS components
+    const jstar = (1.0 + 100.0 * 0.007) * J / (1.0 + 0.007 * J);
+    const mstar = Math.log(1.0 + 0.0228 * M) / 0.0228;
+    const astar = mstar * Math.cos(hueRadians);
+    const bstar = mstar * Math.sin(hueRadians);
+    return new Cam16(hue, C, J, Q, M, s, jstar, astar, bstar);
+  }
+
+  /// XYZ representation of CAM16 seen in [viewingConditions].
+  xyzInViewingConditions(viewingConditions: ViewingConditions): number[] {
+    const alpha = (this.chroma === 0.0 || this.j === 0.0) ?
+        0.0 :
+        this.chroma / Math.sqrt(this.j / 100.0);
+
+    const t = Math.pow(
+        alpha / Math.pow(1.64 - Math.pow(0.29, viewingConditions.n), 0.73),
+        1.0 / 0.9);
+    const hRad = this.hue * Math.PI / 180.0;
+
+    const eHue = 0.25 * (Math.cos(hRad + 2.0) + 3.8);
+    const ac = viewingConditions.aw *
+        Math.pow(
+            this.j / 100.0, 1.0 / viewingConditions.c / viewingConditions.z);
+    const p1 =
+        eHue * (50000.0 / 13.0) * viewingConditions.nc * viewingConditions.ncb;
+
+    const p2 = (ac / viewingConditions.nbb);
+
+    const hSin = Math.sin(hRad);
+    const hCos = Math.cos(hRad);
+
+    const gamma = 23.0 * (p2 + 0.305) * t /
+        (23.0 * p1 + 11 * t * hCos + 108.0 * t * hSin);
+    const a = gamma * hCos;
+    const b = gamma * hSin;
+    const rA = (460.0 * p2 + 451.0 * a + 288.0 * b) / 1403.0;
+    const gA = (460.0 * p2 - 891.0 * a - 261.0 * b) / 1403.0;
+    const bA = (460.0 * p2 - 220.0 * a - 6300.0 * b) / 1403.0;
+
+    const rCBase = Math.max(0, (27.13 * Math.abs(rA)) / (400.0 - Math.abs(rA)));
+    const rC = math.signum(rA) * (100.0 / viewingConditions.fl) *
+        Math.pow(rCBase, 1.0 / 0.42);
+    const gCBase = Math.max(0, (27.13 * Math.abs(gA)) / (400.0 - Math.abs(gA)));
+    const gC = math.signum(gA) * (100.0 / viewingConditions.fl) *
+        Math.pow(gCBase, 1.0 / 0.42);
+    const bCBase = Math.max(0, (27.13 * Math.abs(bA)) / (400.0 - Math.abs(bA)));
+    const bC = math.signum(bA) * (100.0 / viewingConditions.fl) *
+        Math.pow(bCBase, 1.0 / 0.42);
+    const rF = rC / viewingConditions.rgbD[0];
+    const gF = gC / viewingConditions.rgbD[1];
+    const bF = bC / viewingConditions.rgbD[2];
+
+    const x = 1.86206786 * rF - 1.01125463 * gF + 0.14918677 * bF;
+    const y = 0.38752654 * rF + 0.62144744 * gF - 0.00897398 * bF;
+    const z = -0.01584150 * rF - 0.03412294 * gF + 1.04996444 * bF;
+
+    return [x, y, z];
+  }
 }

@@ -15,11 +15,70 @@
  * limitations under the License.
  */
 
+import {DislikeAnalyzer} from '../dislike/dislike_analyzer.js';
+import {Hct} from '../hct/hct.js';
+import {ViewingConditions} from '../hct/viewing_conditions.js';
 import {DynamicScheme} from '../scheme/dynamic_scheme.js';
+import {Variant} from '../scheme/variant.js';
 
 import {DynamicColor} from './dynamic_color.js';
 import {ToneDeltaConstraint} from './tone_delta_constraint.js';
 
+function isFidelity(scheme: DynamicScheme): boolean {
+  return scheme.variant === Variant.FIDELITY ||
+      scheme.variant === Variant.CONTENT;
+}
+
+function findDesiredChromaByTone(
+    hue: number, chroma: number, tone: number,
+    byDecreasingTone: boolean): number {
+  let answer = tone;
+
+  let closestToChroma = Hct.from(hue, chroma, tone);
+  if (closestToChroma.chroma < chroma) {
+    let chromaPeak = closestToChroma.chroma;
+    while (closestToChroma.chroma < chroma) {
+      answer += byDecreasingTone ? -1.0 : 1.0;
+      const potentialSolution = Hct.from(hue, chroma, answer);
+      if (chromaPeak > potentialSolution.chroma) {
+        break;
+      }
+      if (Math.abs(potentialSolution.chroma - chroma) < 0.4) {
+        break;
+      }
+
+      const potentialDelta = Math.abs(potentialSolution.chroma - chroma);
+      const currentDelta = Math.abs(closestToChroma.chroma - chroma);
+      if (potentialDelta < currentDelta) {
+        closestToChroma = potentialSolution;
+      }
+      chromaPeak = Math.max(chromaPeak, potentialSolution.chroma);
+    }
+  }
+
+  return answer;
+}
+
+function viewingConditionsForAlbers(scheme: DynamicScheme): ViewingConditions {
+  return ViewingConditions.make(
+      /*whitePoint=*/ undefined,
+      /*adaptingLuminance=*/ undefined,
+      /*backgroundLstar=*/ scheme.isDark ? 30 : 80,
+      /*surround=*/ undefined,
+      /*discountingIlluminant=*/ undefined,
+  );
+}
+
+function performAlbers(prealbers: Hct, scheme: DynamicScheme): number {
+  const albersd =
+      prealbers.inViewingConditions(viewingConditionsForAlbers(scheme));
+  if (DynamicColor.tonePrefersLightForeground(prealbers.tone) &&
+      !DynamicColor.toneAllowsLightForeground(albersd.tone)) {
+    return DynamicColor.enableLightForeground(prealbers.tone);
+  } else {
+    return DynamicColor.enableLightForeground(albersd.tone);
+  }
+}
 
 /**
  * DynamicColors for the colors in the Material Design system.
@@ -27,7 +86,7 @@ import {ToneDeltaConstraint} from './tone_delta_constraint.js';
 // Material Color Utilities namespaces the various utilities it provides.
 // tslint:disable-next-line:class-as-namespace
 export class MaterialDynamicColors {
-  static contentAccentToneDelta: number = 15.0;
+  static contentAccentToneDelta = 15.0;
   static highestSurface(s: DynamicScheme): DynamicColor {
     return s.isDark ? MaterialDynamicColors.surfaceLight :
                       MaterialDynamicColors.surfaceDark;
@@ -101,10 +160,42 @@ export class MaterialDynamicColors {
     background: (s) => MaterialDynamicColors.surfaceVariant,
   });
 
+  static surfaceInverse = DynamicColor.fromPalette({
+    palette: (s) => s.neutralPalette,
+    tone: (s) => s.isDark ? 90 : 30,
+  });
+
+  static onSurfaceInverse = DynamicColor.fromPalette({
+    palette: (s) => s.neutralPalette,
+    tone: (s) => s.isDark ? 20 : 95,
+    background: (s) => MaterialDynamicColors.surfaceInverse,
+  });
+
   static outline = DynamicColor.fromPalette({
     palette: (s) => s.neutralVariantPalette,
     tone: (s) => 50,
     background: (s) => MaterialDynamicColors.highestSurface(s),
+  });
+
+  static outlineVariant = DynamicColor.fromPalette({
+    palette: (s) => s.neutralVariantPalette,
+    tone: (s) => s.isDark ? 30 : 80,
+    background: (s) => MaterialDynamicColors.highestSurface(s),
+  });
+
+  static shadow = DynamicColor.fromPalette({
+    palette: (s) => s.neutralPalette,
+    tone: (s) => 0,
+  });
+
+  static scrim = DynamicColor.fromPalette({
+    palette: (s) => s.neutralPalette,
+    tone: (s) => 0,
+  });
+
+  static surfaceTint = DynamicColor.fromPalette({
+    palette: (s) => s.primaryPalette,
+    tone: (s) => s.isDark ? 80 : 40,
   });
 
   static primary = DynamicColor.fromPalette({
@@ -126,14 +217,39 @@ export class MaterialDynamicColors {
 
   static primaryContainer = DynamicColor.fromPalette({
     palette: (s) => s.primaryPalette,
-    tone: (s) => s.isDark ? 30 : 90,
+    tone:
+        (s) => {
+          if (!isFidelity(s)) {
+            return s.isDark ? 30 : 90;
+          }
+          return performAlbers(s.sourceColorHct, s);
+        },
     background: (s) => MaterialDynamicColors.highestSurface(s),
   });
 
   static onPrimaryContainer = DynamicColor.fromPalette({
     palette: (s) => s.primaryPalette,
-    tone: (s) => s.isDark ? 90 : 10,
+    tone:
+        (s) => {
+          if (!isFidelity(s)) {
+            return s.isDark ? 90 : 10;
+          }
+          return DynamicColor.foregroundTone(
+              MaterialDynamicColors.primaryContainer.tone(s), 4.5);
+        },
     background: (s) => MaterialDynamicColors.primaryContainer,
+  });
+
+  static primaryInverse = DynamicColor.fromPalette({
+    palette: (s) => s.primaryPalette,
+    tone: (s) => s.isDark ? 40 : 80,
+    background: (s) => MaterialDynamicColors.surfaceInverse,
+  });
+
+  static onPrimaryInverse = DynamicColor.fromPalette({
+    palette: (s) => s.primaryPalette,
+    tone: (s) => s.isDark ? 100 : 20,
+    background: (s) => MaterialDynamicColors.primaryInverse,
   });
 
   static secondary = DynamicColor.fromPalette({
@@ -154,13 +270,32 @@ export class MaterialDynamicColors {
 
   static secondaryContainer = DynamicColor.fromPalette({
     palette: (s) => s.secondaryPalette,
-    tone: (s) => s.isDark ? 30 : 90,
+    tone:
+        (s) => {
+          const initialTone = s.isDark ? 30 : 90;
+          if (!isFidelity(s)) {
+            return initialTone;
+          }
+          let answer = findDesiredChromaByTone(
+              s.secondaryPalette.hue, s.secondaryPalette.chroma, initialTone,
+              s.isDark ? false : true);
+          answer = performAlbers(s.secondaryPalette.getHct(answer), s);
+          return answer;
+        },
     background: (s) => MaterialDynamicColors.highestSurface(s),
   });
 
   static onSecondaryContainer = DynamicColor.fromPalette({
     palette: (s) => s.secondaryPalette,
-    tone: (s) => s.isDark ? 90 : 10,
+    tone:
+        (s) => {
+          if (!isFidelity(s)) {
+            return s.isDark ? 90 : 10;
+          }
+          return DynamicColor.foregroundTone(
+              MaterialDynamicColors.secondaryContainer.tone(s), 4.5);
+        },
+
     background: (s) => MaterialDynamicColors.secondaryContainer,
   });
 
@@ -181,13 +316,29 @@ export class MaterialDynamicColors {
 
   static tertiaryContainer = DynamicColor.fromPalette({
     palette: (s) => s.tertiaryPalette,
-    tone: (s) => s.isDark ? 30 : 90,
+    tone:
+        (s) => {
+          if (!isFidelity(s)) {
+            return s.isDark ? 30 : 90;
+          }
+          const albersTone =
+              performAlbers(s.tertiaryPalette.getHct(s.sourceColorHct.tone), s);
+          const proposedHct = s.tertiaryPalette.getHct(albersTone);
+          return DislikeAnalyzer.fixIfDisliked(proposedHct).tone;
+        },
     background: (s) => MaterialDynamicColors.highestSurface(s),
   });
 
   static onTertiaryContainer = DynamicColor.fromPalette({
     palette: (s) => s.tertiaryPalette,
-    tone: (s) => s.isDark ? 90 : 10,
+    tone:
+        (s) => {
+          if (!isFidelity(s)) {
+            return s.isDark ? 90 : 10;
+          }
+          return DynamicColor.foregroundTone(
+              MaterialDynamicColors.tertiaryContainer.tone(s), 4.5);
+        },
     background: (s) => MaterialDynamicColors.tertiaryContainer,
   });
 

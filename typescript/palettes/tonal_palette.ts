@@ -56,4 +56,12 @@ export class TonalPalette {
     }
     return argb;
   }
+
+  /**
+   * @param tone HCT tone.
+   * @return HCT representation of a color with that tone.
+   */
+  getHct(tone: number): Hct {
+    return Hct.fromInt(this.tone(tone));
+  }
 }
