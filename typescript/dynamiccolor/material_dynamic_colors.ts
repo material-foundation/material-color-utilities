@@ -29,6 +29,10 @@ function isFidelity(scheme: DynamicScheme): boolean {
       scheme.variant === Variant.CONTENT;
 }
 
+function isMonochrome(scheme: DynamicScheme): boolean {
+  return scheme.variant === Variant.MONOCHROME;
+}
+
 function findDesiredChromaByTone(
     hue: number, chroma: number, tone: number,
     byDecreasingTone: boolean): number {
@@ -200,7 +204,13 @@ export class MaterialDynamicColors {
 
   static primary = DynamicColor.fromPalette({
     palette: (s) => s.primaryPalette,
-    tone: (s) => s.isDark ? 80 : 40,
+    tone:
+        (s) => {
+          if (isMonochrome(s)) {
+            return s.isDark ? 100 : 0;
+          }
+          return s.isDark ? 80 : 40;
+        },
     background: (s) => MaterialDynamicColors.highestSurface(s),
     toneDeltaConstraint: (s) => new ToneDeltaConstraint(
         MaterialDynamicColors.contentAccentToneDelta,
@@ -211,7 +221,13 @@ export class MaterialDynamicColors {
 
   static onPrimary = DynamicColor.fromPalette({
     palette: (s) => s.primaryPalette,
-    tone: (s) => s.isDark ? 20 : 100,
+    tone:
+        (s) => {
+          if (isMonochrome(s)) {
+            return s.isDark ? 10 : 90;
+          }
+          return s.isDark ? 20 : 100;
+        },
     background: (s) => MaterialDynamicColors.primary,
   });
 
@@ -219,6 +235,9 @@ export class MaterialDynamicColors {
     palette: (s) => s.primaryPalette,
     tone:
         (s) => {
+          if (isMonochrome(s)) {
+            return s.isDark ? 85 : 25;
+          }
           if (!isFidelity(s)) {
             return s.isDark ? 30 : 90;
           }
@@ -231,6 +250,9 @@ export class MaterialDynamicColors {
     palette: (s) => s.primaryPalette,
     tone:
         (s) => {
+          if (isMonochrome(s)) {
+            return s.isDark ? 0 : 100;
+          }
           if (!isFidelity(s)) {
             return s.isDark ? 90 : 10;
           }
@@ -264,7 +286,14 @@ export class MaterialDynamicColors {
 
   static onSecondary = DynamicColor.fromPalette({
     palette: (s) => s.secondaryPalette,
-    tone: (s) => s.isDark ? 20 : 100,
+    tone:
+        (s) => {
+          if (isMonochrome(s)) {
+            return s.isDark ? 10 : 100;
+          } else {
+            return s.isDark ? 20 : 100;
+          }
+        },
     background: (s) => MaterialDynamicColors.secondary,
   });
 
@@ -273,6 +302,9 @@ export class MaterialDynamicColors {
     tone:
         (s) => {
           const initialTone = s.isDark ? 30 : 90;
+          if (isMonochrome(s)) {
+            return s.isDark ? 30 : 85;
+          }
           if (!isFidelity(s)) {
             return initialTone;
           }
@@ -301,7 +333,13 @@ export class MaterialDynamicColors {
 
   static tertiary = DynamicColor.fromPalette({
     palette: (s) => s.tertiaryPalette,
-    tone: (s) => s.isDark ? 80 : 40,
+    tone:
+        (s) => {
+          if (isMonochrome(s)) {
+            return s.isDark ? 90 : 25;
+          }
+          return s.isDark ? 80 : 40;
+        },
     background: (s) => MaterialDynamicColors.highestSurface(s),
     toneDeltaConstraint: (s) => new ToneDeltaConstraint(
         MaterialDynamicColors.contentAccentToneDelta,
@@ -310,7 +348,13 @@ export class MaterialDynamicColors {
 
   static onTertiary = DynamicColor.fromPalette({
     palette: (s) => s.tertiaryPalette,
-    tone: (s) => s.isDark ? 20 : 100,
+    tone:
+        (s) => {
+          if (isMonochrome(s)) {
+            return s.isDark ? 10 : 90;
+          }
+          return s.isDark ? 20 : 100;
+        },
     background: (s) => MaterialDynamicColors.tertiary,
   });
 
@@ -318,6 +362,9 @@ export class MaterialDynamicColors {
     palette: (s) => s.tertiaryPalette,
     tone:
         (s) => {
+          if (isMonochrome(s)) {
+            return s.isDark ? 60 : 49;
+          }
           if (!isFidelity(s)) {
             return s.isDark ? 30 : 90;
           }
@@ -333,6 +380,9 @@ export class MaterialDynamicColors {
     palette: (s) => s.tertiaryPalette,
     tone:
         (s) => {
+          if (isMonochrome(s)) {
+            return s.isDark ? 0 : 100;
+          }
           if (!isFidelity(s)) {
             return s.isDark ? 90 : 10;
           }

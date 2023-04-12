@@ -561,16 +561,18 @@ export class DynamicColor {
   }
 
   /**
-   * Returns whether [tone] is <= 60.
+   * Returns whether [tone] prefers a light foreground.
    *
    * People prefer white foregrounds on ~T60-70. Observed over time, and also
    * by Andrew Somers during research for APCA.
    *
    * T60 used as to create the smallest discontinuity possible when skipping
    * down to T49 in order to ensure light foregrounds.
+   * Since `tertiaryContainer` in dark monochrome scheme requires a tone of
+   * 60, it should not be adjusted. Therefore, 60 is excluded here.
    */
   static tonePrefersLightForeground(tone: number): boolean {
-    return Math.round(tone) <= 60.0;
+    return Math.round(tone) < 60.0;
   }
 
   /**
