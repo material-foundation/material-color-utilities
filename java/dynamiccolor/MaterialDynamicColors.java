@@ -116,13 +116,10 @@ public final class MaterialDynamicColors {
     return DynamicColor.fromPalette(
         (s) -> s.primaryPalette,
         (s) -> {
-          if (isFidelity(s)) {
-            return performAlbers(s.sourceColorHct, s);
+          if (!isFidelity(s)) {
+            return s.isDark ? 30.0 : 90.0;
           }
-          if (isMonochrome(s)) {
-            return s.isDark ? 85.0 : 25.0;
-          }
-          return s.isDark ? 30.0 : 90.0;
+          return performAlbers(s.sourceColorHct, s);
         },
         this::highestSurface);
   }
@@ -131,13 +128,10 @@ public final class MaterialDynamicColors {
     return DynamicColor.fromPalette(
         (s) -> s.primaryPalette,
         (s) -> {
-          if (isFidelity(s)) {
-            return DynamicColor.contrastingTone(primaryContainer().tone.apply(s), 4.5);
+          if (!isFidelity(s)) {
+            return s.isDark ? 90.0 : 10.0;
           }
-          if (isMonochrome(s)) {
-            return s.isDark ? 0.0 : 100.0;
-          }
-          return s.isDark ? 90.0 : 10.0;
+          return DynamicColor.contrastingTone(primaryContainer().tone.apply(s), 4.5);
         },
         (s) -> primaryContainer(),
         null);
@@ -146,12 +140,7 @@ public final class MaterialDynamicColors {
   public DynamicColor primary() {
     return DynamicColor.fromPalette(
         (s) -> s.primaryPalette,
-        (s) -> {
-          if (isMonochrome(s)) {
-            return s.isDark ? 100.0 : 0.0;
-          }
-          return s.isDark ? 80.0 : 40.0;
-        },
+        (s) -> s.isDark ? 80.0 : 40.0,
         this::highestSurface,
         (s) ->
             new ToneDeltaConstraint(
@@ -167,23 +156,13 @@ public final class MaterialDynamicColors {
 
   public DynamicColor onPrimary() {
     return DynamicColor.fromPalette(
-        (s) -> s.primaryPalette,
-        (s) -> {
-          if (isMonochrome(s)) {
-            return s.isDark ? 10.0 : 90.0;
-          }
-          return s.isDark ? 20.0 : 100.0;
-        },
-        (s) -> primary());
+        (s) -> s.primaryPalette, (s) -> s.isDark ? 20.0 : 100.0, (s) -> primary());
   }
 
   public DynamicColor secondaryContainer() {
     return DynamicColor.fromPalette(
         (s) -> s.secondaryPalette,
         (s) -> {
-          if (isMonochrome(s)) {
-            return s.isDark ? 30.0 : 85.0;
-          }
           final double initialTone = s.isDark ? 30.0 : 90.0;
           if (!isFidelity(s)) {
             return initialTone;
@@ -226,23 +205,13 @@ public final class MaterialDynamicColors {
 
   public DynamicColor onSecondary() {
     return DynamicColor.fromPalette(
-        (s) -> s.secondaryPalette,
-        (s) -> {
-          if (isMonochrome(s)) {
-            return s.isDark ? 10.0 : 100.0;
-          }
-          return s.isDark ? 20.0 : 100.0;
-        },
-        (s) -> secondary());
+        (s) -> s.secondaryPalette, (s) -> s.isDark ? 20.0 : 100.0, (s) -> secondary());
   }
 
   public DynamicColor tertiaryContainer() {
     return DynamicColor.fromPalette(
         (s) -> s.tertiaryPalette,
         (s) -> {
-          if (isMonochrome(s)) {
-            return s.isDark ? 60.0 : 49.0;
-          }
           if (!isFidelity(s)) {
             return s.isDark ? 30.0 : 90.0;
           }
@@ -258,9 +227,6 @@ public final class MaterialDynamicColors {
     return DynamicColor.fromPalette(
         (s) -> s.tertiaryPalette,
         (s) -> {
-          if (isMonochrome(s)) {
-            return s.isDark ? 0.0 : 100.0;
-          }
           if (!isFidelity(s)) {
             return s.isDark ? 90.0 : 10.0;
           }
@@ -272,12 +238,7 @@ public final class MaterialDynamicColors {
   public DynamicColor tertiary() {
     return DynamicColor.fromPalette(
         (s) -> s.tertiaryPalette,
-        (s) -> {
-          if (isMonochrome(s)) {
-            return s.isDark ? 90.0 : 25.0;
-          }
-          return s.isDark ? 80.0 : 40.0;
-        },
+        (s) -> s.isDark ? 80.0 : 40.0,
         this::highestSurface,
         (s) ->
             new ToneDeltaConstraint(
@@ -288,14 +249,7 @@ public final class MaterialDynamicColors {
 
   public DynamicColor onTertiary() {
     return DynamicColor.fromPalette(
-        (s) -> s.tertiaryPalette,
-        (s) -> {
-          if (isMonochrome(s)) {
-            return s.isDark ? 10.0 : 90.0;
-          }
-          return s.isDark ? 20.0 : 100.0;
-        },
-        (s) -> tertiary());
+        (s) -> s.tertiaryPalette, (s) -> s.isDark ? 20.0 : 100.0, (s) -> tertiary());
   }
 
   public DynamicColor errorContainer() {
@@ -403,10 +357,6 @@ public final class MaterialDynamicColors {
 
   private static boolean isFidelity(DynamicScheme scheme) {
     return scheme.variant == Variant.FIDELITY || scheme.variant == Variant.CONTENT;
-  }
-
-  private static boolean isMonochrome(DynamicScheme scheme) {
-    return scheme.variant == Variant.MONOCHROME;
   }
 
   static double findDesiredChromaByTone(
