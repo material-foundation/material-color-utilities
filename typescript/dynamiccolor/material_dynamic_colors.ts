@@ -420,4 +420,100 @@ export class MaterialDynamicColors {
     tone: (s) => s.isDark ? 90 : 10,
     background: (s) => MaterialDynamicColors.errorContainer,
   });
+
+  static primaryFixed = DynamicColor.fromPalette({
+    palette: (s) => s.primaryPalette,
+    tone:
+        (s) => {
+          if (isMonochrome(s)) {
+            return s.isDark ? 100.0 : 10.0;
+          }
+          return 90.0;
+        },
+    background: (s) => MaterialDynamicColors.highestSurface(s),
+  });
+
+  static primaryFixedDarker = DynamicColor.fromPalette({
+    palette: (s) => s.primaryPalette,
+    tone:
+        (s) => {
+          if (isMonochrome(s)) {
+            return s.isDark ? 90.0 : 20.0;
+          }
+          return 80.0;
+        },
+    background: (s) => MaterialDynamicColors.highestSurface(s),
+  });
+
+  static onPrimaryFixed = DynamicColor.fromPalette({
+    palette: (s) => s.primaryPalette,
+    tone:
+        (s) => {
+          if (isMonochrome(s)) {
+            return s.isDark ? 10.0 : 90.0;
+          }
+          return 10.0;
+        },
+    background: (s) => MaterialDynamicColors.primaryFixedDarker,
+  });
+
+  static onPrimaryFixedVariant = DynamicColor.fromPalette({
+    palette: (s) => s.primaryPalette,
+    tone:
+        (s) => {
+          if (isMonochrome(s)) {
+            return s.isDark ? 30.0 : 70.0;
+          }
+          return 30.0;
+        },
+    background: (s) => MaterialDynamicColors.primaryFixedDarker,
+  });
+
+  static secondaryFixed = DynamicColor.fromPalette({
+    palette: (s) => s.secondaryPalette,
+    tone: (s) => isMonochrome(s) ? 80.0 : 90.0,
+    background: (s) => MaterialDynamicColors.highestSurface(s),
+  });
+
+  static secondaryFixedDarker = DynamicColor.fromPalette({
+    palette: (s) => s.secondaryPalette,
+    tone: (s) => isMonochrome(s) ? 70.0 : 80.0,
+    background: (s) => MaterialDynamicColors.highestSurface(s),
+  });
+
+  static onSecondaryFixed = DynamicColor.fromPalette({
+    palette: (s) => s.secondaryPalette,
+    tone: (s) => 10.0,
+    background: (s) => MaterialDynamicColors.secondaryFixedDarker,
+  });
+
+  static onSecondaryFixedVariant = DynamicColor.fromPalette({
+    palette: (s) => s.secondaryPalette,
+    tone: (s) => isMonochrome(s) ? 25.0 : 30.0,
+    background: (s) => MaterialDynamicColors.secondaryFixedDarker,
+  });
+
+  static tertiaryFixed = DynamicColor.fromPalette({
+    palette: (s) => s.tertiaryPalette,
+    tone: (s) => isMonochrome(s) ? 40.0 : 90.0,
+    background: (s) => MaterialDynamicColors.highestSurface(s),
+  });
+
+  static tertiaryFixedDarker = DynamicColor.fromPalette({
+    palette: (s) => s.tertiaryPalette,
+    tone: (s) => isMonochrome(s) ? 30.0 : 80.0,
+    background: (s) => MaterialDynamicColors.highestSurface(s),
+  });
+
+  static onTertiaryFixed = DynamicColor.fromPalette({
+    palette: (s) => s.tertiaryPalette,
+    tone: (s) => isMonochrome(s) ? 90.0 : 10.0,
+    background: (s) => MaterialDynamicColors.tertiaryFixedDarker,
+  });
+
+  static onTertiaryFixedVariant = DynamicColor.fromPalette({
+    palette: (s) => s.tertiaryPalette,
+    tone: (s) => isMonochrome(s) ? 70.0 : 30.0,
+    background: (s) => MaterialDynamicColors.tertiaryFixedDarker,
+  });
 }

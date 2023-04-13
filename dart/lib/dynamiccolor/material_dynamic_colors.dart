@@ -353,6 +353,86 @@ class MaterialDynamicColors {
     background: (s) => errorContainer,
   );
 
+  static DynamicColor primaryFixed = DynamicColor.fromPalette(
+      palette: (s) => s.primaryPalette,
+      tone: (s) {
+        if (_isMonochrome(s)) {
+          return s.isDark ? 100.0 : 10.0;
+        }
+        return 90.0;
+      },
+      background: (s) => MaterialDynamicColors.highestSurface(s));
+
+  static DynamicColor primaryFixedDarker = DynamicColor.fromPalette(
+      palette: (s) => s.primaryPalette,
+      tone: (s) {
+        if (_isMonochrome(s)) {
+          return s.isDark ? 90.0 : 20.0;
+        }
+        return 80.0;
+      },
+      background: (s) => MaterialDynamicColors.highestSurface(s));
+
+  static DynamicColor onPrimaryFixed = DynamicColor.fromPalette(
+      palette: (s) => s.primaryPalette,
+      tone: (s) {
+        if (_isMonochrome(s)) {
+          return s.isDark ? 10.0 : 90.0;
+        }
+        return 10.0;
+      },
+      background: (s) => primaryFixedDarker);
+
+  static DynamicColor onPrimaryFixedVariant = DynamicColor.fromPalette(
+      palette: (s) => s.primaryPalette,
+      tone: (s) {
+        if (_isMonochrome(s)) {
+          return s.isDark ? 30.0 : 70.0;
+        }
+        return 30.0;
+      },
+      background: (s) => primaryFixedDarker);
+
+  static DynamicColor secondaryFixed = DynamicColor.fromPalette(
+      palette: (s) => s.secondaryPalette,
+      tone: (s) => _isMonochrome(s) ? 80.0 : 90.0,
+      background: (s) => MaterialDynamicColors.highestSurface(s));
+
+  static DynamicColor secondaryFixedDarker = DynamicColor.fromPalette(
+      palette: (s) => s.secondaryPalette,
+      tone: (s) => _isMonochrome(s) ? 70.0 : 80.0,
+      background: (s) => MaterialDynamicColors.highestSurface(s));
+
+  static DynamicColor onSecondaryFixed = DynamicColor.fromPalette(
+      palette: (s) => s.secondaryPalette,
+      tone: (s) => 10.0,
+      background: (s) => secondaryFixedDarker);
+
+  static DynamicColor onSecondaryFixedVariant = DynamicColor.fromPalette(
+      palette: (s) => s.secondaryPalette,
+      tone: (s) => _isMonochrome(s) ? 25.0 : 30.0,
+      background: (s) => secondaryFixedDarker);
+
+  static DynamicColor tertiaryFixed = DynamicColor.fromPalette(
+      palette: (s) => s.tertiaryPalette,
+      tone: (s) => _isMonochrome(s) ? 40.0 : 90.0,
+      background: (s) => MaterialDynamicColors.highestSurface(s));
+
+  static DynamicColor tertiaryFixedDarker = DynamicColor.fromPalette(
+      palette: (s) => s.tertiaryPalette,
+      tone: (s) => _isMonochrome(s) ? 30.0 : 80.0,
+      background: (s) => MaterialDynamicColors.highestSurface(s));
+
+  static DynamicColor onTertiaryFixed = DynamicColor.fromPalette(
+      palette: (s) => s.tertiaryPalette,
+      tone: (s) => _isMonochrome(s) ? 90.0 : 10.0,
+      background: (s) => tertiaryFixedDarker);
+
+  static DynamicColor onTertiaryFixedVariant = DynamicColor.fromPalette(
+      palette: (s) => s.tertiaryPalette,
+      tone: (s) => _isMonochrome(s) ? 70.0 : 30.0,
+      background: (s) => tertiaryFixedDarker);
+
   static double _findDesiredChromaByTone(
       double hue, double chroma, double tone, bool byDecreasingTone) {
     var answer = tone;

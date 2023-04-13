@@ -199,4 +199,176 @@ void main() {
       }
     }
   }
+
+  // Tests for fixed colors.
+  test('fixed colors in non-monochrome schemes', () {
+    final scheme = SchemeTonalSpot(
+      sourceColorHct: Hct.fromInt(0xFFFF0000),
+      isDark: true,
+      contrastLevel: 0.0,
+    );
+
+    expect(
+      MaterialDynamicColors.primaryFixed.getHct(scheme).tone,
+      closeTo(90.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.primaryFixedDarker.getHct(scheme).tone,
+      closeTo(80.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.onPrimaryFixed.getHct(scheme).tone,
+      closeTo(10.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.onPrimaryFixedVariant.getHct(scheme).tone,
+      closeTo(30.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.secondaryFixed.getHct(scheme).tone,
+      closeTo(90.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.secondaryFixedDarker.getHct(scheme).tone,
+      closeTo(80.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.onSecondaryFixed.getHct(scheme).tone,
+      closeTo(10.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.onSecondaryFixedVariant.getHct(scheme).tone,
+      closeTo(30.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.tertiaryFixed.getHct(scheme).tone,
+      closeTo(90.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.tertiaryFixedDarker.getHct(scheme).tone,
+      closeTo(80.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.onTertiaryFixed.getHct(scheme).tone,
+      closeTo(10.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.onTertiaryFixedVariant.getHct(scheme).tone,
+      closeTo(30.0, 1.0),
+    );
+  });
+
+  test('fixed colors in light monochrome schemes', () {
+    final scheme = SchemeMonochrome(
+      sourceColorHct: Hct.fromInt(0xFFFF0000),
+      isDark: false,
+      contrastLevel: 0.0,
+    );
+
+    expect(
+      MaterialDynamicColors.primaryFixed.getHct(scheme).tone,
+      closeTo(10.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.primaryFixedDarker.getHct(scheme).tone,
+      closeTo(20.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.onPrimaryFixed.getHct(scheme).tone,
+      closeTo(90.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.onPrimaryFixedVariant.getHct(scheme).tone,
+      closeTo(70.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.secondaryFixed.getHct(scheme).tone,
+      closeTo(80.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.secondaryFixedDarker.getHct(scheme).tone,
+      closeTo(70.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.onSecondaryFixed.getHct(scheme).tone,
+      closeTo(10.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.onSecondaryFixedVariant.getHct(scheme).tone,
+      closeTo(25.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.tertiaryFixed.getHct(scheme).tone,
+      closeTo(40.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.tertiaryFixedDarker.getHct(scheme).tone,
+      closeTo(30.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.onTertiaryFixed.getHct(scheme).tone,
+      closeTo(90.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.onTertiaryFixedVariant.getHct(scheme).tone,
+      closeTo(70.0, 1.0),
+    );
+  });
+
+  test('fixed colors in dark monochrome schemes', () {
+    final scheme = SchemeMonochrome(
+      sourceColorHct: Hct.fromInt(0xFFFF0000),
+      isDark: true,
+      contrastLevel: 0.0,
+    );
+
+    expect(
+      MaterialDynamicColors.primaryFixed.getHct(scheme).tone,
+      closeTo(100.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.primaryFixedDarker.getHct(scheme).tone,
+      closeTo(90.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.onPrimaryFixed.getHct(scheme).tone,
+      closeTo(10.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.onPrimaryFixedVariant.getHct(scheme).tone,
+      closeTo(30.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.secondaryFixed.getHct(scheme).tone,
+      closeTo(80.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.secondaryFixedDarker.getHct(scheme).tone,
+      closeTo(70.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.onSecondaryFixed.getHct(scheme).tone,
+      closeTo(10.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.onSecondaryFixedVariant.getHct(scheme).tone,
+      closeTo(25.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.tertiaryFixed.getHct(scheme).tone,
+      closeTo(40.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.tertiaryFixedDarker.getHct(scheme).tone,
+      closeTo(30.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.onTertiaryFixed.getHct(scheme).tone,
+      closeTo(90.0, 1.0),
+    );
+    expect(
+      MaterialDynamicColors.onTertiaryFixedVariant.getHct(scheme).tone,
+      closeTo(70.0, 1.0),
+    );
+  });
 }

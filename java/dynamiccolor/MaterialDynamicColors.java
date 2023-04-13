@@ -325,6 +325,100 @@ public final class MaterialDynamicColors {
         (s) -> s.errorPalette, (s) -> s.isDark ? 20.0 : 100.0, (s) -> error());
   }
 
+  public DynamicColor primaryFixed() {
+    return DynamicColor.fromPalette(
+        (s) -> s.primaryPalette,
+        (s) -> {
+          if (isMonochrome(s)) {
+            return s.isDark ? 100.0 : 10.0;
+          }
+          return 90.0;
+        },
+        this::highestSurface);
+  }
+
+  public DynamicColor primaryFixedDarker() {
+    return DynamicColor.fromPalette(
+        (s) -> s.primaryPalette,
+        (s) -> {
+          if (isMonochrome(s)) {
+            return s.isDark ? 90.0 : 20.0;
+          }
+          return 80.0;
+        },
+        this::highestSurface);
+  }
+
+  public DynamicColor onPrimaryFixed() {
+    return DynamicColor.fromPalette(
+        (s) -> s.primaryPalette,
+        (s) -> {
+          if (isMonochrome(s)) {
+            return s.isDark ? 10.0 : 90.0;
+          }
+          return 10.0;
+        },
+        (s) -> primaryFixedDarker());
+  }
+
+  public DynamicColor onPrimaryFixedVariant() {
+    return DynamicColor.fromPalette(
+        (s) -> s.primaryPalette,
+        (s) -> {
+          if (isMonochrome(s)) {
+            return s.isDark ? 30.0 : 70.0;
+          }
+          return 30.0;
+        },
+        (s) -> primaryFixedDarker());
+  }
+
+  public DynamicColor secondaryFixed() {
+    return DynamicColor.fromPalette(
+        (s) -> s.secondaryPalette, (s) -> isMonochrome(s) ? 80.0 : 90.0, this::highestSurface);
+  }
+
+  public DynamicColor secondaryFixedDarker() {
+    return DynamicColor.fromPalette(
+        (s) -> s.secondaryPalette, (s) -> isMonochrome(s) ? 70.0 : 80.0, this::highestSurface);
+  }
+
+  public DynamicColor onSecondaryFixed() {
+    return DynamicColor.fromPalette(
+        (s) -> s.secondaryPalette, (s) -> 10.0, (s) -> secondaryFixedDarker());
+  }
+
+  public DynamicColor onSecondaryFixedVariant() {
+    return DynamicColor.fromPalette(
+        (s) -> s.secondaryPalette,
+        (s) -> isMonochrome(s) ? 25.0 : 30.0,
+        (s) -> secondaryFixedDarker());
+  }
+
+  public DynamicColor tertiaryFixed() {
+    return DynamicColor.fromPalette(
+        (s) -> s.tertiaryPalette, (s) -> isMonochrome(s) ? 40.0 : 90.0, this::highestSurface);
+  }
+
+  public DynamicColor tertiaryFixedDarker() {
+    return DynamicColor.fromPalette(
+        (s) -> s.tertiaryPalette, (s) -> isMonochrome(s) ? 30.0 : 80.0, this::highestSurface);
+  }
+
+  public DynamicColor onTertiaryFixed() {
+    return DynamicColor.fromPalette(
+        (s) -> s.tertiaryPalette,
+        (s) -> isMonochrome(s) ? 90.0 : 10.0,
+        (s) -> tertiaryFixedDarker());
+  }
+
+  public DynamicColor onTertiaryFixedVariant() {
+    return DynamicColor.fromPalette(
+        (s) -> s.tertiaryPalette,
+        (s) -> isMonochrome(s) ? 70.0 : 30.0,
+        (s) -> tertiaryFixedDarker());
+  }
+
   /**
    * These colors were present in Android framework before Android U, and used by MDC controls. They
    * should be avoided, if possible. It's unclear if they're used on multiple backgrounds, and if
