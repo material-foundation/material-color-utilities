@@ -544,9 +544,9 @@ describe('scheme tonal spot test', () => {
         false,
         0.0,
     );
-    expect(MaterialDynamicColors.surfaceInverse.getArgb(scheme))
-        .matchesColor(0xff47464c);
-    expect(MaterialDynamicColors.onSurfaceInverse.getArgb(scheme))
+    expect(MaterialDynamicColors.inverseSurface.getArgb(scheme))
+        .matchesColor(0xff303036);
+    expect(MaterialDynamicColors.inverseOnSurface.getArgb(scheme))
         .matchesColor(0xfff2eff7);
     expect(MaterialDynamicColors.outlineVariant.getArgb(scheme))
         .matchesColor(0xffc7c5d0);
@@ -554,11 +554,11 @@ describe('scheme tonal spot test', () => {
         .matchesColor(0xff000000);
     expect(MaterialDynamicColors.scrim.getArgb(scheme))
         .matchesColor(0xff000000);
-    expect(MaterialDynamicColors.surfaceTint.getArgb(scheme))
+    expect(MaterialDynamicColors.surfaceTintColor.getArgb(scheme))
         .matchesColor(0xff545999);
-    expect(MaterialDynamicColors.primaryInverse.getArgb(scheme))
+    expect(MaterialDynamicColors.inversePrimary.getArgb(scheme))
         .matchesColor(0xffbec2ff);
-    expect(MaterialDynamicColors.onPrimaryInverse.getArgb(scheme))
+    expect(MaterialDynamicColors.inverseOnPrimary.getArgb(scheme))
         .matchesColor(0xff252968);
   });
 
@@ -568,9 +568,9 @@ describe('scheme tonal spot test', () => {
         true,
         0.0,
     );
-    expect(MaterialDynamicColors.surfaceInverse.getArgb(scheme))
+    expect(MaterialDynamicColors.inverseSurface.getArgb(scheme))
         .matchesColor(0xffe4e1e9);
-    expect(MaterialDynamicColors.onSurfaceInverse.getArgb(scheme))
+    expect(MaterialDynamicColors.inverseOnSurface.getArgb(scheme))
         .matchesColor(0xff303036);
     expect(MaterialDynamicColors.outlineVariant.getArgb(scheme))
         .matchesColor(0xff46464f);
@@ -578,11 +578,11 @@ describe('scheme tonal spot test', () => {
         .matchesColor(0xff000000);
     expect(MaterialDynamicColors.scrim.getArgb(scheme))
         .matchesColor(0xff000000);
-    expect(MaterialDynamicColors.surfaceTint.getArgb(scheme))
+    expect(MaterialDynamicColors.surfaceTintColor.getArgb(scheme))
         .matchesColor(0xffbec2ff);
-    expect(MaterialDynamicColors.primaryInverse.getArgb(scheme))
+    expect(MaterialDynamicColors.inversePrimary.getArgb(scheme))
         .matchesColor(0xff545999);
-    expect(MaterialDynamicColors.onPrimaryInverse.getArgb(scheme))
+    expect(MaterialDynamicColors.inverseOnPrimary.getArgb(scheme))
         .matchesColor(0xffffffff);
   });
 });

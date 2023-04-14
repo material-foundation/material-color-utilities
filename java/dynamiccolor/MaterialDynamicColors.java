@@ -51,8 +51,8 @@ public final class MaterialDynamicColors {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 6.0 : 98.0);
   }
 
-  public DynamicColor surfaceInverse() {
-    return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 90.0 : 30.0);
+  public DynamicColor inverseSurface() {
+    return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 90.0 : 20.0);
   }
 
   public DynamicColor surfaceBright() {
@@ -63,11 +63,11 @@ public final class MaterialDynamicColors {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 6.0 : 87.0);
   }
 
-  public DynamicColor surfaceSub2() {
+  public DynamicColor surfaceContainerLowest() {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 4.0 : 100.0);
   }
 
-  public DynamicColor surfaceSub1() {
+  public DynamicColor surfaceContainerLow() {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 10.0 : 96.0);
   }
 
@@ -75,11 +75,11 @@ public final class MaterialDynamicColors {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 12.0 : 94.0);
   }
 
-  public DynamicColor surfaceAdd1() {
+  public DynamicColor surfaceContainerHigh() {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 17.0 : 92.0);
   }
 
-  public DynamicColor surfaceAdd2() {
+  public DynamicColor surfaceContainerHighest() {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 22.0 : 90.0);
   }
 
@@ -88,9 +88,9 @@ public final class MaterialDynamicColors {
         (s) -> s.neutralPalette, (s) -> s.isDark ? 90.0 : 10.0, this::highestSurface);
   }
 
-  public DynamicColor onSurfaceInverse() {
+  public DynamicColor inverseOnSurface() {
     return DynamicColor.fromPalette(
-        (s) -> s.neutralPalette, (s) -> s.isDark ? 20.0 : 95.0, (s) -> surfaceInverse());
+        (s) -> s.neutralPalette, (s) -> s.isDark ? 20.0 : 95.0, (s) -> inverseSurface());
   }
 
   public DynamicColor surfaceVariant() {
@@ -160,9 +160,9 @@ public final class MaterialDynamicColors {
                 s.isDark ? TonePolarity.DARKER : TonePolarity.LIGHTER));
   }
 
-  public DynamicColor primaryInverse() {
+  public DynamicColor inversePrimary() {
     return DynamicColor.fromPalette(
-        (s) -> s.primaryPalette, (s) -> s.isDark ? 40.0 : 80.0, (s) -> surfaceInverse());
+        (s) -> s.primaryPalette, (s) -> s.isDark ? 40.0 : 80.0, (s) -> inverseSurface());
   }
 
   public DynamicColor onPrimary() {
@@ -337,7 +337,7 @@ public final class MaterialDynamicColors {
         this::highestSurface);
   }
 
-  public DynamicColor primaryFixedDarker() {
+  public DynamicColor primaryFixedDim() {
     return DynamicColor.fromPalette(
         (s) -> s.primaryPalette,
         (s) -> {
@@ -358,7 +358,7 @@ public final class MaterialDynamicColors {
           }
           return 10.0;
         },
-        (s) -> primaryFixedDarker());
+        (s) -> primaryFixedDim());
   }
 
   public DynamicColor onPrimaryFixedVariant() {
@@ -370,7 +370,7 @@ public final class MaterialDynamicColors {
           }
           return 30.0;
         },
-        (s) -> primaryFixedDarker());
+        (s) -> primaryFixedDim());
   }
 
   public DynamicColor secondaryFixed() {
@@ -378,21 +378,21 @@ public final class MaterialDynamicColors {
         (s) -> s.secondaryPalette, (s) -> isMonochrome(s) ? 80.0 : 90.0, this::highestSurface);
   }
 
-  public DynamicColor secondaryFixedDarker() {
+  public DynamicColor secondaryFixedDim() {
     return DynamicColor.fromPalette(
         (s) -> s.secondaryPalette, (s) -> isMonochrome(s) ? 70.0 : 80.0, this::highestSurface);
   }
 
   public DynamicColor onSecondaryFixed() {
     return DynamicColor.fromPalette(
-        (s) -> s.secondaryPalette, (s) -> 10.0, (s) -> secondaryFixedDarker());
+        (s) -> s.secondaryPalette, (s) -> 10.0, (s) -> secondaryFixedDim());
   }
 
   public DynamicColor onSecondaryFixedVariant() {
     return DynamicColor.fromPalette(
         (s) -> s.secondaryPalette,
         (s) -> isMonochrome(s) ? 25.0 : 30.0,
-        (s) -> secondaryFixedDarker());
+        (s) -> secondaryFixedDim());
   }
 
   public DynamicColor tertiaryFixed() {
@@ -400,23 +400,19 @@ public final class MaterialDynamicColors {
         (s) -> s.tertiaryPalette, (s) -> isMonochrome(s) ? 40.0 : 90.0, this::highestSurface);
   }
 
-  public DynamicColor tertiaryFixedDarker() {
+  public DynamicColor tertiaryFixedDim() {
     return DynamicColor.fromPalette(
         (s) -> s.tertiaryPalette, (s) -> isMonochrome(s) ? 30.0 : 80.0, this::highestSurface);
   }
 
   public DynamicColor onTertiaryFixed() {
     return DynamicColor.fromPalette(
-        (s) -> s.tertiaryPalette,
-        (s) -> isMonochrome(s) ? 90.0 : 10.0,
-        (s) -> tertiaryFixedDarker());
+        (s) -> s.tertiaryPalette, (s) -> isMonochrome(s) ? 90.0 : 10.0, (s) -> tertiaryFixedDim());
   }
 
   public DynamicColor onTertiaryFixedVariant() {
     return DynamicColor.fromPalette(
-        (s) -> s.tertiaryPalette,
-        (s) -> isMonochrome(s) ? 70.0 : 30.0,
-        (s) -> tertiaryFixedDarker());
+        (s) -> s.tertiaryPalette, (s) -> isMonochrome(s) ? 70.0 : 30.0, (s) -> tertiaryFixedDim());
   }
 
   /**

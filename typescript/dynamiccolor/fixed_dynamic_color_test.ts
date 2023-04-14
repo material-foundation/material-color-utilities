@@ -33,7 +33,7 @@ describe('private colors', () => {
 
     expect(MaterialDynamicColors.primaryFixed.getHct(scheme).tone)
         .toBeCloseTo(90.0, 0);
-    expect(MaterialDynamicColors.primaryFixedDarker.getHct(scheme).tone)
+    expect(MaterialDynamicColors.primaryFixedDim.getHct(scheme).tone)
         .toBeCloseTo(80.0, 0);
     expect(MaterialDynamicColors.onPrimaryFixed.getHct(scheme).tone)
         .toBeCloseTo(10.0, 0);
@@ -41,7 +41,7 @@ describe('private colors', () => {
         .toBeCloseTo(30.0, 0);
     expect(MaterialDynamicColors.secondaryFixed.getHct(scheme).tone)
         .toBeCloseTo(90.0, 0);
-    expect(MaterialDynamicColors.secondaryFixedDarker.getHct(scheme).tone)
+    expect(MaterialDynamicColors.secondaryFixedDim.getHct(scheme).tone)
         .toBeCloseTo(80.0, 0);
     expect(MaterialDynamicColors.onSecondaryFixed.getHct(scheme).tone)
         .toBeCloseTo(10.0, 0);
@@ -49,7 +49,7 @@ describe('private colors', () => {
         .toBeCloseTo(30.0, 0);
     expect(MaterialDynamicColors.tertiaryFixed.getHct(scheme).tone)
         .toBeCloseTo(90.0, 0);
-    expect(MaterialDynamicColors.tertiaryFixedDarker.getHct(scheme).tone)
+    expect(MaterialDynamicColors.tertiaryFixedDim.getHct(scheme).tone)
         .toBeCloseTo(80.0, 0);
     expect(MaterialDynamicColors.onTertiaryFixed.getHct(scheme).tone)
         .toBeCloseTo(10.0, 0);
@@ -66,7 +66,7 @@ describe('private colors', () => {
 
     expect(MaterialDynamicColors.primaryFixed.getHct(scheme).tone)
         .toBeCloseTo(10.0, 0);
-    expect(MaterialDynamicColors.primaryFixedDarker.getHct(scheme).tone)
+    expect(MaterialDynamicColors.primaryFixedDim.getHct(scheme).tone)
         .toBeCloseTo(20.0, 0);
     expect(MaterialDynamicColors.onPrimaryFixed.getHct(scheme).tone)
         .toBeCloseTo(90.0, 0);
@@ -74,7 +74,7 @@ describe('private colors', () => {
         .toBeCloseTo(70.0, 0);
     expect(MaterialDynamicColors.secondaryFixed.getHct(scheme).tone)
         .toBeCloseTo(80.0, 0);
-    expect(MaterialDynamicColors.secondaryFixedDarker.getHct(scheme).tone)
+    expect(MaterialDynamicColors.secondaryFixedDim.getHct(scheme).tone)
         .toBeCloseTo(70.0, 0);
     expect(MaterialDynamicColors.onSecondaryFixed.getHct(scheme).tone)
         .toBeCloseTo(10.0, 0);
@@ -82,7 +82,7 @@ describe('private colors', () => {
         .toBeCloseTo(25.0, 0);
     expect(MaterialDynamicColors.tertiaryFixed.getHct(scheme).tone)
         .toBeCloseTo(40.0, 0);
-    expect(MaterialDynamicColors.tertiaryFixedDarker.getHct(scheme).tone)
+    expect(MaterialDynamicColors.tertiaryFixedDim.getHct(scheme).tone)
         .toBeCloseTo(30.0, 0);
     expect(MaterialDynamicColors.onTertiaryFixed.getHct(scheme).tone)
         .toBeCloseTo(90.0, 0);
@@ -99,7 +99,7 @@ describe('private colors', () => {
 
     expect(MaterialDynamicColors.primaryFixed.getHct(scheme).tone)
         .toBeCloseTo(100.0, 0);
-    expect(MaterialDynamicColors.primaryFixedDarker.getHct(scheme).tone)
+    expect(MaterialDynamicColors.primaryFixedDim.getHct(scheme).tone)
         .toBeCloseTo(90.0, 0);
     expect(MaterialDynamicColors.onPrimaryFixed.getHct(scheme).tone)
         .toBeCloseTo(10.0, 0);
@@ -107,7 +107,7 @@ describe('private colors', () => {
         .toBeCloseTo(30.0, 0);
     expect(MaterialDynamicColors.secondaryFixed.getHct(scheme).tone)
         .toBeCloseTo(80.0, 0);
-    expect(MaterialDynamicColors.secondaryFixedDarker.getHct(scheme).tone)
+    expect(MaterialDynamicColors.secondaryFixedDim.getHct(scheme).tone)
         .toBeCloseTo(70.0, 0);
     expect(MaterialDynamicColors.onSecondaryFixed.getHct(scheme).tone)
         .toBeCloseTo(10.0, 0);
@@ -115,7 +115,7 @@ describe('private colors', () => {
         .toBeCloseTo(25.0, 0);
     expect(MaterialDynamicColors.tertiaryFixed.getHct(scheme).tone)
         .toBeCloseTo(40.0, 0);
-    expect(MaterialDynamicColors.tertiaryFixedDarker.getHct(scheme).tone)
+    expect(MaterialDynamicColors.tertiaryFixedDim.getHct(scheme).tone)
         .toBeCloseTo(30.0, 0);
     expect(MaterialDynamicColors.onTertiaryFixed.getHct(scheme).tone)
         .toBeCloseTo(90.0, 0);

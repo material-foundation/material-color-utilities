@@ -465,9 +465,9 @@ void main() {
       isDark: false,
       contrastLevel: 0.0,
     );
-    expect(MaterialDynamicColors.surfaceInverse.getArgb(scheme),
-        isColor(0xff47464c));
-    expect(MaterialDynamicColors.onSurfaceInverse.getArgb(scheme),
+    expect(MaterialDynamicColors.inverseSurface.getArgb(scheme),
+        isColor(0xff303036));
+    expect(MaterialDynamicColors.inverseOnSurface.getArgb(scheme),
         isColor(0xfff2eff7));
     expect(MaterialDynamicColors.outlineVariant.getArgb(scheme),
         isColor(0xffc7c5d0));
@@ -475,9 +475,9 @@ void main() {
     expect(MaterialDynamicColors.scrim.getArgb(scheme), isColor(0xff000000));
     expect(
         MaterialDynamicColors.surfaceTint.getArgb(scheme), isColor(0xff545999));
-    expect(MaterialDynamicColors.primaryInverse.getArgb(scheme),
+    expect(MaterialDynamicColors.inversePrimary.getArgb(scheme),
         isColor(0xffbec2ff));
-    expect(MaterialDynamicColors.onPrimaryInverse.getArgb(scheme),
+    expect(MaterialDynamicColors.inverseOnPrimary.getArgb(scheme),
         isColor(0xff252968));
   });
 
@@ -487,9 +487,9 @@ void main() {
       isDark: true,
       contrastLevel: 0.0,
     );
-    expect(MaterialDynamicColors.surfaceInverse.getArgb(scheme),
+    expect(MaterialDynamicColors.inverseSurface.getArgb(scheme),
         isColor(0xffe4e1e9));
-    expect(MaterialDynamicColors.onSurfaceInverse.getArgb(scheme),
+    expect(MaterialDynamicColors.inverseOnSurface.getArgb(scheme),
         isColor(0xff303036));
     expect(MaterialDynamicColors.outlineVariant.getArgb(scheme),
         isColor(0xff46464f));
@@ -497,9 +497,9 @@ void main() {
     expect(MaterialDynamicColors.scrim.getArgb(scheme), isColor(0xff000000));
     expect(
         MaterialDynamicColors.surfaceTint.getArgb(scheme), isColor(0xffbec2ff));
-    expect(MaterialDynamicColors.primaryInverse.getArgb(scheme),
+    expect(MaterialDynamicColors.inversePrimary.getArgb(scheme),
         isColor(0xff545999));
-    expect(MaterialDynamicColors.onPrimaryInverse.getArgb(scheme),
+    expect(MaterialDynamicColors.inverseOnPrimary.getArgb(scheme),
         isColor(0xffffffff));
   });
 }

@@ -92,8 +92,8 @@ function performAlbers(prealbers: Hct, scheme: DynamicScheme): number {
 export class MaterialDynamicColors {
   static contentAccentToneDelta = 15.0;
   static highestSurface(s: DynamicScheme): DynamicColor {
-    return s.isDark ? MaterialDynamicColors.surfaceLight :
-                      MaterialDynamicColors.surfaceDark;
+    return s.isDark ? MaterialDynamicColors.surfaceBright :
+                      MaterialDynamicColors.surfaceDim;
   }
 
   static background = DynamicColor.fromPalette({
@@ -112,22 +112,22 @@ export class MaterialDynamicColors {
     tone: (s) => s.isDark ? 6 : 98,
   });
 
-  static surfaceDark = DynamicColor.fromPalette({
+  static surfaceDim = DynamicColor.fromPalette({
     palette: (s) => s.neutralPalette,
     tone: (s) => s.isDark ? 6 : 87,
   });
 
-  static surfaceLight = DynamicColor.fromPalette({
+  static surfaceBright = DynamicColor.fromPalette({
     palette: (s) => s.neutralPalette,
     tone: (s) => s.isDark ? 24 : 98,
   });
 
-  static surfaceSub2 = DynamicColor.fromPalette({
+  static surfaceContainerLowest = DynamicColor.fromPalette({
     palette: (s) => s.neutralPalette,
     tone: (s) => s.isDark ? 4 : 100,
   });
 
-  static surfaceSub1 = DynamicColor.fromPalette({
+  static surfaceContainerLow = DynamicColor.fromPalette({
     palette: (s) => s.neutralPalette,
     tone: (s) => s.isDark ? 10 : 96,
   });
@@ -137,12 +137,12 @@ export class MaterialDynamicColors {
     tone: (s) => s.isDark ? 12 : 94,
   });
 
-  static surfaceAdd1 = DynamicColor.fromPalette({
+  static surfaceContainerHigh = DynamicColor.fromPalette({
     palette: (s) => s.neutralPalette,
     tone: (s) => s.isDark ? 17 : 92,
   });
 
-  static surfaceAdd2 = DynamicColor.fromPalette({
+  static surfaceContainerHighest = DynamicColor.fromPalette({
     palette: (s) => s.neutralPalette,
     tone: (s) => s.isDark ? 22 : 90,
   });
@@ -164,15 +164,15 @@ export class MaterialDynamicColors {
     background: (s) => MaterialDynamicColors.surfaceVariant,
   });
 
-  static surfaceInverse = DynamicColor.fromPalette({
+  static inverseSurface = DynamicColor.fromPalette({
     palette: (s) => s.neutralPalette,
-    tone: (s) => s.isDark ? 90 : 30,
+    tone: (s) => s.isDark ? 90 : 20,
   });
 
-  static onSurfaceInverse = DynamicColor.fromPalette({
+  static inverseOnSurface = DynamicColor.fromPalette({
     palette: (s) => s.neutralPalette,
     tone: (s) => s.isDark ? 20 : 95,
-    background: (s) => MaterialDynamicColors.surfaceInverse,
+    background: (s) => MaterialDynamicColors.inverseSurface,
   });
 
   static outline = DynamicColor.fromPalette({
@@ -197,7 +197,7 @@ export class MaterialDynamicColors {
     tone: (s) => 0,
   });
 
-  static surfaceTint = DynamicColor.fromPalette({
+  static surfaceTintColor = DynamicColor.fromPalette({
     palette: (s) => s.primaryPalette,
     tone: (s) => s.isDark ? 80 : 40,
   });
@@ -262,16 +262,16 @@ export class MaterialDynamicColors {
     background: (s) => MaterialDynamicColors.primaryContainer,
   });
 
-  static primaryInverse = DynamicColor.fromPalette({
+  static inversePrimary = DynamicColor.fromPalette({
     palette: (s) => s.primaryPalette,
     tone: (s) => s.isDark ? 40 : 80,
-    background: (s) => MaterialDynamicColors.surfaceInverse,
+    background: (s) => MaterialDynamicColors.inverseSurface,
   });
 
-  static onPrimaryInverse = DynamicColor.fromPalette({
+  static inverseOnPrimary = DynamicColor.fromPalette({
     palette: (s) => s.primaryPalette,
     tone: (s) => s.isDark ? 100 : 20,
-    background: (s) => MaterialDynamicColors.primaryInverse,
+    background: (s) => MaterialDynamicColors.inversePrimary,
   });
 
   static secondary = DynamicColor.fromPalette({
@@ -433,7 +433,7 @@ export class MaterialDynamicColors {
     background: (s) => MaterialDynamicColors.highestSurface(s),
   });
 
-  static primaryFixedDarker = DynamicColor.fromPalette({
+  static primaryFixedDim = DynamicColor.fromPalette({
     palette: (s) => s.primaryPalette,
     tone:
         (s) => {
@@ -454,7 +454,7 @@ export class MaterialDynamicColors {
           }
           return 10.0;
         },
-    background: (s) => MaterialDynamicColors.primaryFixedDarker,
+    background: (s) => MaterialDynamicColors.primaryFixedDim,
   });
 
   static onPrimaryFixedVariant = DynamicColor.fromPalette({
@@ -466,7 +466,7 @@ export class MaterialDynamicColors {
           }
           return 30.0;
         },
-    background: (s) => MaterialDynamicColors.primaryFixedDarker,
+    background: (s) => MaterialDynamicColors.primaryFixedDim,
   });
 
   static secondaryFixed = DynamicColor.fromPalette({
@@ -475,7 +475,7 @@ export class MaterialDynamicColors {
     background: (s) => MaterialDynamicColors.highestSurface(s),
   });
 
-  static secondaryFixedDarker = DynamicColor.fromPalette({
+  static secondaryFixedDim = DynamicColor.fromPalette({
     palette: (s) => s.secondaryPalette,
     tone: (s) => isMonochrome(s) ? 70.0 : 80.0,
     background: (s) => MaterialDynamicColors.highestSurface(s),
@@ -484,13 +484,13 @@ export class MaterialDynamicColors {
   static onSecondaryFixed = DynamicColor.fromPalette({
     palette: (s) => s.secondaryPalette,
     tone: (s) => 10.0,
-    background: (s) => MaterialDynamicColors.secondaryFixedDarker,
+    background: (s) => MaterialDynamicColors.secondaryFixedDim,
   });
 
   static onSecondaryFixedVariant = DynamicColor.fromPalette({
     palette: (s) => s.secondaryPalette,
     tone: (s) => isMonochrome(s) ? 25.0 : 30.0,
-    background: (s) => MaterialDynamicColors.secondaryFixedDarker,
+    background: (s) => MaterialDynamicColors.secondaryFixedDim,
   });
 
   static tertiaryFixed = DynamicColor.fromPalette({
@@ -499,7 +499,7 @@ export class MaterialDynamicColors {
     background: (s) => MaterialDynamicColors.highestSurface(s),
   });
 
-  static tertiaryFixedDarker = DynamicColor.fromPalette({
+  static tertiaryFixedDim = DynamicColor.fromPalette({
     palette: (s) => s.tertiaryPalette,
     tone: (s) => isMonochrome(s) ? 30.0 : 80.0,
     background: (s) => MaterialDynamicColors.highestSurface(s),
@@ -508,12 +508,12 @@ export class MaterialDynamicColors {
   static onTertiaryFixed = DynamicColor.fromPalette({
     palette: (s) => s.tertiaryPalette,
     tone: (s) => isMonochrome(s) ? 90.0 : 10.0,
-    background: (s) => MaterialDynamicColors.tertiaryFixedDarker,
+    background: (s) => MaterialDynamicColors.tertiaryFixedDim,
   });
 
   static onTertiaryFixedVariant = DynamicColor.fromPalette({
     palette: (s) => s.tertiaryPalette,
     tone: (s) => isMonochrome(s) ? 70.0 : 30.0,
-    background: (s) => MaterialDynamicColors.tertiaryFixedDarker,
+    background: (s) => MaterialDynamicColors.tertiaryFixedDim,
   });
 }
