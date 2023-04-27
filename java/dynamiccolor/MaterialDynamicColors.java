@@ -16,6 +16,7 @@
 
 package dynamiccolor;
 
+import androidx.annotation.NonNull;
 import dislike.DislikeAnalyzer;
 import hct.Hct;
 import hct.ViewingConditions;
@@ -34,84 +35,103 @@ public final class MaterialDynamicColors {
 
   public MaterialDynamicColors() {}
 
-  public DynamicColor highestSurface(DynamicScheme s) {
+  @NonNull
+  public DynamicColor highestSurface(@NonNull DynamicScheme s) {
     return s.isDark ? surfaceBright() : surfaceDim();
   }
 
+  @NonNull
   public DynamicColor background() {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 6.0 : 98.0);
   }
 
+  @NonNull
   public DynamicColor onBackground() {
     return DynamicColor.fromPalette(
         (s) -> s.neutralPalette, (s) -> s.isDark ? 90.0 : 10.0, (s) -> background());
   }
 
+  @NonNull
   public DynamicColor surface() {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 6.0 : 98.0);
   }
 
+  @NonNull
   public DynamicColor inverseSurface() {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 90.0 : 20.0);
   }
 
+  @NonNull
   public DynamicColor surfaceBright() {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 24.0 : 98.0);
   }
 
+  @NonNull
   public DynamicColor surfaceDim() {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 6.0 : 87.0);
   }
 
+  @NonNull
   public DynamicColor surfaceContainerLowest() {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 4.0 : 100.0);
   }
 
+  @NonNull
   public DynamicColor surfaceContainerLow() {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 10.0 : 96.0);
   }
 
+  @NonNull
   public DynamicColor surfaceContainer() {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 12.0 : 94.0);
   }
 
+  @NonNull
   public DynamicColor surfaceContainerHigh() {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 17.0 : 92.0);
   }
 
+  @NonNull
   public DynamicColor surfaceContainerHighest() {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 22.0 : 90.0);
   }
 
+  @NonNull
   public DynamicColor onSurface() {
     return DynamicColor.fromPalette(
         (s) -> s.neutralPalette, (s) -> s.isDark ? 90.0 : 10.0, this::highestSurface);
   }
 
+  @NonNull
   public DynamicColor inverseOnSurface() {
     return DynamicColor.fromPalette(
         (s) -> s.neutralPalette, (s) -> s.isDark ? 20.0 : 95.0, (s) -> inverseSurface());
   }
 
+  @NonNull
   public DynamicColor surfaceVariant() {
     return DynamicColor.fromPalette((s) -> s.neutralVariantPalette, (s) -> s.isDark ? 30.0 : 90.0);
   }
 
+  @NonNull
   public DynamicColor onSurfaceVariant() {
     return DynamicColor.fromPalette(
         (s) -> s.neutralVariantPalette, (s) -> s.isDark ? 80.0 : 30.0, (s) -> surfaceVariant());
   }
 
+  @NonNull
   public DynamicColor outline() {
     return DynamicColor.fromPalette(
         (s) -> s.neutralVariantPalette, (s) -> 50.0, this::highestSurface);
   }
 
+  @NonNull
   public DynamicColor outlineVariant() {
     return DynamicColor.fromPalette(
         (s) -> s.neutralVariantPalette, (s) -> s.isDark ? 30.0 : 80.0, this::highestSurface);
   }
 
+  @NonNull
   public DynamicColor primaryContainer() {
     return DynamicColor.fromPalette(
         (s) -> s.primaryPalette,
@@ -127,6 +147,7 @@ public final class MaterialDynamicColors {
         this::highestSurface);
   }
 
+  @NonNull
   public DynamicColor onPrimaryContainer() {
     return DynamicColor.fromPalette(
         (s) -> s.primaryPalette,
@@ -143,6 +164,7 @@ public final class MaterialDynamicColors {
         null);
   }
 
+  @NonNull
   public DynamicColor primary() {
     return DynamicColor.fromPalette(
         (s) -> s.primaryPalette,
@@ -160,11 +182,13 @@ public final class MaterialDynamicColors {
                 s.isDark ? TonePolarity.DARKER : TonePolarity.LIGHTER));
   }
 
+  @NonNull
   public DynamicColor inversePrimary() {
     return DynamicColor.fromPalette(
         (s) -> s.primaryPalette, (s) -> s.isDark ? 40.0 : 80.0, (s) -> inverseSurface());
   }
 
+  @NonNull
   public DynamicColor onPrimary() {
     return DynamicColor.fromPalette(
         (s) -> s.primaryPalette,
@@ -177,6 +201,7 @@ public final class MaterialDynamicColors {
         (s) -> primary());
   }
 
+  @NonNull
   public DynamicColor secondaryContainer() {
     return DynamicColor.fromPalette(
         (s) -> s.secondaryPalette,
@@ -200,6 +225,7 @@ public final class MaterialDynamicColors {
         this::highestSurface);
   }
 
+  @NonNull
   public DynamicColor onSecondaryContainer() {
     return DynamicColor.fromPalette(
         (s) -> s.secondaryPalette,
@@ -212,6 +238,7 @@ public final class MaterialDynamicColors {
         (s) -> secondaryContainer());
   }
 
+  @NonNull
   public DynamicColor secondary() {
     return DynamicColor.fromPalette(
         (s) -> s.secondaryPalette,
@@ -224,6 +251,7 @@ public final class MaterialDynamicColors {
                 s.isDark ? TonePolarity.DARKER : TonePolarity.LIGHTER));
   }
 
+  @NonNull
   public DynamicColor onSecondary() {
     return DynamicColor.fromPalette(
         (s) -> s.secondaryPalette,
@@ -236,6 +264,7 @@ public final class MaterialDynamicColors {
         (s) -> secondary());
   }
 
+  @NonNull
   public DynamicColor tertiaryContainer() {
     return DynamicColor.fromPalette(
         (s) -> s.tertiaryPalette,
@@ -254,6 +283,7 @@ public final class MaterialDynamicColors {
         this::highestSurface);
   }
 
+  @NonNull
   public DynamicColor onTertiaryContainer() {
     return DynamicColor.fromPalette(
         (s) -> s.tertiaryPalette,
@@ -269,6 +299,7 @@ public final class MaterialDynamicColors {
         (s) -> tertiaryContainer());
   }
 
+  @NonNull
   public DynamicColor tertiary() {
     return DynamicColor.fromPalette(
         (s) -> s.tertiaryPalette,
@@ -286,6 +317,7 @@ public final class MaterialDynamicColors {
                 s.isDark ? TonePolarity.DARKER : TonePolarity.LIGHTER));
   }
 
+  @NonNull
   public DynamicColor onTertiary() {
     return DynamicColor.fromPalette(
         (s) -> s.tertiaryPalette,
@@ -298,16 +330,19 @@ public final class MaterialDynamicColors {
         (s) -> tertiary());
   }
 
+  @NonNull
   public DynamicColor errorContainer() {
     return DynamicColor.fromPalette(
         (s) -> s.errorPalette, (s) -> s.isDark ? 30.0 : 90.0, this::highestSurface);
   }
 
+  @NonNull
   public DynamicColor onErrorContainer() {
     return DynamicColor.fromPalette(
         (s) -> s.errorPalette, (s) -> s.isDark ? 90.0 : 10.0, (s) -> errorContainer());
   }
 
+  @NonNull
   public DynamicColor error() {
     return DynamicColor.fromPalette(
         (s) -> s.errorPalette,
@@ -320,11 +355,13 @@ public final class MaterialDynamicColors {
                 s.isDark ? TonePolarity.DARKER : TonePolarity.LIGHTER));
   }
 
+  @NonNull
   public DynamicColor onError() {
     return DynamicColor.fromPalette(
         (s) -> s.errorPalette, (s) -> s.isDark ? 20.0 : 100.0, (s) -> error());
   }
 
+  @NonNull
   public DynamicColor primaryFixed() {
     return DynamicColor.fromPalette(
         (s) -> s.primaryPalette,
@@ -337,6 +374,7 @@ public final class MaterialDynamicColors {
         this::highestSurface);
   }
 
+  @NonNull
   public DynamicColor primaryFixedDim() {
     return DynamicColor.fromPalette(
         (s) -> s.primaryPalette,
@@ -349,6 +387,7 @@ public final class MaterialDynamicColors {
         this::highestSurface);
   }
 
+  @NonNull
   public DynamicColor onPrimaryFixed() {
     return DynamicColor.fromPalette(
         (s) -> s.primaryPalette,
@@ -361,6 +400,7 @@ public final class MaterialDynamicColors {
         (s) -> primaryFixedDim());
   }
 
+  @NonNull
   public DynamicColor onPrimaryFixedVariant() {
     return DynamicColor.fromPalette(
         (s) -> s.primaryPalette,
@@ -373,21 +413,25 @@ public final class MaterialDynamicColors {
         (s) -> primaryFixedDim());
   }
 
+  @NonNull
   public DynamicColor secondaryFixed() {
     return DynamicColor.fromPalette(
         (s) -> s.secondaryPalette, (s) -> isMonochrome(s) ? 80.0 : 90.0, this::highestSurface);
   }
 
+  @NonNull
   public DynamicColor secondaryFixedDim() {
     return DynamicColor.fromPalette(
         (s) -> s.secondaryPalette, (s) -> isMonochrome(s) ? 70.0 : 80.0, this::highestSurface);
   }
 
+  @NonNull
   public DynamicColor onSecondaryFixed() {
     return DynamicColor.fromPalette(
         (s) -> s.secondaryPalette, (s) -> 10.0, (s) -> secondaryFixedDim());
   }
 
+  @NonNull
   public DynamicColor onSecondaryFixedVariant() {
     return DynamicColor.fromPalette(
         (s) -> s.secondaryPalette,
@@ -395,21 +439,25 @@ public final class MaterialDynamicColors {
         (s) -> secondaryFixedDim());
   }
 
+  @NonNull
   public DynamicColor tertiaryFixed() {
     return DynamicColor.fromPalette(
         (s) -> s.tertiaryPalette, (s) -> isMonochrome(s) ? 40.0 : 90.0, this::highestSurface);
   }
 
+  @NonNull
   public DynamicColor tertiaryFixedDim() {
     return DynamicColor.fromPalette(
         (s) -> s.tertiaryPalette, (s) -> isMonochrome(s) ? 30.0 : 80.0, this::highestSurface);
   }
 
+  @NonNull
   public DynamicColor onTertiaryFixed() {
     return DynamicColor.fromPalette(
         (s) -> s.tertiaryPalette, (s) -> isMonochrome(s) ? 90.0 : 10.0, (s) -> tertiaryFixedDim());
   }
 
+  @NonNull
   public DynamicColor onTertiaryFixedVariant() {
     return DynamicColor.fromPalette(
         (s) -> s.tertiaryPalette, (s) -> isMonochrome(s) ? 70.0 : 30.0, (s) -> tertiaryFixedDim());
@@ -428,12 +476,15 @@ public final class MaterialDynamicColors {
   // colorAccent documented as colorSecondary in M3 and colorPrimary in GM3.
   // Android used Material's Container as Primary/Secondary/Tertiary at launch.
   // Therefore, this is a duplicated version of Primary Container.
-  public static final DynamicColor controlActivated =
-      DynamicColor.fromPalette((s) -> s.primaryPalette, (s) -> s.isDark ? 30.0 : 90.0, null);
+  @NonNull
+  public DynamicColor controlActivated() {
+    return DynamicColor.fromPalette((s) -> s.primaryPalette, (s) -> s.isDark ? 30.0 : 90.0, null);
+  }
 
   // colorControlNormal documented as textColorSecondary in M3 & GM3.
   // In Material, textColorSecondary points to onSurfaceVariant in the non-disabled state,
   // which is Neutral Variant T30/80 in light/dark.
+  @NonNull
   public DynamicColor controlNormal() {
     return DynamicColor.fromPalette((s) -> s.neutralVariantPalette, (s) -> s.isDark ? 80.0 : 30.0);
   }
@@ -446,6 +497,7 @@ public final class MaterialDynamicColors {
   // DynamicColors do not support alpha currently, and _may_ not need it for this use case,
   // depending on how MDC resolved alpha for the other cases.
   // Returning black in dark mode, white in light mode.
+  @NonNull
   public DynamicColor controlHighlight() {
     return new DynamicColor(
         s -> 0.0,
@@ -461,28 +513,33 @@ public final class MaterialDynamicColors {
   }
 
   // textColorPrimaryInverse documented, in both M3 & GM3, documented as N10/N90.
+  @NonNull
   public DynamicColor textPrimaryInverse() {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 10.0 : 90.0);
   }
 
   // textColorSecondaryInverse and textColorTertiaryInverse both documented, in both M3 & GM3, as
   // NV30/NV80
+  @NonNull
   public DynamicColor textSecondaryAndTertiaryInverse() {
     return DynamicColor.fromPalette((s) -> s.neutralVariantPalette, (s) -> s.isDark ? 30.0 : 80.0);
   }
 
   // textColorPrimaryInverseDisableOnly documented, in both M3 & GM3, as N10/N90
+  @NonNull
   public DynamicColor textPrimaryInverseDisableOnly() {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 10.0 : 90.0);
   }
 
   // textColorSecondaryInverse and textColorTertiaryInverse in disabled state both documented,
   // in both M3 & GM3, as N10/N90
+  @NonNull
   public DynamicColor textSecondaryAndTertiaryInverseDisabled() {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 10.0 : 90.0);
   }
 
   // textColorHintInverse documented, in both M3 & GM3, as N10/N90
+  @NonNull
   public DynamicColor textHintInverse() {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 10.0 : 90.0);
   }
