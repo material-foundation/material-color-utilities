@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,33 +14,27 @@
  * limitations under the License.
  */
 
-#ifndef CPP_PALETTES_TONES_H_
-#define CPP_PALETTES_TONES_H_
+#ifndef CPP_DYNAMICCOLOR_TONE_DELTA_CONSTRAINT_H_
+#define CPP_DYNAMICCOLOR_TONE_DELTA_CONSTRAINT_H_
 
-#include "cpp/utils/utils.h"
+#include "cpp/dynamiccolor/dynamic_color.h"
 
 namespace material_color_utilities {
 
-class TonalPalette {
- public:
-  explicit TonalPalette(Argb argb);
-  TonalPalette(double hue, double chroma);
+enum class TonePolarity { kNoPreference, kDarker, kLighter };
 
-  /**
-   * Returns the color for a given tone in this palette.
-   *
-   * @param tone 0.0 <= tone <= 100.0
-   * @return a color as an integer, in ARGB format.
-   */
-  Argb get(double tone) const;
+struct ToneDeltaConstraint {
+  double delta;
+  DynamicColor keep_away;
+  TonePolarity keep_away_polarity;
 
-  double get_hue() const { return hue_; }
-  double get_chroma() const { return chroma_; }
-
- private:
-  double hue_;
-  double chroma_;
+  ToneDeltaConstraint(double delta, DynamicColor keep_away,
+                      TonePolarity keep_away_polarity)
+      : delta(delta),
+        keep_away(keep_away),
+        keep_away_polarity(keep_away_polarity) {}
 };
 
 }  // namespace material_color_utilities
-#endif  // CPP_PALETTES_TONES_H_
+
+#endif  // CPP_DYNAMICCOLOR_TONE_DELTA_CONSTRAINT_H_

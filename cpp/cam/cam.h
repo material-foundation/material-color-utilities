@@ -42,6 +42,12 @@ Argb IntFromHcl(double hue, double chroma, double lstar);
 Argb IntFromCam(Cam cam);
 Cam CamFromUcsAndViewingConditions(double jstar, double astar, double bstar,
                                    const ViewingConditions &viewing_conditions);
+/**
+ * Given color expressed in the XYZ color space and viewed
+ * in [viewingConditions], converts the color to CAM16.
+ */
+Cam CamFromXyzAndViewingConditions(double x, double y, double z,
+                                   const ViewingConditions &viewing_conditions);
 
 }  // namespace material_color_utilities
 #endif  // CPP_CAM_CAM_H_

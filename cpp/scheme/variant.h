@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,33 +14,21 @@
  * limitations under the License.
  */
 
-#ifndef CPP_PALETTES_TONES_H_
-#define CPP_PALETTES_TONES_H_
-
-#include "cpp/utils/utils.h"
+#ifndef CPP_SCHEME_VARIANT_H_
+#define CPP_SCHEME_VARIANT_H_
 
 namespace material_color_utilities {
 
-class TonalPalette {
- public:
-  explicit TonalPalette(Argb argb);
-  TonalPalette(double hue, double chroma);
-
-  /**
-   * Returns the color for a given tone in this palette.
-   *
-   * @param tone 0.0 <= tone <= 100.0
-   * @return a color as an integer, in ARGB format.
-   */
-  Argb get(double tone) const;
-
-  double get_hue() const { return hue_; }
-  double get_chroma() const { return chroma_; }
-
- private:
-  double hue_;
-  double chroma_;
+enum class Variant {
+  kMonochrome,
+  kNeutral,
+  kTonalSpot,
+  kVibrant,
+  kExpressive,
+  kFidelity,
+  kContent,
 };
 
 }  // namespace material_color_utilities
-#endif  // CPP_PALETTES_TONES_H_
+
+#endif  // CPP_SCHEME_VARIANT_H_

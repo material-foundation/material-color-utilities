@@ -26,13 +26,13 @@ Hct::Hct(double hue, double chroma, double tone) {
 
 Hct::Hct(Argb argb) { SetInternalState(argb); }
 
-double Hct::get_hue() { return hue_; }
+double Hct::get_hue() const { return hue_; }
 
-double Hct::get_chroma() { return chroma_; }
+double Hct::get_chroma() const { return chroma_; }
 
-double Hct::get_tone() { return tone_; }
+double Hct::get_tone() const { return tone_; }
 
-Argb Hct::ToInt() { return argb_; }
+Argb Hct::ToInt() const { return argb_; }
 
 void Hct::set_hue(double new_hue) {
   SetInternalState(SolveToInt(new_hue, chroma_, tone_));
