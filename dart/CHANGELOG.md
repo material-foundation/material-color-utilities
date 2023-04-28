@@ -1,3 +1,7 @@
+## 0.4.0 - 2023-04-28
+### Added
+- Add `label` and `description` to each `Variant`
+
 ## 0.3.0 - 2023-03-10
 ### Added
 
