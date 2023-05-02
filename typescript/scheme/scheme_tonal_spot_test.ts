@@ -558,8 +558,6 @@ describe('scheme tonal spot test', () => {
         .matchesColor(0xff545999);
     expect(MaterialDynamicColors.inversePrimary.getArgb(scheme))
         .matchesColor(0xffbec2ff);
-    expect(MaterialDynamicColors.inverseOnPrimary.getArgb(scheme))
-        .matchesColor(0xff252968);
   });
 
   it('darkTheme colors are correct', () => {
@@ -582,7 +580,5 @@ describe('scheme tonal spot test', () => {
         .matchesColor(0xffbec2ff);
     expect(MaterialDynamicColors.inversePrimary.getArgb(scheme))
         .matchesColor(0xff545999);
-    expect(MaterialDynamicColors.inverseOnPrimary.getArgb(scheme))
-        .matchesColor(0xffffffff);
   });
 });

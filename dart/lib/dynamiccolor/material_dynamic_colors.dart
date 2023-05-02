@@ -207,12 +207,6 @@ class MaterialDynamicColors {
     background: (s) => inverseSurface,
   );
 
-  static DynamicColor inverseOnPrimary = DynamicColor.fromPalette(
-    palette: (s) => s.primaryPalette,
-    tone: (s) => s.isDark ? 100 : 20,
-    background: (s) => inversePrimary,
-  );
-
   static DynamicColor secondary = DynamicColor.fromPalette(
     palette: (s) => s.secondaryPalette,
     tone: (s) => s.isDark ? 80 : 40,

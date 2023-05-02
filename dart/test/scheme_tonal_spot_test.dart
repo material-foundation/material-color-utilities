@@ -477,8 +477,6 @@ void main() {
         MaterialDynamicColors.surfaceTint.getArgb(scheme), isColor(0xff545999));
     expect(MaterialDynamicColors.inversePrimary.getArgb(scheme),
         isColor(0xffbec2ff));
-    expect(MaterialDynamicColors.inverseOnPrimary.getArgb(scheme),
-        isColor(0xff252968));
   });
 
   test('darkTheme colors are correct', () {
@@ -499,7 +497,5 @@ void main() {
         MaterialDynamicColors.surfaceTint.getArgb(scheme), isColor(0xffbec2ff));
     expect(MaterialDynamicColors.inversePrimary.getArgb(scheme),
         isColor(0xff545999));
-    expect(MaterialDynamicColors.inverseOnPrimary.getArgb(scheme),
-        isColor(0xffffffff));
   });
 }

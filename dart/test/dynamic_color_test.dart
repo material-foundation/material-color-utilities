@@ -67,7 +67,6 @@ final _colors = <String, DynamicColor>{
   'primaryContainer': MaterialDynamicColors.primaryContainer,
   'onPrimaryContainer': MaterialDynamicColors.onPrimaryContainer,
   'inversePrimary': MaterialDynamicColors.inversePrimary,
-  'inverseOnPrimary': MaterialDynamicColors.inverseOnPrimary,
   'secondary': MaterialDynamicColors.secondary,
   'onSecondary': MaterialDynamicColors.onSecondary,
   'secondaryContainer': MaterialDynamicColors.secondaryContainer,
@@ -94,7 +93,6 @@ final _textSurfacePairs = [
   _Pair('onBackground', 'background'),
   _Pair('onSurfaceVariant', 'surfaceVariant'),
   _Pair('inverseOnSurface', 'inverseSurface'),
-  _Pair('inverseOnPrimary', 'inversePrimary'),
 ];
 
 void main() {

@@ -1,3 +1,7 @@
+## 0.5.0 - 2023-05-02
+### Removed
+- Removed `inverseOnPrimary`, an unfounded dynamic color.
+
 ## 0.4.0 - 2023-04-28
 ### Added
 - Add `label` and `description` to each `Variant`
