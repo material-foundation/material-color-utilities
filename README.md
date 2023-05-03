@@ -14,8 +14,9 @@ Language    | Availability  | Location
 C++         | ✅             |
 Dart        | ✅             | [![pub package](https://img.shields.io/pub/v/material_color_utilities.svg)](https://pub.dev/packages/material_color_utilities)
 Java        | ✅             | [MDC-Android](https://github.com/material-components/material-components-android/blob/master/docs/theming/Color.md)
-Objective-C | *Coming soon* |
+Swift       | *Coming soon* |
 TypeScript  | ✅             | [![npm package](https://badgen.net/npm/v/@material/material-color-utilities)](https://npmjs.com/package/@material/material-color-utilities)
+GLSL        | *Coming soon* |
 
 Need another platform/language? Check the
 [existing issues](https://github.com/material-foundation/material-color-utilities/labels/library%3A%20new)
