@@ -18,135 +18,106 @@
 
 #include <algorithm>
 #include <cmath>
-#include <cstdlib>
 #include <map>
+#include <utility>
 #include <vector>
 
-#include "cpp/cam/cam.h"
+#include "cpp/cam/hct.h"
 #include "cpp/utils/utils.h"
 
 namespace material_color_utilities {
 
-constexpr double kCutoffChroma = 15.0;
-constexpr double kCutoffExcitedProportion = 0.01;
-constexpr double kCutoffTone = 10.0;
 constexpr double kTargetChroma = 48.0;  // A1 Chroma
 constexpr double kWeightProportion = 0.7;
 constexpr double kWeightChromaAbove = 0.3;
 constexpr double kWeightChromaBelow = 0.1;
+constexpr double kCutoffChroma = 5.0;
+constexpr double kCutoffExcitedProportion = 0.01;
 
-struct AnnotatedColor {
-  Argb argb = 0;
-  Cam cam;
-  double excited_proportion = 0.0;
-  double score = 0.0;
-};
-
-bool ArgbAndScoreComparator(const AnnotatedColor& a, const AnnotatedColor& b) {
-  return a.score > b.score;
-}
-
-bool IsAcceptableColor(const AnnotatedColor& color) {
-  return color.cam.chroma >= kCutoffChroma &&
-         LstarFromArgb(color.argb) >= kCutoffTone &&
-         color.excited_proportion >= kCutoffExcitedProportion;
-}
-
-bool ColorsAreTooClose(const AnnotatedColor& color_one,
-                       const AnnotatedColor& color_two) {
-  return DiffDegrees(color_one.cam.hue, color_two.cam.hue) < 15;
+bool CompareScoredHCT(const std::pair<Hct, double>& a,
+                      const std::pair<Hct, double>& b) {
+  return a.second > b.second;
 }
 
 std::vector<Argb> RankedSuggestions(
-    const std::map<Argb, int>& argb_to_population) {
+    const std::map<Argb, int>& argb_to_population,
+    const ScoreOptions& options) {
+  // Get the HCT color for each Argb value, while finding the per hue count and
+  // total count.
+  std::vector<Hct> colors_hct;
+  std::vector<int> hue_population(360, 0);
   double population_sum = 0;
-  int input_size = argb_to_population.size();
-
-  std::vector<Argb> argbs;
-  std::vector<int> populations;
-
-  argbs.reserve(input_size);
-  populations.reserve(input_size);
-
-  for (auto const& pair : argb_to_population) {
-    argbs.push_back(pair.first);
-    populations.push_back(pair.second);
+  for (const auto& [argb, population] : argb_to_population) {
+    Hct hct(argb);
+    colors_hct.push_back(hct);
+    int hue = floor(hct.get_hue());
+    hue_population[hue] += population;
+    population_sum += population;
   }
 
-  for (int i = 0; i < input_size; i++) {
-    population_sum += populations[i];
-  }
-
-  double hue_proportions[361] = {};
-  std::vector<AnnotatedColor> colors;
-
-  for (int i = 0; i < input_size; i++) {
-    double proportion = populations[i] / population_sum;
-
-    Cam cam = CamFromInt(argbs[i]);
-
-    int hue = SanitizeDegreesInt(round(cam.hue));
-    hue_proportions[hue] += proportion;
-
-    colors.push_back({argbs[i], cam, 0, -1});
-  }
-
-  for (int i = 0; i < input_size; i++) {
-    int hue = round(colors[i].cam.hue);
-    for (int j = (hue - 15); j < (hue + 15); j++) {
-      int sanitized_hue = SanitizeDegreesInt(j);
-      colors[i].excited_proportion += hue_proportions[sanitized_hue];
+  // Hues with more usage in neighboring 30 degree slice get a larger number.
+  std::vector<double> hue_excited_proportions(360, 0.0);
+  for (int hue = 0; hue < 360; hue++) {
+    double proportion = hue_population[hue] / population_sum;
+    for (int i = hue - 14; i < hue + 16; i++) {
+      int neighbor_hue = SanitizeDegreesInt(i);
+      hue_excited_proportions[neighbor_hue] += proportion;
     }
   }
 
-  for (int i = 0; i < input_size; i++) {
-    double proportion_score =
-        colors[i].excited_proportion * 100.0 * kWeightProportion;
-
-    double chroma = colors[i].cam.chroma;
-    double chroma_weight =
-        (chroma > kTargetChroma ? kWeightChromaAbove : kWeightChromaBelow);
-    double chroma_score = (chroma - kTargetChroma) * chroma_weight;
-
-    colors[i].score = chroma_score + proportion_score;
-  }
-
-  std::sort(colors.begin(), colors.end(), ArgbAndScoreComparator);
-
-  std::vector<AnnotatedColor> selected_colors;
-
-  for (int i = 0; i < input_size; i++) {
-    if (!IsAcceptableColor(colors[i])) {
+  // Scores each HCT color based on usage and chroma, while optionally
+  // filtering out values that do not have enough chroma or usage.
+  std::vector<std::pair<Hct, double>> scored_hcts;
+  for (Hct hct : colors_hct) {
+    int hue = SanitizeDegreesInt(round(hct.get_hue()));
+    double proportion = hue_excited_proportions[hue];
+    if (options.filter && (hct.get_chroma() < kCutoffChroma ||
+                           proportion <= kCutoffExcitedProportion)) {
       continue;
     }
 
-    bool is_duplicate_color = false;
-    for (size_t j = 0; j < selected_colors.size(); j++) {
-      if (ColorsAreTooClose(selected_colors[j], colors[i])) {
-        is_duplicate_color = true;
-        break;
+    double proportion_score = proportion * 100.0 * kWeightProportion;
+    double chroma_weight = hct.get_chroma() < kTargetChroma
+                               ? kWeightChromaBelow
+                               : kWeightChromaAbove;
+    double chroma_score = (hct.get_chroma() - kTargetChroma) * chroma_weight;
+    double score = proportion_score + chroma_score;
+    scored_hcts.push_back({hct, score});
+  }
+  // Sorted so that colors with higher scores come first.
+  sort(scored_hcts.begin(), scored_hcts.end(), CompareScoredHCT);
+
+  // Iterates through potential hue differences in degrees in order to select
+  // the colors with the largest distribution of hues possible. Starting at
+  // 90 degrees(maximum difference for 4 colors) then decreasing down to a
+  // 15 degree minimum.
+  std::vector<Hct> chosen_colors;
+  for (int difference_degrees = 90; difference_degrees >= 15;
+       difference_degrees--) {
+    chosen_colors.clear();
+    for (auto entry : scored_hcts) {
+      Hct hct = entry.first;
+      auto duplicate_hue = std::find_if(
+          chosen_colors.begin(), chosen_colors.end(),
+          [&hct, difference_degrees](Hct chosen_hct) {
+            return DiffDegrees(hct.get_hue(), chosen_hct.get_hue()) <
+                   difference_degrees;
+          });
+      if (duplicate_hue == chosen_colors.end()) {
+        chosen_colors.push_back(hct);
+        if (chosen_colors.size() >= options.desired) break;
       }
     }
-
-    if (is_duplicate_color) {
-      continue;
-    }
-
-    selected_colors.push_back(colors[i]);
+    if (chosen_colors.size() >= options.desired) break;
   }
-
-  // Use google blue if no colors are selected.
-  if (selected_colors.empty()) {
-    selected_colors.push_back({0xFF4285F4, {}, 0.0, 0.0});
+  std::vector<Argb> colors;
+  if (chosen_colors.empty()) {
+    colors.push_back(options.fallback_color_argb);
   }
-
-  std::vector<Argb> return_value(selected_colors.size());
-
-  for (size_t j = 0; j < selected_colors.size(); j++) {
-    return_value[j] = selected_colors[j].argb;
+  for (auto chosen_hct : chosen_colors) {
+    colors.push_back(chosen_hct.ToInt());
   }
-
-  return return_value;
+  return colors;
 }
 
 }  // namespace material_color_utilities

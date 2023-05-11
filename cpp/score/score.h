@@ -17,6 +17,7 @@
 #ifndef CPP_SCORE_SCORE_H_
 #define CPP_SCORE_SCORE_H_
 
+#include <cstdlib>
 #include <map>
 #include <vector>
 
@@ -24,8 +25,35 @@
 
 namespace material_color_utilities {
 
+/**
+ * Default options for ranking colors based on usage counts.
+ * `desired`: is the max count of the colors returned.
+ * `fallback_color_argb`: Is the default color that should be used if no
+ *                        other colors are suitable.
+ * `filter`: controls if the resulting colors should be filtered to not include
+ *         hues that are not used often enough, and colors that are effectively
+ *         grayscale.
+ */
+struct ScoreOptions {
+  size_t desired = 4;  // 4 colors matches the Android wallpaper picker.
+  int fallback_color_argb = 0xff4285f4;  // Google Blue.
+  bool filter = true;                    // Avoid unsuitable colors.
+};
+
+/**
+ * Given a map with keys of colors and values of how often the color appears,
+ * rank the colors based on suitability for being used for a UI theme.
+ *
+ * The list returned is of length <= [desired]. The recommended color is the
+ * first item, the least suitable is the last. There will always be at least
+ * one color returned. If all the input colors were not suitable for a theme,
+ * a default fallback color will be provided, Google Blue, or supplied fallback
+ * color. The default number of colors returned is 4, simply because that's the
+ * # of colors display in Android 12's wallpaper picker.
+ */
 std::vector<Argb> RankedSuggestions(
-    const std::map<Argb, int>& argb_to_population);
+    const std::map<Argb, int>& argb_to_population,
+    const ScoreOptions& options = {});
 }  // namespace material_color_utilities
 
 #endif  // CPP_SCORE_SCORE_H_
