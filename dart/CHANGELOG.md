@@ -1,3 +1,7 @@
+## Unreleased - 2023-05-15
+### Fixed
+- Fixed outline when in dark mode to be tone 60.
+
 ## 0.5.0 - 2023-05-02
 ### Removed
 - Removed `inverseOnPrimary`, an unfounded dynamic color

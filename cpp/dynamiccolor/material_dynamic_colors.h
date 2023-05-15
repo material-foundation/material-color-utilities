@@ -26,18 +26,18 @@ class MaterialDynamicColors {
   static DynamicColor Background();
   static DynamicColor OnBackground();
   static DynamicColor Surface();
-  static DynamicColor SurfaceDark();
-  static DynamicColor SurfaceLight();
-  static DynamicColor SurfaceSub2();
-  static DynamicColor SurfaceSub1();
+  static DynamicColor SurfaceDim();
+  static DynamicColor SurfaceBright();
+  static DynamicColor SurfaceContainerLowest();
+  static DynamicColor SurfaceContainerLow();
   static DynamicColor SurfaceContainer();
-  static DynamicColor SurfaceAdd1();
-  static DynamicColor SurfaceAdd2();
+  static DynamicColor SurfaceContainerHigh();
+  static DynamicColor SurfaceContainerHighest();
   static DynamicColor OnSurface();
   static DynamicColor SurfaceVariant();
   static DynamicColor OnSurfaceVariant();
-  static DynamicColor SurfaceInverse();
-  static DynamicColor OnSurfaceInverse();
+  static DynamicColor InverseSurface();
+  static DynamicColor InverseOnSurface();
   static DynamicColor Outline();
   static DynamicColor OutlineVariant();
   static DynamicColor Shadow();
@@ -47,8 +47,7 @@ class MaterialDynamicColors {
   static DynamicColor OnPrimary();
   static DynamicColor PrimaryContainer();
   static DynamicColor OnPrimaryContainer();
-  static DynamicColor PrimaryInverse();
-  static DynamicColor OnPrimaryInverse();
+  static DynamicColor InversePrimary();
   static DynamicColor Secondary();
   static DynamicColor OnSecondary();
   static DynamicColor SecondaryContainer();
@@ -61,6 +60,18 @@ class MaterialDynamicColors {
   static DynamicColor OnError();
   static DynamicColor ErrorContainer();
   static DynamicColor OnErrorContainer();
+  static DynamicColor PrimaryFixed();
+  static DynamicColor PrimaryFixedDim();
+  static DynamicColor OnPrimaryFixed();
+  static DynamicColor OnPrimaryFixedVariant();
+  static DynamicColor SecondaryFixed();
+  static DynamicColor SecondaryFixedDim();
+  static DynamicColor OnSecondaryFixed();
+  static DynamicColor OnSecondaryFixedVariant();
+  static DynamicColor TertiaryFixed();
+  static DynamicColor TertiaryFixedDim();
+  static DynamicColor OnTertiaryFixed();
+  static DynamicColor OnTertiaryFixedVariant();
 };
 
 }  // namespace material_color_utilities

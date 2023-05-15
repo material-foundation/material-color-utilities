@@ -35,6 +35,10 @@ bool IsFidelity(const DynamicScheme& scheme) {
          scheme.variant == Variant::kContent;
 }
 
+bool IsMonochrome(const DynamicScheme& scheme) {
+  return scheme.variant == Variant::kMonochrome;
+}
+
 Vec3 XyzInViewingConditions(Cam cam, ViewingConditions viewing_conditions) {
   double alpha = (cam.chroma == 0.0 || cam.j == 0.0)
                      ? 0.0
@@ -156,8 +160,8 @@ double FindDesiredChromaByTone(double hue, double chroma, double tone,
 
 constexpr double kContentAccentToneDelta = 15.0;
 DynamicColor highestSurface(const DynamicScheme& s) {
-  return s.is_dark ? MaterialDynamicColors::SurfaceLight()
-                   : MaterialDynamicColors::SurfaceDark();
+  return s.is_dark ? MaterialDynamicColors::SurfaceBright()
+                   : MaterialDynamicColors::SurfaceDim();
 }
 
 DynamicColor MaterialDynamicColors::Background() {
@@ -193,7 +197,7 @@ DynamicColor MaterialDynamicColors::Surface() {
       /*background*/ std::nullopt);
 }
 
-DynamicColor MaterialDynamicColors::SurfaceDark() {
+DynamicColor MaterialDynamicColors::SurfaceDim() {
   return DynamicColor::FromPalette(
       /*palette*/ [](const DynamicScheme& s)
                       -> TonalPalette { return s.neutral_palette; },
@@ -203,7 +207,7 @@ DynamicColor MaterialDynamicColors::SurfaceDark() {
       /*background*/ std::nullopt);
 }
 
-DynamicColor MaterialDynamicColors::SurfaceLight() {
+DynamicColor MaterialDynamicColors::SurfaceBright() {
   return DynamicColor::FromPalette(
       /*palette*/ [](const DynamicScheme& s)
                       -> TonalPalette { return s.neutral_palette; },
@@ -213,7 +217,7 @@ DynamicColor MaterialDynamicColors::SurfaceLight() {
       /*background*/ std::nullopt);
 }
 
-DynamicColor MaterialDynamicColors::SurfaceSub2() {
+DynamicColor MaterialDynamicColors::SurfaceContainerLowest() {
   return DynamicColor::FromPalette(
       /*palette*/ [](const DynamicScheme& s)
                       -> TonalPalette { return s.neutral_palette; },
@@ -223,7 +227,7 @@ DynamicColor MaterialDynamicColors::SurfaceSub2() {
       /*background*/ std::nullopt);
 }
 
-DynamicColor MaterialDynamicColors::SurfaceSub1() {
+DynamicColor MaterialDynamicColors::SurfaceContainerLow() {
   return DynamicColor::FromPalette(
       /*palette*/ [](const DynamicScheme& s)
                       -> TonalPalette { return s.neutral_palette; },
@@ -243,7 +247,7 @@ DynamicColor MaterialDynamicColors::SurfaceContainer() {
       /*background*/ std::nullopt);
 }
 
-DynamicColor MaterialDynamicColors::SurfaceAdd1() {
+DynamicColor MaterialDynamicColors::SurfaceContainerHigh() {
   return DynamicColor::FromPalette(
       /*palette*/ [](const DynamicScheme& s)
                       -> TonalPalette { return s.neutral_palette; },
@@ -253,7 +257,7 @@ DynamicColor MaterialDynamicColors::SurfaceAdd1() {
       /*background*/ std::nullopt);
 }
 
-DynamicColor MaterialDynamicColors::SurfaceAdd2() {
+DynamicColor MaterialDynamicColors::SurfaceContainerHighest() {
   return DynamicColor::FromPalette(
       /*palette*/ [](const DynamicScheme& s)
                       -> TonalPalette { return s.neutral_palette; },
@@ -295,24 +299,24 @@ DynamicColor MaterialDynamicColors::OnSurfaceVariant() {
       /*toneDeltaConstraint*/ std::nullopt);
 }
 
-DynamicColor MaterialDynamicColors::SurfaceInverse() {
+DynamicColor MaterialDynamicColors::InverseSurface() {
   return DynamicColor::FromPalette(
       /*palette*/ [](const DynamicScheme& s)
                       -> TonalPalette { return s.neutral_palette; },
       /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 90 : 30; },
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 90 : 20; },
       /*toneDeltaConstraint*/ std::nullopt,
       /*background*/ std::nullopt);
 }
 
-DynamicColor MaterialDynamicColors::OnSurfaceInverse() {
+DynamicColor MaterialDynamicColors::InverseOnSurface() {
   return DynamicColor::FromPalette(
       /*palette*/ [](const DynamicScheme& s)
                       -> TonalPalette { return s.neutral_palette; },
       /*tone*/
       [](const DynamicScheme& s) -> double { return s.is_dark ? 20 : 95; },
       /*background*/
-      [](const DynamicScheme& s) -> DynamicColor { return SurfaceInverse(); },
+      [](const DynamicScheme& s) -> DynamicColor { return InverseSurface(); },
       /*toneDeltaConstraint*/ std::nullopt);
 }
 
@@ -320,7 +324,8 @@ DynamicColor MaterialDynamicColors::Outline() {
   return DynamicColor::FromPalette(
       /*palette*/ [](const DynamicScheme& s)
                       -> TonalPalette { return s.neutral_variant_palette; },
-      /*tone*/ [](const DynamicScheme& s) -> double { return 50; },
+      /*tone*/
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 60 : 50; },
       /*background*/
       [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
       /*toneDeltaConstraint*/ std::nullopt);
@@ -370,7 +375,12 @@ DynamicColor MaterialDynamicColors::Primary() {
       /*palette*/ [](const DynamicScheme& s)
                       -> TonalPalette { return s.primary_palette; },
       /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 80 : 40; },
+      [](const DynamicScheme& s) -> double {
+        if (IsMonochrome(s)) {
+          return s.is_dark ? 100 : 0;
+        }
+        return s.is_dark ? 80 : 40;
+      },
       /*background*/
       [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
       /*toneDeltaConstraint*/
@@ -388,7 +398,12 @@ DynamicColor MaterialDynamicColors::OnPrimary() {
       /*palette*/ [](const DynamicScheme& s)
                       -> TonalPalette { return s.primary_palette; },
       /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 20 : 100; },
+      [](const DynamicScheme& s) -> double {
+        if (IsMonochrome(s)) {
+          return s.is_dark ? 10 : 90;
+        }
+        return s.is_dark ? 20 : 100;
+      },
       /*background*/
       [](const DynamicScheme& s) -> DynamicColor { return Primary(); },
       /*toneDeltaConstraint*/ std::nullopt);
@@ -400,10 +415,13 @@ DynamicColor MaterialDynamicColors::PrimaryContainer() {
                       -> TonalPalette { return s.primary_palette; },
       /*tone*/
       [](const DynamicScheme& s) -> double {
-        if (!IsFidelity(s)) {
-          return s.is_dark ? 30 : 90;
+        if (IsFidelity(s)) {
+          return PerformAlbers(s.source_color_hct, s);
         }
-        return PerformAlbers(s.source_color_hct, s);
+        if (IsMonochrome(s)) {
+          return s.is_dark ? 85 : 25;
+        }
+        return s.is_dark ? 30 : 90;
       },
       /*background*/
       [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
@@ -416,35 +434,27 @@ DynamicColor MaterialDynamicColors::OnPrimaryContainer() {
                       -> TonalPalette { return s.primary_palette; },
       /*tone*/
       [](const DynamicScheme& s) -> double {
-        if (!IsFidelity(s)) {
-          return s.is_dark ? 90 : 10;
+        if (IsFidelity(s)) {
+          return ForegroundTone(PrimaryContainer().tone(s), 4.5);
         }
-        return ForegroundTone(PrimaryContainer().tone(s), 4.5);
+        if (IsMonochrome(s)) {
+          return s.is_dark ? 0 : 100;
+        }
+        return s.is_dark ? 90 : 10;
       },
       /*background*/
       [](const DynamicScheme& s) -> DynamicColor { return PrimaryContainer(); },
       /*toneDeltaConstraint*/ std::nullopt);
 }
 
-DynamicColor MaterialDynamicColors::PrimaryInverse() {
+DynamicColor MaterialDynamicColors::InversePrimary() {
   return DynamicColor::FromPalette(
       /*palette*/ [](const DynamicScheme& s)
                       -> TonalPalette { return s.primary_palette; },
       /*tone*/
       [](const DynamicScheme& s) -> double { return s.is_dark ? 40 : 80; },
       /*background*/
-      [](const DynamicScheme& s) -> DynamicColor { return SurfaceInverse(); },
-      /*toneDeltaConstraint*/ std::nullopt);
-}
-
-DynamicColor MaterialDynamicColors::OnPrimaryInverse() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.primary_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 100 : 20; },
-      /*background*/
-      [](const DynamicScheme& s) -> DynamicColor { return PrimaryInverse(); },
+      [](const DynamicScheme& s) -> DynamicColor { return InverseSurface(); },
       /*toneDeltaConstraint*/ std::nullopt);
 }
 
@@ -471,7 +481,12 @@ DynamicColor MaterialDynamicColors::OnSecondary() {
       /*palette*/ [](const DynamicScheme& s)
                       -> TonalPalette { return s.secondary_palette; },
       /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 20 : 100; },
+      [](const DynamicScheme& s) -> double {
+        if (IsMonochrome(s)) {
+          return s.is_dark ? 10 : 100;
+        }
+        return s.is_dark ? 20 : 100;
+      },
       /*background*/
       [](const DynamicScheme& s) -> DynamicColor { return Secondary(); },
       /*toneDeltaConstraint*/ std::nullopt);
@@ -483,6 +498,9 @@ DynamicColor MaterialDynamicColors::SecondaryContainer() {
                       -> TonalPalette { return s.secondary_palette; },
       /*tone*/
       [](const DynamicScheme& s) -> double {
+        if (IsMonochrome(s)) {
+          return s.is_dark ? 30 : 85;
+        }
         double initial_tone = s.is_dark ? 30.0 : 90.0;
         if (!IsFidelity(s)) {
           return initial_tone;
@@ -522,7 +540,12 @@ DynamicColor MaterialDynamicColors::Tertiary() {
       /*palette*/ [](const DynamicScheme& s)
                       -> TonalPalette { return s.tertiary_palette; },
       /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 80 : 40; },
+      [](const DynamicScheme& s) -> double {
+        if (IsMonochrome(s)) {
+          return s.is_dark ? 90 : 25;
+        }
+        return s.is_dark ? 80 : 40;
+      },
       /*background*/
       [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
       /*toneDeltaConstraint*/
@@ -540,7 +563,12 @@ DynamicColor MaterialDynamicColors::OnTertiary() {
       /*palette*/ [](const DynamicScheme& s)
                       -> TonalPalette { return s.tertiary_palette; },
       /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 20 : 100; },
+      [](const DynamicScheme& s) -> double {
+        if (IsMonochrome(s)) {
+          return s.is_dark ? 10 : 90;
+        }
+        return s.is_dark ? 20 : 100;
+      },
       /*background*/
       [](const DynamicScheme& s) -> DynamicColor { return Tertiary(); },
       /*toneDeltaConstraint*/ std::nullopt);
@@ -552,6 +580,9 @@ DynamicColor MaterialDynamicColors::TertiaryContainer() {
                       -> TonalPalette { return s.tertiary_palette; },
       /*tone*/
       [](const DynamicScheme& s) -> double {
+        if (IsMonochrome(s)) {
+          return s.is_dark ? 60 : 49;
+        }
         if (!IsFidelity(s)) {
           return s.is_dark ? 30 : 90;
         }
@@ -572,6 +603,9 @@ DynamicColor MaterialDynamicColors::OnTertiaryContainer() {
                       -> TonalPalette { return s.tertiary_palette; },
       /*tone*/
       [](const DynamicScheme& s) -> double {
+        if (IsMonochrome(s)) {
+          return s.is_dark ? 0 : 100;
+        }
         if (!IsFidelity(s)) {
           return s.is_dark ? 90 : 10;
         }
@@ -632,6 +666,176 @@ DynamicColor MaterialDynamicColors::OnErrorContainer() {
       [](const DynamicScheme& s) -> double { return s.is_dark ? 90 : 10; },
       /*background*/
       [](const DynamicScheme& s) -> DynamicColor { return ErrorContainer(); },
+      /*toneDeltaConstraint*/ std::nullopt);
+}
+
+DynamicColor MaterialDynamicColors::PrimaryFixed() {
+  return DynamicColor::FromPalette(
+      /*palette*/ [](const DynamicScheme& s)
+                      -> TonalPalette { return s.primary_palette; },
+      /*tone*/
+      [](const DynamicScheme& s) -> double {
+        if (IsMonochrome(s)) {
+          return s.is_dark ? 100 : 10;
+        }
+        return 90;
+      },
+      /*background*/
+      [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
+      /*toneDeltaConstraint*/ std::nullopt);
+}
+
+DynamicColor MaterialDynamicColors::PrimaryFixedDim() {
+  return DynamicColor::FromPalette(
+      /*palette*/ [](const DynamicScheme& s)
+                      -> TonalPalette { return s.primary_palette; },
+      /*tone*/
+      [](const DynamicScheme& s) -> double {
+        if (IsMonochrome(s)) {
+          return s.is_dark ? 90 : 20;
+        }
+        return 80;
+      },
+      /*background*/
+      [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
+      /*toneDeltaConstraint*/ std::nullopt);
+}
+
+DynamicColor MaterialDynamicColors::OnPrimaryFixed() {
+  return DynamicColor::FromPalette(
+      /*palette*/ [](const DynamicScheme& s)
+                      -> TonalPalette { return s.primary_palette; },
+      /*tone*/
+      [](const DynamicScheme& s) -> double {
+        if (IsMonochrome(s)) {
+          return s.is_dark ? 10 : 90;
+        }
+        return 10;
+      },
+      /*background*/
+      [](const DynamicScheme& s) -> DynamicColor { return PrimaryFixedDim(); },
+      /*toneDeltaConstraint*/ std::nullopt);
+}
+
+DynamicColor MaterialDynamicColors::OnPrimaryFixedVariant() {
+  return DynamicColor::FromPalette(
+      /*palette*/ [](const DynamicScheme& s)
+                      -> TonalPalette { return s.primary_palette; },
+      /*tone*/
+      [](const DynamicScheme& s) -> double {
+        if (IsMonochrome(s)) {
+          return s.is_dark ? 30 : 70;
+        }
+        return 30;
+      },
+      /*background*/
+      [](const DynamicScheme& s) -> DynamicColor { return PrimaryFixedDim(); },
+      /*toneDeltaConstraint*/ std::nullopt);
+}
+
+DynamicColor MaterialDynamicColors::SecondaryFixed() {
+  return DynamicColor::FromPalette(
+      /*palette*/ [](const DynamicScheme& s)
+                      -> TonalPalette { return s.secondary_palette; },
+      /*tone*/
+      [](const DynamicScheme& s) -> double {
+        return IsMonochrome(s) ? 80 : 90;
+      },
+      /*background*/
+      [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
+      /*toneDeltaConstraint*/ std::nullopt);
+}
+
+DynamicColor MaterialDynamicColors::SecondaryFixedDim() {
+  return DynamicColor::FromPalette(
+      /*palette*/ [](const DynamicScheme& s)
+                      -> TonalPalette { return s.secondary_palette; },
+      /*tone*/
+      [](const DynamicScheme& s) -> double {
+        return IsMonochrome(s) ? 70 : 80;
+      },
+      /*background*/
+      [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
+      /*toneDeltaConstraint*/ std::nullopt);
+}
+
+DynamicColor MaterialDynamicColors::OnSecondaryFixed() {
+  return DynamicColor::FromPalette(
+      /*palette*/ [](const DynamicScheme& s)
+                      -> TonalPalette { return s.secondary_palette; },
+      /*tone*/
+      [](const DynamicScheme& s) -> double { return 10; },
+      /*background*/
+      [](const DynamicScheme& s) -> DynamicColor {
+        return SecondaryFixedDim();
+      },
+      /*toneDeltaConstraint*/ std::nullopt);
+}
+
+DynamicColor MaterialDynamicColors::OnSecondaryFixedVariant() {
+  return DynamicColor::FromPalette(
+      /*palette*/ [](const DynamicScheme& s)
+                      -> TonalPalette { return s.secondary_palette; },
+      /*tone*/
+      [](const DynamicScheme& s) -> double {
+        return IsMonochrome(s) ? 25 : 30;
+      },
+      /*background*/
+      [](const DynamicScheme& s) -> DynamicColor {
+        return SecondaryFixedDim();
+      },
+      /*toneDeltaConstraint*/ std::nullopt);
+}
+
+DynamicColor MaterialDynamicColors::TertiaryFixed() {
+  return DynamicColor::FromPalette(
+      /*palette*/ [](const DynamicScheme& s)
+                      -> TonalPalette { return s.tertiary_palette; },
+      /*tone*/
+      [](const DynamicScheme& s) -> double {
+        return IsMonochrome(s) ? 40 : 90;
+      },
+      /*background*/
+      [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
+      /*toneDeltaConstraint*/ std::nullopt);
+}
+
+DynamicColor MaterialDynamicColors::TertiaryFixedDim() {
+  return DynamicColor::FromPalette(
+      /*palette*/ [](const DynamicScheme& s)
+                      -> TonalPalette { return s.tertiary_palette; },
+      /*tone*/
+      [](const DynamicScheme& s) -> double {
+        return IsMonochrome(s) ? 30 : 80;
+      },
+      /*background*/
+      [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
+      /*toneDeltaConstraint*/ std::nullopt);
+}
+
+DynamicColor MaterialDynamicColors::OnTertiaryFixed() {
+  return DynamicColor::FromPalette(
+      /*palette*/ [](const DynamicScheme& s)
+                      -> TonalPalette { return s.tertiary_palette; },
+      /*tone*/
+      [](const DynamicScheme& s) -> double {
+        return IsMonochrome(s) ? 90 : 10;
+      },
+      /*background*/
+      [](const DynamicScheme& s) -> DynamicColor { return TertiaryFixedDim(); },
+      /*toneDeltaConstraint*/ std::nullopt);
+}
+
+DynamicColor MaterialDynamicColors::OnTertiaryFixedVariant() {
+  return DynamicColor::FromPalette(
+      /*palette*/ [](const DynamicScheme& s)
+                      -> TonalPalette { return s.tertiary_palette; },
+      /*tone*/
+      [](const DynamicScheme& s) -> double {
+        return IsMonochrome(s) ? 70 : 30;
+      },
+      /*background*/
+      [](const DynamicScheme& s) -> DynamicColor { return TertiaryFixedDim(); },
       /*toneDeltaConstraint*/ std::nullopt);
 }
 

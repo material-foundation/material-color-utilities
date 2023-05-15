@@ -177,7 +177,7 @@ export class MaterialDynamicColors {
 
   static outline = DynamicColor.fromPalette({
     palette: (s) => s.neutralVariantPalette,
-    tone: (s) => 50,
+    tone: (s) => s.isDark ? 60 : 50,
     background: (s) => MaterialDynamicColors.highestSurface(s),
   });
 
@@ -235,13 +235,13 @@ export class MaterialDynamicColors {
     palette: (s) => s.primaryPalette,
     tone:
         (s) => {
+          if (isFidelity(s)) {
+            return performAlbers(s.sourceColorHct, s);
+          }
           if (isMonochrome(s)) {
             return s.isDark ? 85 : 25;
           }
-          if (!isFidelity(s)) {
-            return s.isDark ? 30 : 90;
-          }
-          return performAlbers(s.sourceColorHct, s);
+          return s.isDark ? 30 : 90;
         },
     background: (s) => MaterialDynamicColors.highestSurface(s),
   });
@@ -250,14 +250,14 @@ export class MaterialDynamicColors {
     palette: (s) => s.primaryPalette,
     tone:
         (s) => {
+          if (isFidelity(s)) {
+            return DynamicColor.foregroundTone(
+                MaterialDynamicColors.primaryContainer.tone(s), 4.5);
+          }
           if (isMonochrome(s)) {
             return s.isDark ? 0 : 100;
           }
-          if (!isFidelity(s)) {
-            return s.isDark ? 90 : 10;
-          }
-          return DynamicColor.foregroundTone(
-              MaterialDynamicColors.primaryContainer.tone(s), 4.5);
+          return s.isDark ? 90 : 10;
         },
     background: (s) => MaterialDynamicColors.primaryContainer,
   });
