@@ -23,5 +23,7 @@ public enum Variant {
   VIBRANT,
   EXPRESSIVE,
   FIDELITY,
-  CONTENT
+  CONTENT,
+  RAINBOW,
+  FRUIT_SALAD
 }
