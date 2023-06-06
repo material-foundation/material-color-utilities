@@ -91,7 +91,7 @@ export class SchemeVibrant extends DynamicScheme {
               sourceColorHct, SchemeVibrant.hues,
               SchemeVibrant.tertiaryRotations),
           32.0),
-      neutralPalette: TonalPalette.fromHueAndChroma(sourceColorHct.hue, 8.0),
+      neutralPalette: TonalPalette.fromHueAndChroma(sourceColorHct.hue, 10.0),
       neutralVariantPalette:
           TonalPalette.fromHueAndChroma(sourceColorHct.hue, 12.0),
     });

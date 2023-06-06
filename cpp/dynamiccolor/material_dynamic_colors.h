@@ -23,6 +23,11 @@ namespace material_color_utilities {
 
 class MaterialDynamicColors {
  public:
+  static DynamicColor PrimaryPaletteKeyColor();
+  static DynamicColor SecondaryPaletteKeyColor();
+  static DynamicColor TertiaryPaletteKeyColor();
+  static DynamicColor NeutralPaletteKeyColor();
+  static DynamicColor NeutralVariantPaletteKeyColor();
   static DynamicColor Background();
   static DynamicColor OnBackground();
   static DynamicColor Surface();

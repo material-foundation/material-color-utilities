@@ -18,6 +18,24 @@ import 'package:test/test.dart';
 import './utils/color_matcher.dart';
 
 void main() {
+  test('keyColors', () {
+    final scheme = SchemeVibrant(
+        sourceColorHct: Hct.fromInt(0xff0000ff),
+        isDark: false,
+        contrastLevel: 0.0);
+
+    expect(MaterialDynamicColors.primaryPaletteKeyColor.getArgb(scheme),
+        isColor(0xff080CFF));
+    expect(MaterialDynamicColors.secondaryPaletteKeyColor.getArgb(scheme),
+        isColor(0xff7B7296));
+    expect(MaterialDynamicColors.tertiaryPaletteKeyColor.getArgb(scheme),
+        isColor(0xff886C9D));
+    expect(MaterialDynamicColors.neutralPaletteKeyColor.getArgb(scheme),
+        isColor(0xff777682));
+    expect(MaterialDynamicColors.neutralVariantPaletteKeyColor.getArgb(scheme),
+        isColor(0xff767685));
+  });
+
   test('lightTheme_minContrast_primary', () {
     final scheme = SchemeVibrant(
         sourceColorHct: Hct.fromInt(0xff0000ff),
@@ -230,7 +248,7 @@ void main() {
         sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: true,
         contrastLevel: -1.0);
-    expect(MaterialDynamicColors.surface.getArgb(scheme), isColor(0xff12131a));
+    expect(MaterialDynamicColors.surface.getArgb(scheme), isColor(0xff12131c));
   });
 
   test('darkTheme_standardContrast_surface', () {
@@ -238,7 +256,7 @@ void main() {
         sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: true,
         contrastLevel: 0.0);
-    expect(MaterialDynamicColors.surface.getArgb(scheme), isColor(0xff12131a));
+    expect(MaterialDynamicColors.surface.getArgb(scheme), isColor(0xff12131c));
   });
 
   test('darkTheme_maxContrast_surface', () {
@@ -246,6 +264,6 @@ void main() {
         sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: true,
         contrastLevel: 1.0);
-    expect(MaterialDynamicColors.surface.getArgb(scheme), isColor(0xff12131a));
+    expect(MaterialDynamicColors.surface.getArgb(scheme), isColor(0xff12131c));
   });
 }

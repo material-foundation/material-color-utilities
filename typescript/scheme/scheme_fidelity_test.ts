@@ -28,6 +28,16 @@ beforeEach(() => {
 });
 
 describe('scheme fidelity test', () => {
+  it('keyColors', () => {
+    const scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), false, 0.0);
+
+    expect(MaterialDynamicColors.primaryPaletteKeyColor.getArgb(scheme)).matchesColor(0xff080CFF);
+    expect(MaterialDynamicColors.secondaryPaletteKeyColor.getArgb(scheme)).matchesColor(0xff656DD3);
+    expect(MaterialDynamicColors.tertiaryPaletteKeyColor.getArgb(scheme)).matchesColor(0xff9D0002);
+    expect(MaterialDynamicColors.neutralPaletteKeyColor.getArgb(scheme)).matchesColor(0xff767684);
+    expect(MaterialDynamicColors.neutralVariantPaletteKeyColor.getArgb(scheme)).matchesColor(0xff757589);
+  });
+
   it('lightTheme_minContrast_primary', () => {
     const scheme = new SchemeFidelity(
         Hct.fromInt(0xFF0000ff),

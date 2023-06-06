@@ -34,6 +34,51 @@ class MaterialDynamicColors {
     return ViewingConditions.make(backgroundLstar: scheme.isDark ? 30 : 80)
   }
 
+  static let primaryPaletteKeyColor: DynamicColor = DynamicColor.fromPalette(
+    palette: { scheme in
+      return scheme.primaryPalette
+    },
+    tone: { scheme in
+      return scheme.primaryPalette.keyColor.tone
+    }
+  )
+
+  static let secondaryPaletteKeyColor: DynamicColor = DynamicColor.fromPalette(
+    palette: { scheme in
+      return scheme.secondaryPalette
+    },
+    tone: { scheme in
+      return scheme.secondaryPalette.keyColor.tone
+    }
+  )
+
+  static let tertiaryPaletteKeyColor: DynamicColor = DynamicColor.fromPalette(
+    palette: { scheme in
+      return scheme.tertiaryPalette
+    },
+    tone: { scheme in
+      return scheme.tertiaryPalette.keyColor.tone
+    }
+  )
+
+  static let neutralPaletteKeyColor: DynamicColor = DynamicColor.fromPalette(
+    palette: { scheme in
+      return scheme.neutralPalette
+    },
+    tone: { scheme in
+      return scheme.neutralPalette.keyColor.tone
+    }
+  )
+
+  static let neutralVariantPaletteKeyColor: DynamicColor = DynamicColor.fromPalette(
+    palette: { scheme in
+      return scheme.neutralVariantPalette
+    },
+    tone: { scheme in
+      return scheme.neutralVariantPalette.keyColor.tone
+    }
+  )
+
   static let background: DynamicColor = DynamicColor.fromPalette(
     palette: { scheme in
       return scheme.neutralPalette

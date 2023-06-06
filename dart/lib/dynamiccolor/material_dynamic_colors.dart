@@ -40,6 +40,31 @@ class MaterialDynamicColors {
     return ViewingConditions.make(backgroundLstar: scheme.isDark ? 30 : 80);
   }
 
+  static DynamicColor primaryPaletteKeyColor = DynamicColor.fromPalette(
+    palette: (s) => s.primaryPalette,
+    tone: (s) => s.primaryPalette.keyColor.tone,
+  );
+
+  static DynamicColor secondaryPaletteKeyColor = DynamicColor.fromPalette(
+    palette: (s) => s.secondaryPalette,
+    tone: (s) => s.secondaryPalette.keyColor.tone,
+  );
+
+  static DynamicColor tertiaryPaletteKeyColor = DynamicColor.fromPalette(
+    palette: (s) => s.tertiaryPalette,
+    tone: (s) => s.tertiaryPalette.keyColor.tone,
+  );
+
+  static DynamicColor neutralPaletteKeyColor = DynamicColor.fromPalette(
+    palette: (s) => s.neutralPalette,
+    tone: (s) => s.neutralPalette.keyColor.tone,
+  );
+
+  static DynamicColor neutralVariantPaletteKeyColor = DynamicColor.fromPalette(
+    palette: (s) => s.neutralVariantPalette,
+    tone: (s) => s.neutralVariantPalette.keyColor.tone,
+  );
+
   static DynamicColor background = DynamicColor.fromPalette(
     palette: (s) => s.neutralPalette,
     tone: (s) => s.isDark ? 6 : 98,

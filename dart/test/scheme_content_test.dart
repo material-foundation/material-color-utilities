@@ -18,6 +18,23 @@ import 'package:test/test.dart';
 import './utils/color_matcher.dart';
 
 void main() {
+  test('keyColors', () {
+    final scheme = SchemeContent(
+        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        isDark: false,
+        contrastLevel: 0.0);
+    expect(MaterialDynamicColors.primaryPaletteKeyColor.getArgb(scheme),
+        isColor(0xff080CFF));
+    expect(MaterialDynamicColors.secondaryPaletteKeyColor.getArgb(scheme),
+        isColor(0xff656DD3));
+    expect(MaterialDynamicColors.tertiaryPaletteKeyColor.getArgb(scheme),
+        isColor(0xff81009F));
+    expect(MaterialDynamicColors.neutralPaletteKeyColor.getArgb(scheme),
+        isColor(0xff767684));
+    expect(MaterialDynamicColors.neutralVariantPaletteKeyColor.getArgb(scheme),
+        isColor(0xff757589));
+  });
+
   test('lightTheme_minContrast_primary', () {
     final scheme = SchemeContent(
         sourceColorHct: Hct.fromInt(0xFF0000ff),

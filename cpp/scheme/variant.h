@@ -27,6 +27,8 @@ enum class Variant {
   kExpressive,
   kFidelity,
   kContent,
+  kRainbow,
+  kFruitSalad,
 };
 
 }  // namespace material_color_utilities

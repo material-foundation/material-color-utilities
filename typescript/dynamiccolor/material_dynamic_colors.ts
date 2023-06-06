@@ -96,6 +96,31 @@ export class MaterialDynamicColors {
                       MaterialDynamicColors.surfaceDim;
   }
 
+  static primaryPaletteKeyColor = DynamicColor.fromPalette({
+    palette: (s) => s.primaryPalette,
+    tone: (s) => s.primaryPalette.keyColor.tone,
+  });
+
+  static secondaryPaletteKeyColor = DynamicColor.fromPalette({
+    palette: (s) => s.secondaryPalette,
+    tone: (s) => s.secondaryPalette.keyColor.tone,
+  });
+
+  static tertiaryPaletteKeyColor = DynamicColor.fromPalette({
+    palette: (s) => s.tertiaryPalette,
+    tone: (s) => s.tertiaryPalette.keyColor.tone,
+  });
+
+  static neutralPaletteKeyColor = DynamicColor.fromPalette({
+    palette: (s) => s.neutralPalette,
+    tone: (s) => s.neutralPalette.keyColor.tone,
+  });
+
+  static neutralVariantPaletteKeyColor = DynamicColor.fromPalette({
+    palette: (s) => s.neutralVariantPalette,
+    tone: (s) => s.neutralVariantPalette.keyColor.tone,
+  });
+
   static background = DynamicColor.fromPalette({
     palette: (s) => s.neutralPalette,
     tone: (s) => s.isDark ? 6 : 98,

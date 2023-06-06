@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-#ifndef CPP_SCHEME_SCHEME_VARIANT_H_
-#define CPP_SCHEME_SCHEME_VARIANT_H_
+#ifndef CPP_SCHEME_SCHEME_MONOCHROME_H_
+#define CPP_SCHEME_SCHEME_MONOCHROME_H_
 
 #include "cpp/cam/hct.h"
 #include "cpp/scheme/dynamic_scheme.h"
 
 namespace material_color_utilities {
 
-struct SchemeVibrant : public DynamicScheme {
-  SchemeVibrant(Hct source_color_hct, bool is_dark, double contrast_level);
-  SchemeVibrant(Hct source_color_hct, bool is_dark);
+struct SchemeMonochrome : public DynamicScheme {
+  SchemeMonochrome(Hct source_color_hct, bool is_dark, double contrast_level);
+  SchemeMonochrome(Hct source_color_hct, bool is_dark);
 };
 
 }  // namespace material_color_utilities
 
-#endif  // CPP_SCHEME_SCHEME_VARIANT_H_
+#endif  // CPP_SCHEME_SCHEME_MONOCHROME_H_

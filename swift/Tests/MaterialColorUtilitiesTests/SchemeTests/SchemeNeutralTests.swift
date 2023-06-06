@@ -18,6 +18,20 @@ import XCTest
 @testable import MaterialColorUtilities
 
 final class SchemeNeutralTests: XCTestCase {
+  func testKeyColors() {
+    let scheme = SchemeNeutral(
+      sourceColorHct: Hct.fromInt(0xff00_00ff),
+      isDark: false,
+      contrastLevel: 0.0
+    )
+
+    XCTAssertEqual(MaterialDynamicColors.primaryPaletteKeyColor.getArgb(scheme), 0xff76_7685)
+    XCTAssertEqual(MaterialDynamicColors.secondaryPaletteKeyColor.getArgb(scheme), 0xff77_7680)
+    XCTAssertEqual(MaterialDynamicColors.tertiaryPaletteKeyColor.getArgb(scheme), 0xff75_758B)
+    XCTAssertEqual(MaterialDynamicColors.neutralPaletteKeyColor.getArgb(scheme), 0xff78_7678)
+    XCTAssertEqual(MaterialDynamicColors.neutralVariantPaletteKeyColor.getArgb(scheme), 0xff78_7678)
+  }
+
   func testLightSchemeNeutralMinContrast() {
     let scheme = SchemeNeutral(
       sourceColorHct: Hct.fromInt(0xFF_ff00_00ff),

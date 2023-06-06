@@ -1,4 +1,24 @@
-## Unreleased - 2023-05-15
+## 0.6.0 - 2023-05-31
+### Added
+- Add key color to tonal palette.
+- Add key colors to the Material dynamic colors:
+    - `primaryPaletteKeyColor`
+    - `secondaryPaletteKeyColor`
+    - `tertiaryPaletteKeyColor`
+    - `neutralPaletteKeyColor`
+    - `neutralVariantPaletteKeyColor`
+
+### Changed
+- Scheme updates to align with recent Android Sys UI changes:
+    - `SchemeExpressive`:
+        - Primary hue + 240 from 120
+        - Neutral hue + 15
+        - Neutral variant hue + 15
+    - `SchemeTonalSpot`:
+        - Primary chroma = 36 from 40
+    - `SchemeVibrant`:
+        - Neutral chroma = 10 from 8
+
 ### Fixed
 - Fixed outline when in dark mode to be tone 60.
 

@@ -164,6 +164,66 @@ DynamicColor highestSurface(const DynamicScheme& s) {
                    : MaterialDynamicColors::SurfaceDim();
 }
 
+DynamicColor MaterialDynamicColors::PrimaryPaletteKeyColor() {
+  return DynamicColor::FromPalette(
+      /*palette*/ [](const DynamicScheme& s)
+                      -> TonalPalette { return s.primary_palette; },
+      /*tone*/
+      [](const DynamicScheme& s) -> double {
+        return s.primary_palette.get_key_color().get_tone();
+      },
+      /*toneDeltaConstraint*/ std::nullopt,
+      /*background*/ std::nullopt);
+}
+
+DynamicColor MaterialDynamicColors::SecondaryPaletteKeyColor() {
+  return DynamicColor::FromPalette(
+      /*palette*/ [](const DynamicScheme& s)
+                      -> TonalPalette { return s.secondary_palette; },
+      /*tone*/
+      [](const DynamicScheme& s) -> double {
+        return s.secondary_palette.get_key_color().get_tone();
+      },
+      /*toneDeltaConstraint*/ std::nullopt,
+      /*background*/ std::nullopt);
+}
+
+DynamicColor MaterialDynamicColors::TertiaryPaletteKeyColor() {
+  return DynamicColor::FromPalette(
+      /*palette*/ [](const DynamicScheme& s)
+                      -> TonalPalette { return s.tertiary_palette; },
+      /*tone*/
+      [](const DynamicScheme& s) -> double {
+        return s.tertiary_palette.get_key_color().get_tone();
+      },
+      /*toneDeltaConstraint*/ std::nullopt,
+      /*background*/ std::nullopt);
+}
+
+DynamicColor MaterialDynamicColors::NeutralPaletteKeyColor() {
+  return DynamicColor::FromPalette(
+      /*palette*/ [](const DynamicScheme& s)
+                      -> TonalPalette { return s.neutral_palette; },
+      /*tone*/
+      [](const DynamicScheme& s) -> double {
+        return s.neutral_palette.get_key_color().get_tone();
+      },
+      /*toneDeltaConstraint*/ std::nullopt,
+      /*background*/ std::nullopt);
+}
+
+DynamicColor MaterialDynamicColors::NeutralVariantPaletteKeyColor() {
+  return DynamicColor::FromPalette(
+      /*palette*/ [](const DynamicScheme& s)
+                      -> TonalPalette { return s.neutral_variant_palette; },
+      /*tone*/
+      [](const DynamicScheme& s) -> double {
+        return s.neutral_variant_palette.get_key_color().get_tone();
+      },
+      /*toneDeltaConstraint*/ std::nullopt,
+      /*background*/ std::nullopt);
+}
+
 DynamicColor MaterialDynamicColors::Background() {
   return DynamicColor::FromPalette(
       /*palette*/ [](const DynamicScheme& s)

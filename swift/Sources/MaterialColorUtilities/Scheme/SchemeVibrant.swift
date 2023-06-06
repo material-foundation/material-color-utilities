@@ -56,7 +56,7 @@ class SchemeVibrant: DynamicScheme {
           sourceColorHct, SchemeVibrant.hues, SchemeVibrant.tertiaryRotations),
         32.0
       ),
-      neutralPalette: TonalPalette.of(sourceColorHct.hue, 8.0),
+      neutralPalette: TonalPalette.of(sourceColorHct.hue, 10.0),
       neutralVariantPalette: TonalPalette.of(sourceColorHct.hue, 12.0)
     )
   }

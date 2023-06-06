@@ -53,31 +53,91 @@ class TonalPalette: Equatable, Hashable {
   var chroma: Double {
     return _chroma
   }
+  private let _keyColor: Hct
+  var keyColor: Hct {
+    return _keyColor
+  }
 
   var _cache: [Double: Int]
 
-  private init(hue: Double, chroma: Double, cache: [Double: Int]) {
+  private init(hue: Double, chroma: Double, keyColor: Hct, cache: [Double: Int]) {
     self._hue = hue
     self._chroma = chroma
+    self._keyColor = keyColor
     self._cache = cache
   }
 
-  static private func fromHueAndChroma(_ hue: Double, _ chroma: Double) -> TonalPalette {
-    return TonalPalette(
-      hue: hue,
-      chroma: chroma,
+  convenience init(hct: Hct) {
+    self.init(
+      hue: hct.hue,
+      chroma: hct.chroma,
+      keyColor: hct,
       cache: [:]
     )
   }
 
-  /// Create colors using [hue] and [chroma].
-  static func of(_ hue: Double, _ chroma: Double) -> TonalPalette {
-    return TonalPalette.fromHueAndChroma(hue, chroma)
+  convenience init(hue: Double, chroma: Double) {
+    self.init(
+      hue: hue,
+      chroma: chroma,
+      keyColor: TonalPalette.createKeyColor(hue, chroma),
+      cache: [:]
+    )
   }
 
   /// Create a Tonal Palette from hue and chroma of [hct].
   static func fromHct(_ hct: Hct) -> TonalPalette {
-    return TonalPalette.fromHueAndChroma(hct.hue, hct.chroma)
+    return TonalPalette(hct: hct)
+  }
+
+  /// Create a Tonal Palette from hue and chroma, which generates a key color.
+  static func fromHueAndChroma(_ hue: Double, _ chroma: Double) -> TonalPalette {
+    return TonalPalette(hue: hue, chroma: chroma)
+  }
+
+  /// Create colors using [hue] and [chroma].
+  static func of(_ hue: Double, _ chroma: Double) -> TonalPalette {
+    return TonalPalette(hue: hue, chroma: chroma)
+  }
+
+  /// Creates a key color from a [hue] and a [chroma].
+  /// The key color is the first tone, starting from T50, matching the given hue and chroma.
+  /// Key color [Hct]
+  static func createKeyColor(_ hue: Double, _ chroma: Double) -> Hct {
+    let startTone: Double = 50.0
+    var smallestDeltaHct = Hct.from(hue, chroma, startTone)
+    var smallestDelta: Double = abs(smallestDeltaHct.chroma - chroma)
+    // Starting from T50, check T+/-delta to see if they match the requested
+    // chroma.
+    //
+    // Starts from T50 because T50 has the most chroma available, on
+    // average. Thus it is most likely to have a direct answer and minimize
+    // iteration.
+    for delta in (1...49) {
+      // Termination condition rounding instead of minimizing delta to avoid
+      // case where requested chroma is 16.51, and the closest chroma is 16.49.
+      // Error is minimized, but when rounded and displayed, requested chroma
+      // is 17, key color's chroma is 16.
+      if round(chroma) == round(smallestDeltaHct.chroma) {
+        return smallestDeltaHct
+      }
+
+      let hctAdd = Hct.from(hue, chroma, startTone + Double(delta))
+      let hctAddDelta: Double = abs(hctAdd.chroma - chroma)
+      if hctAddDelta < smallestDelta {
+        smallestDelta = hctAddDelta
+        smallestDeltaHct = hctAdd
+      }
+
+      let hctSubtract = Hct.from(hue, chroma, startTone - Double(delta))
+      let hctSubtractDelta: Double = abs(hctSubtract.chroma - chroma)
+      if hctSubtractDelta < smallestDelta {
+        smallestDelta = hctSubtractDelta
+        smallestDeltaHct = hctSubtract
+      }
+    }
+
+    return smallestDeltaHct
   }
 
   /// Returns the ARGB representation of an HCT color.

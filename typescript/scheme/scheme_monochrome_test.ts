@@ -28,6 +28,16 @@ beforeEach(() => {
 });
 
 describe('scheme monochrome test', () => {
+  it('keyColors', () => {
+    const scheme = new SchemeMonochrome(Hct.fromInt(0xff0000ff), false, 0.0);
+
+    expect(MaterialDynamicColors.primaryPaletteKeyColor.getArgb(scheme)).matchesColor(0xff070707);
+    expect(MaterialDynamicColors.secondaryPaletteKeyColor.getArgb(scheme)).matchesColor(0xff070707);
+    expect(MaterialDynamicColors.tertiaryPaletteKeyColor.getArgb(scheme)).matchesColor(0xff070707);
+    expect(MaterialDynamicColors.neutralPaletteKeyColor.getArgb(scheme)).matchesColor(0xff070707);
+    expect(MaterialDynamicColors.neutralVariantPaletteKeyColor.getArgb(scheme)).matchesColor(0xff070707);
+  });
+
   it('lightTheme minContrast primary', () => {
     const scheme = new SchemeMonochrome(
         Hct.fromInt(0xff0000ff),

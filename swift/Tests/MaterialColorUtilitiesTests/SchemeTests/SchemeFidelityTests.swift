@@ -18,6 +18,20 @@ import XCTest
 @testable import MaterialColorUtilities
 
 final class SchemeFidelityTests: XCTestCase {
+  func testKeyColors() {
+    let scheme = SchemeFidelity(
+      sourceColorHct: Hct.fromInt(0xff00_00ff),
+      isDark: false,
+      contrastLevel: 0.0
+    )
+
+    XCTAssertEqual(MaterialDynamicColors.primaryPaletteKeyColor.getArgb(scheme), 0xff08_0CFF)
+    XCTAssertEqual(MaterialDynamicColors.secondaryPaletteKeyColor.getArgb(scheme), 0xff65_6DD3)
+    XCTAssertEqual(MaterialDynamicColors.tertiaryPaletteKeyColor.getArgb(scheme), 0xff9D_0002)
+    XCTAssertEqual(MaterialDynamicColors.neutralPaletteKeyColor.getArgb(scheme), 0xff76_7684)
+    XCTAssertEqual(MaterialDynamicColors.neutralVariantPaletteKeyColor.getArgb(scheme), 0xff75_7589)
+  }
+
   func testLightSchemeFidelityMinContrast() {
     let scheme = SchemeFidelity(
       sourceColorHct: Hct.fromInt(0xFF_ff00_00ff),

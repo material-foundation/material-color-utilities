@@ -81,7 +81,7 @@ export class SchemeExpressive extends DynamicScheme {
       contrastLevel,
       isDark,
       primaryPalette: TonalPalette.fromHueAndChroma(
-          math.sanitizeDegreesDouble(sourceColorHct.hue + 120.0), 40.0),
+          math.sanitizeDegreesDouble(sourceColorHct.hue + 240.0), 40.0),
       secondaryPalette: TonalPalette.fromHueAndChroma(
           DynamicScheme.getRotatedHue(
               sourceColorHct, SchemeExpressive.hues,
@@ -92,9 +92,10 @@ export class SchemeExpressive extends DynamicScheme {
               sourceColorHct, SchemeExpressive.hues,
               SchemeExpressive.tertiaryRotations),
           32.0),
-      neutralPalette: TonalPalette.fromHueAndChroma(sourceColorHct.hue, 8.0),
+      neutralPalette:
+          TonalPalette.fromHueAndChroma(sourceColorHct.hue + 15, 8.0),
       neutralVariantPalette:
-          TonalPalette.fromHueAndChroma(sourceColorHct.hue, 12.0),
+          TonalPalette.fromHueAndChroma(sourceColorHct.hue + 15, 12.0),
     });
   }
 }

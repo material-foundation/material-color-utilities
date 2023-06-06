@@ -35,7 +35,7 @@ export class SchemeTonalSpot extends DynamicScheme {
       variant: Variant.TONAL_SPOT,
       contrastLevel,
       isDark,
-      primaryPalette: TonalPalette.fromHueAndChroma(sourceColorHct.hue, 40.0),
+      primaryPalette: TonalPalette.fromHueAndChroma(sourceColorHct.hue, 36.0),
       secondaryPalette: TonalPalette.fromHueAndChroma(sourceColorHct.hue, 16.0),
       tertiaryPalette: TonalPalette.fromHueAndChroma(
           math.sanitizeDegreesDouble(sourceColorHct.hue + 60.0),

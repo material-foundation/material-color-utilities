@@ -53,7 +53,7 @@ class SchemeExpressive: DynamicScheme {
       isDark: isDark,
       contrastLevel: contrastLevel,
       primaryPalette: TonalPalette.of(
-        MathUtils.sanitizeDegreesDouble(sourceColorHct.hue + 120.0),
+        MathUtils.sanitizeDegreesDouble(sourceColorHct.hue + 240.0),
         40.0
       ),
       secondaryPalette: TonalPalette.of(
@@ -66,8 +66,8 @@ class SchemeExpressive: DynamicScheme {
           sourceColorHct, SchemeExpressive.hues, SchemeExpressive.tertiaryRotations),
         32.0
       ),
-      neutralPalette: TonalPalette.of(sourceColorHct.hue, 8.0),
-      neutralVariantPalette: TonalPalette.of(sourceColorHct.hue, 12.0)
+      neutralPalette: TonalPalette.of(sourceColorHct.hue + 15, 8.0),
+      neutralVariantPalette: TonalPalette.of(sourceColorHct.hue + 15, 12.0)
     )
   }
 }

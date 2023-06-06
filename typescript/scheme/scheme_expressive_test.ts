@@ -28,243 +28,162 @@ beforeEach(() => {
 });
 
 describe('scheme expressive test', () => {
-  it('lightTheme minContrast primary', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        false,
-        -1.0,
-    );
+  it('keyColors', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, 0.0);
+
+    expect(MaterialDynamicColors.primaryPaletteKeyColor.getArgb(scheme))
+        .matchesColor(0xff35855F);
+    expect(MaterialDynamicColors.secondaryPaletteKeyColor.getArgb(scheme))
+        .matchesColor(0xff8C6D8C);
+    expect(MaterialDynamicColors.tertiaryPaletteKeyColor.getArgb(scheme))
+        .matchesColor(0xff806EA1);
+    expect(MaterialDynamicColors.neutralPaletteKeyColor.getArgb(scheme))
+        .matchesColor(0xff79757F);
+    expect(MaterialDynamicColors.neutralVariantPaletteKeyColor.getArgb(scheme))
+        .matchesColor(0xff7A7585);
+  });
+
+  it('lightTheme_minContrast_primary', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, -1.0);
     expect(MaterialDynamicColors.primary.getArgb(scheme))
-        .matchesColor(0xffad603c);
+        .matchesColor(0xff32835D);
   });
 
-  it('lightTheme standardContrast primary', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        false,
-        0.0,
-    );
+  it('lightTheme_standardContrast_primary', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, 0.0);
     expect(MaterialDynamicColors.primary.getArgb(scheme))
-        .matchesColor(0xff924b28);
+        .matchesColor(0xff146C48);
   });
 
-  it('lightTheme maxContrast primary', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        false,
-        1.0,
-    );
+  it('lightTheme_maxContrast_primary', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, 1.0);
     expect(MaterialDynamicColors.primary.getArgb(scheme))
-        .matchesColor(0xff401400);
+        .matchesColor(0xff002818);
   });
 
-  it('lightTheme minContrast primaryContainer', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        false,
-        -1.0,
-    );
+  it('lightTheme_minContrast_primaryContainer', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, -1.0);
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme))
-        .matchesColor(0xffffdbcc);
+        .matchesColor(0xffA2F4C6);
   });
 
-  it('lightTheme standardContrast primaryContainer', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        false,
-        0.0,
-    );
+  it('lightTheme_standardContrast_primaryContainer', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, 0.0);
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme))
-        .matchesColor(0xffffdbcc);
+        .matchesColor(0xffA2F4C6);
   });
 
-  it('lightTheme maxContrast primaryContainer', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        false,
-        1.0,
-    );
+  it('lightTheme_maxContrast_primaryContainer', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, 1.0);
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme))
-        .matchesColor(0xff6f3010);
+        .matchesColor(0xff004D31);
   });
 
-  it('lightTheme minContrast onPrimaryContainer', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        false,
-        -1.0,
-    );
+  it('lightTheme_minContrast_onPrimaryContainer', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, -1.0);
     expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme))
-        .matchesColor(0xff99512e);
+        .matchesColor(0xff1e724e);
   });
 
-  it('lightTheme standardContrast onPrimaryContainer', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        false,
-        0.0,
-    );
+  it('lightTheme_standardContrast_onPrimaryContainer', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, 0.0);
     expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme))
-        .matchesColor(0xff351000);
+        .matchesColor(0xff002112);
   });
 
-  it('lightTheme maxContrast onPrimaryContainer', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        false,
-        1.0,
-    );
+  it('lightTheme_maxContrast_onPrimaryContainer', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, 1.0);
     expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme))
-        .matchesColor(0xffffd0bc);
+        .matchesColor(0xff9aebbe);
   });
 
-  it('lightTheme minContrast surface', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        false,
-        -1.0,
-    );
+  it('lightTheme_minContrast_surface', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, -1.0);
     expect(MaterialDynamicColors.surface.getArgb(scheme))
-        .matchesColor(0xfffbf8ff);
+        .matchesColor(0xfffdf7ff);
   });
 
-  it('lightTheme standardContrast surface', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        false,
-        0.0,
-    );
+  it('lightTheme_standardContrast_surface', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, 0.0);
     expect(MaterialDynamicColors.surface.getArgb(scheme))
-        .matchesColor(0xfffbf8ff);
+        .matchesColor(0xfffdf7ff);
   });
 
-  it('lightTheme maxContrast surface', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        false,
-        1.0,
-    );
+  it('lightTheme_maxContrast_surface', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, 1.0);
     expect(MaterialDynamicColors.surface.getArgb(scheme))
-        .matchesColor(0xfffbf8ff);
+        .matchesColor(0xfffdf7ff);
   });
 
-  it('darkTheme minContrast primary', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        true,
-        -1.0,
-    );
+  it('darkTheme_minContrast_primary', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), true, -1.0);
     expect(MaterialDynamicColors.primary.getArgb(scheme))
-        .matchesColor(0xffad603c);
+        .matchesColor(0xff32835d);
   });
 
-  it('darkTheme standardContrast primary', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        true,
-        0.0,
-    );
+  it('darkTheme_standardContrast_primary', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), true, 0.0);
     expect(MaterialDynamicColors.primary.getArgb(scheme))
-        .matchesColor(0xffffb595);
+        .matchesColor(0xff87d7ab);
   });
 
-  it('darkTheme maxContrast primary', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        true,
-        1.0,
-    );
+  it('darkTheme_maxContrast_primary', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), true, 1.0);
     expect(MaterialDynamicColors.primary.getArgb(scheme))
-        .matchesColor(0xfffff3ee);
+        .matchesColor(0xffd5ffe4);
   });
 
-  it('darkTheme minContrast primaryContainer', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        true,
-        -1.0,
-    );
+  it('darkTheme_minContrast_primaryContainer', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), true, -1.0);
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme))
-        .matchesColor(0xff743413);
+        .matchesColor(0xff005234);
   });
 
-  it('darkTheme standardContrast primaryContainer', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        true,
-        0.0,
-    );
+  it('darkTheme_standardContrast_primaryContainer', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), true, 0.0);
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme))
-        .matchesColor(0xff743413);
+        .matchesColor(0xff005234);
   });
 
-  it('darkTheme maxContrast primaryContainer', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        true,
-        1.0,
-    );
+  it('darkTheme_maxContrast_primaryContainer', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), true, 1.0);
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme))
-        .matchesColor(0xffffbb9e);
+        .matchesColor(0xff8bdbaf);
   });
 
-  it('darkTheme minContrast onPrimaryContainer', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        true,
-        -1.0,
-    );
+  it('darkTheme_minContrast_onPrimaryContainer', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), true, -1.0);
     expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme))
-        .matchesColor(0xfff99f75);
+        .matchesColor(0xff76c59b);
   });
 
-  it('darkTheme standardContrast onPrimaryContainer', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        true,
-        0.0,
-    );
+  it('darkTheme_standardContrast_onPrimaryContainer', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), true, 0.0);
     expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme))
-        .matchesColor(0xffffdbcc);
+        .matchesColor(0xffa2f4c6);
   });
 
-  it('darkTheme maxContrast onPrimaryContainer', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        true,
-        1.0,
-    );
+  it('darkTheme_maxContrast_onPrimaryContainer', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), true, 1.0);
     expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme))
-        .matchesColor(0xff622706);
+        .matchesColor(0xff004229);
   });
 
-  it('darkTheme minContrast surface', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        true,
-        -1.0,
-    );
+  it('darkTheme_minContrast_surface', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), true, -1.0);
     expect(MaterialDynamicColors.surface.getArgb(scheme))
-        .matchesColor(0xff12131a);
+        .matchesColor(0xff14121a);
   });
 
-  it('darkTheme standardContrast surface', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        true,
-        0.0,
-    );
+  it('darkTheme_standardContrast_surface', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), true, 0.0);
     expect(MaterialDynamicColors.surface.getArgb(scheme))
-        .matchesColor(0xff12131a);
+        .matchesColor(0xff14121a);
   });
 
-  it('darkTheme maxContrast surface', () => {
-    const scheme = new SchemeExpressive(
-        Hct.fromInt(0xff0000ff),
-        true,
-        1.0,
-    );
+  it('darkTheme_maxContrast_surface', () => {
+    const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), true, 1.0);
     expect(MaterialDynamicColors.surface.getArgb(scheme))
-        .matchesColor(0xff12131a);
+        .matchesColor(0xff14121a);
   });
 });

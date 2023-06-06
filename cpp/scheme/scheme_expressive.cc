@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "cpp/scheme/scheme_vibrant.h"
+#include "cpp/scheme/scheme_expressive.h"
 
 #include "cpp/cam/hct.h"
 #include "cpp/palettes/tones.h"
@@ -23,23 +23,23 @@
 
 namespace material_color_utilities {
 
-const std::vector<double> kHues = {0, 41, 61, 101, 131, 181, 251, 301, 360};
+const std::vector<double> kHues = {0, 21, 51, 121, 151, 191, 271, 321, 360};
 
-const std::vector<double> kSecondaryRotations = {18, 15, 10, 12, 15,
-                                                 18, 15, 12, 12};
+const std::vector<double> kSecondaryRotations = {45, 95, 45, 20, 45,
+                                                 90, 45, 45, 45};
 
-const std::vector<double> kTertiaryRotations = {35, 30, 20, 25, 30,
-                                                35, 30, 25, 25};
+const std::vector<double> kTertiaryRotations = {120, 120, 20,  45, 20,
+                                                15,  20,  120, 120};
 
-SchemeVibrant::SchemeVibrant(Hct set_source_color_hct, bool set_is_dark,
-                             double set_contrast_level)
+SchemeExpressive::SchemeExpressive(Hct set_source_color_hct, bool set_is_dark,
+                                   double set_contrast_level)
     : DynamicScheme(
           /*source_color_argb:*/ set_source_color_hct.ToInt(),
-          /*variant:*/ Variant::kVibrant,
+          /*variant:*/ Variant::kExpressive,
           /*contrast_level:*/ set_contrast_level,
           /*is_dark:*/ set_is_dark,
           /*primary_palette:*/
-          TonalPalette(set_source_color_hct.get_hue(), 200.0),
+          TonalPalette(set_source_color_hct.get_hue() + 240.0, 40.0),
           /*secondary_palette:*/
           TonalPalette(DynamicScheme::GetRotatedHue(set_source_color_hct, kHues,
                                                     kSecondaryRotations),
@@ -49,11 +49,12 @@ SchemeVibrant::SchemeVibrant(Hct set_source_color_hct, bool set_is_dark,
                                                     kTertiaryRotations),
                        32.0),
           /*neutral_palette:*/
-          TonalPalette(set_source_color_hct.get_hue(), 10.0),
+          TonalPalette(set_source_color_hct.get_hue() + 15.0, 8.0),
           /*neutral_variant_palette:*/
-          TonalPalette(set_source_color_hct.get_hue(), 12.0)) {}
+          TonalPalette(set_source_color_hct.get_hue() + 15, 12.0)) {}
 
-SchemeVibrant::SchemeVibrant(Hct set_source_color_hct, bool set_is_dark)
-    : SchemeVibrant::SchemeVibrant(set_source_color_hct, set_is_dark, 0.0) {}
+SchemeExpressive::SchemeExpressive(Hct set_source_color_hct, bool set_is_dark)
+    : SchemeExpressive::SchemeExpressive(set_source_color_hct, set_is_dark,
+                                         0.0) {}
 
 }  // namespace material_color_utilities
