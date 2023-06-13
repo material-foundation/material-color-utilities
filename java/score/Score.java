@@ -51,8 +51,8 @@ public final class Score {
   }
 
   public static List<Integer> score(
-      Map<Integer, Integer> colorsToPopulation, int desired, int fallbackColorARGB) {
-    return score(colorsToPopulation, desired, fallbackColorARGB, true);
+      Map<Integer, Integer> colorsToPopulation, int desired, int fallbackColorArgb) {
+    return score(colorsToPopulation, desired, fallbackColorArgb, true);
   }
 
   /**
@@ -62,7 +62,7 @@ public final class Score {
    * @param colorsToPopulation map with keys of colors and values of how often the color appears,
    *     usually from a source image.
    * @param desired max count of colors to be returned in the list.
-   * @param fallbackColorARGB color to be returned if no other options available.
+   * @param fallbackColorArgb color to be returned if no other options available.
    * @param filter whether to filter out undesireable combinations.
    * @return Colors sorted by suitability for a UI theme. The most suitable color is the first item,
    *     the least suitable is the last. There will always be at least one color returned. If all
@@ -72,7 +72,7 @@ public final class Score {
   public static List<Integer> score(
       Map<Integer, Integer> colorsToPopulation,
       int desired,
-      int fallbackColorARGB,
+      int fallbackColorArgb,
       boolean filter) {
 
     // Get the HCT color for each Argb value, while finding the per hue count and
@@ -147,7 +147,7 @@ public final class Score {
     }
     List<Integer> colors = new ArrayList<>();
     if (chosenColors.isEmpty()) {
-      colors.add(fallbackColorARGB);
+      colors.add(fallbackColorArgb);
     }
     for (Hct chosenHct : chosenColors) {
       colors.add(chosenHct.toInt());
