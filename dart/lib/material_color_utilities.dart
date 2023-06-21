@@ -41,3 +41,6 @@ export 'scheme/scheme_vibrant.dart';
 export 'scheme/variant.dart';
 export 'score/score.dart';
 export 'temperature/temperature_cache.dart';
+export 'utils/color_utils.dart';
+export 'utils/math_utils.dart';
+export 'utils/string_utils.dart';
