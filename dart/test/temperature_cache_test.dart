@@ -65,15 +65,15 @@ void main() {
     test('complement', () {
       final blueComplement =
           TemperatureCache(Hct.fromInt(0xff0000ff)).complement.toInt();
-      expect(blueComplement, isColor(0xff9D0002));
+      expect(blueComplement, isColor(0xff9d0002));
 
       final redComplement =
           TemperatureCache(Hct.fromInt(0xffff0000)).complement.toInt();
-      expect(redComplement, isColor(0xff007BFC));
+      expect(redComplement, isColor(0xff007bfc));
 
       final greenComplement =
           TemperatureCache(Hct.fromInt(0xff00ff00)).complement.toInt();
-      expect(greenComplement, isColor(0xffFFD2C9));
+      expect(greenComplement, isColor(0xffffd2c9));
 
       final whiteComplement =
           TemperatureCache(Hct.fromInt(0xffffffff)).complement.toInt();
@@ -89,31 +89,31 @@ void main() {
           .analogous()
           .map((e) => e.toInt())
           .toList();
-      expect(blueAnalogous[0], isColor(0xff00590C));
-      expect(blueAnalogous[1], isColor(0xff00564E));
+      expect(blueAnalogous[0], isColor(0xff00590c));
+      expect(blueAnalogous[1], isColor(0xff00564e));
       expect(blueAnalogous[2], isColor(0xff0000ff));
-      expect(blueAnalogous[3], isColor(0xff6700CC));
-      expect(blueAnalogous[4], isColor(0xff81009F));
+      expect(blueAnalogous[3], isColor(0xff6700cc));
+      expect(blueAnalogous[4], isColor(0xff81009f));
 
       final redAnalogous = TemperatureCache(Hct.fromInt(0xffff0000))
           .analogous()
           .map((e) => e.toInt())
           .toList();
-      expect(redAnalogous[0], isColor(0xffF60082));
-      expect(redAnalogous[1], isColor(0xffFC004C));
+      expect(redAnalogous[0], isColor(0xfff60082));
+      expect(redAnalogous[1], isColor(0xfffc004c));
       expect(redAnalogous[2], isColor(0xffff0000));
-      expect(redAnalogous[3], isColor(0xffD95500));
-      expect(redAnalogous[4], isColor(0xffAF7200));
+      expect(redAnalogous[3], isColor(0xffd95500));
+      expect(redAnalogous[4], isColor(0xffaf7200));
 
       final greenAnalogous = TemperatureCache(Hct.fromInt(0xff00ff00))
           .analogous()
           .map((e) => e.toInt())
           .toList();
-      expect(greenAnalogous[0], isColor(0xffCEE900));
-      expect(greenAnalogous[1], isColor(0xff92F500));
+      expect(greenAnalogous[0], isColor(0xffcee900));
+      expect(greenAnalogous[1], isColor(0xff92f500));
       expect(greenAnalogous[2], isColor(0xff00ff00));
-      expect(greenAnalogous[3], isColor(0xff00FD6F));
-      expect(greenAnalogous[4], isColor(0xff00FAB3));
+      expect(greenAnalogous[3], isColor(0xff00fd6f));
+      expect(greenAnalogous[4], isColor(0xff00fab3));
 
       final blackAnalogous = TemperatureCache(Hct.fromInt(0xff000000))
           .analogous()

@@ -26,11 +26,11 @@ namespace {
 TEST(SchemeTonalSpotTest, KeyColors) {
   SchemeTonalSpot scheme = SchemeTonalSpot(Hct(0xff0000ff), false, 0.0);
   EXPECT_EQ(MaterialDynamicColors::PrimaryPaletteKeyColor().GetArgb(scheme),
-            0xff6E72AC);
+            0xff6e72ac);
   EXPECT_EQ(MaterialDynamicColors::SecondaryPaletteKeyColor().GetArgb(scheme),
-            0xff75758B);
+            0xff75758b);
   EXPECT_EQ(MaterialDynamicColors::TertiaryPaletteKeyColor().GetArgb(scheme),
-            0xff936B84);
+            0xff936b84);
   EXPECT_EQ(MaterialDynamicColors::NeutralPaletteKeyColor().GetArgb(scheme),
             0xff77767d);
   EXPECT_EQ(
@@ -80,7 +80,7 @@ TEST(SchemeTonalSpotTest, lightTheme_minContrast_onPrimaryContainer) {
 TEST(SchemeTonalSpotTest, lightTheme_standardContrast_onPrimaryContainer) {
   SchemeTonalSpot scheme = SchemeTonalSpot(Hct(0xff0000ff), false, 0.0);
   EXPECT_EQ(MaterialDynamicColors::OnPrimaryContainer().GetArgb(scheme),
-            0xff11144B);
+            0xff11144b);
 }
 
 TEST(SchemeTonalSpotTest, lightTheme_maxContrast_onPrimaryContainer) {
@@ -188,7 +188,7 @@ TEST(SchemeTonalSpotTest, darkTheme_minContrast_primaryContainer) {
 TEST(SchemeTonalSpotTest, darkTheme_standardContrast_primaryContainer) {
   SchemeTonalSpot scheme = SchemeTonalSpot(Hct(0xff0000ff), true, 0.0);
   EXPECT_EQ(MaterialDynamicColors::PrimaryContainer().GetArgb(scheme),
-            0xff3E4278);
+            0xff3e4278);
 }
 
 TEST(SchemeTonalSpotTest, darkTheme_maxContrast_primaryContainer) {

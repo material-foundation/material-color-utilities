@@ -31,13 +31,18 @@ describe('scheme neutral test', () => {
   it('keyColors', () => {
     const scheme = new SchemeNeutral(Hct.fromInt(0xff0000ff), false, 0.0);
 
-    expect(MaterialDynamicColors.primaryPaletteKeyColor.getArgb(scheme)).matchesColor(0xff767685);
-    expect(MaterialDynamicColors.secondaryPaletteKeyColor.getArgb(scheme)).matchesColor(0xff777680);
-    expect(MaterialDynamicColors.tertiaryPaletteKeyColor.getArgb(scheme)).matchesColor(0xff75758B);
-    expect(MaterialDynamicColors.neutralPaletteKeyColor.getArgb(scheme)).matchesColor(0xff787678);
-    expect(MaterialDynamicColors.neutralVariantPaletteKeyColor.getArgb(scheme)).matchesColor(0xff787678);
+    expect(MaterialDynamicColors.primaryPaletteKeyColor.getArgb(scheme))
+        .matchesColor(0xff767685);
+    expect(MaterialDynamicColors.secondaryPaletteKeyColor.getArgb(scheme))
+        .matchesColor(0xff777680);
+    expect(MaterialDynamicColors.tertiaryPaletteKeyColor.getArgb(scheme))
+        .matchesColor(0xff75758b);
+    expect(MaterialDynamicColors.neutralPaletteKeyColor.getArgb(scheme))
+        .matchesColor(0xff787678);
+    expect(MaterialDynamicColors.neutralVariantPaletteKeyColor.getArgb(scheme))
+        .matchesColor(0xff787678);
   });
-  
+
   it('lightTheme minContrast primary', () => {
     const scheme = new SchemeNeutral(
         Hct.fromInt(0xff0000ff),

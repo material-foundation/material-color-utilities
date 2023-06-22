@@ -32,27 +32,27 @@ describe('scheme expressive test', () => {
     const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, 0.0);
 
     expect(MaterialDynamicColors.primaryPaletteKeyColor.getArgb(scheme))
-        .matchesColor(0xff35855F);
+        .matchesColor(0xff35855f);
     expect(MaterialDynamicColors.secondaryPaletteKeyColor.getArgb(scheme))
-        .matchesColor(0xff8C6D8C);
+        .matchesColor(0xff8c6d8c);
     expect(MaterialDynamicColors.tertiaryPaletteKeyColor.getArgb(scheme))
-        .matchesColor(0xff806EA1);
+        .matchesColor(0xff806ea1);
     expect(MaterialDynamicColors.neutralPaletteKeyColor.getArgb(scheme))
-        .matchesColor(0xff79757F);
+        .matchesColor(0xff79757f);
     expect(MaterialDynamicColors.neutralVariantPaletteKeyColor.getArgb(scheme))
-        .matchesColor(0xff7A7585);
+        .matchesColor(0xff7a7585);
   });
 
   it('lightTheme_minContrast_primary', () => {
     const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, -1.0);
     expect(MaterialDynamicColors.primary.getArgb(scheme))
-        .matchesColor(0xff32835D);
+        .matchesColor(0xff32835d);
   });
 
   it('lightTheme_standardContrast_primary', () => {
     const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, 0.0);
     expect(MaterialDynamicColors.primary.getArgb(scheme))
-        .matchesColor(0xff146C48);
+        .matchesColor(0xff146c48);
   });
 
   it('lightTheme_maxContrast_primary', () => {
@@ -70,13 +70,13 @@ describe('scheme expressive test', () => {
   it('lightTheme_standardContrast_primaryContainer', () => {
     const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, 0.0);
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme))
-        .matchesColor(0xffA2F4C6);
+        .matchesColor(0xffa2f4c6);
   });
 
   it('lightTheme_maxContrast_primaryContainer', () => {
     const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, 1.0);
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme))
-        .matchesColor(0xff004D31);
+        .matchesColor(0xff004d31);
   });
 
   it('lightTheme_minContrast_onPrimaryContainer', () => {

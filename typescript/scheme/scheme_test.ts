@@ -29,25 +29,25 @@ beforeEach(() => {
 describe('scheme', () => {
   it('blue light scheme', () => {
     const scheme = Scheme.light(0xff0000ff);
-    expect(scheme.primary).matchesColor(0xff343DFF);
+    expect(scheme.primary).matchesColor(0xff343dff);
   });
 
   it('blue dark scheme', () => {
     const scheme = Scheme.dark(0xff0000ff);
-    expect(scheme.primary).matchesColor(0xffBEC2FF);
+    expect(scheme.primary).matchesColor(0xffbec2ff);
   });
 
   it('3rd party light scheme', () => {
-    const scheme = Scheme.light(0xff6750A4);
-    expect(scheme.primary).matchesColor(0xff6750A4);
-    expect(scheme.secondary).matchesColor(0xff625B71);
-    expect(scheme.tertiary).matchesColor(0xff7E5260);
+    const scheme = Scheme.light(0xff6750a4);
+    expect(scheme.primary).matchesColor(0xff6750a4);
+    expect(scheme.secondary).matchesColor(0xff625b71);
+    expect(scheme.tertiary).matchesColor(0xff7e5260);
     expect(scheme.surface).matchesColor(0xfffffbff);
     expect(scheme.onSurface).matchesColor(0xff1c1b1e);
   });
 
   it('3rd party dark scheme', () => {
-    const scheme = Scheme.dark(0xff6750A4);
+    const scheme = Scheme.dark(0xff6750a4);
     expect(scheme.primary).matchesColor(0xffcfbcff);
     expect(scheme.secondary).matchesColor(0xffcbc2db);
     expect(scheme.tertiary).matchesColor(0xffefb8c8);
@@ -200,7 +200,7 @@ describe('android scheme', () => {
   });
 
   it('3rd party light scheme', () => {
-    const scheme = SchemeAndroid.light(0xff6750A4);
+    const scheme = SchemeAndroid.light(0xff6750a4);
     expect(scheme.colorAccentPrimary).matchesColor(0xffe9ddff);
     expect(scheme.colorAccentSecondary).matchesColor(0xffe8def8);
     expect(scheme.colorAccentTertiary).matchesColor(0xffffd9e3);
@@ -209,7 +209,7 @@ describe('android scheme', () => {
   });
 
   it('3rd party dark scheme', () => {
-    const scheme = SchemeAndroid.dark(0xff6750A4);
+    const scheme = SchemeAndroid.dark(0xff6750a4);
     expect(scheme.colorAccentPrimary).matchesColor(0xffe9ddff);
     expect(scheme.colorAccentSecondary).matchesColor(0xffe8def8);
     expect(scheme.colorAccentTertiary).matchesColor(0xffffd9e3);

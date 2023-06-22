@@ -25,15 +25,15 @@ void main() {
         contrastLevel: 0.0);
 
     expect(MaterialDynamicColors.primaryPaletteKeyColor.getArgb(scheme),
-        isColor(0xff35855F));
+        isColor(0xff35855f));
     expect(MaterialDynamicColors.secondaryPaletteKeyColor.getArgb(scheme),
-        isColor(0xff8C6D8C));
+        isColor(0xff8c6d8c));
     expect(MaterialDynamicColors.tertiaryPaletteKeyColor.getArgb(scheme),
-        isColor(0xff806EA1));
+        isColor(0xff806ea1));
     expect(MaterialDynamicColors.neutralPaletteKeyColor.getArgb(scheme),
-        isColor(0xff79757F));
+        isColor(0xff79757f));
     expect(MaterialDynamicColors.neutralVariantPaletteKeyColor.getArgb(scheme),
-        isColor(0xff7A7585));
+        isColor(0xff7a7585));
   });
 
   test('lightTheme_minContrast_primary', () {
@@ -41,7 +41,7 @@ void main() {
         sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: false,
         contrastLevel: -1.0);
-    expect(MaterialDynamicColors.primary.getArgb(scheme), isColor(0xff32835D));
+    expect(MaterialDynamicColors.primary.getArgb(scheme), isColor(0xff32835d));
   });
 
   test('lightTheme_standardContrast_primary', () {
@@ -49,7 +49,7 @@ void main() {
         sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: false,
         contrastLevel: 0.0);
-    expect(MaterialDynamicColors.primary.getArgb(scheme), isColor(0xff146C48));
+    expect(MaterialDynamicColors.primary.getArgb(scheme), isColor(0xff146c48));
   });
 
   test('lightTheme_maxContrast_primary', () {
@@ -75,7 +75,7 @@ void main() {
         isDark: false,
         contrastLevel: 0.0);
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme),
-        isColor(0xffA2F4C6));
+        isColor(0xffa2f4c6));
   });
 
   test('lightTheme_maxContrast_primaryContainer', () {
@@ -84,7 +84,7 @@ void main() {
         isDark: false,
         contrastLevel: 1.0);
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme),
-        isColor(0xff004D31));
+        isColor(0xff004d31));
   });
 
   test('lightTheme_minContrast_onPrimaryContainer', () {

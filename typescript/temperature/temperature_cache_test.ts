@@ -64,15 +64,15 @@ describe('TemperatureCache', () => {
   it('complement', () => {
     const blueComplement =
         new TemperatureCache(Hct.fromInt(0xff0000ff)).complement.toInt();
-    expect(blueComplement).toBe(0xff9D0002);
+    expect(blueComplement).toBe(0xff9d0002);
 
     const redComplement =
         new TemperatureCache(Hct.fromInt(0xffff0000)).complement.toInt();
-    expect(redComplement).toBe(0xff007BFC);
+    expect(redComplement).toBe(0xff007bfc);
 
     const greenComplement =
         new TemperatureCache(Hct.fromInt(0xff00ff00)).complement.toInt();
-    expect(greenComplement).toBe(0xffFFD2C9);
+    expect(greenComplement).toBe(0xffffd2c9);
 
     const whiteComplement =
         new TemperatureCache(Hct.fromInt(0xffffffff)).complement.toInt();
@@ -87,29 +87,29 @@ describe('TemperatureCache', () => {
     const blueAnalogous = new TemperatureCache(Hct.fromInt(0xff0000ff))
                               .analogous()
                               .map((e) => e.toInt());
-    expect(blueAnalogous[0]).toBe(0xff00590C);
-    expect(blueAnalogous[1]).toBe(0xff00564E);
+    expect(blueAnalogous[0]).toBe(0xff00590c);
+    expect(blueAnalogous[1]).toBe(0xff00564e);
     expect(blueAnalogous[2]).toBe(0xff0000ff);
-    expect(blueAnalogous[3]).toBe(0xff6700CC);
-    expect(blueAnalogous[4]).toBe(0xff81009F);
+    expect(blueAnalogous[3]).toBe(0xff6700cc);
+    expect(blueAnalogous[4]).toBe(0xff81009f);
 
     const redAnalogous = new TemperatureCache(Hct.fromInt(0xffff0000))
                              .analogous()
                              .map((e) => e.toInt());
-    expect(redAnalogous[0]).toBe(0xffF60082);
-    expect(redAnalogous[1]).toBe(0xffFC004C);
+    expect(redAnalogous[0]).toBe(0xfff60082);
+    expect(redAnalogous[1]).toBe(0xfffc004c);
     expect(redAnalogous[2]).toBe(0xffff0000);
-    expect(redAnalogous[3]).toBe(0xffD95500);
-    expect(redAnalogous[4]).toBe(0xffAF7200);
+    expect(redAnalogous[3]).toBe(0xffd95500);
+    expect(redAnalogous[4]).toBe(0xffaf7200);
 
     const greenAnalogous = new TemperatureCache(Hct.fromInt(0xff00ff00))
                                .analogous()
                                .map((e) => e.toInt());
-    expect(greenAnalogous[0]).toBe(0xffCEE900);
-    expect(greenAnalogous[1]).toBe(0xff92F500);
+    expect(greenAnalogous[0]).toBe(0xffcee900);
+    expect(greenAnalogous[1]).toBe(0xff92f500);
     expect(greenAnalogous[2]).toBe(0xff00ff00);
-    expect(greenAnalogous[3]).toBe(0xff00FD6F);
-    expect(greenAnalogous[4]).toBe(0xff00FAB3);
+    expect(greenAnalogous[3]).toBe(0xff00fd6f);
+    expect(greenAnalogous[4]).toBe(0xff00fab3);
 
     const blackAnalogous = new TemperatureCache(Hct.fromInt(0xff000000))
                                .analogous()

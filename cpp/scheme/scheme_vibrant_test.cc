@@ -28,9 +28,9 @@ TEST(SchemeVibrantTest, KeyColors) {
   EXPECT_EQ(MaterialDynamicColors::PrimaryPaletteKeyColor().GetArgb(scheme),
             0xff080cff);
   EXPECT_EQ(MaterialDynamicColors::SecondaryPaletteKeyColor().GetArgb(scheme),
-            0xff7B7296);
+            0xff7b7296);
   EXPECT_EQ(MaterialDynamicColors::TertiaryPaletteKeyColor().GetArgb(scheme),
-            0xff886C9D);
+            0xff886c9d);
   EXPECT_EQ(MaterialDynamicColors::NeutralPaletteKeyColor().GetArgb(scheme),
             0xff777682);
   EXPECT_EQ(

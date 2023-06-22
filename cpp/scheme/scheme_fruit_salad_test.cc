@@ -26,16 +26,16 @@ namespace {
 TEST(SchemeFruitSaladTest, KeyColors) {
   SchemeFruitSalad scheme = SchemeFruitSalad(Hct(0xff0000ff), false, 0.0);
   EXPECT_EQ(MaterialDynamicColors::PrimaryPaletteKeyColor().GetArgb(scheme),
-            0xff0091C0);
+            0xff0091c0);
   EXPECT_EQ(MaterialDynamicColors::SecondaryPaletteKeyColor().GetArgb(scheme),
-            0xff3A7E9E);
+            0xff3a7e9e);
   EXPECT_EQ(MaterialDynamicColors::TertiaryPaletteKeyColor().GetArgb(scheme),
-            0xff6E72AC);
+            0xff6e72ac);
   EXPECT_EQ(MaterialDynamicColors::NeutralPaletteKeyColor().GetArgb(scheme),
             0xff777682);
   EXPECT_EQ(
       MaterialDynamicColors::NeutralVariantPaletteKeyColor().GetArgb(scheme),
-      0xff75758B);
+      0xff75758b);
 }
 
 TEST(SchemeFruitSaladTest, lightTheme_minContrast_primary) {
@@ -62,7 +62,7 @@ TEST(SchemeFruitSaladTest, lightTheme_minContrast_primaryContainer) {
 TEST(SchemeFruitSaladTest, lightTheme_standardContrast_primaryContainer) {
   SchemeFruitSalad scheme = SchemeFruitSalad(Hct(0xff0000ff), false, 0.0);
   EXPECT_EQ(MaterialDynamicColors::PrimaryContainer().GetArgb(scheme),
-            0xffC2E8FF);
+            0xffc2e8ff);
 }
 
 TEST(SchemeFruitSaladTest, lightTheme_maxContrast_primaryContainer) {
@@ -80,13 +80,13 @@ TEST(SchemeFruitSaladTest, lightTheme_minContrast_tertiaryContainer) {
 TEST(SchemeFruitSaladTest, lightTheme_standardContrast_tertiaryContainer) {
   SchemeFruitSalad scheme = SchemeFruitSalad(Hct(0xff0000ff), false, 0.0);
   EXPECT_EQ(MaterialDynamicColors::TertiaryContainer().GetArgb(scheme),
-            0xffE0E0FF);
+            0xffe0e0ff);
 }
 
 TEST(SchemeFruitSaladTest, lightTheme_maxContrast_tertiaryContainer) {
   SchemeFruitSalad scheme = SchemeFruitSalad(Hct(0xff0000ff), false, 1.0);
   EXPECT_EQ(MaterialDynamicColors::TertiaryContainer().GetArgb(scheme),
-            0xFF3A3E74);
+            0xff3a3e74);
 }
 
 TEST(SchemeFruitSaladTest, lightTheme_minContrast_onPrimaryContainer) {
@@ -98,7 +98,7 @@ TEST(SchemeFruitSaladTest, lightTheme_minContrast_onPrimaryContainer) {
 TEST(SchemeFruitSaladTest, lightTheme_standardContrast_onPrimaryContainer) {
   SchemeFruitSalad scheme = SchemeFruitSalad(Hct(0xff0000ff), false, 0.0);
   EXPECT_EQ(MaterialDynamicColors::OnPrimaryContainer().GetArgb(scheme),
-            0xff001E2B);
+            0xff001e2b);
 }
 
 TEST(SchemeFruitSaladTest, lightTheme_maxContrast_onPrimaryContainer) {
@@ -140,7 +140,7 @@ TEST(SchemeFruitSaladTest, darkTheme_minContrast_primary) {
 
 TEST(SchemeFruitSaladTest, darkTheme_standardContrast_primary) {
   SchemeFruitSalad scheme = SchemeFruitSalad(Hct(0xff0000ff), true, 0.0);
-  EXPECT_EQ(MaterialDynamicColors::Primary().GetArgb(scheme), 0xFF76D1FF);
+  EXPECT_EQ(MaterialDynamicColors::Primary().GetArgb(scheme), 0xff76d1ff);
 }
 
 TEST(SchemeFruitSaladTest, darkTheme_maxContrast_primary) {
@@ -157,13 +157,13 @@ TEST(SchemeFruitSaladTest, darkTheme_minContrast_primaryContainer) {
 TEST(SchemeFruitSaladTest, darkTheme_standardContrast_primaryContainer) {
   SchemeFruitSalad scheme = SchemeFruitSalad(Hct(0xff0000ff), true, 0.0);
   EXPECT_EQ(MaterialDynamicColors::PrimaryContainer().GetArgb(scheme),
-            0xFF004D67);
+            0xff004d67);
 }
 
 TEST(SchemeFruitSaladTest, darkTheme_maxContrast_primaryContainer) {
   SchemeFruitSalad scheme = SchemeFruitSalad(Hct(0xff0000ff), true, 1.0);
   EXPECT_EQ(MaterialDynamicColors::PrimaryContainer().GetArgb(scheme),
-            0xFF83D5FF);
+            0xff83d5ff);
 }
 
 TEST(SchemeFruitSaladTest, darkTheme_minContrast_onPrimaryContainer) {
@@ -175,7 +175,7 @@ TEST(SchemeFruitSaladTest, darkTheme_minContrast_onPrimaryContainer) {
 TEST(SchemeFruitSaladTest, darkTheme_standardContrast_onPrimaryContainer) {
   SchemeFruitSalad scheme = SchemeFruitSalad(Hct(0xff0000ff), true, 0.0);
   EXPECT_EQ(MaterialDynamicColors::OnPrimaryContainer().GetArgb(scheme),
-            0xffC2E8FF);
+            0xffc2e8ff);
 }
 
 TEST(SchemeFruitSaladTest, darkTheme_maxContrast_onPrimaryContainer) {

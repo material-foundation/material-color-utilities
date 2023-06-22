@@ -43,7 +43,7 @@ TEST(SchemeTest, BlueDarkScheme) {
 }
 
 TEST(SchemeTest, ThirdPartyLightScheme) {
-  Scheme scheme = MaterialLightColorScheme(0xff6750A4);
+  Scheme scheme = MaterialLightColorScheme(0xff6750a4);
   EXPECT_EQ(HexFromArgb(scheme.primary), "ff6750a4");
   EXPECT_EQ(HexFromArgb(scheme.secondary), "ff625b71");
   EXPECT_EQ(HexFromArgb(scheme.tertiary), "ff7e5260");
@@ -52,7 +52,7 @@ TEST(SchemeTest, ThirdPartyLightScheme) {
 }
 
 TEST(SchemeTest, ThirdPartyDarkScheme) {
-  Scheme scheme = MaterialDarkColorScheme(0xff6750A4);
+  Scheme scheme = MaterialDarkColorScheme(0xff6750a4);
   EXPECT_EQ(HexFromArgb(scheme.primary), "ffcfbcff");
   EXPECT_EQ(HexFromArgb(scheme.secondary), "ffcbc2db");
   EXPECT_EQ(HexFromArgb(scheme.tertiary), "ffefb8c8");

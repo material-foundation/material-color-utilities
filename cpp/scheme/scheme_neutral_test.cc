@@ -30,7 +30,7 @@ TEST(SchemeNeutralTest, KeyColors) {
   EXPECT_EQ(MaterialDynamicColors::SecondaryPaletteKeyColor().GetArgb(scheme),
             0xff777680);
   EXPECT_EQ(MaterialDynamicColors::TertiaryPaletteKeyColor().GetArgb(scheme),
-            0xff75758B);
+            0xff75758b);
   EXPECT_EQ(MaterialDynamicColors::NeutralPaletteKeyColor().GetArgb(scheme),
             0xff787678);
   EXPECT_EQ(

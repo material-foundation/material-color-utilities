@@ -29,7 +29,7 @@ void main() {
     expect(MaterialDynamicColors.secondaryPaletteKeyColor.getArgb(scheme),
         isColor(0xff777680));
     expect(MaterialDynamicColors.tertiaryPaletteKeyColor.getArgb(scheme),
-        isColor(0xff75758B));
+        isColor(0xff75758b));
     expect(MaterialDynamicColors.neutralPaletteKeyColor.getArgb(scheme),
         isColor(0xff787678));
     expect(MaterialDynamicColors.neutralVariantPaletteKeyColor.getArgb(scheme),

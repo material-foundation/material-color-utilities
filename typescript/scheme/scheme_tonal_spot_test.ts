@@ -31,26 +31,29 @@ describe('scheme tonal spot test', () => {
   it('keyColors', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, 0.0);
 
-    expect(MaterialDynamicColors.primaryPaletteKeyColor.getArgb(scheme)).matchesColor(0xff6E72AC);
-    expect(MaterialDynamicColors.secondaryPaletteKeyColor.getArgb(scheme)).matchesColor(0xff75758B);
-    expect(MaterialDynamicColors.tertiaryPaletteKeyColor.getArgb(scheme)).matchesColor(0xff936B84);
+    expect(MaterialDynamicColors.primaryPaletteKeyColor.getArgb(scheme)).matchesColor(0xff6e72ac);
+    expect(MaterialDynamicColors.secondaryPaletteKeyColor.getArgb(scheme)).matchesColor(0xff75758b);
+    expect(MaterialDynamicColors.tertiaryPaletteKeyColor.getArgb(scheme)).matchesColor(0xff936b84);
     expect(MaterialDynamicColors.neutralPaletteKeyColor.getArgb(scheme)).matchesColor(0xff77767d);
     expect(MaterialDynamicColors.neutralVariantPaletteKeyColor.getArgb(scheme)).matchesColor(0xff777680);
   });
 
   it('lightTheme_minContrast_primary', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, -1.0);
-    expect(MaterialDynamicColors.primary.getArgb(scheme)).matchesColor(0xff6c70aa);
+    expect(MaterialDynamicColors.primary.getArgb(scheme))
+        .matchesColor(0xff6c70aa);
   });
 
   it('lightTheme_standardContrast_primary', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, 0.0);
-    expect(MaterialDynamicColors.primary.getArgb(scheme)).matchesColor(0xff555992);
+    expect(MaterialDynamicColors.primary.getArgb(scheme))
+        .matchesColor(0xff555992);
   });
 
   it('lightTheme_maxContrast_primary', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, 1.0);
-    expect(MaterialDynamicColors.primary.getArgb(scheme)).matchesColor(0xff181c51);
+    expect(MaterialDynamicColors.primary.getArgb(scheme))
+        .matchesColor(0xff181c51);
   });
 
   it('lightTheme_minContrast_primaryContainer', () => {
@@ -61,12 +64,14 @@ describe('scheme tonal spot test', () => {
 
   it('lightTheme_standardContrast_primaryContainer', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, 0.0);
-    expect(MaterialDynamicColors.primaryContainer.getArgb(scheme)).matchesColor(0xffe0e0ff);
+    expect(MaterialDynamicColors.primaryContainer.getArgb(scheme))
+        .matchesColor(0xffe0e0ff);
   });
 
   it('lightTheme_maxContrast_primaryContainer', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, 1.0);
-    expect(MaterialDynamicColors.primaryContainer.getArgb(scheme)).matchesColor(0xff3a3e74);
+    expect(MaterialDynamicColors.primaryContainer.getArgb(scheme))
+        .matchesColor(0xff3a3e74);
   });
 
   it('lightTheme_minContrast_onPrimaryContainer', () => {
@@ -77,7 +82,8 @@ describe('scheme tonal spot test', () => {
 
   it('lightTheme_standardContrast_onPrimaryContainer', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, 0.0);
-    expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme)).matchesColor(0xff11144B);
+    expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme))
+        .matchesColor(0xff11144b);
   });
 
   it('lightTheme_maxContrast_onPrimaryContainer', () => {
@@ -88,27 +94,32 @@ describe('scheme tonal spot test', () => {
 
   it('lightTheme_minContrast_surface', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, -1.0);
-    expect(MaterialDynamicColors.surface.getArgb(scheme)).matchesColor(0xfffbf8ff);
+    expect(MaterialDynamicColors.surface.getArgb(scheme))
+        .matchesColor(0xfffbf8ff);
   });
 
   it('lightTheme_standardContrast_surface', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, 0.0);
-    expect(MaterialDynamicColors.surface.getArgb(scheme)).matchesColor(0xfffbf8ff);
+    expect(MaterialDynamicColors.surface.getArgb(scheme))
+        .matchesColor(0xfffbf8ff);
   });
 
   it('lightTheme_maxContrast_surface', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, 1.0);
-    expect(MaterialDynamicColors.surface.getArgb(scheme)).matchesColor(0xfffbf8ff);
+    expect(MaterialDynamicColors.surface.getArgb(scheme))
+        .matchesColor(0xfffbf8ff);
   });
 
   it('lightTheme_minContrast_onSurface', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, -1.0);
-    expect(MaterialDynamicColors.onSurface.getArgb(scheme)).matchesColor(0xff5f5e65);
+    expect(MaterialDynamicColors.onSurface.getArgb(scheme))
+        .matchesColor(0xff5f5e65);
   });
 
   it('lightTheme_standardContrast_onSurface', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, 0.0);
-    expect(MaterialDynamicColors.onSurface.getArgb(scheme)).matchesColor(0xff1b1b21);
+    expect(MaterialDynamicColors.onSurface.getArgb(scheme))
+        .matchesColor(0xff1b1b21);
   });
 
   it('lightTheme_maxContrast_onSurface', () => {
@@ -125,7 +136,8 @@ describe('scheme tonal spot test', () => {
 
   it('lightTheme_standardContrast_onSecondary', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, 0.0);
-    expect(MaterialDynamicColors.onSecondary.getArgb(scheme)).matchesColor(0xffffffff);
+    expect(MaterialDynamicColors.onSecondary.getArgb(scheme))
+        .matchesColor(0xffffffff);
   });
 
   it('lightTheme_maxContrast_onSecondary', () => {
@@ -142,7 +154,8 @@ describe('scheme tonal spot test', () => {
 
   it('lightTheme_standardContrast_onTertiary', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, 0.0);
-    expect(MaterialDynamicColors.onTertiary.getArgb(scheme)).matchesColor(0xffffffff);
+    expect(MaterialDynamicColors.onTertiary.getArgb(scheme))
+        .matchesColor(0xffffffff);
   });
 
   it('lightTheme_maxContrast_onTertiary', () => {
@@ -159,7 +172,8 @@ describe('scheme tonal spot test', () => {
 
   it('lightTheme_standardContrast_onError', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, 0.0);
-    expect(MaterialDynamicColors.onError.getArgb(scheme)).matchesColor(0xffffffff);
+    expect(MaterialDynamicColors.onError.getArgb(scheme))
+        .matchesColor(0xffffffff);
   });
 
   it('lightTheme_maxContrast_onError', () => {
@@ -176,7 +190,8 @@ describe('scheme tonal spot test', () => {
 
   it('darkTheme_standardContrast_primary', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), true, 0.0);
-    expect(MaterialDynamicColors.primary.getArgb(scheme)).matchesColor(0xffbec2ff);
+    expect(MaterialDynamicColors.primary.getArgb(scheme))
+        .matchesColor(0xffbec2ff);
   });
 
   it('darkTheme_maxContrast_primary', () => {
@@ -193,12 +208,14 @@ describe('scheme tonal spot test', () => {
 
   it('darkTheme_standardContrast_primaryContainer', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), true, 0.0);
-    expect(MaterialDynamicColors.primaryContainer.getArgb(scheme)).matchesColor(0xff3E4278);
+    expect(MaterialDynamicColors.primaryContainer.getArgb(scheme))
+        .matchesColor(0xff3e4278);
   });
 
   it('darkTheme_maxContrast_primaryContainer', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), true, 1.0);
-    expect(MaterialDynamicColors.primaryContainer.getArgb(scheme)).matchesColor(0xffc4c6ff);
+    expect(MaterialDynamicColors.primaryContainer.getArgb(scheme))
+        .matchesColor(0xffc4c6ff);
   });
 
   it('darkTheme_minContrast_onPrimaryContainer', () => {
@@ -209,7 +226,8 @@ describe('scheme tonal spot test', () => {
 
   it('darkTheme_standardContrast_onPrimaryContainer', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), true, 0.0);
-    expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme)).matchesColor(0xffe0e0ff);
+    expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme))
+        .matchesColor(0xffe0e0ff);
   });
 
   it('darkTheme_maxContrast_onPrimaryContainer', () => {
@@ -226,7 +244,8 @@ describe('scheme tonal spot test', () => {
 
   it('darkTheme_standardContrast_onTertiaryContainer', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), true, 0.0);
-    expect(MaterialDynamicColors.onTertiaryContainer.getArgb(scheme)).matchesColor(0xffffd8ee);
+    expect(MaterialDynamicColors.onTertiaryContainer.getArgb(scheme))
+        .matchesColor(0xffffd8ee);
   });
 
   it('darkTheme_maxContrast_onTertiaryContainer', () => {
@@ -243,7 +262,8 @@ describe('scheme tonal spot test', () => {
 
   it('darkTheme_standardContrast_onSecondary', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), true, 0.0);
-    expect(MaterialDynamicColors.onSecondary.getArgb(scheme)).matchesColor(0xff2e2f42);
+    expect(MaterialDynamicColors.onSecondary.getArgb(scheme))
+        .matchesColor(0xff2e2f42);
   });
 
   it('darkTheme_maxContrast_onSecondary', () => {
@@ -260,7 +280,8 @@ describe('scheme tonal spot test', () => {
 
   it('darkTheme_standardContrast_onTertiary', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), true, 0.0);
-    expect(MaterialDynamicColors.onTertiary.getArgb(scheme)).matchesColor(0xff46263b);
+    expect(MaterialDynamicColors.onTertiary.getArgb(scheme))
+        .matchesColor(0xff46263b);
   });
 
   it('darkTheme_maxContrast_onTertiary', () => {
@@ -277,7 +298,8 @@ describe('scheme tonal spot test', () => {
 
   it('darkTheme_standardContrast_onError', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), true, 0.0);
-    expect(MaterialDynamicColors.onError.getArgb(scheme)).matchesColor(0xff690005);
+    expect(MaterialDynamicColors.onError.getArgb(scheme))
+        .matchesColor(0xff690005);
   });
 
   it('darkTheme_maxContrast_onError', () => {
@@ -288,27 +310,32 @@ describe('scheme tonal spot test', () => {
 
   it('darkTheme_minContrast_surface', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), true, -1.0);
-    expect(MaterialDynamicColors.surface.getArgb(scheme)).matchesColor(0xff131318);
+    expect(MaterialDynamicColors.surface.getArgb(scheme))
+        .matchesColor(0xff131318);
   });
 
   it('darkTheme_standardContrast_surface', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), true, 0.0);
-    expect(MaterialDynamicColors.surface.getArgb(scheme)).matchesColor(0xff131318);
+    expect(MaterialDynamicColors.surface.getArgb(scheme))
+        .matchesColor(0xff131318);
   });
 
   it('darkTheme_maxContrast_surface', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), true, 1.0);
-    expect(MaterialDynamicColors.surface.getArgb(scheme)).matchesColor(0xff131318);
+    expect(MaterialDynamicColors.surface.getArgb(scheme))
+        .matchesColor(0xff131318);
   });
 
   it('darkTheme_minContrast_onSurface', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), true, -1.0);
-    expect(MaterialDynamicColors.onSurface.getArgb(scheme)).matchesColor(0xffa4a2a9);
+    expect(MaterialDynamicColors.onSurface.getArgb(scheme))
+        .matchesColor(0xffa4a2a9);
   });
 
   it('darkTheme_standardContrast_onSurface', () => {
     const scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), true, 0.0);
-    expect(MaterialDynamicColors.onSurface.getArgb(scheme)).matchesColor(0xffe4e1e9);
+    expect(MaterialDynamicColors.onSurface.getArgb(scheme))
+        .matchesColor(0xffe4e1e9);
   });
 
   it('darkTheme_maxContrast_onSurface', () => {

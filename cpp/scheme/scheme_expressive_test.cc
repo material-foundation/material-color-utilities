@@ -26,26 +26,26 @@ namespace {
 TEST(SchemeExpressiveTest, KeyColors) {
   SchemeExpressive scheme = SchemeExpressive(Hct(0xff0000ff), false, 0.0);
   EXPECT_EQ(MaterialDynamicColors::PrimaryPaletteKeyColor().GetArgb(scheme),
-            0xff35855F);
+            0xff35855f);
   EXPECT_EQ(MaterialDynamicColors::SecondaryPaletteKeyColor().GetArgb(scheme),
-            0xff8C6D8C);
+            0xff8c6d8c);
   EXPECT_EQ(MaterialDynamicColors::TertiaryPaletteKeyColor().GetArgb(scheme),
-            0xff806EA1);
+            0xff806ea1);
   EXPECT_EQ(MaterialDynamicColors::NeutralPaletteKeyColor().GetArgb(scheme),
-            0xff79757F);
+            0xff79757f);
   EXPECT_EQ(
       MaterialDynamicColors::NeutralVariantPaletteKeyColor().GetArgb(scheme),
-      0xff7A7585);
+      0xff7a7585);
 }
 
 TEST(SchemeExpressiveTest, lightTheme_minContrast_primary) {
   SchemeExpressive scheme = SchemeExpressive(Hct(0xff0000ff), false, -1.0);
-  EXPECT_EQ(MaterialDynamicColors::Primary().GetArgb(scheme), 0xff32835D);
+  EXPECT_EQ(MaterialDynamicColors::Primary().GetArgb(scheme), 0xff32835d);
 }
 
 TEST(SchemeExpressiveTest, lightTheme_standardContrast_primary) {
   SchemeExpressive scheme = SchemeExpressive(Hct(0xff0000ff), false, 0.0);
-  EXPECT_EQ(MaterialDynamicColors::Primary().GetArgb(scheme), 0xff146C48);
+  EXPECT_EQ(MaterialDynamicColors::Primary().GetArgb(scheme), 0xff146c48);
 }
 
 TEST(SchemeExpressiveTest, lightTheme_maxContrast_primary) {
@@ -62,13 +62,13 @@ TEST(SchemeExpressiveTest, lightTheme_minContrast_primaryContainer) {
 TEST(SchemeExpressiveTest, lightTheme_standardContrast_primaryContainer) {
   SchemeExpressive scheme = SchemeExpressive(Hct(0xff0000ff), false, 0.0);
   EXPECT_EQ(MaterialDynamicColors::PrimaryContainer().GetArgb(scheme),
-            0xffA2F4C6);
+            0xffa2f4c6);
 }
 
 TEST(SchemeExpressiveTest, lightTheme_maxContrast_primaryContainer) {
   SchemeExpressive scheme = SchemeExpressive(Hct(0xff0000ff), false, 1.0);
   EXPECT_EQ(MaterialDynamicColors::PrimaryContainer().GetArgb(scheme),
-            0xff004D31);
+            0xff004d31);
 }
 
 TEST(SchemeExpressiveTest, lightTheme_minContrast_onPrimaryContainer) {

@@ -25,11 +25,11 @@ void main() {
         contrastLevel: 0.0);
 
     expect(MaterialDynamicColors.primaryPaletteKeyColor.getArgb(scheme),
-        isColor(0xff080CFF));
+        isColor(0xff080cff));
     expect(MaterialDynamicColors.secondaryPaletteKeyColor.getArgb(scheme),
-        isColor(0xff656DD3));
+        isColor(0xff656dd3));
     expect(MaterialDynamicColors.tertiaryPaletteKeyColor.getArgb(scheme),
-        isColor(0xff9D0002));
+        isColor(0xff9d0002));
     expect(MaterialDynamicColors.neutralPaletteKeyColor.getArgb(scheme),
         isColor(0xff767684));
     expect(MaterialDynamicColors.neutralVariantPaletteKeyColor.getArgb(scheme),
@@ -38,7 +38,7 @@ void main() {
 
   test('lightTheme_minContrast_primary', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: false,
         contrastLevel: -1.0);
     expect(MaterialDynamicColors.primary.getArgb(scheme), isColor(0xff5660ff));
@@ -46,23 +46,23 @@ void main() {
 
   test('lightTheme_standardContrast_primary', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: false,
         contrastLevel: 0);
-    expect(MaterialDynamicColors.primary.getArgb(scheme), isColor(0xFF0001C3));
+    expect(MaterialDynamicColors.primary.getArgb(scheme), isColor(0xff0001c3));
   });
 
   test('lightTheme_maxContrast_primary', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: false,
         contrastLevel: 1);
-    expect(MaterialDynamicColors.primary.getArgb(scheme), isColor(0xFF000181));
+    expect(MaterialDynamicColors.primary.getArgb(scheme), isColor(0xff000181));
   });
 
   test('lightTheme_minContrast_primaryContainer', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: false,
         contrastLevel: -1);
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme),
@@ -71,25 +71,25 @@ void main() {
 
   test('lightTheme_standardContrast_primaryContainer', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: false,
         contrastLevel: 0);
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme),
-        isColor(0xFF2D36FF));
+        isColor(0xff2d36ff));
   });
 
   test('lightTheme_maxContrast_primaryContainer', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: false,
         contrastLevel: 1);
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme),
-        isColor(0xFF0000E3));
+        isColor(0xff0000e3));
   });
 
   test('lightTheme_minContrast_tertiaryContainer', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: false,
         contrastLevel: -1);
     expect(MaterialDynamicColors.tertiaryContainer.getArgb(scheme),
@@ -98,25 +98,25 @@ void main() {
 
   test('lightTheme_standardContrast_tertiaryContainer', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: false,
         contrastLevel: 0);
     expect(MaterialDynamicColors.tertiaryContainer.getArgb(scheme),
-        isColor(0xFFB31910));
+        isColor(0xffb31910));
   });
 
   test('lightTheme_maxContrast_tertiaryContainer', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: false,
         contrastLevel: 1);
     expect(MaterialDynamicColors.tertiaryContainer.getArgb(scheme),
-        isColor(0xFF8C0002));
+        isColor(0xff8c0002));
   });
 
   test('lightTheme_minContrast_objectionableTertiaryContainerLightens', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF850096),
+        sourceColorHct: Hct.fromInt(0xff850096),
         isDark: false,
         contrastLevel: -1);
     expect(MaterialDynamicColors.tertiaryContainer.getArgb(scheme),
@@ -126,25 +126,25 @@ void main() {
   test('lightTheme_standardContrast_objectionableTertiaryContainerLightens',
       () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF850096),
+        sourceColorHct: Hct.fromInt(0xff850096),
         isDark: false,
         contrastLevel: 0);
     expect(MaterialDynamicColors.tertiaryContainer.getArgb(scheme),
-        isColor(0xFFBCAC5A));
+        isColor(0xffbcac5a));
   });
 
   test('lightTheme_maxContrast_objectionableTertiaryContainerDarkens', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF850096),
+        sourceColorHct: Hct.fromInt(0xff850096),
         isDark: false,
         contrastLevel: 1);
     expect(MaterialDynamicColors.tertiaryContainer.getArgb(scheme),
-        isColor(0xFF4D4300));
+        isColor(0xff4d4300));
   });
 
   test('lightTheme_minContrast_onPrimaryContainer', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: false,
         contrastLevel: -1);
     expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme),
@@ -153,7 +153,7 @@ void main() {
 
   test('lightTheme_standardContrast_onPrimaryContainer', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: false,
         contrastLevel: 0);
     expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme),
@@ -162,7 +162,7 @@ void main() {
 
   test('lightTheme_maxContrast_onPrimaryContainer', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: false,
         contrastLevel: 1);
     expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme),
@@ -171,31 +171,31 @@ void main() {
 
   test('lightTheme_minContrast_surface', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: false,
         contrastLevel: -1);
-    expect(MaterialDynamicColors.surface.getArgb(scheme), isColor(0xFFFBF8FF));
+    expect(MaterialDynamicColors.surface.getArgb(scheme), isColor(0xfffbf8ff));
   });
 
   test('lightTheme_standardContrast_surface', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: false,
         contrastLevel: 0.0);
-    expect(MaterialDynamicColors.surface.getArgb(scheme), isColor(0xFFFBF8FF));
+    expect(MaterialDynamicColors.surface.getArgb(scheme), isColor(0xfffbf8ff));
   });
 
   test('lightTheme_maxContrast_surface', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: false,
         contrastLevel: 1.0);
-    expect(MaterialDynamicColors.surface.getArgb(scheme), isColor(0xFFFBF8FF));
+    expect(MaterialDynamicColors.surface.getArgb(scheme), isColor(0xfffbf8ff));
   });
 
   test('darkTheme_minContrast_primary', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: true,
         contrastLevel: -1.0);
     expect(MaterialDynamicColors.primary.getArgb(scheme), isColor(0xff7c84ff));
@@ -203,15 +203,15 @@ void main() {
 
   test('darkTheme_standardContrast_primary', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: true,
         contrastLevel: 0.0);
-    expect(MaterialDynamicColors.primary.getArgb(scheme), isColor(0xFFBEC2FF));
+    expect(MaterialDynamicColors.primary.getArgb(scheme), isColor(0xffbec2ff));
   });
 
   test('darkTheme_maxContrast_primary', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: true,
         contrastLevel: 1.0);
     expect(MaterialDynamicColors.primary.getArgb(scheme), isColor(0xfffdf9ff));
@@ -219,7 +219,7 @@ void main() {
 
   test('darkTheme_minContrast_primaryContainer', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: true,
         contrastLevel: -1.0);
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme),
@@ -228,25 +228,25 @@ void main() {
 
   test('darkTheme_standardContrast_primaryContainer', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: true,
         contrastLevel: 0.0);
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme),
-        isColor(0xFF0000E6));
+        isColor(0xff0000e6));
   });
 
   test('darkTheme_maxContrast_primaryContainer', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: true,
         contrastLevel: 1.0);
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme),
-        isColor(0xFFC4C6FF));
+        isColor(0xffc4c6ff));
   });
 
   test('darkTheme_minContrast_onPrimaryContainer', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: true,
         contrastLevel: -1.0);
     expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme),
@@ -255,7 +255,7 @@ void main() {
 
   test('darkTheme_standardContrast_onPrimaryContainer', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: true,
         contrastLevel: 0.0);
     expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme),
@@ -264,7 +264,7 @@ void main() {
 
   test('darkTheme_maxContrast_onPrimaryContainer', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: true,
         contrastLevel: 1.0);
     expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme),
@@ -273,7 +273,7 @@ void main() {
 
   test('darkTheme_minContrast_onTertiaryContainer', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: true,
         contrastLevel: -1.0);
     expect(MaterialDynamicColors.onTertiaryContainer.getArgb(scheme),
@@ -282,7 +282,7 @@ void main() {
 
   test('darkTheme_standardContrast_onTertiaryContainer', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: true,
         contrastLevel: 0.0);
     expect(MaterialDynamicColors.onTertiaryContainer.getArgb(scheme),
@@ -291,7 +291,7 @@ void main() {
 
   test('darkTheme_maxContrast_onTertiaryContainer', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: true,
         contrastLevel: 1.0);
     expect(MaterialDynamicColors.onTertiaryContainer.getArgb(scheme),
@@ -300,25 +300,25 @@ void main() {
 
   test('darkTheme_minContrast_surface', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: true,
         contrastLevel: -1.0);
-    expect(MaterialDynamicColors.surface.getArgb(scheme), isColor(0xFF12121D));
+    expect(MaterialDynamicColors.surface.getArgb(scheme), isColor(0xff12121d));
   });
 
   test('darkTheme_standardContrast_surface', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: true,
         contrastLevel: 0.0);
-    expect(MaterialDynamicColors.surface.getArgb(scheme), isColor(0xFF12121D));
+    expect(MaterialDynamicColors.surface.getArgb(scheme), isColor(0xff12121d));
   });
 
   test('darkTheme_maxContrast_surface', () {
     final scheme = SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFF0000ff),
+        sourceColorHct: Hct.fromInt(0xff0000ff),
         isDark: true,
         contrastLevel: 1.0);
-    expect(MaterialDynamicColors.surface.getArgb(scheme), isColor(0xFF12121D));
+    expect(MaterialDynamicColors.surface.getArgb(scheme), isColor(0xff12121d));
   });
 }
