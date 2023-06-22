@@ -1,3 +1,8 @@
+## 0.8.0 - 2023-06-22
+### Added
+- Add fruit salad color scheme
+- Add rainbow color scheme
+
 ## 0.7.0 - 2023-06-13
 ### Changed
 - Updated `DynamicColor` so that it conforms to the new contrast requirements.

@@ -113,6 +113,11 @@ class Hct {
    */
   void set_tone(double new_tone);
 
+  /**
+   * For using HCT as a key in a ordered map.
+   */
+  bool operator<(const Hct& a) const { return hue_ < a.hue_; }
+
  private:
   /**
    * Sets the Hct object to represent an sRGB color.

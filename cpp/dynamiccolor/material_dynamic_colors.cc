@@ -113,12 +113,7 @@ Hct InViewingConditions(Hct hct, ViewingConditions vc) {
 }
 
 ViewingConditions ViewingConditionsForAlbers(const DynamicScheme& scheme) {
-  return CreateViewingConditions(
-      /*white_point=*/new double[]{95.047, 100.0, 108.883},
-      /*adapting_luminance=*/-1.0,
-      /*background_lstar=*/scheme.is_dark ? 30.0 : 80.0,
-      /*surround=*/2.0,
-      /*discounting_illuminant=*/false);
+  return DefaultWithBackgroundLstar(scheme.is_dark ? 30.0 : 80.0);
 }
 
 double PerformAlbers(Hct pre_albers, const DynamicScheme& scheme) {

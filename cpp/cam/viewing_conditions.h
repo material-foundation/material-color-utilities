@@ -44,6 +44,8 @@ ViewingConditions CreateViewingConditions(const double white_point[3],
                                           const double surround,
                                           const bool discounting_illuminant);
 
+ViewingConditions DefaultWithBackgroundLstar(const double background_lstar);
+
 static const ViewingConditions kDefaultViewingConditions = (ViewingConditions){
     11.725676537,
     50.000000000,

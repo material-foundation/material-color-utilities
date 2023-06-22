@@ -27,7 +27,11 @@ enum Variant {
   content('content',
       'Almost identical to Fidelity.\nTokens and palettes match source color.\nPrimary Container is source color, adjusted to ensure contrast with surfaces.\n\nTertiary palette is analogue of source color.\nFound by dividing color wheel by 6, then finding the 2 colors adjacent to source.\nThe one that increases hue is used.'),
   fidelity('fidelity',
-      'Tokens and palettes match source color.\nPrimary Container is source color, adjusted to ensure contrast with surfaces.\nFor example, if source color is black, it is lightened so it doesn\'t match surfaces in dark mode.\n\nTertiary palette is complement of source color.');
+      'Tokens and palettes match source color.\nPrimary Container is source color, adjusted to ensure contrast with surfaces.\nFor example, if source color is black, it is lightened so it doesn\'t match surfaces in dark mode.\n\nTertiary palette is complement of source color.'),
+  rainbow('rainbow',
+      'A playful theme - the source color\'s hue does not appear in the theme.'),
+  fruitSalad('fruit salad',
+      'A playful theme - the source color\'s hue does not appear in the theme.');
 
   final String label;
   final String description;

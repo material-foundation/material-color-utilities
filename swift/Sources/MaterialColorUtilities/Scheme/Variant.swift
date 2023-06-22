@@ -23,4 +23,6 @@ enum Variant {
   case expressive
   case fidelity
   case content
+  case rainbow
+  case fruitSalad
 }

@@ -1,6 +1,5 @@
-/**
- * @license
- * Copyright 2022 Google LLC
+/*
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +14,20 @@
  * limitations under the License.
  */
 
-/**
- * Set of themes supported by Dynamic Color.
- * Instantiate the corresponding subclass, ex. SchemeTonalSpot, to create
- * colors corresponding to the theme.
- */
-export enum Variant {
-  MONOCHROME,
-  NEUTRAL,
-  TONAL_SPOT,
-  VIBRANT,
-  EXPRESSIVE,
-  FIDELITY,
-  CONTENT,
-  RAINBOW,
-  FRUIT_SALAD
-}
+#ifndef CPP_SCHEME_SCHEME_CONTENT_H_
+#define CPP_SCHEME_SCHEME_CONTENT_H_
+
+#include "cpp/cam/hct.h"
+#include "cpp/scheme/dynamic_scheme.h"
+
+namespace material_color_utilities {
+
+struct SchemeContent : public DynamicScheme {
+  SchemeContent(Hct set_source_color_hct, bool set_is_dark,
+                double set_contrast_level);
+  SchemeContent(Hct set_source_color_hct, bool set_is_dark);
+};
+
+}  // namespace material_color_utilities
+
+#endif  // CPP_SCHEME_SCHEME_CONTENT_H_

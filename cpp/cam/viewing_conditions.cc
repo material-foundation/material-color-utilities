@@ -94,6 +94,12 @@ ViewingConditions CreateViewingConditions(const double white_point[3],
   return viewingConditions;
 }
 
+ViewingConditions DefaultWithBackgroundLstar(const double background_lstar) {
+  return CreateViewingConditions(kWhitePointD65,
+                                 (200.0 / kPi * YFromLstar(50.0) / 100.0),
+                                 background_lstar, 2.0, 0);
+}
+
 void PrintDefaultFrame() {
   ViewingConditions frame = CreateViewingConditions(
       kWhitePointD65, (200.0 / kPi * YFromLstar(50.0) / 100.0), 50.0, 2.0, 0);
