@@ -161,6 +161,10 @@ int Signum(double num) {
   }
 }
 
+double Lerp(double start, double stop, double amount) {
+  return (1.0 - amount) * start + amount * stop;
+}
+
 Vec3 MatrixMultiply(Vec3 input, const double matrix[3][3]) {
   double a =
       input.a * matrix[0][0] + input.b * matrix[0][1] + input.c * matrix[0][2];

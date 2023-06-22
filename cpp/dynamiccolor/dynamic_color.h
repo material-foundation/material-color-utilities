@@ -19,14 +19,16 @@
 
 #include <functional>
 #include <optional>
+#include <string>
 
 #include "cpp/cam/hct.h"
+#include "cpp/dynamiccolor/contrast_curve.h"
 #include "cpp/scheme/dynamic_scheme.h"
 #include "cpp/utils/utils.h"
 
 namespace material_color_utilities {
 
-class ToneDeltaConstraint;
+struct ToneDeltaPair;
 
 /**
  * Given a background tone, find a foreground tone, while ensuring they reach
@@ -64,25 +66,44 @@ bool TonePrefersLightForeground(double tone);
  */
 bool ToneAllowsLightForeground(double tone);
 
+/**
+ * @param name_ The name of the dynamic color.
+ * @param palette_ Function that provides a TonalPalette given
+ * DynamicScheme. A TonalPalette is defined by a hue and chroma, so this
+ * replaces the need to specify hue/chroma. By providing a tonal palette, when
+ * contrast adjustments are made, intended chroma can be preserved.
+ * @param tone_ Function that provides a tone given DynamicScheme.
+ * @param is_background_ Whether this dynamic color is a background, with
+ * some other color as the foreground.
+ * @param background_ The background of the dynamic color (as a function of a
+ *     `DynamicScheme`), if it exists.
+ * @param second_background_ A second background of the dynamic color (as a
+ *     function of a `DynamicScheme`), if it
+ * exists.
+ * @param contrast_curve_ A `ContrastCurve` object specifying how its contrast
+ * against its background should behave in various contrast levels options.
+ * @param tone_delta_pair_ A `ToneDeltaPair` object specifying a tone delta
+ * constraint between two colors. One of them must be the color being
+ * constructed.
+ */
 struct DynamicColor {
-  std::function<double(const DynamicScheme&)> hue;
-  std::function<double(const DynamicScheme&)> chroma;
-  std::function<double(const DynamicScheme&)> tone;
+  std::string name_;
+  std::function<TonalPalette(const DynamicScheme&)> palette_;
+  std::function<double(const DynamicScheme&)> tone_;
+  bool is_background_;
 
-  std::function<std::optional<DynamicColor>(const DynamicScheme&)> background;
-  std::function<double(const DynamicScheme&)> tone_min_contrast;
-  std::function<double(const DynamicScheme&)> tone_max_contrast;
-  std::optional<std::function<ToneDeltaConstraint(const DynamicScheme&)>>
-      tone_delta_constraint;
+  std::optional<std::function<DynamicColor(const DynamicScheme&)>> background_;
+  std::optional<std::function<DynamicColor(const DynamicScheme&)>>
+      second_background_;
+  std::optional<ContrastCurve> contrast_curve_;
+  std::optional<std::function<ToneDeltaPair(const DynamicScheme&)>>
+      tone_delta_pair_;
 
+  /** A convenience constructor, only requiring name, palette, and tone. */
   static DynamicColor FromPalette(
+      std::string name,
       std::function<TonalPalette(const DynamicScheme&)> palette,
-      std::function<double(const DynamicScheme&)> tone,
-      std::optional<
-          std::function<std::optional<DynamicColor>(const DynamicScheme&)>>
-          background,
-      std::optional<std::function<ToneDeltaConstraint(const DynamicScheme&)>>
-          tone_delta_constraint);
+      std::function<double(const DynamicScheme&)> tone);
 
   Argb GetArgb(const DynamicScheme& scheme);
 
@@ -90,17 +111,19 @@ struct DynamicColor {
 
   double GetTone(const DynamicScheme& scheme);
 
- private:
-  DynamicColor(
-      std::function<double(const DynamicScheme&)> hue,
-      std::function<double(const DynamicScheme&)> chroma,
-      std::function<double(const DynamicScheme&)> tone,
-      std::function<std::optional<DynamicColor>(const DynamicScheme&)>
-          background,
-      std::function<double(const DynamicScheme&)> tone_min_contrast,
-      std::function<double(const DynamicScheme&)> tone_max_contrast,
-      std::optional<std::function<ToneDeltaConstraint(const DynamicScheme&)>>
-          tone_delta_constraint);
+  /** The default constructor. */
+  DynamicColor(std::string name,
+               std::function<TonalPalette(const DynamicScheme&)> palette,
+               std::function<double(const DynamicScheme&)> tone,
+               bool is_background,
+
+               std::optional<std::function<DynamicColor(const DynamicScheme&)>>
+                   background,
+               std::optional<std::function<DynamicColor(const DynamicScheme&)>>
+                   second_background,
+               std::optional<ContrastCurve> contrast_curve,
+               std::optional<std::function<ToneDeltaPair(const DynamicScheme&)>>
+                   tone_delta_pair);
 };
 
 }  // namespace material_color_utilities

@@ -55,7 +55,8 @@ describe('scheme vibrant test', () => {
 
   it('lightTheme_minContrast_primaryContainer', () => {
     const scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), false, -1.0);
-    expect(MaterialDynamicColors.primaryContainer.getArgb(scheme)).matchesColor(0xffe0e0ff);
+    expect(MaterialDynamicColors.primaryContainer.getArgb(scheme))
+        .matchesColor(0xffd5d6ff);
   });
 
   it('lightTheme_standardContrast_primaryContainer', () => {
@@ -70,7 +71,8 @@ describe('scheme vibrant test', () => {
 
   it('lightTheme_minContrast_onPrimaryContainer', () => {
     const scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), false, -1.0);
-    expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme)).matchesColor(0xff3e47ff);
+    expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme))
+        .matchesColor(0xff333dff);
   });
 
   it('lightTheme_standardContrast_onPrimaryContainer', () => {
@@ -80,7 +82,8 @@ describe('scheme vibrant test', () => {
 
   it('lightTheme_maxContrast_onPrimaryContainer', () => {
     const scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), false, 1.0);
-    expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme)).matchesColor(0xffd6d6ff);
+    expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme))
+        .matchesColor(0xffffffff);
   });
 
   it('lightTheme_minContrast_surface', () => {
@@ -100,7 +103,8 @@ describe('scheme vibrant test', () => {
 
   it('darkTheme_minContrast_primary', () => {
     const scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), true, -1.0);
-    expect(MaterialDynamicColors.primary.getArgb(scheme)).matchesColor(0xff5660ff);
+    expect(MaterialDynamicColors.primary.getArgb(scheme))
+        .matchesColor(0xff7c84ff);
   });
 
   it('darkTheme_standardContrast_primary', () => {
@@ -110,12 +114,14 @@ describe('scheme vibrant test', () => {
 
   it('darkTheme_maxContrast_primary', () => {
     const scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), true, 1.0);
-    expect(MaterialDynamicColors.primary.getArgb(scheme)).matchesColor(0xfff6f4ff);
+    expect(MaterialDynamicColors.primary.getArgb(scheme))
+        .matchesColor(0xfffdf9ff);
   });
 
   it('darkTheme_minContrast_primaryContainer', () => {
     const scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), true, -1.0);
-    expect(MaterialDynamicColors.primaryContainer.getArgb(scheme)).matchesColor(0xff0000ef);
+    expect(MaterialDynamicColors.primaryContainer.getArgb(scheme))
+        .matchesColor(0xff0001c9);
   });
 
   it('darkTheme_standardContrast_primaryContainer', () => {
@@ -130,7 +136,8 @@ describe('scheme vibrant test', () => {
 
   it('darkTheme_minContrast_onPrimaryContainer', () => {
     const scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), true, -1.0);
-    expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme)).matchesColor(0xffa9afff);
+    expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme))
+        .matchesColor(0xff949bff);
   });
 
   it('darkTheme_standardContrast_onPrimaryContainer', () => {
@@ -140,12 +147,14 @@ describe('scheme vibrant test', () => {
 
   it('darkTheme_maxContrast_onPrimaryContainer', () => {
     const scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), true, 1.0);
-    expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme)).matchesColor(0xff0001c6);
+    expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme))
+        .matchesColor(0xff000000);
   });
 
   it('darkTheme_minContrast_onTertiaryContainer', () => {
     const scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), true, -1.0);
-    expect(MaterialDynamicColors.onTertiaryContainer.getArgb(scheme)).matchesColor(0xffc9a9df);
+    expect(MaterialDynamicColors.onTertiaryContainer.getArgb(scheme))
+        .matchesColor(0xffb798cd);
   });
 
   it('darkTheme_standardContrast_onTertiaryContainer', () => {
@@ -155,7 +164,8 @@ describe('scheme vibrant test', () => {
 
   it('darkTheme_maxContrast_onTertiaryContainer', () => {
     const scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), true, 1.0);
-    expect(MaterialDynamicColors.onTertiaryContainer.getArgb(scheme)).matchesColor(0xff472e5b);
+    expect(MaterialDynamicColors.onTertiaryContainer.getArgb(scheme))
+        .matchesColor(0xff000000);
   });
 
   it('darkTheme_minContrast_surface', () => {

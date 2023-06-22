@@ -1,3 +1,8 @@
+## 0.7.0 - 2023-06-13
+### Changed
+- Updated `DynamicColor` so that it conforms to the new contrast requirements.
+    - API for `DynamicColor` modified.
+
 ## 0.6.0 - 2023-05-31
 ### Added
 - Add key color to tonal palette.

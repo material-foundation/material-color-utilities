@@ -52,7 +52,7 @@ TEST(SchemeVibrantTest, lightTheme_maxContrast_primary) {
 TEST(SchemeVibrantTest, lightTheme_minContrast_primaryContainer) {
   SchemeVibrant scheme = SchemeVibrant(Hct(0xff0000ff), false, -1.0);
   EXPECT_EQ(MaterialDynamicColors::PrimaryContainer().GetArgb(scheme),
-            0xffe0e0ff);
+            0xffd5d6ff);
 }
 TEST(SchemeVibrantTest, lightTheme_standardContrast_primaryContainer) {
   SchemeVibrant scheme = SchemeVibrant(Hct(0xff0000ff), false, 0.0);
@@ -67,7 +67,7 @@ TEST(SchemeVibrantTest, lightTheme_maxContrast_primaryContainer) {
 TEST(SchemeVibrantTest, lightTheme_minContrast_onPrimaryContainer) {
   SchemeVibrant scheme = SchemeVibrant(Hct(0xff0000ff), false, -1.0);
   EXPECT_EQ(MaterialDynamicColors::OnPrimaryContainer().GetArgb(scheme),
-            0xff3e47ff);
+            0xff333dff);
 }
 TEST(SchemeVibrantTest, lightTheme_standardContrast_onPrimaryContainer) {
   SchemeVibrant scheme = SchemeVibrant(Hct(0xff0000ff), false, 0.0);
@@ -77,7 +77,7 @@ TEST(SchemeVibrantTest, lightTheme_standardContrast_onPrimaryContainer) {
 TEST(SchemeVibrantTest, lightTheme_maxContrast_onPrimaryContainer) {
   SchemeVibrant scheme = SchemeVibrant(Hct(0xff0000ff), false, 1.0);
   EXPECT_EQ(MaterialDynamicColors::OnPrimaryContainer().GetArgb(scheme),
-            0xffd6d6ff);
+            0xffffffff);
 }
 TEST(SchemeVibrantTest, lightTheme_minContrast_surface) {
   SchemeVibrant scheme = SchemeVibrant(Hct(0xff0000ff), false, -1.0);
@@ -93,7 +93,7 @@ TEST(SchemeVibrantTest, lightTheme_maxContrast_surface) {
 }
 TEST(SchemeVibrantTest, darkTheme_minContrast_primary) {
   SchemeVibrant scheme = SchemeVibrant(Hct(0xff0000ff), true, -1.0);
-  EXPECT_EQ(MaterialDynamicColors::Primary().GetArgb(scheme), 0xff5660ff);
+  EXPECT_EQ(MaterialDynamicColors::Primary().GetArgb(scheme), 0xff7c84ff);
 }
 TEST(SchemeVibrantTest, darkTheme_standardContrast_primary) {
   SchemeVibrant scheme = SchemeVibrant(Hct(0xff0000ff), true, 0.0);
@@ -101,12 +101,12 @@ TEST(SchemeVibrantTest, darkTheme_standardContrast_primary) {
 }
 TEST(SchemeVibrantTest, darkTheme_maxContrast_primary) {
   SchemeVibrant scheme = SchemeVibrant(Hct(0xff0000ff), true, 1.0);
-  EXPECT_EQ(MaterialDynamicColors::Primary().GetArgb(scheme), 0xfff6f4ff);
+  EXPECT_EQ(MaterialDynamicColors::Primary().GetArgb(scheme), 0xfffdf9ff);
 }
 TEST(SchemeVibrantTest, darkTheme_minContrast_primaryContainer) {
   SchemeVibrant scheme = SchemeVibrant(Hct(0xff0000ff), true, -1.0);
   EXPECT_EQ(MaterialDynamicColors::PrimaryContainer().GetArgb(scheme),
-            0xff0000ef);
+            0xff0001c9);
 }
 TEST(SchemeVibrantTest, darkTheme_standardContrast_primaryContainer) {
   SchemeVibrant scheme = SchemeVibrant(Hct(0xff0000ff), true, 0.0);
@@ -121,7 +121,7 @@ TEST(SchemeVibrantTest, darkTheme_maxContrast_primaryContainer) {
 TEST(SchemeVibrantTest, darkTheme_minContrast_onPrimaryContainer) {
   SchemeVibrant scheme = SchemeVibrant(Hct(0xff0000ff), true, -1.0);
   EXPECT_EQ(MaterialDynamicColors::OnPrimaryContainer().GetArgb(scheme),
-            0xffa9afff);
+            0xff949bff);
 }
 TEST(SchemeVibrantTest, darkTheme_standardContrast_onPrimaryContainer) {
   SchemeVibrant scheme = SchemeVibrant(Hct(0xff0000ff), true, 0.0);
@@ -131,12 +131,12 @@ TEST(SchemeVibrantTest, darkTheme_standardContrast_onPrimaryContainer) {
 TEST(SchemeVibrantTest, darkTheme_maxContrast_onPrimaryContainer) {
   SchemeVibrant scheme = SchemeVibrant(Hct(0xff0000ff), true, 1.0);
   EXPECT_EQ(MaterialDynamicColors::OnPrimaryContainer().GetArgb(scheme),
-            0xff0001c6);
+            0xff000000);
 }
 TEST(SchemeVibrantTest, darkTheme_minContrast_onTertiaryContainer) {
   SchemeVibrant scheme = SchemeVibrant(Hct(0xff0000ff), true, -1.0);
   EXPECT_EQ(MaterialDynamicColors::OnTertiaryContainer().GetArgb(scheme),
-            0xffc9a9df);
+            0xffb798cd);
 }
 TEST(SchemeVibrantTest, darkTheme_standardContrast_onTertiaryContainer) {
   SchemeVibrant scheme = SchemeVibrant(Hct(0xff0000ff), true, 0.0);
@@ -146,7 +146,7 @@ TEST(SchemeVibrantTest, darkTheme_standardContrast_onTertiaryContainer) {
 TEST(SchemeVibrantTest, darkTheme_maxContrast_onTertiaryContainer) {
   SchemeVibrant scheme = SchemeVibrant(Hct(0xff0000ff), true, 1.0);
   EXPECT_EQ(MaterialDynamicColors::OnTertiaryContainer().GetArgb(scheme),
-            0xff472e5b);
+            0xff000000);
 }
 TEST(SchemeVibrantTest, darkTheme_minContrast_surface) {
   SchemeVibrant scheme = SchemeVibrant(Hct(0xff0000ff), true, -1.0);

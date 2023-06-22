@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,8 @@ import {DynamicColor} from './dynamic_color.js';
 
 /**
  * Describes the different in tone between colors.
- *
- * If there is no preference, the tones at standard contrast are examined, and
- * the polarity of those is attempted to be maintained.
  */
-export type TonePolarity = 'darker'|'lighter'|'no-preference';
+export type TonePolarity = 'darker'|'lighter'|'nearer'|'farther';
 
 /**
  * Documents a constraint between two DynamicColors, in which their tones must
@@ -33,18 +30,35 @@ export type TonePolarity = 'darker'|'lighter'|'no-preference';
  * designers want tonal distance, literally contrast, between two colors that
  * don't have a background / foreground relationship or a contrast guarantee.
  */
-export class ToneDeltaConstraint {
+export class ToneDeltaPair {
   /**
    * Documents a constraint in tone distance between two DynamicColors.
    *
+   * The polarity is an adjective that describes "A", compared to "B".
+   *
+   * For instance, ToneDeltaPair(A, B, 15, 'darker', stayTogether) states that
+   * A's tone should be at least 15 darker than B's.
+   *
+   * 'nearer' and 'farther' describes closeness to the surface roles. For
+   * instance, ToneDeltaPair(A, B, 10, 'nearer', stayTogether) states that A
+   * should be 10 lighter than B in light mode, and 10 darker than B in dark
+   * mode.
+   *
+   * @param roleA The first role in a pair.
+   * @param roleB The second role in a pair.
    * @param delta Required difference between tones. Absolute value, negative
    * values have undefined behavior.
-   * @param keepAway DynamicColor whose tone must be delta from the DynamicColor
-   * constructed with this instance.
-   * @param keepAwayPolarity The polarity of keepAway as compared to the
-   * DynamicColor this constraint is attached to.
+   * @param polarity The relative relation between tones of roleA and roleB,
+   * as described above.
+   * @param stayTogether Whether these two roles should stay on the same side of
+   * the "awkward zone" (T50-59). This is necessary for certain cases where
+   * one role has two backgrounds.
    */
   constructor(
-      readonly delta: number, readonly keepAway: DynamicColor,
-      readonly keepAwayPolarity: TonePolarity) {}
+      readonly roleA: DynamicColor,
+      readonly roleB: DynamicColor,
+      readonly delta: number,
+      readonly polarity: TonePolarity,
+      readonly stayTogether: boolean,
+  ) {}
 }

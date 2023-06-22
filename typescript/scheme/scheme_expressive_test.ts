@@ -64,7 +64,7 @@ describe('scheme expressive test', () => {
   it('lightTheme_minContrast_primaryContainer', () => {
     const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, -1.0);
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme))
-        .matchesColor(0xffA2F4C6);
+        .matchesColor(0xff99eabd);
   });
 
   it('lightTheme_standardContrast_primaryContainer', () => {
@@ -82,7 +82,7 @@ describe('scheme expressive test', () => {
   it('lightTheme_minContrast_onPrimaryContainer', () => {
     const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, -1.0);
     expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme))
-        .matchesColor(0xff1e724e);
+        .matchesColor(0xff146c48);
   });
 
   it('lightTheme_standardContrast_onPrimaryContainer', () => {
@@ -94,7 +94,7 @@ describe('scheme expressive test', () => {
   it('lightTheme_maxContrast_onPrimaryContainer', () => {
     const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, 1.0);
     expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme))
-        .matchesColor(0xff9aebbe);
+        .matchesColor(0xffffffff);
   });
 
   it('lightTheme_minContrast_surface', () => {
@@ -118,7 +118,7 @@ describe('scheme expressive test', () => {
   it('darkTheme_minContrast_primary', () => {
     const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), true, -1.0);
     expect(MaterialDynamicColors.primary.getArgb(scheme))
-        .matchesColor(0xff32835d);
+        .matchesColor(0xff51a078);
   });
 
   it('darkTheme_standardContrast_primary', () => {
@@ -130,13 +130,13 @@ describe('scheme expressive test', () => {
   it('darkTheme_maxContrast_primary', () => {
     const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), true, 1.0);
     expect(MaterialDynamicColors.primary.getArgb(scheme))
-        .matchesColor(0xffd5ffe4);
+        .matchesColor(0xffeefff2);
   });
 
   it('darkTheme_minContrast_primaryContainer', () => {
     const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), true, -1.0);
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme))
-        .matchesColor(0xff005234);
+        .matchesColor(0xff00432a);
   });
 
   it('darkTheme_standardContrast_primaryContainer', () => {
@@ -154,7 +154,7 @@ describe('scheme expressive test', () => {
   it('darkTheme_minContrast_onPrimaryContainer', () => {
     const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), true, -1.0);
     expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme))
-        .matchesColor(0xff76c59b);
+        .matchesColor(0xff64b48a);
   });
 
   it('darkTheme_standardContrast_onPrimaryContainer', () => {
@@ -166,7 +166,7 @@ describe('scheme expressive test', () => {
   it('darkTheme_maxContrast_onPrimaryContainer', () => {
     const scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), true, 1.0);
     expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme))
-        .matchesColor(0xff004229);
+        .matchesColor(0xff000000);
   });
 
   it('darkTheme_minContrast_surface', () => {

@@ -56,7 +56,7 @@ TEST(SchemeNeutralTest, lightTheme_maxContrast_primary) {
 TEST(SchemeNeutralTest, lightTheme_minContrast_primaryContainer) {
   SchemeNeutral scheme = SchemeNeutral(Hct(0xff0000ff), false, -1.0);
   EXPECT_EQ(MaterialDynamicColors::PrimaryContainer().GetArgb(scheme),
-            0xffe2e1f3);
+            0xffd9d7e9);
 }
 
 TEST(SchemeNeutralTest, lightTheme_standardContrast_primaryContainer) {
@@ -74,7 +74,7 @@ TEST(SchemeNeutralTest, lightTheme_maxContrast_primaryContainer) {
 TEST(SchemeNeutralTest, lightTheme_minContrast_onPrimaryContainer) {
   SchemeNeutral scheme = SchemeNeutral(Hct(0xff0000ff), false, -1.0);
   EXPECT_EQ(MaterialDynamicColors::OnPrimaryContainer().GetArgb(scheme),
-            0xff636372);
+            0xff5d5d6c);
 }
 
 TEST(SchemeNeutralTest, lightTheme_standardContrast_onPrimaryContainer) {
@@ -86,7 +86,7 @@ TEST(SchemeNeutralTest, lightTheme_standardContrast_onPrimaryContainer) {
 TEST(SchemeNeutralTest, lightTheme_maxContrast_onPrimaryContainer) {
   SchemeNeutral scheme = SchemeNeutral(Hct(0xff0000ff), false, 1.0);
   EXPECT_EQ(MaterialDynamicColors::OnPrimaryContainer().GetArgb(scheme),
-            0xffd9d8ea);
+            0xffffffff);
 }
 
 TEST(SchemeNeutralTest, lightTheme_minContrast_surface) {
@@ -106,7 +106,7 @@ TEST(SchemeNeutralTest, lightTheme_maxContrast_surface) {
 
 TEST(SchemeNeutralTest, darkTheme_minContrast_primary) {
   SchemeNeutral scheme = SchemeNeutral(Hct(0xff0000ff), true, -1.0);
-  EXPECT_EQ(MaterialDynamicColors::Primary().GetArgb(scheme), 0xff737383);
+  EXPECT_EQ(MaterialDynamicColors::Primary().GetArgb(scheme), 0xff908f9f);
 }
 
 TEST(SchemeNeutralTest, darkTheme_standardContrast_primary) {
@@ -116,13 +116,13 @@ TEST(SchemeNeutralTest, darkTheme_standardContrast_primary) {
 
 TEST(SchemeNeutralTest, darkTheme_maxContrast_primary) {
   SchemeNeutral scheme = SchemeNeutral(Hct(0xff0000ff), true, 1.0);
-  EXPECT_EQ(MaterialDynamicColors::Primary().GetArgb(scheme), 0xfff6f4ff);
+  EXPECT_EQ(MaterialDynamicColors::Primary().GetArgb(scheme), 0xfffdf9ff);
 }
 
 TEST(SchemeNeutralTest, darkTheme_minContrast_primaryContainer) {
   SchemeNeutral scheme = SchemeNeutral(Hct(0xff0000ff), true, -1.0);
   EXPECT_EQ(MaterialDynamicColors::PrimaryContainer().GetArgb(scheme),
-            0xff454654);
+            0xff393947);
 }
 
 TEST(SchemeNeutralTest, darkTheme_standardContrast_primaryContainer) {
@@ -140,7 +140,7 @@ TEST(SchemeNeutralTest, darkTheme_maxContrast_primaryContainer) {
 TEST(SchemeNeutralTest, darkTheme_minContrast_onPrimaryContainer) {
   SchemeNeutral scheme = SchemeNeutral(Hct(0xff0000ff), true, -1.0);
   EXPECT_EQ(MaterialDynamicColors::OnPrimaryContainer().GetArgb(scheme),
-            0xffb5b3c4);
+            0xffa3a2b3);
 }
 
 TEST(SchemeNeutralTest, darkTheme_standardContrast_onPrimaryContainer) {
@@ -152,13 +152,13 @@ TEST(SchemeNeutralTest, darkTheme_standardContrast_onPrimaryContainer) {
 TEST(SchemeNeutralTest, darkTheme_maxContrast_onPrimaryContainer) {
   SchemeNeutral scheme = SchemeNeutral(Hct(0xff0000ff), true, 1.0);
   EXPECT_EQ(MaterialDynamicColors::OnPrimaryContainer().GetArgb(scheme),
-            0xff373846);
+            0xff000000);
 }
 
 TEST(SchemeNeutralTest, darkTheme_minContrast_onTertiaryContainer) {
   SchemeNeutral scheme = SchemeNeutral(Hct(0xff0000ff), true, -1.0);
   EXPECT_EQ(MaterialDynamicColors::OnTertiaryContainer().GetArgb(scheme),
-            0xffb3b3cb);
+            0xffa2a2b9);
 }
 
 TEST(SchemeNeutralTest, darkTheme_standardContrast_onTertiaryContainer) {
@@ -170,7 +170,7 @@ TEST(SchemeNeutralTest, darkTheme_standardContrast_onTertiaryContainer) {
 TEST(SchemeNeutralTest, darkTheme_maxContrast_onTertiaryContainer) {
   SchemeNeutral scheme = SchemeNeutral(Hct(0xff0000ff), true, 1.0);
   EXPECT_EQ(MaterialDynamicColors::OnTertiaryContainer().GetArgb(scheme),
-            0xff37374b);
+            0xff000000);
 }
 
 TEST(SchemeNeutralTest, darkTheme_minContrast_surface) {

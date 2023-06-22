@@ -16,7 +16,7 @@ import Foundation
 
 typealias DynamicSchemeValue<T> = (DynamicScheme) -> T
 
-/// A color that adjusts itself based on UI state provided by [DynamicScheme].
+/// A color that adjusts itself based on UI state provided by `DynamicScheme`.
 ///
 /// This color automatically adjusts to accommodate a desired contrast level, or
 /// other adjustments such as differing in light mode versus dark mode, or what
@@ -32,18 +32,18 @@ typealias DynamicSchemeValue<T> = (DynamicScheme) -> T
 /// Ultimately, each component necessary for calculating a color, adjusting it
 /// for a desired contrast level, and ensuring it has a certain lightness/tone
 /// difference from another color, is provided by a function that takes a
-/// [DynamicScheme] and returns a value. This ensures ultimate flexibility, any
+/// `DynamicScheme` and returns a value. This ensures ultimate flexibility, any
 /// desired behavior of a color for any design system, but it usually
 /// unnecessary. See the default constructor for more information.
 class DynamicColor {
-  let hue: DynamicSchemeValue<Double>
-  let chroma: DynamicSchemeValue<Double>
+  let name: String
+  let palette: DynamicSchemeValue<TonalPalette>
   let tone: DynamicSchemeValue<Double>
-
-  let background: DynamicSchemeValue<DynamicColor?>
-  let toneMinContrast: DynamicSchemeValue<Double>
-  let toneMaxContrast: DynamicSchemeValue<Double>
-  let toneDeltaConstraint: DynamicSchemeValue<ToneDeltaConstraint>?
+  let isBackground: Bool
+  let background: DynamicSchemeValue<DynamicColor>?
+  let secondBackground: DynamicSchemeValue<DynamicColor>?
+  let contrastCurve: ContrastCurve?
+  let toneDeltaPair: DynamicSchemeValue<ToneDeltaPair>?
 
   private var _hctCache: [DynamicScheme: Hct] = [:]
 
@@ -59,26 +59,23 @@ class DynamicColor {
   /// approach for _every_ design system, and every color pairing,
   /// always, in every case.
   ///
-  /// [hue] given [DynamicScheme], return the hue in HCT of the output
-  /// color.
-  /// [chroma] given [DynamicScheme], return chroma in HCT of the output
-  /// color.
-  /// [tone] given [DynamicScheme], return tone in HCT of the output color.
-  /// [background] given [DynamicScheme], return the [DynamicColor] that is
-  /// the background of this [DynamicColor]. When this is provided,
-  /// automated adjustments to lower and raise contrast are made.
-  /// [toneMinContrast] given [DynamicScheme], return tone in HCT this color
-  /// should be at minimum contrast. See toneMinContrastDefault for the default
-  /// behavior, and strongly consider using it unless you have strong opinions
-  /// on color and accessibility. The convenience constructors use it.
-  /// [toneMaxContrast] given [DynamicScheme], return tone in HCT this color
-  /// should be at maximum contrast. See toneMaxContrastDefault for the default
-  /// behavior, and strongly consider using it unless you have strong opinions
-  /// on color and accessibility. The convenience constructors use it.
-  /// [toneDeltaConstraint] given [DynamicScheme], return a
-  /// [ToneDeltaConstraint] that describes a requirement that this
-  /// [DynamicColor] must always have some difference in tone from another
-  /// [DynamicColor].
+  /// - Parameters:
+  ///   - name: The name of the dynamic color.
+  ///   - palette: Function that provides a TonalPalette given DynamicScheme.
+  ///       A TonalPalette is defined by a hue and chroma, so this
+  ///       replaces the need to specify hue/chroma. By providing a tonal palette,
+  ///       when contrast adjustments are made, intended chroma can be preserved.
+  ///   - tone: Function that provides a tone, given a DynamicScheme.
+  ///   - isBackground: Whether this dynamic color is a background, with
+  ///       some other color as the foreground.
+  ///   - background: The background of the dynamic color (as a function of a
+  ///       `DynamicScheme`), if it exists.
+  ///   - secondBackground: A second background of the dynamic color (as a function
+  ///       of a `DynamicScheme`), if it exists.
+  ///   - contrastCurve: A `ContrastCurve` object specifying how its contrast
+  ///       against its background should behave in various contrast levels options.
+  ///   - toneDeltaPair: A `ToneDeltaPair` object specifying a tone delta
+  ///       constraint between two colors. One of them must be the color being constructed.
   ///
   /// Unlikely to be useful unless a design system has some distortions
   /// where colors that don't have a background/foreground relationship
@@ -86,85 +83,44 @@ class DynamicColor {
   /// tone distance based on common contrast / tone delta values, yet, want
   /// tone distance.
   init(
-    hue: @escaping DynamicSchemeValue<Double>, chroma: @escaping DynamicSchemeValue<Double>,
-    tone: @escaping DynamicSchemeValue<Double>,
-    background: @escaping DynamicSchemeValue<DynamicColor?>,
-    toneMinContrast: @escaping DynamicSchemeValue<Double>,
-    toneMaxContrast: @escaping DynamicSchemeValue<Double>,
-    toneDeltaConstraint: DynamicSchemeValue<ToneDeltaConstraint>? = nil
-  ) {
-    self.hue = hue
-    self.chroma = chroma
-    self.tone = tone
-    self.background = background
-    self.toneMinContrast = toneMinContrast
-    self.toneMaxContrast = toneMaxContrast
-    self.toneDeltaConstraint = toneDeltaConstraint
-  }
-
-  /// Create a [DynamicColor].
-  ///
-  /// [palette] Function that provides a TonalPalette given [DynamicScheme]. A
-  /// TonalPalette is defined by a hue and chroma, so this replaces the
-  /// need to specify hue/chroma. By providing a tonal palette, when
-  /// contrast adjustments are made, intended chroma can be preserved.
-  /// [tone] Function that provides a tone given [DynamicScheme]. (useful
-  /// for dark vs. light mode)
-  /// [background] Function that provides background [DynamicColor] given
-  /// [DynamicScheme]. Useful for contrast, given a background, colors
-  /// can adjust to increase/decrease contrast.
-  /// [toneDeltaConstraint] Function that provides a ToneDeltaConstraint
-  /// given [DynamicScheme]. Useful for ensuring lightness difference
-  /// between colors that don't _require_ contrast or have a formal
-  /// background/foreground relationship.
-  static func fromPalette(
+    name: String,
     palette: @escaping DynamicSchemeValue<TonalPalette>,
     tone: @escaping DynamicSchemeValue<Double>,
-    background: DynamicSchemeValue<DynamicColor?>? = nil,
-    toneDeltaConstraint: DynamicSchemeValue<ToneDeltaConstraint>? = nil
-  ) -> DynamicColor {
-    return DynamicColor(
-      hue: { scheme in
-        return palette(scheme).hue
-      },
-      chroma: { scheme in
-        return palette(scheme).chroma
-      },
-      tone: tone,
-      background: { scheme in
-        return background?(scheme)
-      },
-      toneMinContrast: { scheme in
-        return toneMinContrastDefault(tone, background, scheme, toneDeltaConstraint)
-      },
-      toneMaxContrast: { scheme in
-        return toneMaxContrastDefault(tone, background, scheme, toneDeltaConstraint)
-      },
-      toneDeltaConstraint: toneDeltaConstraint
-    )
+    isBackground: Bool = false,
+    background: DynamicSchemeValue<DynamicColor>? = nil,
+    secondBackground: DynamicSchemeValue<DynamicColor>? = nil,
+    contrastCurve: ContrastCurve? = nil,
+    toneDeltaPair: DynamicSchemeValue<ToneDeltaPair>? = nil
+  ) {
+    self.name = name
+    self.palette = palette
+    self.tone = tone
+    self.isBackground = isBackground
+    self.background = background
+    self.secondBackground = secondBackground
+    self.contrastCurve = contrastCurve
+    self.toneDeltaPair = toneDeltaPair
   }
 
   /// Return a ARGB integer (i.e. a hex code).
   ///
-  /// [scheme] Defines the conditions of the user interface, for example,
-  /// whether or not it is dark mode or light mode, and what the desired
-  /// contrast level is.
+  /// - Parameter scheme: Defines the conditions of the user interface, for example,
+  ///   whether or not it is dark mode or light mode, and what the desired contrast level is.
+  /// - Returns: The color as an integer (ARGB).
   func getArgb(_ scheme: DynamicScheme) -> Int {
     return getHct(scheme).toInt()
   }
 
-  /// Return a color, expressed in the HCT color space, that this
-  /// [DynamicColor] is under the conditions in [scheme].
-  ///
-  /// [scheme] Defines the conditions of the user interface, for example,
-  /// whether or not it is dark mode or light mode, and what the desired
-  /// contrast level is.
+  /// - Parameter scheme: Defines the conditions of the user interface, for example,
+  ///   whether or not it is dark mode or light mode, and what the desired
+  ///   contrast level is.
+  /// - Returns: a color, expressed in the HCT color space, that this
+  ///   `DynamicColor` is under the conditions in `scheme`.
   func getHct(_ scheme: DynamicScheme) -> Hct {
-    let cachedAnswer = _hctCache[scheme]
-    if cachedAnswer != nil {
-      return cachedAnswer!
+    if let cachedAnswer = _hctCache[scheme] {
+      return cachedAnswer
     }
-    let answer = Hct.from(hue(scheme), chroma(scheme), getTone(scheme))
+    let answer = palette(scheme).getHct(getTone(scheme))
     if _hctCache.count > 4 {
       _hctCache.removeAll()
     }
@@ -172,275 +128,191 @@ class DynamicColor {
     return answer
   }
 
-  /// Return a tone, T in the HCT color space, that this [DynamicColor] is under
-  /// the conditions in [scheme].
-  ///
-  /// [scheme] Defines the conditions of the user interface, for example,
-  /// whether or not it is dark mode or light mode, and what the desired
-  /// contrast level is.
+  /// - Parameter scheme: Defines the conditions of the user interface, for example,
+  ///   whether or not it is dark mode or light mode, and what the desired
+  ///   contrast level is.
+  /// - Returns: a tone, T in the HCT color space, that this `DynamicColor` is under
+  ///   the conditions in `scheme`.
   func getTone(_ scheme: DynamicScheme) -> Double {
-    var answer = tone(scheme)
     let decreasingContrast = scheme.contrastLevel < 0
-    if scheme.contrastLevel != 0 {
-      let startTone = tone(scheme)
-      let endTone = decreasingContrast ? toneMinContrast(scheme) : toneMaxContrast(scheme)
-      let delta = (endTone - startTone) * abs(scheme.contrastLevel)
-      answer = delta + startTone
-    }
 
-    let bg = background(scheme)
-    var standardRatio: Double?
-    var minRatio: Double?
-    var maxRatio: Double?
-    if bg != nil {
-      let bgHasBg = bg!.background(scheme) != nil
-      standardRatio = Contrast.ratioOfTones(tone(scheme), bg!.tone(scheme))
+    // Case 1: dual foreground, pair of colors with delta constraint.
+    if let toneDeltaPair {
+      let pair = toneDeltaPair(scheme)
+      let roleA = pair.subject
+      let roleB = pair.basis
+      let delta = pair.delta
+      let polarity = pair.polarity
+      let stayTogether = pair.stayTogether
+
+      let bg = background!(scheme)
+      let bgTone = bg.getTone(scheme)
+
+      let aIsNearer =
+        (polarity == TonePolarity.nearer || (polarity == TonePolarity.lighter && !scheme.isDark)
+          || (polarity == TonePolarity.darker && scheme.isDark))
+      let nearer = aIsNearer ? roleA : roleB
+      let farther = aIsNearer ? roleB : roleA
+      let amNearer = self.name == nearer.name
+      let expansionDir: Double = scheme.isDark ? 1 : -1
+
+      // 1st round: solve to min, each
+      let nContrast = nearer.contrastCurve!.getContrast(scheme.contrastLevel)
+      let fContrast =
+        farther.contrastCurve!.getContrast(scheme.contrastLevel)
+
+      // If a color is good enough, it is not adjusted.
+      // Initial and adjusted tones for `nearer`
+      let nInitialTone = nearer.tone(scheme)
+      var nTone =
+        Contrast.ratioOfTones(bgTone, nInitialTone) >= nContrast
+        ? nInitialTone
+        : DynamicColor.foregroundTone(bgTone, nContrast)
+      // Initial and adjusted tones for `farther`
+      let fInitialTone = farther.tone(scheme)
+      var fTone =
+        Contrast.ratioOfTones(bgTone, fInitialTone) >= fContrast
+        ? fInitialTone
+        : DynamicColor.foregroundTone(bgTone, fContrast)
+
       if decreasingContrast {
-        let minContrastRatio = Contrast.ratioOfTones(
-          toneMinContrast(scheme), bg!.toneMinContrast(scheme))
-        minRatio = bgHasBg ? minContrastRatio : nil
-        maxRatio = standardRatio
+        // If decreasing contrast, adjust color to the "bare minimum"
+        // that satisfies contrast.
+        nTone = DynamicColor.foregroundTone(bgTone, nContrast)
+        fTone = DynamicColor.foregroundTone(bgTone, fContrast)
+      }
+
+      if (fTone - nTone) * expansionDir >= delta {
+        // Good! Tones satisfy the constraint; no change needed.
       } else {
-        let maxContrastRatio = Contrast.ratioOfTones(
-          toneMaxContrast(scheme), bg!.toneMaxContrast(scheme))
-        minRatio = bgHasBg ? min(maxContrastRatio, standardRatio!) : nil
-        maxRatio = bgHasBg ? max(maxContrastRatio, standardRatio!) : nil
-      }
-    }
-
-    answer = DynamicColor.calculateDynamicTone(
-      scheme: scheme,
-      toneStandard: tone,
-      toneToJudge: { c in
-        return c.getTone(scheme)
-      },
-      desiredTone: { _, __ in
-        return answer
-      },
-      background: { _ in
-        return bg
-      },
-      constraint: toneDeltaConstraint,
-      minRatio: { _ in
-        return minRatio ?? 1
-      },
-      maxRatio: { _ in
-        return maxRatio ?? 21
-      }
-    )
-
-    return answer
-  }
-
-  /// The default algorithm for calculating the tone of a color at minimum
-  /// contrast.
-  ///
-  /// If the original contrast ratio was >= 7.0, reach contrast 4.5.
-  /// If the original contrast ratio was >= 3.0, reach contrast 3.0.
-  /// If the original contrast ratio was < 3.0, reach that ratio.
-  static func toneMinContrastDefault(
-    _ tone: DynamicSchemeValue<Double>,
-    _ background: DynamicSchemeValue<DynamicColor?>?,
-    _ scheme: DynamicScheme,
-    _ toneDeltaConstraint: DynamicSchemeValue<ToneDeltaConstraint>?
-  ) -> Double {
-    return DynamicColor.calculateDynamicTone(
-      scheme: scheme,
-      toneStandard: tone,
-      toneToJudge: { c in
-        return c.toneMinContrast(scheme)
-      },
-      desiredTone: { stdRatio, bgTone in
-        var answer = tone(scheme)
-        if stdRatio >= 7 {
-          answer = foregroundTone(bgTone, 4.5)
-        } else if stdRatio >= 3 {
-          answer = foregroundTone(bgTone, 3)
+        // 2nd round: expand farther to match delta.
+        fTone = MathUtils.clampDouble(0, 100, nTone + delta * expansionDir)
+        if (fTone - nTone) * expansionDir >= delta {
+          // Good! Tones now satisfy the constraint; no change needed.
         } else {
-          let backgroundHasBackground = background?(scheme)?.background(scheme) != nil
-          if backgroundHasBackground {
-            answer = foregroundTone(bgTone, stdRatio)
+          // 3rd round: contract nearer to match delta.
+          nTone = MathUtils.clampDouble(0, 100, fTone - delta * expansionDir)
+        }
+      }
+
+      // Avoids the 50-59 awkward zone.
+      if 50 <= nTone && nTone < 60 {
+        // If `nearer` is in the awkward zone, move it away, together with
+        // `farther`.
+        if expansionDir > 0 {
+          nTone = 60
+          fTone = max(fTone, nTone + delta * expansionDir)
+        } else {
+          nTone = 49
+          fTone = min(fTone, nTone + delta * expansionDir)
+        }
+      } else if 50 <= fTone && fTone < 60 {
+        if stayTogether {
+          // Fixes both, to avoid two colors on opposite sides of the "awkward
+          // zone".
+          if expansionDir > 0 {
+            nTone = 60
+            fTone = max(fTone, nTone + delta * expansionDir)
+          } else {
+            nTone = 49
+            fTone = min(fTone, nTone + delta * expansionDir)
+          }
+        } else {
+          // Not required to stay together; fixes just one.
+          if expansionDir > 0 {
+            fTone = 60
+          } else {
+            fTone = 49
           }
         }
-        return answer
-      },
-      background: background,
-      constraint: toneDeltaConstraint,
-      minRatio: nil,
-      maxRatio: { standardRatio in
-        return standardRatio
       }
-    )
-  }
 
-  /// The default algorithm for calculating the tone of a color at
-  /// maximum contrast.
-  ///
-  /// If the color's background has a background, reach contrast
-  /// 7.0.
-  /// If it doesn't, maintain the original contrast ratio.
-  ///
-  /// This ensures text on surfaces maintains its original, often
-  /// detrimentally excessive, contrast ratio. But, text on buttons
-  /// can soften to not have excessive contrast.
-  ///
-  /// Historically, digital design uses pure whites and black for
-  /// text and surfaces. It's too much of a jump at this point in
-  /// history to introduce a dynamic contrast system _and_ insist
-  /// that text always had excessive contrast and should reach 7.0,
-  /// it would deterimentally affect desire to understand and use
-  /// dynamic contrast.
-  static func toneMaxContrastDefault(
-    _ tone: DynamicSchemeValue<Double>,
-    _ background: DynamicSchemeValue<DynamicColor?>?,
-    _ scheme: DynamicScheme,
-    _ toneDeltaConstraint: DynamicSchemeValue<ToneDeltaConstraint>?
-  ) -> Double {
-    return DynamicColor.calculateDynamicTone(
-      scheme: scheme,
-      toneStandard: tone,
-      toneToJudge: { c in
-        return c.toneMaxContrast(scheme)
-      },
-      desiredTone: { stdRatio, bgTone in
-        let backgroundHasBackground = background?(scheme)?.background(scheme) != nil
-        if backgroundHasBackground {
-          return foregroundTone(bgTone, 7)
-        } else {
-          return foregroundTone(bgTone, max(7, stdRatio))
-        }
-      },
-      background: background,
-      constraint: toneDeltaConstraint,
-      minRatio: nil,
-      maxRatio: nil
-    )
-  }
-
-  /// Core method for calculating a tone for under dynamic contrast.
-  ///
-  /// It enforces important properties:
-  /// #1. Desired contrast ratio is reached.
-  /// As contrast increases from standard to max, the tones involved should
-  /// always be at least the standard ratio. For example, if a button is T90,
-  /// and button text is T0, and the button is T0 at max contrast, the button
-  /// text cannot simply linearly interpolate from T0 to T100, or at some point
-  /// they'll both be at the same tone.
-  /// #2. Enable light foregrounds on midtones.
-  /// The eye prefers light foregrounds on T50 to T60, possibly up to T70, but,
-  /// contrast ratio 4.5 can't be reached with T100 unless the foreground is
-  /// T50. Contrast ratio 4.5 is crucial, it represents 'readable text', i.e.
-  /// text smaller than ~40 dp / 1/4". So, if a tone is between T50 and T60, it
-  /// is proactively changed to T49 to enable light foregrounds.
-  /// #3. Ensure tone delta with another color.
-  /// In design systems, there may be colors without a background/foreground
-  /// relationship that require different tones for visual differentiation.
-  /// [ToneDeltaConstraint] models this requirement, and [DynamicColor]
-  /// enforces it.
-  static func calculateDynamicTone(
-    scheme: DynamicScheme,
-    toneStandard: DynamicSchemeValue<Double>,
-    toneToJudge: (DynamicColor) -> Double,
-    desiredTone: (_ standardRatio: Double, _ bgTone: Double) -> Double,
-    background: DynamicSchemeValue<DynamicColor?>? = nil,
-    constraint: DynamicSchemeValue<ToneDeltaConstraint>? = nil,
-    minRatio: ((_ standardRatio: Double) -> Double)? = nil,
-    maxRatio: ((_ standardRatio: Double) -> Double)? = nil
-  ) -> Double {
-    // Start with the tone with no adjustment for contrast.
-    // If there is no background, don't perform any adjustment, return immediately.
-    let toneStd = toneStandard(scheme)
-    var answer = toneStd
-    let bgDynamic = background?(scheme)
-    if bgDynamic == nil {
-      return answer
-    }
-    let bgToneStd = bgDynamic!.tone(scheme)
-    let stdRatio = Contrast.ratioOfTones(toneStd, bgToneStd)
-
-    // If there is a background, determine its tone after contrast adjustment.
-    // Then, calculate the foreground tone that ensures the caller's desired contrast ratio is met.
-    let bgTone = toneToJudge(bgDynamic!)
-    let myDesiredTone = desiredTone(stdRatio, bgTone)
-    let currentRatio = Contrast.ratioOfTones(bgTone, myDesiredTone)
-    let desiredRatio = MathUtils.clampDouble(
-      minRatio?(stdRatio) ?? 1, maxRatio?(stdRatio) ?? 21, currentRatio)
-    if desiredRatio == currentRatio {
-      answer = myDesiredTone
+      // Returns `nTone` if this color is `nearer`, otherwise `fTone`.
+      return amNearer ? nTone : fTone
     } else {
-      answer = DynamicColor.foregroundTone(bgTone, desiredRatio)
-    }
+      // Case 2: No contrast pair; just solve for itself.
+      var answer = self.tone(scheme)
 
-    // If the background has no background,  adjust the foreground tone to
-    // ensure that it is dark enough to have a light foreground.
-    if bgDynamic!.background(scheme) == nil {
-      answer = DynamicColor.enableLightForeground(answer)
-    }
+      if let background {
+        let bgTone = background(scheme).getTone(scheme)
 
-    // If the caller has specified a constraint where it must have a certain
-    // tone distance from another color, enforce that constraint.
-    answer = ensureToneDelta(
-      tone: answer,
-      toneStandard: toneStd,
-      scheme: scheme,
-      constraintProvider: constraint,
-      toneToDistanceFrom: { c in
-        return toneToJudge(c)
+        let desiredRatio =
+          self.contrastCurve!.getContrast(scheme.contrastLevel)
+
+        if Contrast.ratioOfTones(bgTone, answer) >= desiredRatio {
+          // Don't "improve" what's good enough.
+        } else {
+          // Rough improvement.
+          answer = DynamicColor.foregroundTone(bgTone, desiredRatio)
+        }
+
+        if decreasingContrast {
+          answer = DynamicColor.foregroundTone(bgTone, desiredRatio)
+        }
+
+        if self.isBackground && 50 <= answer && answer < 60 {
+          // Must adjust
+          if Contrast.ratioOfTones(49, bgTone) >= desiredRatio {
+            answer = 49
+          } else {
+            answer = 60
+          }
+        }
+
+        if let secondBackground {
+          // Case 3: Adjust for dual backgrounds.
+
+          let bgTone1 = self.background!(scheme).getTone(scheme)
+          let bgTone2 = secondBackground(scheme).getTone(scheme)
+
+          let upper = max(bgTone1, bgTone2)
+          let lower = min(bgTone1, bgTone2)
+
+          if Contrast.ratioOfTones(upper, answer) >= desiredRatio
+            && Contrast.ratioOfTones(lower, answer) >= desiredRatio
+          {
+            return answer
+          }
+
+          // The darkest light tone that satisfies the desired ratio,
+          // or -1 if such ratio cannot be reached.
+          let lightOption = Contrast.lighter(tone: upper, ratio: desiredRatio)
+
+          // The lightest dark tone that satisfies the desired ratio,
+          // or -1 if such ratio cannot be reached.
+          let darkOption = Contrast.darker(tone: lower, ratio: desiredRatio)
+
+          // Tones suitable for the foreground.
+          var availables: [Double] = []
+          if lightOption != -1 { availables.append(lightOption) }
+          if darkOption != -1 { availables.append(darkOption) }
+
+          let prefersLight =
+            DynamicColor.tonePrefersLightForeground(bgTone1)
+            || DynamicColor.tonePrefersLightForeground(bgTone2)
+          if prefersLight {
+            return (lightOption < 0) ? 100 : lightOption
+          }
+          if availables.count == 1 {
+            return availables[0]
+          }
+          return (darkOption < 0) ? 0 : darkOption
+        }
       }
-    )
 
-    return answer
-  }
-
-  /// Enforce a [ToneDeltaConstraint] between two [DynamicColor]s.
-  ///
-  /// [tone] the desired tone of the color.
-  /// [toneStandard] the tone of the color at standard contrast.
-  /// [scheme] Defines the conditions of the user interface, for example,
-  /// whether or not it is dark mode or light mode, and what the desired
-  /// contrast level is.
-  /// [constraintProvider] Given a [DynamicScheme], return a
-  /// [ToneDeltaConstraint] or null.
-  /// [toneToDistanceFrom] Given a [DynamicColor], return a tone that the
-  /// [ToneDeltaConstraint] should enforce a delta from.
-  static func ensureToneDelta(
-    tone: Double,
-    toneStandard: Double,
-    scheme: DynamicScheme,
-    constraintProvider: DynamicSchemeValue<ToneDeltaConstraint?>? = nil,
-    toneToDistanceFrom: (DynamicColor) -> Double
-  ) -> Double {
-    let constraint = constraintProvider?(scheme)
-    if constraint == nil {
-      return tone
-    }
-
-    let requiredDelta = constraint!.delta
-    let keepAwayTone = toneToDistanceFrom(constraint!.keepAway)
-    let delta = abs(tone - keepAwayTone)
-    if delta > requiredDelta {
-      return tone
-    }
-    switch constraint!.keepAwayPolarity {
-    case TonePolarity.darker:
-      return MathUtils.clampDouble(0, 100, keepAwayTone + requiredDelta)
-    case TonePolarity.lighter:
-      return MathUtils.clampDouble(0, 100, keepAwayTone - requiredDelta)
-    case TonePolarity.noPreference:
-      let keepAwayToneStandard = constraint!.keepAway.tone(scheme)
-      let preferLighten = toneStandard > keepAwayToneStandard
-      let alterAmount = abs(delta - requiredDelta)
-      let lighten = preferLighten ? (tone + alterAmount <= 100) : tone < alterAmount
-      return lighten ? tone + alterAmount : tone - alterAmount
+      return answer
     }
   }
 
   /// Given a background tone, find a foreground tone, while ensuring they reach
-  /// a contrast ratio that is as close to [ratio] as possible.
+  /// a contrast ratio that is as close to `ratio` as possible.
   ///
-  /// [bgTone] Tone in HCT. Range is 0 to 100, undefined behavior when it falls
-  /// outside that range.
-  /// [ratio] The contrast ratio desired between [bgTone] and the return value.
+  /// - Parameters:
+  ///   - bgTone: Tone in HCT. Range is 0 to 100, undefined behavior when it falls
+  ///     outside that range.
+  ///   - ratio: The contrast ratio desired between `bgTone` and the return value.
+  ///
+  /// - Returns: The desired foreground tone.
   static func foregroundTone(_ bgTone: Double, _ ratio: Double) -> Double {
     let lighterTone = Contrast.lighterUnsafe(tone: bgTone, ratio: ratio)
     let darkerTone = Contrast.darkerUnsafe(tone: bgTone, ratio: ratio)
@@ -469,8 +341,10 @@ class DynamicColor {
     }
   }
 
-  /// Adjust a tone such that white has 4.5 contrast, if the tone is
+  /// Adjusts a tone such that white has 4.5 contrast, if the tone is
   /// reasonably close to supporting it.
+  /// - Parameter tone: The tone to be adjusted.
+  /// - Returns: The (possibly updated) tone.
   static func enableLightForeground(_ tone: Double) -> Double {
     if tonePrefersLightForeground(tone) && !toneAllowsLightForeground(tone) {
       return 49
@@ -478,7 +352,7 @@ class DynamicColor {
     return tone
   }
 
-  /// Returns whether [tone] prefers a light foreground.
+  /// Returns whether `tone` prefers a light foreground.
   ///
   /// People prefer white foregrounds on ~T60-70. Observed over time, and also
   /// by Andrew Somers during research for APCA.
@@ -488,12 +362,18 @@ class DynamicColor {
   ///
   /// Since `tertiaryContainer` in dark monochrome scheme requires a tone of
   /// 60, it should not be adjusted. Therefore, 60 is excluded here.
+  ///
+  /// - Parameter tone: The tone to be judged.
+  /// - Returns: whether `tone` prefers a light foreground.
   static func tonePrefersLightForeground(_ tone: Double) -> Bool {
     return round(tone) <= 60
   }
 
-  /// Returns whether [tone] can reach a contrast ratio of 4.5 with a lighter
+  /// Returns whether `tone` can reach a contrast ratio of 4.5 with a lighter
   /// color.
+  ///
+  /// - Parameter tone: The tone to be judged.
+  /// - Returns: whether `tone` allows a light foreground.
   static func toneAllowsLightForeground(_ tone: Double) -> Bool {
     return round(tone) <= 49
   }

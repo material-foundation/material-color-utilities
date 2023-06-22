@@ -46,7 +46,7 @@ TEST(DynamicColorTest, One) {
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::Background().GetArgb(s)),
             0xfffff8f6);
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::OnBackground().GetArgb(s)),
-            0xff261715);
+            0xff271815);
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::Surface().GetArgb(s)),
             0xfffff8f6);
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::SurfaceDim().GetArgb(s)),
@@ -71,21 +71,21 @@ TEST(DynamicColorTest, One) {
           s)),
       0xfff9dcd8);
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::OnSurface().GetArgb(s)),
-            0xff261715);
+            0xff271815);
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::SurfaceVariant().GetArgb(s)),
             0xfffddbd5);
   EXPECT_EQ(
       (unsigned int)(MaterialDynamicColors::OnSurfaceVariant().GetArgb(s)),
-      0xff58413d);
+      0xff543d3a);
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::InverseSurface().GetArgb(s)),
             0xff3d2c29);
   EXPECT_EQ(
       (unsigned int)(MaterialDynamicColors::InverseOnSurface().GetArgb(s)),
-      0xffffedeb);
+      0xffffedea);
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::Outline().GetArgb(s)),
-            0xff6f5652);
+            0xff725955);
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::OutlineVariant().GetArgb(s)),
-            0xff896e6a);
+            0xff907470);
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::Shadow().GetArgb(s)),
             0xff000000);
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::Scrim().GetArgb(s)),
@@ -93,9 +93,9 @@ TEST(DynamicColorTest, One) {
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::SurfaceTint().GetArgb(s)),
             0xffc00100);
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::Primary().GetArgb(s)),
-            0xff850100);
+            0xff8c0100);
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::OnPrimary().GetArgb(s)),
-            0xffffc8bf);
+            0xffffffff);
   EXPECT_EQ(
       (unsigned int)(MaterialDynamicColors::PrimaryContainer().GetArgb(s)),
       0xffeb0000);
@@ -103,11 +103,11 @@ TEST(DynamicColorTest, One) {
       (unsigned int)(MaterialDynamicColors::OnPrimaryContainer().GetArgb(s)),
       0xffffffff);
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::InversePrimary().GetArgb(s)),
-            0xffffb5a9);
+            0xffffb4a8);
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::Secondary().GetArgb(s)),
-            0xff5c3521);
+            0xff603924);
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::OnSecondary().GetArgb(s)),
-            0xffffcab0);
+            0xffffffff);
   EXPECT_EQ(
       (unsigned int)(MaterialDynamicColors::SecondaryContainer().GetArgb(s)),
       0xff996952);
@@ -115,9 +115,9 @@ TEST(DynamicColorTest, One) {
       (unsigned int)(MaterialDynamicColors::OnSecondaryContainer().GetArgb(s)),
       0xffffffff);
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::Tertiary().GetArgb(s)),
-            0xff5e3506);
+            0xff633909);
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::OnTertiary().GetArgb(s)),
-            0xffffcb9d);
+            0xffffffff);
   EXPECT_EQ(
       (unsigned int)(MaterialDynamicColors::TertiaryContainer().GetArgb(s)),
       0xff9d6937);
@@ -125,9 +125,9 @@ TEST(DynamicColorTest, One) {
       (unsigned int)(MaterialDynamicColors::OnTertiaryContainer().GetArgb(s)),
       0xffffffff);
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::Error().GetArgb(s)),
-            0xff850008);
+            0xff8c0009);
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::OnError().GetArgb(s)),
-            0xffffc8c1);
+            0xffffffff);
   EXPECT_EQ((unsigned int)(MaterialDynamicColors::ErrorContainer().GetArgb(s)),
             0xffda342e);
   EXPECT_EQ(

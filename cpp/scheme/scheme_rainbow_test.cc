@@ -56,7 +56,7 @@ TEST(SchemeRainbowTest, lightTheme_maxContrast_primary) {
 TEST(SchemeRainbowTest, lightTheme_minContrast_primaryContainer) {
   SchemeRainbow scheme = SchemeRainbow(Hct(0xff0000ff), false, -1.0);
   EXPECT_EQ(MaterialDynamicColors::PrimaryContainer().GetArgb(scheme),
-            0xffE0E0FF);
+            0xffd5d6ff);
 }
 
 TEST(SchemeRainbowTest, lightTheme_standardContrast_primaryContainer) {
@@ -74,7 +74,7 @@ TEST(SchemeRainbowTest, lightTheme_maxContrast_primaryContainer) {
 TEST(SchemeRainbowTest, lightTheme_minContrast_tertiaryContainer) {
   SchemeRainbow scheme = SchemeRainbow(Hct(0xff0000ff), false, -1.0);
   EXPECT_EQ(MaterialDynamicColors::TertiaryContainer().GetArgb(scheme),
-            0xffffd8ee);
+            0xfffbcbe7);
 }
 
 TEST(SchemeRainbowTest, lightTheme_standardContrast_tertiaryContainer) {
@@ -92,7 +92,7 @@ TEST(SchemeRainbowTest, lightTheme_maxContrast_tertiaryContainer) {
 TEST(SchemeRainbowTest, lightTheme_minContrast_onPrimaryContainer) {
   SchemeRainbow scheme = SchemeRainbow(Hct(0xff0000ff), false, -1.0);
   EXPECT_EQ(MaterialDynamicColors::OnPrimaryContainer().GetArgb(scheme),
-            0xff565CB0);
+            0xff5056a9);
 }
 
 TEST(SchemeRainbowTest, lightTheme_standardContrast_onPrimaryContainer) {
@@ -104,7 +104,7 @@ TEST(SchemeRainbowTest, lightTheme_standardContrast_onPrimaryContainer) {
 TEST(SchemeRainbowTest, lightTheme_maxContrast_onPrimaryContainer) {
   SchemeRainbow scheme = SchemeRainbow(Hct(0xff0000ff), false, 1.0);
   EXPECT_EQ(MaterialDynamicColors::OnPrimaryContainer().GetArgb(scheme),
-            0xffd6d6ff);
+            0xffffffff);
 }
 
 TEST(SchemeRainbowTest, lightTheme_minContrast_surface) {
@@ -135,7 +135,7 @@ TEST(SchemeRainbowTest, lightTheme_standardContrast_secondaryContainer) {
 
 TEST(SchemeRainbowTest, darkTheme_minContrast_primary) {
   SchemeRainbow scheme = SchemeRainbow(Hct(0xff0000ff), true, -1.0);
-  EXPECT_EQ(MaterialDynamicColors::Primary().GetArgb(scheme), 0xff676DC1);
+  EXPECT_EQ(MaterialDynamicColors::Primary().GetArgb(scheme), 0xff8389e0);
 }
 
 TEST(SchemeRainbowTest, darkTheme_standardContrast_primary) {
@@ -145,13 +145,13 @@ TEST(SchemeRainbowTest, darkTheme_standardContrast_primary) {
 
 TEST(SchemeRainbowTest, darkTheme_maxContrast_primary) {
   SchemeRainbow scheme = SchemeRainbow(Hct(0xff0000ff), true, 1.0);
-  EXPECT_EQ(MaterialDynamicColors::Primary().GetArgb(scheme), 0xfff6f4ff);
+  EXPECT_EQ(MaterialDynamicColors::Primary().GetArgb(scheme), 0xfffdf9ff);
 }
 
 TEST(SchemeRainbowTest, darkTheme_minContrast_primaryContainer) {
   SchemeRainbow scheme = SchemeRainbow(Hct(0xff0000ff), true, -1.0);
   EXPECT_EQ(MaterialDynamicColors::PrimaryContainer().GetArgb(scheme),
-            0xff383E8F);
+            0xff2a3082);
 }
 
 TEST(SchemeRainbowTest, darkTheme_standardContrast_primaryContainer) {
@@ -169,7 +169,7 @@ TEST(SchemeRainbowTest, darkTheme_maxContrast_primaryContainer) {
 TEST(SchemeRainbowTest, darkTheme_minContrast_onPrimaryContainer) {
   SchemeRainbow scheme = SchemeRainbow(Hct(0xff0000ff), true, -1.0);
   EXPECT_EQ(MaterialDynamicColors::OnPrimaryContainer().GetArgb(scheme),
-            0xffa9afff);
+            0xff969cf5);
 }
 
 TEST(SchemeRainbowTest, darkTheme_standardContrast_onPrimaryContainer) {
@@ -181,13 +181,13 @@ TEST(SchemeRainbowTest, darkTheme_standardContrast_onPrimaryContainer) {
 TEST(SchemeRainbowTest, darkTheme_maxContrast_onPrimaryContainer) {
   SchemeRainbow scheme = SchemeRainbow(Hct(0xff0000ff), true, 1.0);
   EXPECT_EQ(MaterialDynamicColors::OnPrimaryContainer().GetArgb(scheme),
-            0xff292f81);
+            0xff000000);
 }
 
 TEST(SchemeRainbowTest, darkTheme_minContrast_onTertiaryContainer) {
   SchemeRainbow scheme = SchemeRainbow(Hct(0xff0000ff), true, -1.0);
   EXPECT_EQ(MaterialDynamicColors::OnTertiaryContainer().GetArgb(scheme),
-            0xffd5a8c3);
+            0xffc397b2);
 }
 
 TEST(SchemeRainbowTest, darkTheme_standardContrast_onTertiaryContainer) {
@@ -199,7 +199,7 @@ TEST(SchemeRainbowTest, darkTheme_standardContrast_onTertiaryContainer) {
 TEST(SchemeRainbowTest, darkTheme_maxContrast_onTertiaryContainer) {
   SchemeRainbow scheme = SchemeRainbow(Hct(0xff0000ff), true, 1.0);
   EXPECT_EQ(MaterialDynamicColors::OnTertiaryContainer().GetArgb(scheme),
-            0xff4f2e44);
+            0xff000000);
 }
 
 TEST(SchemeRainbowTest, darkTheme_minContrast_surface) {

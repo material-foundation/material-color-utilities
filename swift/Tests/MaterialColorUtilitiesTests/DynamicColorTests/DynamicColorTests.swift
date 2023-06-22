@@ -79,8 +79,8 @@ final class DynamicColorTests: XCTestCase {
     _Pair("onError", "error"),
     _Pair("onErrorContainer", "errorContainer"),
     _Pair("onBackground", "background"),
-    _Pair("onSurfaceVariant", "surfaceVariant"),
-    _Pair("inverseOnSurface", "inverseSurface"),
+    _Pair("onSurfaceVariant", "surfaceBright"),
+    _Pair("onSurfaceVariant", "surfaceDim"),
   ]
 
   func testValuesAreCorrect() {
@@ -121,11 +121,11 @@ final class DynamicColorTests: XCTestCase {
         contrastLevel: 0
       ))
 
-    XCTAssertEqual(onPrimaryContainer, 0xFFFF_E5E1)
-    XCTAssertEqual(onSecondaryContainer, 0xFFFF_FCFF)
-    XCTAssertEqual(onTertiaryContainer, 0xFF61_6600)
+    XCTAssertEqual(onPrimaryContainer, 0xFFFF_FFFF)
+    XCTAssertEqual(onSecondaryContainer, 0xFFFF_FFFF)
+    XCTAssertEqual(onTertiaryContainer, 0xFFBA_C040)
     XCTAssertEqual(inverseSurface, 0xFF2F_2F3B)
-    XCTAssertEqual(inversePrimary, 0xFFFF_907F)
+    XCTAssertEqual(inversePrimary, 0xFFFF_422F)
     XCTAssertEqual(outlineVariant, 0xFF48_4831)
   }
 
@@ -211,10 +211,10 @@ final class DynamicColorTests: XCTestCase {
       contrastLevel: 0.0
     )
 
-    XCTAssertEqual(MaterialDynamicColors.primaryFixed.getHct(scheme).tone, 10, accuracy: 1)
-    XCTAssertEqual(MaterialDynamicColors.primaryFixedDim.getHct(scheme).tone, 20, accuracy: 1)
-    XCTAssertEqual(MaterialDynamicColors.onPrimaryFixed.getHct(scheme).tone, 90, accuracy: 1)
-    XCTAssertEqual(MaterialDynamicColors.onPrimaryFixedVariant.getHct(scheme).tone, 70, accuracy: 1)
+    XCTAssertEqual(MaterialDynamicColors.primaryFixed.getHct(scheme).tone, 40, accuracy: 1)
+    XCTAssertEqual(MaterialDynamicColors.primaryFixedDim.getHct(scheme).tone, 30, accuracy: 1)
+    XCTAssertEqual(MaterialDynamicColors.onPrimaryFixed.getHct(scheme).tone, 100, accuracy: 1)
+    XCTAssertEqual(MaterialDynamicColors.onPrimaryFixedVariant.getHct(scheme).tone, 90, accuracy: 1)
     XCTAssertEqual(MaterialDynamicColors.secondaryFixed.getHct(scheme).tone, 80, accuracy: 1)
     XCTAssertEqual(MaterialDynamicColors.secondaryFixedDim.getHct(scheme).tone, 70, accuracy: 1)
     XCTAssertEqual(MaterialDynamicColors.onSecondaryFixed.getHct(scheme).tone, 10, accuracy: 1)
@@ -222,9 +222,9 @@ final class DynamicColorTests: XCTestCase {
       MaterialDynamicColors.onSecondaryFixedVariant.getHct(scheme).tone, 25, accuracy: 1)
     XCTAssertEqual(MaterialDynamicColors.tertiaryFixed.getHct(scheme).tone, 40, accuracy: 1)
     XCTAssertEqual(MaterialDynamicColors.tertiaryFixedDim.getHct(scheme).tone, 30, accuracy: 1)
-    XCTAssertEqual(MaterialDynamicColors.onTertiaryFixed.getHct(scheme).tone, 90, accuracy: 1)
+    XCTAssertEqual(MaterialDynamicColors.onTertiaryFixed.getHct(scheme).tone, 100, accuracy: 1)
     XCTAssertEqual(
-      MaterialDynamicColors.onTertiaryFixedVariant.getHct(scheme).tone, 70, accuracy: 1)
+      MaterialDynamicColors.onTertiaryFixedVariant.getHct(scheme).tone, 90, accuracy: 1)
   }
 
   func testFixedColorsInDarkMonochromeSchemes() {
@@ -234,10 +234,10 @@ final class DynamicColorTests: XCTestCase {
       contrastLevel: 0.0
     )
 
-    XCTAssertEqual(MaterialDynamicColors.primaryFixed.getHct(scheme).tone, 100, accuracy: 1)
-    XCTAssertEqual(MaterialDynamicColors.primaryFixedDim.getHct(scheme).tone, 90, accuracy: 1)
-    XCTAssertEqual(MaterialDynamicColors.onPrimaryFixed.getHct(scheme).tone, 10, accuracy: 1)
-    XCTAssertEqual(MaterialDynamicColors.onPrimaryFixedVariant.getHct(scheme).tone, 30, accuracy: 1)
+    XCTAssertEqual(MaterialDynamicColors.primaryFixed.getHct(scheme).tone, 40, accuracy: 1)
+    XCTAssertEqual(MaterialDynamicColors.primaryFixedDim.getHct(scheme).tone, 30, accuracy: 1)
+    XCTAssertEqual(MaterialDynamicColors.onPrimaryFixed.getHct(scheme).tone, 100, accuracy: 1)
+    XCTAssertEqual(MaterialDynamicColors.onPrimaryFixedVariant.getHct(scheme).tone, 90, accuracy: 1)
     XCTAssertEqual(MaterialDynamicColors.secondaryFixed.getHct(scheme).tone, 80, accuracy: 1)
     XCTAssertEqual(MaterialDynamicColors.secondaryFixedDim.getHct(scheme).tone, 70, accuracy: 1)
     XCTAssertEqual(MaterialDynamicColors.onSecondaryFixed.getHct(scheme).tone, 10, accuracy: 1)
@@ -245,9 +245,9 @@ final class DynamicColorTests: XCTestCase {
       MaterialDynamicColors.onSecondaryFixedVariant.getHct(scheme).tone, 25, accuracy: 1)
     XCTAssertEqual(MaterialDynamicColors.tertiaryFixed.getHct(scheme).tone, 40, accuracy: 1)
     XCTAssertEqual(MaterialDynamicColors.tertiaryFixedDim.getHct(scheme).tone, 30, accuracy: 1)
-    XCTAssertEqual(MaterialDynamicColors.onTertiaryFixed.getHct(scheme).tone, 90, accuracy: 1)
+    XCTAssertEqual(MaterialDynamicColors.onTertiaryFixed.getHct(scheme).tone, 100, accuracy: 1)
     XCTAssertEqual(
-      MaterialDynamicColors.onTertiaryFixedVariant.getHct(scheme).tone, 70, accuracy: 1)
+      MaterialDynamicColors.onTertiaryFixedVariant.getHct(scheme).tone, 90, accuracy: 1)
   }
 }
 

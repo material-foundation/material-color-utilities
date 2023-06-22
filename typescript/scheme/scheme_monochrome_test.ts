@@ -45,7 +45,7 @@ describe('scheme monochrome test', () => {
         -1.0,
     );
     expect(MaterialDynamicColors.primary.getArgb(scheme))
-        .matchesColor(0xff3c3c3c);
+        .matchesColor(0xff747474);
   });
 
   it('lightTheme standardContrast primary', () => {
@@ -75,7 +75,7 @@ describe('scheme monochrome test', () => {
         -1,
     );
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme))
-        .matchesColor(0xff5f5f5f);
+        .matchesColor(0xffd9d9d9);
   });
 
   it('lightTheme standardContrast primaryContainer', () => {
@@ -95,7 +95,7 @@ describe('scheme monochrome test', () => {
         1,
     );
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme))
-        .matchesColor(0xff3a3a3a);
+        .matchesColor(0xff3b3b3b);
   });
 
   it('lightTheme minContrast onPrimaryContainer', () => {
@@ -105,7 +105,7 @@ describe('scheme monochrome test', () => {
         -1,
     );
     expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme))
-        .matchesColor(0xffd9d9d9);
+        .matchesColor(0xff5e5e5e);
   });
 
   it('lightTheme standardContrast onPrimaryContainer', () => {
@@ -125,7 +125,7 @@ describe('scheme monochrome test', () => {
         1,
     );
     expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme))
-        .matchesColor(0xffcdcdcd);
+        .matchesColor(0xffffffff);
   });
 
   it('lightTheme minContrast surface', () => {
@@ -165,7 +165,7 @@ describe('scheme monochrome test', () => {
         -1.0,
     );
     expect(MaterialDynamicColors.primary.getArgb(scheme))
-        .matchesColor(0xffcccccc);
+        .matchesColor(0xff919191);
   });
 
   it('darkTheme standardContrast primary', () => {
@@ -195,7 +195,7 @@ describe('scheme monochrome test', () => {
         -1.0,
     );
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme))
-        .matchesColor(0xffa3a3a3);
+        .matchesColor(0xff3a3a3a);
   });
 
   it('darkTheme standardContrast primaryContainer', () => {
@@ -215,7 +215,7 @@ describe('scheme monochrome test', () => {
         1.0,
     );
     expect(MaterialDynamicColors.primaryContainer.getArgb(scheme))
-        .matchesColor(0xffd5d5d5);
+        .matchesColor(0xffd4d4d4);
   });
 
   it('darkTheme minContrast onPrimaryContainer', () => {
@@ -225,7 +225,7 @@ describe('scheme monochrome test', () => {
         -1.0,
     );
     expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme))
-        .matchesColor(0xff393939);
+        .matchesColor(0xffa4a4a4);
   });
 
   it('darkTheme standardContrast onPrimaryContainer', () => {
@@ -245,7 +245,7 @@ describe('scheme monochrome test', () => {
         1.0,
     );
     expect(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme))
-        .matchesColor(0xff404040);
+        .matchesColor(0xff000000);
   });
 
   it('darkTheme minContrast onTertiaryContainer', () => {
@@ -255,7 +255,7 @@ describe('scheme monochrome test', () => {
         -1.0,
     );
     expect(MaterialDynamicColors.onTertiaryContainer.getArgb(scheme))
-        .matchesColor(0xffd1d1d1);
+        .matchesColor(0xffa4a4a4);
   });
 
   it('darkTheme standardContrast onTertiaryContainer', () => {
@@ -275,7 +275,7 @@ describe('scheme monochrome test', () => {
         1.0,
     );
     expect(MaterialDynamicColors.onTertiaryContainer.getArgb(scheme))
-        .matchesColor(0xff393939);
+        .matchesColor(0xff000000);
   });
 
   it('darkTheme minContrast surface', () => {

@@ -196,6 +196,13 @@ Argb IntFromLstar(const double lstar);
 int Signum(double num);
 
 /**
+ * The linear interpolation function.
+ *
+ * @return start if amount = 0 and stop if amount = 1
+ */
+double Lerp(double start, double stop, double amount);
+
+/**
  * Multiplies a 1x3 row vector with a 3x3 matrix, returning the product.
  */
 Vec3 MatrixMultiply(Vec3 input, const double matrix[3][3]);

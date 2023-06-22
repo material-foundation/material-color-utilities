@@ -25,9 +25,9 @@ final class SchemeVibrantTests: XCTestCase {
       contrastLevel: 0.0
     )
 
-    XCTAssertEqual(MaterialDynamicColors.primaryPaletteKeyColor.getArgb(scheme), 0xff08_0CFF)
-    XCTAssertEqual(MaterialDynamicColors.secondaryPaletteKeyColor.getArgb(scheme), 0xff7B_7296)
-    XCTAssertEqual(MaterialDynamicColors.tertiaryPaletteKeyColor.getArgb(scheme), 0xff88_6C9D)
+    XCTAssertEqual(MaterialDynamicColors.primaryPaletteKeyColor.getArgb(scheme), 0xff08_0cff)
+    XCTAssertEqual(MaterialDynamicColors.secondaryPaletteKeyColor.getArgb(scheme), 0xff7b_7296)
+    XCTAssertEqual(MaterialDynamicColors.tertiaryPaletteKeyColor.getArgb(scheme), 0xff88_6c9d)
     XCTAssertEqual(MaterialDynamicColors.neutralPaletteKeyColor.getArgb(scheme), 0xff77_7682)
     XCTAssertEqual(MaterialDynamicColors.neutralVariantPaletteKeyColor.getArgb(scheme), 0xff76_7685)
   }
@@ -65,7 +65,7 @@ final class SchemeVibrantTests: XCTestCase {
       isDark: false,
       contrastLevel: -1.0
     )
-    XCTAssertEqual(MaterialDynamicColors.primaryContainer.getArgb(scheme), 0xffe0_e0ff)
+    XCTAssertEqual(MaterialDynamicColors.primaryContainer.getArgb(scheme), 0xffd5_d6ff)
   }
 
   func testLightTheme_standardContrast_primaryContainer() {
@@ -92,7 +92,7 @@ final class SchemeVibrantTests: XCTestCase {
       isDark: false,
       contrastLevel: -1.0
     )
-    XCTAssertEqual(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme), 0xff3e_47ff)
+    XCTAssertEqual(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme), 0xff33_3dff)
   }
 
   func testLightTheme_standardContrast_onPrimaryContainer() {
@@ -110,7 +110,7 @@ final class SchemeVibrantTests: XCTestCase {
       isDark: false,
       contrastLevel: 1.0
     )
-    XCTAssertEqual(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme), 0xffd6_d6ff)
+    XCTAssertEqual(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme), 0xffff_ffff)
   }
 
   func testLightTheme_minContrast_surface() {
@@ -146,7 +146,7 @@ final class SchemeVibrantTests: XCTestCase {
       isDark: true,
       contrastLevel: -1.0
     )
-    XCTAssertEqual(MaterialDynamicColors.primary.getArgb(scheme), 0xff56_60ff)
+    XCTAssertEqual(MaterialDynamicColors.primary.getArgb(scheme), 0xff7c_84ff)
   }
 
   func testDarkTheme_standardContrast_primary() {
@@ -164,7 +164,7 @@ final class SchemeVibrantTests: XCTestCase {
       isDark: true,
       contrastLevel: 1.0
     )
-    XCTAssertEqual(MaterialDynamicColors.primary.getArgb(scheme), 0xfff6_f4ff)
+    XCTAssertEqual(MaterialDynamicColors.primary.getArgb(scheme), 0xfffd_f9ff)
   }
 
   func testDarkTheme_minContrast_primaryContainer() {
@@ -173,7 +173,7 @@ final class SchemeVibrantTests: XCTestCase {
       isDark: true,
       contrastLevel: -1.0
     )
-    XCTAssertEqual(MaterialDynamicColors.primaryContainer.getArgb(scheme), 0xff00_00ef)
+    XCTAssertEqual(MaterialDynamicColors.primaryContainer.getArgb(scheme), 0xff00_01c9)
   }
 
   func testDarkTheme_standardContrast_primaryContainer() {
@@ -200,7 +200,7 @@ final class SchemeVibrantTests: XCTestCase {
       isDark: true,
       contrastLevel: -1.0
     )
-    XCTAssertEqual(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme), 0xffa9_afff)
+    XCTAssertEqual(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme), 0xff94_9bff)
   }
 
   func testDarkTheme_standardContrast_onPrimaryContainer() {
@@ -218,7 +218,7 @@ final class SchemeVibrantTests: XCTestCase {
       isDark: true,
       contrastLevel: 1.0
     )
-    XCTAssertEqual(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme), 0xff00_01c6)
+    XCTAssertEqual(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme), 0xff00_0000)
   }
 
   func testDarkTheme_minContrast_onTertiaryContainer() {
@@ -227,7 +227,7 @@ final class SchemeVibrantTests: XCTestCase {
       isDark: true,
       contrastLevel: -1.0
     )
-    XCTAssertEqual(MaterialDynamicColors.onTertiaryContainer.getArgb(scheme), 0xffc9_a9df)
+    XCTAssertEqual(MaterialDynamicColors.onTertiaryContainer.getArgb(scheme), 0xffb7_98cd)
   }
 
   func testDarkTheme_standardContrast_onTertiaryContainer() {
@@ -245,7 +245,7 @@ final class SchemeVibrantTests: XCTestCase {
       isDark: true,
       contrastLevel: 1.0
     )
-    XCTAssertEqual(MaterialDynamicColors.onTertiaryContainer.getArgb(scheme), 0xff47_2e5b)
+    XCTAssertEqual(MaterialDynamicColors.onTertiaryContainer.getArgb(scheme), 0xff00_0000)
   }
 
   func testDarkTheme_minContrast_surface() {

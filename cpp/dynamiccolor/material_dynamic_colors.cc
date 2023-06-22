@@ -22,13 +22,16 @@
 #include "cpp/cam/hct.h"
 #include "cpp/cam/viewing_conditions.h"
 #include "cpp/dislike/dislike.h"
+#include "cpp/dynamiccolor/contrast_curve.h"
 #include "cpp/dynamiccolor/dynamic_color.h"
-#include "cpp/dynamiccolor/tone_delta_constraint.h"
+#include "cpp/dynamiccolor/tone_delta_pair.h"
 #include "cpp/scheme/dynamic_scheme.h"
 #include "cpp/scheme/variant.h"
 #include "cpp/utils/utils.h"
 
 namespace material_color_utilities {
+
+using std::nullopt;
 
 bool IsFidelity(const DynamicScheme& scheme) {
   return scheme.variant == Variant::kFidelity ||
@@ -164,739 +167,967 @@ DynamicColor highestSurface(const DynamicScheme& s) {
                    : MaterialDynamicColors::SurfaceDim();
 }
 
+// Compatibility Keys Colors for Android
 DynamicColor MaterialDynamicColors::PrimaryPaletteKeyColor() {
   return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.primary_palette; },
-      /*tone*/
+      "primary_palette_key_color",
+      [](const DynamicScheme& s) -> TonalPalette { return s.primary_palette; },
       [](const DynamicScheme& s) -> double {
         return s.primary_palette.get_key_color().get_tone();
-      },
-      /*toneDeltaConstraint*/ std::nullopt,
-      /*background*/ std::nullopt);
+      });
 }
 
 DynamicColor MaterialDynamicColors::SecondaryPaletteKeyColor() {
   return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.secondary_palette; },
-      /*tone*/
+      "secondary_palette_key_color",
+      [](const DynamicScheme& s) -> TonalPalette {
+        return s.secondary_palette;
+      },
       [](const DynamicScheme& s) -> double {
         return s.secondary_palette.get_key_color().get_tone();
-      },
-      /*toneDeltaConstraint*/ std::nullopt,
-      /*background*/ std::nullopt);
+      });
 }
 
 DynamicColor MaterialDynamicColors::TertiaryPaletteKeyColor() {
   return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.tertiary_palette; },
-      /*tone*/
+      "tertiary_palette_key_color",
+      [](const DynamicScheme& s) -> TonalPalette { return s.tertiary_palette; },
       [](const DynamicScheme& s) -> double {
         return s.tertiary_palette.get_key_color().get_tone();
-      },
-      /*toneDeltaConstraint*/ std::nullopt,
-      /*background*/ std::nullopt);
+      });
 }
 
 DynamicColor MaterialDynamicColors::NeutralPaletteKeyColor() {
   return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.neutral_palette; },
-      /*tone*/
+      "neutral_palette_key_color",
+      [](const DynamicScheme& s) -> TonalPalette { return s.neutral_palette; },
       [](const DynamicScheme& s) -> double {
         return s.neutral_palette.get_key_color().get_tone();
-      },
-      /*toneDeltaConstraint*/ std::nullopt,
-      /*background*/ std::nullopt);
+      });
 }
 
 DynamicColor MaterialDynamicColors::NeutralVariantPaletteKeyColor() {
   return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.neutral_variant_palette; },
-      /*tone*/
+      "neutral_variant_palette_key_color",
+      [](const DynamicScheme& s) -> TonalPalette {
+        return s.neutral_variant_palette;
+      },
       [](const DynamicScheme& s) -> double {
         return s.neutral_variant_palette.get_key_color().get_tone();
-      },
-      /*toneDeltaConstraint*/ std::nullopt,
-      /*background*/ std::nullopt);
+      });
 }
 
 DynamicColor MaterialDynamicColors::Background() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.neutral_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 6 : 98; },
-      /*toneDeltaConstraint*/ std::nullopt,
-      /*background*/ std::nullopt);
+  return DynamicColor(
+      /* name= */ "background",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.neutral_palette; },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 6.0 : 98.0; },
+      /* isBackground= */ true,
+      /* background= */ nullopt,
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ nullopt,
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::OnBackground() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.neutral_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 90 : 10; },
-      /*background*/
-      [](const DynamicScheme& s) -> DynamicColor {
-        return MaterialDynamicColors::Background();
-      },
-      /*toneDeltaConstraint*/ std::nullopt);
+  return DynamicColor(
+      /* name= */ "on_background",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.neutral_palette; },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 90.0 : 10.0; },
+      /* isBackground= */ false,
+      /* background= */
+      [](const DynamicScheme& s) -> DynamicColor { return Background(); },
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(3.0, 3.0, 4.5, 7.0),
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::Surface() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.neutral_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 6 : 98; },
-      /*toneDeltaConstraint*/ std::nullopt,
-      /*background*/ std::nullopt);
+  return DynamicColor(
+      /* name= */ "surface",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.neutral_palette; },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 6.0 : 98.0; },
+      /* isBackground= */ true,
+      /* background= */ nullopt,
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ nullopt,
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::SurfaceDim() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.neutral_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 6 : 87; },
-      /*toneDeltaConstraint*/ std::nullopt,
-      /*background*/ std::nullopt);
+  return DynamicColor(
+      /* name= */ "surface_dim",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.neutral_palette; },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 6.0 : 87.0; },
+      /* isBackground= */ true,
+      /* background= */ nullopt,
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ nullopt,
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::SurfaceBright() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.neutral_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 24 : 98; },
-      /*toneDeltaConstraint*/ std::nullopt,
-      /*background*/ std::nullopt);
+  return DynamicColor(
+      /* name= */ "surface_bright",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.neutral_palette; },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 24.0 : 98.0; },
+      /* isBackground= */ true,
+      /* background= */ nullopt,
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ nullopt,
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::SurfaceContainerLowest() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.neutral_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 4 : 100; },
-      /*toneDeltaConstraint*/ std::nullopt,
-      /*background*/ std::nullopt);
+  return DynamicColor(
+      /* name= */ "surface_container_lowest",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.neutral_palette; },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 4.0 : 100.0; },
+      /* isBackground= */ true,
+      /* background= */ nullopt,
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ nullopt,
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::SurfaceContainerLow() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.neutral_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 10 : 96; },
-      /*toneDeltaConstraint*/ std::nullopt,
-      /*background*/ std::nullopt);
+  return DynamicColor(
+      /* name= */ "surface_container_low",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.neutral_palette; },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 10.0 : 96.0; },
+      /* isBackground= */ true,
+      /* background= */ nullopt,
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ nullopt,
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::SurfaceContainer() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.neutral_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 12 : 94; },
-      /*toneDeltaConstraint*/ std::nullopt,
-      /*background*/ std::nullopt);
+  return DynamicColor(
+      /* name= */ "surface_container",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.neutral_palette; },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 12.0 : 94.0; },
+      /* isBackground= */ true,
+      /* background= */ nullopt,
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ nullopt,
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::SurfaceContainerHigh() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.neutral_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 17 : 92; },
-      /*toneDeltaConstraint*/ std::nullopt,
-      /*background*/ std::nullopt);
+  return DynamicColor(
+      /* name= */ "surface_container_high",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.neutral_palette; },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 17.0 : 92.0; },
+      /* isBackground= */ true,
+      /* background= */ nullopt,
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ nullopt,
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::SurfaceContainerHighest() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.neutral_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 22 : 90; },
-      /*toneDeltaConstraint*/ std::nullopt,
-      /*background*/ std::nullopt);
+  return DynamicColor(
+      /* name= */ "surface_container_highest",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.neutral_palette; },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 22.0 : 90.0; },
+      /* isBackground= */ true,
+      /* background= */ nullopt,
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ nullopt,
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::OnSurface() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.neutral_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 90 : 10; },
-      /*background*/
+  return DynamicColor(
+      /* name= */ "on_surface",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.neutral_palette; },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 90.0 : 10.0; },
+      /* isBackground= */ false,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(4.5, 7.0, 11.0, 21.0),
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::SurfaceVariant() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.neutral_variant_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 30 : 90; },
-      /*toneDeltaConstraint*/ std::nullopt,
-      /*background*/ std::nullopt);
+  return DynamicColor(
+      /* name= */ "surface_variant",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette {
+        return s.neutral_variant_palette;
+      },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 30.0 : 90.0; },
+      /* isBackground= */ true,
+      /* background= */ nullopt,
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ nullopt,
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::OnSurfaceVariant() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.neutral_variant_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 80 : 30; },
-      /*background*/
-      [](const DynamicScheme& s) -> DynamicColor { return SurfaceVariant(); },
-      /*toneDeltaConstraint*/ std::nullopt);
+  return DynamicColor(
+      /* name= */ "on_surface_variant",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette {
+        return s.neutral_variant_palette;
+      },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 80.0 : 30.0; },
+      /* isBackground= */ false,
+      /* background= */
+      [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(3.0, 4.5, 7.0, 11.0),
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::InverseSurface() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.neutral_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 90 : 20; },
-      /*toneDeltaConstraint*/ std::nullopt,
-      /*background*/ std::nullopt);
+  return DynamicColor(
+      /* name= */ "inverse_surface",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.neutral_palette; },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 90.0 : 20.0; },
+      /* isBackground= */ false,
+      /* background= */ nullopt,
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ nullopt,
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::InverseOnSurface() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.neutral_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 20 : 95; },
-      /*background*/
+  return DynamicColor(
+      /* name= */ "inverse_on_surface",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.neutral_palette; },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 20.0 : 95.0; },
+      /* isBackground= */ false,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return InverseSurface(); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(4.5, 7.0, 11.0, 21.0),
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::Outline() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.neutral_variant_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 60 : 50; },
-      /*background*/
+  return DynamicColor(
+      /* name= */ "outline",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette {
+        return s.neutral_variant_palette;
+      },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 60.0 : 50.0; },
+      /* isBackground= */ false,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(1.5, 3.0, 4.5, 7.0),
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::OutlineVariant() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.neutral_variant_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 30 : 80; },
-      /*background*/
+  return DynamicColor(
+      /* name= */ "outline_variant",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette {
+        return s.neutral_variant_palette;
+      },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 30.0 : 80.0; },
+      /* isBackground= */ false,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(1.0, 1.0, 3.0, 7.0),
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::Shadow() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.neutral_palette; },
-      /*tone*/ [](const DynamicScheme& s) -> double { return 0; },
-      /*toneDeltaConstraint*/ std::nullopt,
-      /*background*/ std::nullopt);
+  return DynamicColor(
+      /* name= */ "shadow",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.neutral_palette; },
+      /* tone= */ [](const DynamicScheme& s) -> double { return 0.0; },
+      /* isBackground= */ false,
+      /* background= */ nullopt,
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ nullopt,
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::Scrim() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.neutral_palette; },
-      /*tone*/ [](const DynamicScheme& s) -> double { return 0; },
-      /*toneDeltaConstraint*/ std::nullopt,
-      /*background*/ std::nullopt);
+  return DynamicColor(
+      /* name= */ "scrim",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.neutral_palette; },
+      /* tone= */ [](const DynamicScheme& s) -> double { return 0.0; },
+      /* isBackground= */ false,
+      /* background= */ nullopt,
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ nullopt,
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::SurfaceTint() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.primary_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 80 : 40; },
-      /*toneDeltaConstraint*/ std::nullopt,
-      /*background*/ std::nullopt);
+  return DynamicColor(
+      /* name= */ "surface_tint",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.primary_palette; },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 80.0 : 40.0; },
+      /* isBackground= */ true,
+      /* background= */ nullopt,
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ nullopt,
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::Primary() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.primary_palette; },
-      /*tone*/
+  return DynamicColor(
+      /* name= */ "primary",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.primary_palette; },
+      /* tone= */
       [](const DynamicScheme& s) -> double {
         if (IsMonochrome(s)) {
-          return s.is_dark ? 100 : 0;
+          return s.is_dark ? 100.0 : 0.0;
         }
-        return s.is_dark ? 80 : 40;
+        return s.is_dark ? 80.0 : 40.0;
       },
-      /*background*/
+      /* isBackground= */ true,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
-      /*toneDeltaConstraint*/
-      [](const DynamicScheme& s) -> ToneDeltaConstraint {
-        return ToneDeltaConstraint(
-            /*delta*/ kContentAccentToneDelta,
-            /*keepAway*/ PrimaryContainer(),
-            /*keepAwayPolarity*/ s.is_dark ? TonePolarity::kDarker
-                                           : TonePolarity::kLighter);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(3.0, 4.5, 7.0, 11.0),
+      /* toneDeltaPair= */
+      [](const DynamicScheme& s) -> ToneDeltaPair {
+        return ToneDeltaPair(PrimaryContainer(), Primary(), 15.0,
+                             TonePolarity::kNearer, false);
       });
 }
 
 DynamicColor MaterialDynamicColors::OnPrimary() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.primary_palette; },
-      /*tone*/
+  return DynamicColor(
+      /* name= */ "on_primary",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.primary_palette; },
+      /* tone= */
       [](const DynamicScheme& s) -> double {
         if (IsMonochrome(s)) {
-          return s.is_dark ? 10 : 90;
+          return s.is_dark ? 10.0 : 90.0;
         }
-        return s.is_dark ? 20 : 100;
+        return s.is_dark ? 20.0 : 100.0;
       },
-      /*background*/
+      /* isBackground= */ false,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return Primary(); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(4.5, 7.0, 11.0, 21.0),
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::PrimaryContainer() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.primary_palette; },
-      /*tone*/
+  return DynamicColor(
+      /* name= */ "primary_container",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.primary_palette; },
+      /* tone= */
       [](const DynamicScheme& s) -> double {
         if (IsFidelity(s)) {
           return PerformAlbers(s.source_color_hct, s);
         }
         if (IsMonochrome(s)) {
-          return s.is_dark ? 85 : 25;
+          return s.is_dark ? 85.0 : 25.0;
         }
-        return s.is_dark ? 30 : 90;
+        return s.is_dark ? 30.0 : 90.0;
       },
-      /*background*/
+      /* isBackground= */ true,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(1.0, 1.0, 3.0, 7.0),
+      /* toneDeltaPair= */
+      [](const DynamicScheme& s) -> ToneDeltaPair {
+        return ToneDeltaPair(PrimaryContainer(), Primary(), 15.0,
+                             TonePolarity::kNearer, false);
+      });
 }
 
 DynamicColor MaterialDynamicColors::OnPrimaryContainer() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.primary_palette; },
-      /*tone*/
+  return DynamicColor(
+      /* name= */ "on_primary_container",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.primary_palette; },
+      /* tone= */
       [](const DynamicScheme& s) -> double {
         if (IsFidelity(s)) {
-          return ForegroundTone(PrimaryContainer().tone(s), 4.5);
+          return ForegroundTone(PrimaryContainer().tone_(s), 4.5);
         }
         if (IsMonochrome(s)) {
-          return s.is_dark ? 0 : 100;
+          return s.is_dark ? 0.0 : 100.0;
         }
-        return s.is_dark ? 90 : 10;
+        return s.is_dark ? 90.0 : 10.0;
       },
-      /*background*/
+      /* isBackground= */ false,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return PrimaryContainer(); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(4.5, 7.0, 11.0, 21.0),
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::InversePrimary() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.primary_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 40 : 80; },
-      /*background*/
+  return DynamicColor(
+      /* name= */ "inverse_primary",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.primary_palette; },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 40.0 : 80.0; },
+      /* isBackground= */ false,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return InverseSurface(); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(3.0, 4.5, 7.0, 11.0),
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::Secondary() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.secondary_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 80 : 40; },
-      /*background*/
+  return DynamicColor(
+      /* name= */ "secondary",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette {
+        return s.secondary_palette;
+      },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 80.0 : 40.0; },
+      /* isBackground= */ true,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
-      /*toneDeltaConstraint*/
-      [](const DynamicScheme& s) -> ToneDeltaConstraint {
-        return ToneDeltaConstraint(
-            /*delta*/ kContentAccentToneDelta,
-            /*keepAway*/ SecondaryContainer(),
-            /*keepAwayPolarity*/ s.is_dark ? TonePolarity::kDarker
-                                           : TonePolarity::kLighter);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(3.0, 4.5, 7.0, 11.0),
+      /* toneDeltaPair= */
+      [](const DynamicScheme& s) -> ToneDeltaPair {
+        return ToneDeltaPair(SecondaryContainer(), Secondary(), 15.0,
+                             TonePolarity::kNearer, false);
       });
 }
 
 DynamicColor MaterialDynamicColors::OnSecondary() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.secondary_palette; },
-      /*tone*/
+  return DynamicColor(
+      /* name= */ "on_secondary",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette {
+        return s.secondary_palette;
+      },
+      /* tone= */
       [](const DynamicScheme& s) -> double {
         if (IsMonochrome(s)) {
-          return s.is_dark ? 10 : 100;
+          return s.is_dark ? 10.0 : 100.0;
+        } else {
+          return s.is_dark ? 20.0 : 100.0;
         }
-        return s.is_dark ? 20 : 100;
       },
-      /*background*/
+      /* isBackground= */ false,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return Secondary(); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(4.5, 7.0, 11.0, 21.0),
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::SecondaryContainer() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.secondary_palette; },
-      /*tone*/
+  return DynamicColor(
+      /* name= */ "secondary_container",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette {
+        return s.secondary_palette;
+      },
+      /* tone= */
       [](const DynamicScheme& s) -> double {
+        double initialTone = s.is_dark ? 30.0 : 90.0;
         if (IsMonochrome(s)) {
-          return s.is_dark ? 30 : 85;
+          return s.is_dark ? 30.0 : 85.0;
         }
-        double initial_tone = s.is_dark ? 30.0 : 90.0;
         if (!IsFidelity(s)) {
-          return initial_tone;
+          return initialTone;
         }
-        // TODO: open up hue and chroma
         double answer = FindDesiredChromaByTone(
             s.secondary_palette.get_hue(), s.secondary_palette.get_chroma(),
-            initial_tone, s.is_dark ? false : true);
+            initialTone, s.is_dark ? false : true);
         answer = PerformAlbers(Hct(s.secondary_palette.get(answer)), s);
         return answer;
       },
-      /*background*/
+      /* isBackground= */ true,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(1.0, 1.0, 3.0, 7.0),
+      /* toneDeltaPair= */
+      [](const DynamicScheme& s) -> ToneDeltaPair {
+        return ToneDeltaPair(SecondaryContainer(), Secondary(), 15.0,
+                             TonePolarity::kNearer, false);
+      });
 }
 
 DynamicColor MaterialDynamicColors::OnSecondaryContainer() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.secondary_palette; },
-      /*tone*/
+  return DynamicColor(
+      /* name= */ "on_secondary_container",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette {
+        return s.secondary_palette;
+      },
+      /* tone= */
       [](const DynamicScheme& s) -> double {
         if (!IsFidelity(s)) {
-          return s.is_dark ? 90 : 10;
+          return s.is_dark ? 90.0 : 10.0;
         }
-        return ForegroundTone(SecondaryContainer().tone(s), 4.5);
+        return ForegroundTone(SecondaryContainer().tone_(s), 4.5);
       },
-      /*background*/
+      /* isBackground= */ false,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor {
         return SecondaryContainer();
       },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(4.5, 7.0, 11.0, 21.0),
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::Tertiary() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.tertiary_palette; },
-      /*tone*/
+  return DynamicColor(
+      /* name= */ "tertiary",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.tertiary_palette; },
+      /* tone= */
       [](const DynamicScheme& s) -> double {
         if (IsMonochrome(s)) {
-          return s.is_dark ? 90 : 25;
+          return s.is_dark ? 90.0 : 25.0;
         }
-        return s.is_dark ? 80 : 40;
+        return s.is_dark ? 80.0 : 40.0;
       },
-      /*background*/
+      /* isBackground= */ true,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
-      /*toneDeltaConstraint*/
-      [](const DynamicScheme& s) -> ToneDeltaConstraint {
-        return ToneDeltaConstraint(
-            /*delta*/ kContentAccentToneDelta,
-            /*keepAway*/ TertiaryContainer(),
-            /*keepAwayPolarity*/ s.is_dark ? TonePolarity::kDarker
-                                           : TonePolarity::kLighter);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(3.0, 4.5, 7.0, 11.0),
+      /* toneDeltaPair= */
+      [](const DynamicScheme& s) -> ToneDeltaPair {
+        return ToneDeltaPair(TertiaryContainer(), Tertiary(), 15.0,
+                             TonePolarity::kNearer, false);
       });
 }
 
 DynamicColor MaterialDynamicColors::OnTertiary() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.tertiary_palette; },
-      /*tone*/
+  return DynamicColor(
+      /* name= */ "on_tertiary",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.tertiary_palette; },
+      /* tone= */
       [](const DynamicScheme& s) -> double {
         if (IsMonochrome(s)) {
-          return s.is_dark ? 10 : 90;
+          return s.is_dark ? 10.0 : 90.0;
         }
-        return s.is_dark ? 20 : 100;
+        return s.is_dark ? 20.0 : 100.0;
       },
-      /*background*/
+      /* isBackground= */ false,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return Tertiary(); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(4.5, 7.0, 11.0, 21.0),
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::TertiaryContainer() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.tertiary_palette; },
-      /*tone*/
+  return DynamicColor(
+      /* name= */ "tertiary_container",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.tertiary_palette; },
+      /* tone= */
       [](const DynamicScheme& s) -> double {
         if (IsMonochrome(s)) {
-          return s.is_dark ? 60 : 49;
+          return s.is_dark ? 60.0 : 49.0;
         }
         if (!IsFidelity(s)) {
-          return s.is_dark ? 30 : 90;
+          return s.is_dark ? 30.0 : 90.0;
         }
-
         double albersTone = PerformAlbers(
             Hct(s.tertiary_palette.get(s.source_color_hct.get_tone())), s);
         Hct proposedHct = Hct(s.tertiary_palette.get(albersTone));
         return FixIfDisliked(proposedHct).get_tone();
       },
-      /*background*/
+      /* isBackground= */ true,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(1.0, 1.0, 3.0, 7.0),
+      /* toneDeltaPair= */
+      [](const DynamicScheme& s) -> ToneDeltaPair {
+        return ToneDeltaPair(TertiaryContainer(), Tertiary(), 15.0,
+                             TonePolarity::kNearer, false);
+      });
 }
 
 DynamicColor MaterialDynamicColors::OnTertiaryContainer() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.tertiary_palette; },
-      /*tone*/
+  return DynamicColor(
+      /* name= */ "on_tertiary_container",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.tertiary_palette; },
+      /* tone= */
       [](const DynamicScheme& s) -> double {
         if (IsMonochrome(s)) {
-          return s.is_dark ? 0 : 100;
+          return s.is_dark ? 0.0 : 100.0;
         }
         if (!IsFidelity(s)) {
-          return s.is_dark ? 90 : 10;
+          return s.is_dark ? 90.0 : 10.0;
         }
-        return ForegroundTone(TertiaryContainer().tone(s), 4.5);
+        return ForegroundTone(TertiaryContainer().tone_(s), 4.5);
       },
-      /*background*/
+      /* isBackground= */ false,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor {
         return TertiaryContainer();
       },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(4.5, 7.0, 11.0, 21.0),
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::Error() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.error_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 80 : 40; },
-      /*background*/
+  return DynamicColor(
+      /* name= */ "error",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.error_palette; },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 80.0 : 40.0; },
+      /* isBackground= */ true,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
-      /*toneDeltaConstraint*/
-      [](const DynamicScheme& s) -> ToneDeltaConstraint {
-        return ToneDeltaConstraint(
-            /*delta*/ kContentAccentToneDelta,
-            /*keepAway*/ ErrorContainer(),
-            /*keepAwayPolarity*/ s.is_dark ? TonePolarity::kDarker
-                                           : TonePolarity::kLighter);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(3.0, 4.5, 7.0, 11.0),
+      /* toneDeltaPair= */
+      [](const DynamicScheme& s) -> ToneDeltaPair {
+        return ToneDeltaPair(ErrorContainer(), Error(), 15.0,
+                             TonePolarity::kNearer, false);
       });
 }
 
 DynamicColor MaterialDynamicColors::OnError() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.error_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 20 : 100; },
-      /*background*/
+  return DynamicColor(
+      /* name= */ "on_error",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.error_palette; },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 20.0 : 100.0; },
+      /* isBackground= */ false,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return Error(); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(4.5, 7.0, 11.0, 21.0),
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::ErrorContainer() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.error_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 30 : 90; },
-      /*background*/
+  return DynamicColor(
+      /* name= */ "error_container",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.error_palette; },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 30.0 : 90.0; },
+      /* isBackground= */ true,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(1.0, 1.0, 3.0, 7.0),
+      /* toneDeltaPair= */
+      [](const DynamicScheme& s) -> ToneDeltaPair {
+        return ToneDeltaPair(ErrorContainer(), Error(), 15.0,
+                             TonePolarity::kNearer, false);
+      });
 }
 
 DynamicColor MaterialDynamicColors::OnErrorContainer() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.error_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 90 : 10; },
-      /*background*/
+  return DynamicColor(
+      /* name= */ "on_error_container",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.error_palette; },
+      /* tone= */
+      [](const DynamicScheme& s) -> double { return s.is_dark ? 90.0 : 10.0; },
+      /* isBackground= */ false,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return ErrorContainer(); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(4.5, 7.0, 11.0, 21.0),
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::PrimaryFixed() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.primary_palette; },
-      /*tone*/
+  return DynamicColor(
+      /* name= */ "primary_fixed",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.primary_palette; },
+      /* tone= */
       [](const DynamicScheme& s) -> double {
-        if (IsMonochrome(s)) {
-          return s.is_dark ? 100 : 10;
-        }
-        return 90;
+        return IsMonochrome(s) ? 40.0 : 90.0;
       },
-      /*background*/
+      /* isBackground= */ true,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(1.0, 1.0, 3.0, 7.0),
+      /* toneDeltaPair= */
+      [](const DynamicScheme& s) -> ToneDeltaPair {
+        return ToneDeltaPair(PrimaryFixed(), PrimaryFixedDim(), 10.0,
+                             TonePolarity::kLighter, true);
+      });
 }
 
 DynamicColor MaterialDynamicColors::PrimaryFixedDim() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.primary_palette; },
-      /*tone*/
+  return DynamicColor(
+      /* name= */ "primary_fixed_dim",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.primary_palette; },
+      /* tone= */
       [](const DynamicScheme& s) -> double {
-        if (IsMonochrome(s)) {
-          return s.is_dark ? 90 : 20;
-        }
-        return 80;
+        return IsMonochrome(s) ? 30.0 : 80.0;
       },
-      /*background*/
+      /* isBackground= */ true,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(1.0, 1.0, 3.0, 7.0),
+      /* toneDeltaPair= */
+      [](const DynamicScheme& s) -> ToneDeltaPair {
+        return ToneDeltaPair(PrimaryFixed(), PrimaryFixedDim(), 10.0,
+                             TonePolarity::kLighter, true);
+      });
 }
 
 DynamicColor MaterialDynamicColors::OnPrimaryFixed() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.primary_palette; },
-      /*tone*/
+  return DynamicColor(
+      /* name= */ "on_primary_fixed",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.primary_palette; },
+      /* tone= */
       [](const DynamicScheme& s) -> double {
-        if (IsMonochrome(s)) {
-          return s.is_dark ? 10 : 90;
-        }
-        return 10;
+        return IsMonochrome(s) ? 100.0 : 10.0;
       },
-      /*background*/
+      /* isBackground= */ false,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return PrimaryFixedDim(); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */
+      [](const DynamicScheme& s) -> DynamicColor { return PrimaryFixed(); },
+      /* contrastCurve= */ ContrastCurve(4.5, 7.0, 11.0, 21.0),
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::OnPrimaryFixedVariant() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.primary_palette; },
-      /*tone*/
+  return DynamicColor(
+      /* name= */ "on_primary_fixed_variant",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.primary_palette; },
+      /* tone= */
       [](const DynamicScheme& s) -> double {
-        if (IsMonochrome(s)) {
-          return s.is_dark ? 30 : 70;
-        }
-        return 30;
+        return IsMonochrome(s) ? 90.0 : 30.0;
       },
-      /*background*/
+      /* isBackground= */ false,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return PrimaryFixedDim(); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */
+      [](const DynamicScheme& s) -> DynamicColor { return PrimaryFixed(); },
+      /* contrastCurve= */ ContrastCurve(3.0, 4.5, 7.0, 11.0),
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::SecondaryFixed() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.secondary_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double {
-        return IsMonochrome(s) ? 80 : 90;
+  return DynamicColor(
+      /* name= */ "secondary_fixed",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette {
+        return s.secondary_palette;
       },
-      /*background*/
+      /* tone= */
+      [](const DynamicScheme& s) -> double {
+        return IsMonochrome(s) ? 80.0 : 90.0;
+      },
+      /* isBackground= */ true,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(1.0, 1.0, 3.0, 7.0),
+      /* toneDeltaPair= */
+      [](const DynamicScheme& s) -> ToneDeltaPair {
+        return ToneDeltaPair(SecondaryFixed(), SecondaryFixedDim(), 10.0,
+                             TonePolarity::kLighter, true);
+      });
 }
 
 DynamicColor MaterialDynamicColors::SecondaryFixedDim() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.secondary_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double {
-        return IsMonochrome(s) ? 70 : 80;
+  return DynamicColor(
+      /* name= */ "secondary_fixed_dim",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette {
+        return s.secondary_palette;
       },
-      /*background*/
+      /* tone= */
+      [](const DynamicScheme& s) -> double {
+        return IsMonochrome(s) ? 70.0 : 80.0;
+      },
+      /* isBackground= */ true,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(1.0, 1.0, 3.0, 7.0),
+      /* toneDeltaPair= */
+      [](const DynamicScheme& s) -> ToneDeltaPair {
+        return ToneDeltaPair(SecondaryFixed(), SecondaryFixedDim(), 10.0,
+                             TonePolarity::kLighter, true);
+      });
 }
 
 DynamicColor MaterialDynamicColors::OnSecondaryFixed() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.secondary_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double { return 10; },
-      /*background*/
+  return DynamicColor(
+      /* name= */ "on_secondary_fixed",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette {
+        return s.secondary_palette;
+      },
+      /* tone= */ [](const DynamicScheme& s) -> double { return 10.0; },
+      /* isBackground= */ false,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor {
         return SecondaryFixedDim();
       },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */
+      [](const DynamicScheme& s) -> DynamicColor { return SecondaryFixed(); },
+      /* contrastCurve= */ ContrastCurve(4.5, 7.0, 11.0, 21.0),
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::OnSecondaryFixedVariant() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.secondary_palette; },
-      /*tone*/
-      [](const DynamicScheme& s) -> double {
-        return IsMonochrome(s) ? 25 : 30;
+  return DynamicColor(
+      /* name= */ "on_secondary_fixed_variant",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette {
+        return s.secondary_palette;
       },
-      /*background*/
+      /* tone= */
+      [](const DynamicScheme& s) -> double {
+        return IsMonochrome(s) ? 25.0 : 30.0;
+      },
+      /* isBackground= */ false,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor {
         return SecondaryFixedDim();
       },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */
+      [](const DynamicScheme& s) -> DynamicColor { return SecondaryFixed(); },
+      /* contrastCurve= */ ContrastCurve(3.0, 4.5, 7.0, 11.0),
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::TertiaryFixed() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.tertiary_palette; },
-      /*tone*/
+  return DynamicColor(
+      /* name= */ "tertiary_fixed",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.tertiary_palette; },
+      /* tone= */
       [](const DynamicScheme& s) -> double {
-        return IsMonochrome(s) ? 40 : 90;
+        return IsMonochrome(s) ? 40.0 : 90.0;
       },
-      /*background*/
+      /* isBackground= */ true,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(1.0, 1.0, 3.0, 7.0),
+      /* toneDeltaPair= */
+      [](const DynamicScheme& s) -> ToneDeltaPair {
+        return ToneDeltaPair(TertiaryFixed(), TertiaryFixedDim(), 10.0,
+                             TonePolarity::kLighter, true);
+      });
 }
 
 DynamicColor MaterialDynamicColors::TertiaryFixedDim() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.tertiary_palette; },
-      /*tone*/
+  return DynamicColor(
+      /* name= */ "tertiary_fixed_dim",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.tertiary_palette; },
+      /* tone= */
       [](const DynamicScheme& s) -> double {
-        return IsMonochrome(s) ? 30 : 80;
+        return IsMonochrome(s) ? 30.0 : 80.0;
       },
-      /*background*/
+      /* isBackground= */ true,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return highestSurface(s); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */ nullopt,
+      /* contrastCurve= */ ContrastCurve(1.0, 1.0, 3.0, 7.0),
+      /* toneDeltaPair= */
+      [](const DynamicScheme& s) -> ToneDeltaPair {
+        return ToneDeltaPair(TertiaryFixed(), TertiaryFixedDim(), 10.0,
+                             TonePolarity::kLighter, true);
+      });
 }
 
 DynamicColor MaterialDynamicColors::OnTertiaryFixed() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.tertiary_palette; },
-      /*tone*/
+  return DynamicColor(
+      /* name= */ "on_tertiary_fixed",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.tertiary_palette; },
+      /* tone= */
       [](const DynamicScheme& s) -> double {
-        return IsMonochrome(s) ? 90 : 10;
+        return IsMonochrome(s) ? 100.0 : 10.0;
       },
-      /*background*/
+      /* isBackground= */ false,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return TertiaryFixedDim(); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */
+      [](const DynamicScheme& s) -> DynamicColor { return TertiaryFixed(); },
+      /* contrastCurve= */ ContrastCurve(4.5, 7.0, 11.0, 21.0),
+      /* toneDeltaPair= */ nullopt);
 }
 
 DynamicColor MaterialDynamicColors::OnTertiaryFixedVariant() {
-  return DynamicColor::FromPalette(
-      /*palette*/ [](const DynamicScheme& s)
-                      -> TonalPalette { return s.tertiary_palette; },
-      /*tone*/
+  return DynamicColor(
+      /* name= */ "on_tertiary_fixed_variant",
+      /* palette= */
+      [](const DynamicScheme& s) -> TonalPalette { return s.tertiary_palette; },
+      /* tone= */
       [](const DynamicScheme& s) -> double {
-        return IsMonochrome(s) ? 70 : 30;
+        return IsMonochrome(s) ? 90.0 : 30.0;
       },
-      /*background*/
+      /* isBackground= */ false,
+      /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return TertiaryFixedDim(); },
-      /*toneDeltaConstraint*/ std::nullopt);
+      /* secondBackground= */
+      [](const DynamicScheme& s) -> DynamicColor { return TertiaryFixed(); },
+      /* contrastCurve= */ ContrastCurve(3.0, 4.5, 7.0, 11.0),
+      /* toneDeltaPair= */ nullopt);
 }
 
 }  // namespace material_color_utilities

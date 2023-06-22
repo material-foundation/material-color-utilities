@@ -20,7 +20,8 @@ import 'package:material_color_utilities/palettes/tonal_palette.dart';
 import 'package:material_color_utilities/scheme/dynamic_scheme.dart';
 import 'package:material_color_utilities/utils/math_utils.dart';
 
-import 'src/tone_delta_constraint.dart';
+import 'src/contrast_curve.dart';
+import 'src/tone_delta_pair.dart';
 
 /// A color that adjusts itself based on UI state provided by [DynamicScheme].
 ///
@@ -42,96 +43,89 @@ import 'src/tone_delta_constraint.dart';
 /// desired behavior of a color for any design system, but it usually
 /// unnecessary. See the default constructor for more information.
 class DynamicColor {
-  final double Function(DynamicScheme) hue;
-  final double Function(DynamicScheme) chroma;
+  final String name;
+  final TonalPalette Function(DynamicScheme) palette;
   final double Function(DynamicScheme) tone;
-
-  final DynamicColor? Function(DynamicScheme) background;
-  final double Function(DynamicScheme) toneMinContrast;
-  final double Function(DynamicScheme) toneMaxContrast;
-  final ToneDeltaConstraint Function(DynamicScheme)? toneDeltaConstraint;
+  final bool isBackground;
+  final DynamicColor Function(DynamicScheme)? background;
+  final DynamicColor Function(DynamicScheme)? secondBackground;
+  final ContrastCurve? contrastCurve;
+  final ToneDeltaPair Function(DynamicScheme)? toneDeltaPair;
 
   final Map<DynamicScheme, Hct> _hctCache = {};
 
-  /// The base constructor for DynamicColor.
+  /// The base (explicit) constructor for [DynamicColor].
   ///
-  /// _Strongly_ prefer using one of the convenience constructors. This class is
-  /// arguably too flexible to ensure it can support any scenario. Functional
-  /// arguments allow  overriding without risks that come with subclasses.
-  ///
-  /// For example, the default behavior of adjust tone at max contrast
-  /// to be at a 7.0 ratio with its background is principled and
-  /// matches accessibility guidance. That does not mean it's the desired
-  /// approach for _every_ design system, and every color pairing,
-  /// always, in every case.
-  ///
-  /// [hue] given [DynamicScheme], return the hue in HCT of the output
-  /// color.
-  /// [chroma] given [DynamicScheme], return chroma in HCT of the output
-  /// color.
-  /// [tone] given [DynamicScheme], return tone in HCT of the output color.
-  /// [background] given [DynamicScheme], return the [DynamicColor] that is
-  /// the background of this [DynamicColor]. When this is provided,
-  /// automated adjustments to lower and raise contrast are made.
-  /// [toneMinContrast] given [DynamicScheme], return tone in HCT this color
-  /// should be at minimum contrast. See toneMinContrastDefault for the default
-  /// behavior, and strongly consider using it unless you have strong opinions
-  /// on color and accessibility. The convenience constructors use it.
-  /// [toneMaxContrast] given [DynamicScheme], return tone in HCT this color
-  /// should be at maximum contrast. See toneMaxContrastDefault for the default
-  /// behavior, and strongly consider using it unless you have strong opinions
-  /// on color and accessibility. The convenience constructors use it.
-  /// [toneDeltaConstraint] given [DynamicScheme], return a
-  /// [ToneDeltaConstraint] that describes a requirement that this
-  /// [DynamicColor] must always have some difference in tone from another
-  /// [DynamicColor].
-  ///
-  /// Unlikely to be useful unless a design system has some distortions
-  /// where colors that don't have a background/foreground relationship
-  /// don't want to have a formal relationship or a principled value for their
-  /// tone distance based on common contrast / tone delta values, yet, want
-  /// tone distance.
+  /// [name] The name of the dynamic color.
+  /// [palette] Function that provides a TonalPalette given
+  /// DynamicScheme. A TonalPalette is defined by a hue and chroma, so this
+  /// replaces the need to specify hue/chroma. By providing a tonal palette,
+  /// when contrast adjustments are made, intended chroma can be preserved.
+  /// [tone] Function that provides a tone, given a DynamicScheme.
+  /// [isBackground] Whether this dynamic color is a background, with
+  /// some other color as the foreground.
+  /// [background] The background of the dynamic color (as a function of a
+  /// `DynamicScheme`), if it exists.
+  /// [secondBackground] A second background of the dynamic color (as a function
+  /// of a `DynamicScheme`), if it
+  /// exists.
+  /// [contrastCurve] A [ContrastCurve] object specifying how its contrast
+  /// against its background should behave in various contrast levels options.
+  /// [toneDeltaPair] A [ToneDeltaPair] object specifying a tone delta
+  /// constraint between two colors. One of them must be the color being
+  /// constructed.
   DynamicColor({
-    required this.hue,
-    required this.chroma,
+    required this.name,
+    required this.palette,
     required this.tone,
+    required this.isBackground,
     required this.background,
-    required this.toneMinContrast,
-    required this.toneMaxContrast,
-    required this.toneDeltaConstraint,
+    required this.secondBackground,
+    required this.contrastCurve,
+    required this.toneDeltaPair,
   });
 
-  /// Create a [DynamicColor].
+  /// The convenience constructor for [DynamicColor].
   ///
-  /// [palette] Function that provides a TonalPalette given [DynamicScheme]. A
-  /// TonalPalette is defined by a hue and chroma, so this replaces the
-  /// need to specify hue/chroma. By providing a tonal palette, when
-  /// contrast adjustments are made, intended chroma can be preserved.
-  /// [tone] Function that provides a tone given [DynamicScheme]. (useful
-  /// for dark vs. light mode)
-  /// [background] Function that provides background [DynamicColor] given
-  /// [DynamicScheme]. Useful for contrast, given a background, colors
-  /// can adjust to increase/decrease contrast.
-  /// [toneDeltaConstraint] Function that provides a ToneDeltaConstraint
-  /// given [DynamicScheme]. Useful for ensuring lightness difference
-  /// between colors that don't _require_ contrast or have a formal
-  /// background/foreground relationship.
+  /// Similar to the base constructor, but all parameters other than [palette]
+  /// and [tone] have defaults.
+  ///
+  /// [name] The name of the dynamic color. Defaults to empty.
+  /// [palette] Function that provides a TonalPalette given
+  /// DynamicScheme. A TonalPalette is defined by a hue and chroma, so this
+  /// replaces the need to specify hue/chroma. By providing a tonal palette,
+  /// when contrast adjustments are made, intended chroma can be preserved.
+  /// [tone] Function that provides a tone, given a DynamicScheme.
+  /// [isBackground] Whether this dynamic color is a background, with
+  /// some other color as the foreground. Defaults to false.
+  /// [background] The background of the dynamic color (as a function of a
+  /// `DynamicScheme`), if it exists.
+  /// [secondBackground] A second background of the dynamic color (as a function
+  /// of a `DynamicScheme`), if it exists.
+  /// [contrastCurve] A [ContrastCurve] object specifying how its contrast
+  /// against its background should behave in various contrast levels options.
+  /// [toneDeltaPair] A [ToneDeltaPair] object specifying a tone delta
+  /// constraint between two colors. One of them must be the color being
+  /// constructed.
   factory DynamicColor.fromPalette({
+    String name = '',
     required TonalPalette Function(DynamicScheme) palette,
     required double Function(DynamicScheme) tone,
-    DynamicColor? Function(DynamicScheme)? background,
-    ToneDeltaConstraint Function(DynamicScheme)? toneDeltaConstraint,
+    bool isBackground = false,
+    DynamicColor Function(DynamicScheme)? background,
+    DynamicColor Function(DynamicScheme)? secondBackground,
+    ContrastCurve? contrastCurve,
+    ToneDeltaPair Function(DynamicScheme)? toneDeltaPair,
   }) {
     return DynamicColor(
-      background: (scheme) => background?.call(scheme),
-      hue: (scheme) => palette(scheme).hue,
-      chroma: (scheme) => palette(scheme).chroma,
-      toneDeltaConstraint: toneDeltaConstraint,
+      name: name,
+      palette: palette,
       tone: tone,
-      toneMinContrast: (scheme) =>
-          toneMinContrastDefault(tone, background, scheme, toneDeltaConstraint),
-      toneMaxContrast: (scheme) =>
-          toneMaxContrastDefault(tone, background, scheme, toneDeltaConstraint),
+      isBackground: isBackground,
+      background: background,
+      secondBackground: secondBackground,
+      contrastCurve: contrastCurve,
+      toneDeltaPair: toneDeltaPair,
     );
   }
 
@@ -155,7 +149,8 @@ class DynamicColor {
     if (cachedAnswer != null) {
       return cachedAnswer;
     }
-    final answer = Hct.from(hue(scheme), chroma(scheme), getTone(scheme));
+    final tone = getTone(scheme);
+    final answer = palette(scheme).getHct(tone);
     if (_hctCache.length > 4) {
       _hctCache.clear();
     }
@@ -170,245 +165,171 @@ class DynamicColor {
   /// whether or not it is dark mode or light mode, and what the desired
   /// contrast level is.
   double getTone(DynamicScheme scheme) {
-    var answer = tone(scheme);
-    final decreasingContrast = scheme.contrastLevel < 0.0;
-    if (scheme.contrastLevel != 0.0) {
-      final double startTone = tone(scheme);
-      final double endTone = decreasingContrast
-          ? toneMinContrast(scheme)
-          : toneMaxContrast(scheme);
-      final delta = (endTone - startTone) * scheme.contrastLevel.abs();
-      answer = delta + startTone;
-    }
+    final decreasingContrast = scheme.contrastLevel < 0;
 
-    final bg = background(scheme);
-    double? standardRatio;
-    double? minRatio;
-    double? maxRatio;
-    if (bg != null) {
-      final bgHasBg = bg.background(scheme) != null;
-      standardRatio = Contrast.ratioOfTones(tone(scheme), bg.tone(scheme));
+    // Case 1: dual foreground, pair of colors with delta constraint.
+    if (toneDeltaPair != null) {
+      final pair = toneDeltaPair!(scheme);
+      final roleA = pair.roleA;
+      final roleB = pair.roleB;
+      final delta = pair.delta;
+      final polarity = pair.polarity;
+      final stayTogether = pair.stayTogether;
+
+      final bg = background!(scheme);
+      final bgTone = bg.getTone(scheme);
+
+      final aIsNearer = (polarity == TonePolarity.nearer ||
+          (polarity == TonePolarity.lighter && !scheme.isDark) ||
+          (polarity == TonePolarity.darker && scheme.isDark));
+      final nearer = aIsNearer ? roleA : roleB;
+      final farther = aIsNearer ? roleB : roleA;
+      final amNearer = this.name == nearer.name;
+      final expansionDir = scheme.isDark ? 1 : -1;
+
+      // 1st round: solve to min, each
+      final nContrast = nearer.contrastCurve!.getContrast(scheme.contrastLevel);
+      final fContrast =
+          farther.contrastCurve!.getContrast(scheme.contrastLevel);
+
+      // If a color is good enough, it is not adjusted.
+      // Initial and adjusted tones for `nearer`
+      final nInitialTone = nearer.tone(scheme);
+      var nTone = Contrast.ratioOfTones(bgTone, nInitialTone) >= nContrast
+          ? nInitialTone
+          : DynamicColor.foregroundTone(bgTone, nContrast);
+      // Initial and adjusted tones for `farther`
+      final fInitialTone = farther.tone(scheme);
+      var fTone = Contrast.ratioOfTones(bgTone, fInitialTone) >= fContrast
+          ? fInitialTone
+          : DynamicColor.foregroundTone(bgTone, fContrast);
+
       if (decreasingContrast) {
-        final minContrastRatio = Contrast.ratioOfTones(
-            toneMinContrast(scheme), bg.toneMinContrast(scheme));
-        minRatio = bgHasBg ? minContrastRatio : null;
-        maxRatio = standardRatio;
-      } else {
-        final maxContrastRatio = Contrast.ratioOfTones(
-            toneMaxContrast(scheme), bg.toneMaxContrast(scheme));
-        minRatio = bgHasBg ? math.min(maxContrastRatio, standardRatio) : null;
-        maxRatio = bgHasBg ? math.max(maxContrastRatio, standardRatio) : null;
+        // If decreasing contrast, adjust color to the "bare minimum"
+        // that satisfies contrast.
+        nTone = DynamicColor.foregroundTone(bgTone, nContrast);
+        fTone = DynamicColor.foregroundTone(bgTone, fContrast);
       }
-    }
 
-    answer = calculateDynamicTone(
-      scheme: scheme,
-      toneStandard: tone,
-      toneToJudge: (c) => c.getTone(scheme),
-      desiredTone: (_, __) => answer,
-      minRatio: (_) => minRatio ?? 1.0,
-      maxRatio: (_) => maxRatio ?? 21.0,
-      background: (_) => bg,
-      constraint: toneDeltaConstraint,
-    );
-
-    return answer;
-  }
-
-  /// The default algorithm for calculating the tone of a color at minimum
-  /// contrast.
-  ///
-  /// If the original contrast ratio was >= 7.0, reach contrast 4.5.
-  /// If the original contrast ratio was >= 3.0, reach contrast 3.0.
-  /// If the original contrast ratio was < 3.0, reach that ratio.
-  static double toneMinContrastDefault(
-      double Function(DynamicScheme) tone,
-      DynamicColor? Function(DynamicScheme)? background,
-      DynamicScheme scheme,
-      ToneDeltaConstraint Function(DynamicScheme)? toneDeltaConstraint) {
-    return DynamicColor.calculateDynamicTone(
-      scheme: scheme,
-      toneStandard: tone,
-      toneToJudge: (c) => c.toneMinContrast(scheme),
-      desiredTone: (stdRatio, bgTone) {
-        var answer = tone(scheme);
-        if (stdRatio >= 7.0) {
-          answer = foregroundTone(bgTone, 4.5);
-        } else if (stdRatio >= 3.0) {
-          answer = foregroundTone(bgTone, 3.0);
+      if ((fTone - nTone) * expansionDir >= delta) {
+        // Good! Tones satisfy the constraint; no change needed.
+      } else {
+        // 2nd round: expand farther to match delta.
+        fTone = MathUtils.clampDouble(0, 100, nTone + delta * expansionDir);
+        if ((fTone - nTone) * expansionDir >= delta) {
+          // Good! Tones now satisfy the constraint; no change needed.
         } else {
-          final backgroundHasBackground =
-              background?.call(scheme)?.background(scheme) != null;
-          if (backgroundHasBackground) {
-            answer = foregroundTone(bgTone, stdRatio);
+          // 3rd round: contract nearer to match delta.
+          nTone = MathUtils.clampDouble(0, 100, fTone - delta * expansionDir);
+        }
+      }
+
+      // Avoids the 50-59 awkward zone.
+      if (50 <= nTone && nTone < 60) {
+        // If `nearer` is in the awkward zone, move it away, together with
+        // `farther`.
+        if (expansionDir > 0) {
+          nTone = 60;
+          fTone = math.max(fTone, nTone + delta * expansionDir);
+        } else {
+          nTone = 49;
+          fTone = math.min(fTone, nTone + delta * expansionDir);
+        }
+      } else if (50 <= fTone && fTone < 60) {
+        if (stayTogether) {
+          // Fixes both, to avoid two colors on opposite sides of the "awkward
+          // zone".
+          if (expansionDir > 0) {
+            nTone = 60;
+            fTone = math.max(fTone, nTone + delta * expansionDir);
+          } else {
+            nTone = 49;
+            fTone = math.min(fTone, nTone + delta * expansionDir);
+          }
+        } else {
+          // Not required to stay together; fixes just one.
+          if (expansionDir > 0) {
+            fTone = 60;
+          } else {
+            fTone = 49;
           }
         }
-        return answer;
-      },
-      background: background,
-      constraint: toneDeltaConstraint,
-      minRatio: null,
-      maxRatio: (standardRatio) => standardRatio,
-    );
-  }
+      }
 
-  /// The default algorithm for calculating the tone of a color at
-  /// maximum contrast.
-  ///
-  /// If the color's background has a background, reach contrast
-  /// 7.0.
-  /// If it doesn't, maintain the original contrast ratio.
-  ///
-  /// This ensures text on surfaces maintains its original, often
-  /// detrimentally excessive, contrast ratio. But, text on buttons
-  /// can soften to not have excessive contrast.
-  ///
-  /// Historically, digital design uses pure whites and black for
-  /// text and surfaces. It's too much of a jump at this point in
-  /// history to introduce a dynamic contrast system _and_ insist
-  /// that text always had excessive contrast and should reach 7.0,
-  /// it would deterimentally affect desire to understand and use
-  /// dynamic contrast.
-  static double toneMaxContrastDefault(
-      double Function(DynamicScheme) tone,
-      DynamicColor? Function(DynamicScheme)? background,
-      DynamicScheme scheme,
-      ToneDeltaConstraint Function(DynamicScheme)? toneDeltaConstraint) {
-    return DynamicColor.calculateDynamicTone(
-      scheme: scheme,
-      toneStandard: tone,
-      toneToJudge: (c) => c.toneMaxContrast(scheme),
-      desiredTone: (stdRatio, bgTone) {
-        final backgroundHasBackground =
-            background?.call(scheme)?.background(scheme) != null;
-        if (backgroundHasBackground) {
-          return foregroundTone(bgTone, 7.0);
-        } else {
-          return foregroundTone(bgTone, math.max(7.0, stdRatio));
-        }
-      },
-      background: background,
-      constraint: toneDeltaConstraint,
-      minRatio: null,
-      maxRatio: null,
-    );
-  }
-
-  /// Core method for calculating a tone for under dynamic contrast.
-  ///
-  /// It enforces important properties:
-  /// #1. Desired contrast ratio is reached.
-  /// As contrast increases from standard to max, the tones involved should
-  /// always be at least the standard ratio. For example, if a button is T90,
-  /// and button text is T0, and the button is T0 at max contrast, the button
-  /// text cannot simply linearly interpolate from T0 to T100, or at some point
-  /// they'll both be at the same tone.
-  /// #2. Enable light foregrounds on midtones.
-  /// The eye prefers light foregrounds on T50 to T60, possibly up to T70, but,
-  /// contrast ratio 4.5 can't be reached with T100 unless the foreground is
-  /// T50. Contrast ratio 4.5 is crucial, it represents 'readable text', i.e.
-  /// text smaller than ~40 dp / 1/4". So, if a tone is between T50 and T60, it
-  /// is proactively changed to T49 to enable light foregrounds.
-  /// #3. Ensure tone delta with another color.
-  /// In design systems, there may be colors without a background/foreground
-  /// relationship that require different tones for visual differentiation.
-  /// [ToneDeltaConstraint] models this requirement, and [DynamicColor]
-  /// enforces it.
-  static double calculateDynamicTone({
-    required DynamicScheme scheme,
-    required double Function(DynamicScheme) toneStandard,
-    required double Function(DynamicColor) toneToJudge,
-    required double Function(double standardRatio, double bgTone) desiredTone,
-    required DynamicColor? Function(DynamicScheme)? background,
-    required ToneDeltaConstraint Function(DynamicScheme)? constraint,
-    required double Function(double standardRatio)? minRatio,
-    required double Function(double standardRatio)? maxRatio,
-  }) {
-    // Start with the tone with no adjustment for contrast.
-    // If there is no background, don't perform any adjustment, return immediately.
-    final toneStd = toneStandard(scheme);
-    var answer = toneStd;
-    final bgDynamic = background?.call(scheme);
-    if (bgDynamic == null) {
-      return answer;
-    }
-    final bgToneStd = bgDynamic.tone(scheme);
-    final stdRatio = Contrast.ratioOfTones(toneStd, bgToneStd);
-
-    // If there is a background, determine its tone after contrast adjustment.
-    // Then, calculate the foreground tone that ensures the caller's desired contrast ratio is met.
-    final bgTone = toneToJudge(bgDynamic);
-    final myDesiredTone = desiredTone(stdRatio, bgTone);
-    final currentRatio = Contrast.ratioOfTones(bgTone, myDesiredTone);
-    final desiredRatio = MathUtils.clampDouble(minRatio?.call(stdRatio) ?? 1.0,
-        maxRatio?.call(stdRatio) ?? 21.0, currentRatio);
-    if (desiredRatio == currentRatio) {
-      answer = myDesiredTone;
+      // Returns `nTone` if this color is `nearer`, otherwise `fTone`.
+      return amNearer ? nTone : fTone;
     } else {
-      answer = DynamicColor.foregroundTone(bgTone, desiredRatio);
-    }
+      // Case 2: No contrast pair; just solve for itself.
+      var answer = this.tone(scheme);
 
-    // If the background has no background,  adjust the foreground tone to
-    // ensure that it is dark enough to have a light foreground.
-    if (bgDynamic.background(scheme) == null) {
-      answer = DynamicColor.enableLightForeground(answer);
-    }
+      if (this.background == null) {
+        return answer; // No adjustment for colors with no background.
+      }
 
-    // If the caller has specified a constraint where it must have a certain
-    // tone distance from another color, enforce that constraint.
-    answer = ensureToneDelta(
-      tone: answer,
-      toneStandard: toneStd,
-      scheme: scheme,
-      constraintProvider: constraint,
-      toneToDistanceFrom: (c) => toneToJudge(c),
-    );
+      final bgTone = this.background!(scheme).getTone(scheme);
 
-    return answer;
-  }
+      final desiredRatio =
+          this.contrastCurve!.getContrast(scheme.contrastLevel);
 
-  /// Enforce a [ToneDeltaConstraint] between two [DynamicColor]s.
-  ///
-  /// [tone] the desired tone of the color.
-  /// [toneStandard] the tone of the color at standard contrast.
-  /// [scheme] Defines the conditions of the user interface, for example,
-  /// whether or not it is dark mode or light mode, and what the desired
-  /// contrast level is.
-  /// [constraintProvider] Given a [DynamicScheme], return a
-  /// [ToneDeltaConstraint] or null.
-  /// [toneToDistanceFrom] Given a [DynamicColor], return a tone that the
-  /// [ToneDeltaConstraint] should enforce a delta from.
-  static double ensureToneDelta({
-    required double tone,
-    required double toneStandard,
-    required DynamicScheme scheme,
-    required ToneDeltaConstraint? Function(DynamicScheme)? constraintProvider,
-    required Function(DynamicColor) toneToDistanceFrom,
-  }) {
-    final constraint = constraintProvider?.call(scheme);
-    if (constraint == null) {
-      return tone;
-    }
+      if (Contrast.ratioOfTones(bgTone, answer) >= desiredRatio) {
+        // Don't "improve" what's good enough.
+      } else {
+        // Rough improvement.
+        answer = DynamicColor.foregroundTone(bgTone, desiredRatio);
+      }
 
-    final requiredDelta = constraint.delta;
-    final keepAwayTone = toneToDistanceFrom(constraint.keepAway);
-    final delta = (tone - keepAwayTone).abs();
-    if (delta > requiredDelta) {
-      return tone;
-    }
-    switch (constraint.keepAwayPolarity) {
-      case TonePolarity.darker:
-        return MathUtils.clampDouble(0, 100, keepAwayTone + requiredDelta);
-      case TonePolarity.lighter:
-        return MathUtils.clampDouble(0, 100, keepAwayTone - requiredDelta);
+      if (decreasingContrast) {
+        answer = DynamicColor.foregroundTone(bgTone, desiredRatio);
+      }
 
-      case TonePolarity.noPreference:
-        final keepAwayToneStandard = constraint.keepAway.tone(scheme);
-        final preferLighten = toneStandard > keepAwayToneStandard;
-        final alterAmount = (delta - requiredDelta).abs();
-        final lighten =
-            preferLighten ? (tone + alterAmount <= 100.0) : tone < alterAmount;
-        return lighten ? tone + alterAmount : tone - alterAmount;
+      if (this.isBackground && 50 <= answer && answer < 60) {
+        // Must adjust
+        if (Contrast.ratioOfTones(49, bgTone) >= desiredRatio) {
+          answer = 49;
+        } else {
+          answer = 60;
+        }
+      }
+
+      if (this.secondBackground != null) {
+        // Case 3: Adjust for dual backgrounds.
+
+        final bgTone1 = this.background!(scheme).getTone(scheme);
+        final bgTone2 = this.secondBackground!(scheme).getTone(scheme);
+
+        final upper = math.max(bgTone1, bgTone2);
+        final lower = math.min(bgTone1, bgTone2);
+
+        if (Contrast.ratioOfTones(upper, answer) >= desiredRatio &&
+            Contrast.ratioOfTones(lower, answer) >= desiredRatio) {
+          return answer;
+        }
+
+        // The darkest light tone that satisfies the desired ratio,
+        // or -1 if such ratio cannot be reached.
+        final lightOption = Contrast.lighter(tone: upper, ratio: desiredRatio);
+
+        // The lightest dark tone that satisfies the desired ratio,
+        // or -1 if such ratio cannot be reached.
+        final darkOption = Contrast.darker(tone: lower, ratio: desiredRatio);
+
+        // Tones suitable for the foreground.
+        final availables = [];
+        if (lightOption != -1) availables.add(lightOption);
+        if (darkOption != -1) availables.add(darkOption);
+
+        final prefersLight = DynamicColor.tonePrefersLightForeground(bgTone1) ||
+            DynamicColor.tonePrefersLightForeground(bgTone2);
+        if (prefersLight) {
+          return (lightOption < 0) ? 100 : lightOption;
+        }
+        if (availables.length == 1) {
+          return availables[0];
+        }
+        return (darkOption < 0) ? 0 : darkOption;
+      }
+
+      return answer;
     }
   }
 

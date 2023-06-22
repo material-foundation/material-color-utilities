@@ -20,10 +20,11 @@
 #include <cmath>
 #include <functional>
 #include <optional>
+#include <vector>
 
 #include "cpp/cam/hct.h"
 #include "cpp/contrast/contrast.h"
-#include "cpp/dynamiccolor/tone_delta_constraint.h"
+#include "cpp/dynamiccolor/tone_delta_pair.h"
 #include "cpp/palettes/tones.h"
 #include "cpp/scheme/dynamic_scheme.h"
 
@@ -50,20 +51,6 @@ optional<U> SafeCallCleanResult(optional<function<U(T)>> f, T x) {
     return nullopt;
   } else {
     return f.value()(x);
-  }
-}
-
-/**
- * Whether a dynamic color's background has a background.
- */
-bool BackgroundHasBackground(
-    optional<function<optional<DynamicColor>(const DynamicScheme&)>> background,
-    const DynamicScheme& scheme) {
-  optional<DynamicColor> bg = SafeCall(background, scheme);
-  if (bg == nullopt) {
-    return false;
-  } else {
-    return bg->background(scheme) != nullopt;
   }
 }
 
@@ -100,263 +87,220 @@ bool TonePrefersLightForeground(double tone) { return round(tone) < 60; }
 
 bool ToneAllowsLightForeground(double tone) { return round(tone) <= 49; }
 
-double EnsureToneDelta(
-    double tone, double tone_standard, const DynamicScheme& scheme,
-    optional<function<optional<ToneDeltaConstraint>(const DynamicScheme&)>>
-        constraint_provider,
-    function<double(DynamicColor)> tone_to_distance_from) {
-  optional<ToneDeltaConstraint> constraint =
-      SafeCall(constraint_provider, scheme);
-  if (constraint == nullopt) {
-    return tone;
-  }
-
-  double required_delta = constraint->delta;
-  double keep_away_tone = tone_to_distance_from(constraint->keep_away);
-  double delta = abs(tone - keep_away_tone);
-  if (delta > required_delta) {
-    return tone;
-  }
-  switch (constraint->keep_away_polarity) {
-    case TonePolarity::kDarker:
-      return std::clamp(keep_away_tone + required_delta, 0.0, 100.0);
-    case TonePolarity::kLighter:
-      return std::clamp(keep_away_tone - required_delta, 0.0, 100.0);
-
-    case TonePolarity::kNoPreference:
-      double keep_away_tone_standard = constraint->keep_away.tone(scheme);
-      double prefer_lighten = tone_standard > keep_away_tone_standard;
-      double alter_amount = abs(delta - required_delta);
-      double lighten =
-          prefer_lighten ? (tone + alter_amount <= 100.0) : tone < alter_amount;
-      return lighten ? tone + alter_amount : tone - alter_amount;
-  }
-}
-
-double CalculateDynamicTone(
-    const DynamicScheme& scheme, DoubleFunction tone_standard,
-    function<double(DynamicColor)> tone_to_judge,
-    function<double(double standard_ratio, double bg_tone)> desired_tone,
-    optional<function<optional<DynamicColor>(const DynamicScheme&)>> background,
-    optional<function<ToneDeltaConstraint(const DynamicScheme&)>> constraint,
-    optional<function<double(double standard_ratio)>> min_ratio,
-    optional<function<double(double standard_ratio)>> max_ratio) {
-  double tone_std = tone_standard(scheme);
-  double tone_result = tone_std;
-  optional<DynamicColor> bg_dynamic = SafeCall(background, scheme);
-  if (bg_dynamic == nullopt) {
-    return tone_result;
-  }
-  double bg_tone_std = bg_dynamic->tone(scheme);
-  double std_ratio = RatioOfTones(tone_std, bg_tone_std);
-
-  double bg_tone = tone_to_judge(bg_dynamic.value());
-  double my_desired_tone = desired_tone(std_ratio, bg_tone);
-  double current_ratio = RatioOfTones(bg_tone, my_desired_tone);
-  double minimal_ratio =
-      SafeCallCleanResult(min_ratio, std_ratio).value_or(1.0);
-  double maximal_ratio =
-      SafeCallCleanResult(max_ratio, std_ratio).value_or(21.0);
-
-  double desired_ratio =
-      std::clamp(current_ratio, minimal_ratio, maximal_ratio);
-  if (desired_ratio == current_ratio) {
-    tone_result = my_desired_tone;
-  } else {
-    tone_result = ForegroundTone(bg_tone, desired_ratio);
-  }
-
-  if (bg_dynamic->background(scheme) == nullopt) {
-    tone_result = EnableLightForeground(tone_result);
-  }
-
-  return EnsureToneDelta(
-      /*tone*/ tone_result,
-      /*tone_standard*/ tone_std,
-      /*scheme*/ scheme,
-      /*constraint_provider*/ constraint,
-      /*tone_to_distance_from*/ tone_to_judge);
-}
-
-double ToneMinContrastDefault(
-    DoubleFunction tone,
-    optional<function<optional<DynamicColor>(const DynamicScheme&)>> background,
-    const DynamicScheme& scheme,
-    optional<function<ToneDeltaConstraint(const DynamicScheme&)>>
-        tone_delta_constraint) {
-  auto desired_tone_function = [tone, background, scheme](
-                                   double std_ratio, double bg_tone) -> double {
-    double tone_result = tone(scheme);
-    if (std_ratio >= 7.0) {
-      tone_result = ForegroundTone(bg_tone, 4.5);
-    } else if (std_ratio >= 3.0) {
-      tone_result = ForegroundTone(bg_tone, 3.0);
-    } else {
-      bool bg_has_bg = BackgroundHasBackground(background, scheme);
-      if (bg_has_bg) {
-        tone_result = ForegroundTone(bg_tone, std_ratio);
-      }
-    }
-    return tone_result;
-  };
-
-  return CalculateDynamicTone(
-      /*scheme*/ scheme,
-      /*tone_standard*/ tone,
-      /*tone_to_judge*/
-      [scheme](DynamicColor c) -> double {
-        return c.tone_min_contrast(scheme);
-      },
-      /*desired_tone*/ desired_tone_function,
-      /*background*/ background,
-      /*constraint*/ tone_delta_constraint,
-      /*min_ratio*/ nullopt,
-      /*max_ratio*/
-      [](double standard_ratio) -> double { return standard_ratio; });
-}
-
-double ToneMaxContrastDefault(
-    DoubleFunction tone,
-    optional<function<optional<DynamicColor>(const DynamicScheme&)>> background,
-    const DynamicScheme& scheme,
-    optional<function<ToneDeltaConstraint(const DynamicScheme&)>>
-        tone_delta_constraint) {
-  auto desired_tone_function = [tone, background, scheme](
-                                   double std_ratio, double bg_tone) -> double {
-    bool bg_has_bg = BackgroundHasBackground(background, scheme);
-    if (bg_has_bg) {
-      return ForegroundTone(bg_tone, 7.0);
-    } else {
-      return ForegroundTone(bg_tone, fmax(7.0, std_ratio));
-    }
-  };
-
-  return CalculateDynamicTone(
-      /*scheme*/ scheme,
-      /*tone_standard*/ tone,
-      /*tone_to_judge*/
-      [scheme](DynamicColor c) -> double {
-        return c.tone_max_contrast(scheme);
-      },
-      /*desired_tone*/ desired_tone_function,
-      /*background*/ background,
-      /*constraint*/ tone_delta_constraint,
-      /*min_ratio*/ nullopt,
-      /*max_ratio*/ nullopt);
-}
-
 /**
  * Default constructor.
  */
 DynamicColor::DynamicColor(
-    DoubleFunction hue, DoubleFunction chroma, DoubleFunction tone,
-    function<optional<DynamicColor>(const DynamicScheme&)> background,
-    DoubleFunction tone_min_contrast, DoubleFunction tone_max_contrast,
-    optional<function<ToneDeltaConstraint(const DynamicScheme&)>>
-        tone_delta_constraint)
-    : hue(hue),
-      chroma(chroma),
-      tone(tone),
-      background(background),
-      tone_min_contrast(tone_min_contrast),
-      tone_max_contrast(tone_max_contrast),
-      tone_delta_constraint(tone_delta_constraint) {}
+    std::string name, std::function<TonalPalette(const DynamicScheme&)> palette,
+    std::function<double(const DynamicScheme&)> tone, bool is_background,
+
+    std::optional<std::function<DynamicColor(const DynamicScheme&)>> background,
+    std::optional<std::function<DynamicColor(const DynamicScheme&)>>
+        second_background,
+    std::optional<ContrastCurve> contrast_curve,
+    std::optional<std::function<ToneDeltaPair(const DynamicScheme&)>>
+        tone_delta_pair)
+    : name_(name),
+      palette_(palette),
+      tone_(tone),
+      is_background_(is_background),
+      background_(background),
+      second_background_(second_background),
+      contrast_curve_(contrast_curve),
+      tone_delta_pair_(tone_delta_pair) {}
 
 DynamicColor DynamicColor::FromPalette(
-    function<TonalPalette(const DynamicScheme&)> palette, DoubleFunction tone,
-    optional<function<optional<DynamicColor>(const DynamicScheme&)>> background,
-    optional<function<ToneDeltaConstraint(const DynamicScheme&)>>
-        tone_delta_constraint) {
-  return DynamicColor(
-      /*hue*/ [palette](const DynamicScheme& scheme)
-                  -> double { return palette(scheme).get_hue(); },
-      /*chroma*/
-      [palette](const DynamicScheme& scheme) -> double {
-        return palette(scheme).get_chroma();
-      },
-      /*tone*/ tone,
-      /*background*/
-      [background](const DynamicScheme& scheme) -> optional<DynamicColor> {
-        return SafeCall(background, scheme);
-      },
-      /*tone_min_contrast*/
-      [tone, background,
-       tone_delta_constraint](const DynamicScheme& scheme) -> double {
-        return ToneMinContrastDefault(tone, background, scheme,
-                                      tone_delta_constraint);
-      },
-      /*tone_max_contrast*/
-      [tone, background,
-       tone_delta_constraint](const DynamicScheme& scheme) -> double {
-        return ToneMaxContrastDefault(tone, background, scheme,
-                                      tone_delta_constraint);
-      },
-      /*tone_delta_constraint*/ tone_delta_constraint);
+    std::string name, std::function<TonalPalette(const DynamicScheme&)> palette,
+    std::function<double(const DynamicScheme&)> tone) {
+  return DynamicColor(name, palette, tone,
+                      /*is_background=*/false,
+                      /*background=*/nullopt,
+                      /*second_background=*/nullopt,
+                      /*contrast_curve=*/nullopt,
+                      /*tone_delta_pair=*/nullopt);
 }
 
 Argb DynamicColor::GetArgb(const DynamicScheme& scheme) {
-  return GetHct(scheme).ToInt();
+  return palette_(scheme).get(GetTone(scheme));
 }
 
 Hct DynamicColor::GetHct(const DynamicScheme& scheme) {
-  return Hct(hue(scheme), chroma(scheme), GetTone(scheme));
+  return Hct(GetArgb(scheme));
 }
 
 double DynamicColor::GetTone(const DynamicScheme& scheme) {
-  double tone_result = tone(scheme);
-  double decreasing_contrast = scheme.contrast_level < 0.0;
-  if (scheme.contrast_level != 0.0) {
-    double start_tone = tone(scheme);
-    double end_tone = decreasing_contrast ? tone_min_contrast(scheme)
-                                          : tone_max_contrast(scheme);
-    double delta = (end_tone - start_tone) * abs(scheme.contrast_level);
-    tone_result = delta + start_tone;
-  }
+  bool decreasingContrast = scheme.contrast_level < 0;
 
-  optional<DynamicColor> bg = background(scheme);
-  // double? standard_ratio;
-  double min_ratio = 1.0;
-  double max_ratio = 21.0;
-  if (bg != nullopt) {
-    double bg_has_bg = bg->background(scheme) == nullopt;
-    double standard_ratio = RatioOfTones(tone(scheme), bg->tone(scheme));
-    if (decreasing_contrast) {
-      double min_contrast_ratio = RatioOfTones(tone_min_contrast(scheme),
-                                               bg->tone_min_contrast(scheme));
-      if (!bg_has_bg) {
-        min_ratio = min_contrast_ratio;
-      }
-      max_ratio = standard_ratio;
+  // Case 1: dual foreground, pair of colors with delta constraint.
+  if (tone_delta_pair_ != std::nullopt) {
+    ToneDeltaPair tone_delta_pair = tone_delta_pair_.value()(scheme);
+    DynamicColor role_a = tone_delta_pair.role_a_;
+    DynamicColor role_b = tone_delta_pair.role_b_;
+    double delta = tone_delta_pair.delta_;
+    TonePolarity polarity = tone_delta_pair.polarity_;
+    bool stay_together = tone_delta_pair.stay_together_;
+
+    DynamicColor bg = background_.value()(scheme);
+    double bg_tone = bg.GetTone(scheme);
+
+    bool a_is_nearer =
+        (polarity == TonePolarity::kNearer ||
+         (polarity == TonePolarity::kLighter && !scheme.is_dark) ||
+         (polarity == TonePolarity::kDarker && scheme.is_dark));
+    DynamicColor nearer = a_is_nearer ? role_a : role_b;
+    DynamicColor farther = a_is_nearer ? role_b : role_a;
+    bool am_nearer = this->name_ == nearer.name_;
+    double expansion_dir = scheme.is_dark ? 1 : -1;
+
+    // 1st round: solve to min, each
+    double n_contrast =
+        nearer.contrast_curve_.value().getContrast(scheme.contrast_level);
+    double f_contrast =
+        farther.contrast_curve_.value().getContrast(scheme.contrast_level);
+
+    // If a color is good enough, it is not adjusted.
+    // Initial and adjusted tones for `nearer`
+    double n_initial_tone = nearer.tone_(scheme);
+    double n_tone = RatioOfTones(bg_tone, n_initial_tone) >= n_contrast
+                        ? n_initial_tone
+                        : ForegroundTone(bg_tone, n_contrast);
+    // Initial and adjusted tones for `farther`
+    double f_initial_tone = farther.tone_(scheme);
+    double f_tone = RatioOfTones(bg_tone, f_initial_tone) >= f_contrast
+                        ? f_initial_tone
+                        : ForegroundTone(bg_tone, f_contrast);
+
+    if (decreasingContrast) {
+      // If decreasing contrast, adjust color to the "bare minimum"
+      // that satisfies contrast.
+      n_tone = ForegroundTone(bg_tone, n_contrast);
+      f_tone = ForegroundTone(bg_tone, f_contrast);
+    }
+
+    if ((f_tone - n_tone) * expansion_dir >= delta) {
+      // Good! Tones satisfy the constraint; no change needed.
     } else {
-      double max_contrast_ratio = RatioOfTones(tone_max_contrast(scheme),
-                                               bg->tone_max_contrast(scheme));
-      if (bg->background(scheme) != nullopt) {
-        min_ratio = fmin(max_contrast_ratio, standard_ratio);
-        max_ratio = fmax(max_contrast_ratio, standard_ratio);
+      // 2nd round: expand farther to match delta.
+      f_tone = std::clamp(n_tone + delta * expansion_dir, 0.0, 100.0);
+      if ((f_tone - n_tone) * expansion_dir >= delta) {
+        // Good! Tones now satisfy the constraint; no change needed.
+      } else {
+        // 3rd round: contract nearer to match delta.
+        n_tone = std::clamp(f_tone - delta * expansion_dir, 0.0, 100.0);
       }
     }
+
+    // Avoids the 50-59 awkward zone.
+    if (50 <= n_tone && n_tone < 60) {
+      // If `nearer` is in the awkward zone, move it away, together with
+      // `farther`.
+      if (expansion_dir > 0) {
+        n_tone = 60;
+        f_tone = std::max(f_tone, n_tone + delta * expansion_dir);
+      } else {
+        n_tone = 49;
+        f_tone = std::min(f_tone, n_tone + delta * expansion_dir);
+      }
+    } else if (50 <= f_tone && f_tone < 60) {
+      if (stay_together) {
+        // Fixes both, to avoid two colors on opposite sides of the "awkward
+        // zone".
+        if (expansion_dir > 0) {
+          n_tone = 60;
+          f_tone = std::max(f_tone, n_tone + delta * expansion_dir);
+        } else {
+          n_tone = 49;
+          f_tone = std::min(f_tone, n_tone + delta * expansion_dir);
+        }
+      } else {
+        // Not required to stay together; fixes just one.
+        if (expansion_dir > 0) {
+          f_tone = 60;
+        } else {
+          f_tone = 49;
+        }
+      }
+    }
+
+    // Returns `n_tone` if this color is `nearer`, otherwise `f_tone`.
+    return am_nearer ? n_tone : f_tone;
+  } else {
+    // Case 2: No contrast pair; just solve for itself.
+    double answer = tone_(scheme);
+
+    if (background_ == std::nullopt) {
+      return answer;  // No adjustment for colors with no background.
+    }
+
+    double bg_tone = background_.value()(scheme).GetTone(scheme);
+
+    double desired_ratio =
+        contrast_curve_.value().getContrast(scheme.contrast_level);
+
+    if (RatioOfTones(bg_tone, answer) >= desired_ratio) {
+      // Don't "improve" what's good enough.
+    } else {
+      // Rough improvement.
+      answer = ForegroundTone(bg_tone, desired_ratio);
+    }
+
+    if (decreasingContrast) {
+      answer = ForegroundTone(bg_tone, desired_ratio);
+    }
+
+    if (is_background_ && 50 <= answer && answer < 60) {
+      // Must adjust
+      if (RatioOfTones(49, bg_tone) >= desired_ratio) {
+        answer = 49;
+      } else {
+        answer = 60;
+      }
+    }
+
+    if (second_background_ != std::nullopt) {
+      // Case 3: Adjust for dual backgrounds.
+
+      double bg_tone_1 = background_.value()(scheme).GetTone(scheme);
+      double bg_tone_2 = second_background_.value()(scheme).GetTone(scheme);
+
+      double upper = std::max(bg_tone_1, bg_tone_2);
+      double lower = std::min(bg_tone_1, bg_tone_2);
+
+      if (RatioOfTones(upper, answer) >= desired_ratio &&
+          RatioOfTones(lower, answer) >= desired_ratio) {
+        return answer;
+      }
+
+      // The darkest light tone that satisfies the desired ratio,
+      // or -1 if such ratio cannot be reached.
+      double lightOption = Lighter(upper, desired_ratio);
+
+      // The lightest dark tone that satisfies the desired ratio,
+      // or -1 if such ratio cannot be reached.
+      double darkOption = Darker(lower, desired_ratio);
+
+      // Tones suitable for the foreground.
+      std::vector<double> availables;
+      if (lightOption != -1) {
+        availables.push_back(lightOption);
+      }
+      if (darkOption != -1) {
+        availables.push_back(darkOption);
+      }
+
+      bool prefersLight = TonePrefersLightForeground(bg_tone_1) ||
+                          TonePrefersLightForeground(bg_tone_2);
+      if (prefersLight) {
+        return (lightOption < 0) ? 100 : lightOption;
+      }
+      if (availables.size() == 1) {
+        return availables[0];
+      }
+      return (darkOption < 0) ? 0 : darkOption;
+    }
+
+    return answer;
   }
-
-  tone_result = CalculateDynamicTone(
-      /*scheme*/ scheme,
-      /*tone_standard*/ tone,
-      /*tone_to_judge*/
-      [scheme](DynamicColor c) -> double { return c.GetTone(scheme); },
-      /*desired_tone*/
-      [tone_result](double standard_ratio, double bg_tone) -> double {
-        return tone_result;
-      },
-      /*background*/
-      [bg](const DynamicScheme& scheme) -> optional<DynamicColor> {
-        return bg;
-      },
-      /*constraint*/ tone_delta_constraint,
-      /*min_ratio*/
-      [min_ratio](double standard_ratio) -> double { return min_ratio; },
-      /*max_ratio*/
-      [max_ratio](double standard_ratio) -> double { return max_ratio; });
-
-  return tone_result;
 }
 
 }  // namespace material_color_utilities

@@ -21,33 +21,33 @@ final class SchemeTests: XCTestCase {
   func testBlueLightScheme() {
     let scheme = Scheme.light(0xff00_00ff)
 
-    XCTAssertEqual(scheme.primary, 0xff34_3DFF)
+    XCTAssertEqual(scheme.primary, 0xff34_3dff)
   }
 
   func testBlueDarkScheme() {
     let scheme = Scheme.dark(0xff00_00ff)
 
-    XCTAssertEqual(scheme.primary, 0xffBE_C2FF)
+    XCTAssertEqual(scheme.primary, 0xffbe_c2ff)
   }
 
   func test3rdPartyLightScheme() {
-    let scheme = Scheme.light(0xff67_50A4)
+    let scheme = Scheme.light(0xff67_50a4)
 
-    XCTAssertEqual(scheme.primary, 0xff67_50A4)
-    XCTAssertEqual(scheme.secondary, 0xff62_5B71)
-    XCTAssertEqual(scheme.tertiary, 0xff7E_5260)
-    XCTAssertEqual(scheme.surface, 0xffFF_FBFF)
-    XCTAssertEqual(scheme.onSurface, 0xff1C_1B1E)
+    XCTAssertEqual(scheme.primary, 0xff67_50a4)
+    XCTAssertEqual(scheme.secondary, 0xff62_5b71)
+    XCTAssertEqual(scheme.tertiary, 0xff7e_5260)
+    XCTAssertEqual(scheme.surface, 0xffff_fbff)
+    XCTAssertEqual(scheme.onSurface, 0xff1c_1b1e)
   }
 
   func test3rdPartyDarkScheme() {
-    let scheme = Scheme.dark(0xff67_50A4)
+    let scheme = Scheme.dark(0xff67_50a4)
 
-    XCTAssertEqual(scheme.primary, 0xffCF_BCFF)
-    XCTAssertEqual(scheme.secondary, 0xffCB_C2DB)
-    XCTAssertEqual(scheme.tertiary, 0xffEF_B8C8)
+    XCTAssertEqual(scheme.primary, 0xffcf_bcff)
+    XCTAssertEqual(scheme.secondary, 0xffcb_c2db)
+    XCTAssertEqual(scheme.tertiary, 0xffef_b8c8)
     XCTAssertEqual(scheme.surface, 0xff1c_1b1e)
-    XCTAssertEqual(scheme.onSurface, 0xffE6_E1E6)
+    XCTAssertEqual(scheme.onSurface, 0xffe6_e1e6)
   }
 
   func testLightSchemeFromHighChromaColor() {
