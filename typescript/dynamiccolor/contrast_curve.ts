@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import * as math from '../utils/math_utils.js.js';
+import * as math from '../utils/math_utils.js';
 
 /**
  * A class containing the contrast curve for a dynamic color on its background.
