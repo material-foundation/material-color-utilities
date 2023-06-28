@@ -478,7 +478,7 @@ public final class MaterialDynamicColors {
           if (!isFidelity(s)) {
             return initialTone;
           }
-          var answer =
+          double answer =
               findDesiredChromaByTone(
                   s.secondaryPalette.getHue(),
                   s.secondaryPalette.getChroma(),
