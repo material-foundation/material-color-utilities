@@ -379,4 +379,17 @@ final class SchemeFidelityTests: XCTestCase {
     XCTAssertEqual(MaterialDynamicColors.onTertiaryFixed.getArgb(scheme), 0xff00_0000)
     XCTAssertEqual(MaterialDynamicColors.onTertiaryFixedVariant.getArgb(scheme), 0xff37_0000)
   }
+
+  func testEdgeCaseWithTone60() {
+    let scheme = SchemeFidelity(
+      sourceColorHct: Hct.fromInt(0xffff_0000),
+      isDark: false,
+      contrastLevel: 0
+    )
+
+    XCTAssertEqual(MaterialDynamicColors.secondary.getArgb(scheme), 0xffb7_2114)
+    XCTAssertEqual(MaterialDynamicColors.onSecondary.getArgb(scheme), 0xffff_ffff)
+    XCTAssertEqual(MaterialDynamicColors.secondaryContainer.getArgb(scheme), 0xffff_6f5b)
+    XCTAssertEqual(MaterialDynamicColors.onSecondaryContainer.getArgb(scheme), 0xff27_0000)
+  }
 }

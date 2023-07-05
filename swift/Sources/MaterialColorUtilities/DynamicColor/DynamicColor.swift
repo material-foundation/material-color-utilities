@@ -366,7 +366,7 @@ class DynamicColor {
   /// - Parameter tone: The tone to be judged.
   /// - Returns: whether `tone` prefers a light foreground.
   static func tonePrefersLightForeground(_ tone: Double) -> Bool {
-    return round(tone) <= 60
+    return round(tone) < 60
   }
 
   /// Returns whether `tone` can reach a contrast ratio of 4.5 with a lighter
