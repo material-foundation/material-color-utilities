@@ -17,8 +17,8 @@ import Foundation
 /// A Dynamic Color theme with low to medium colorfulness and a Tertiary
 /// [TonalPalette] with a hue related to the source color. The default
 /// Material You theme on Android 12 and 13.
-class SchemeTonalSpot: DynamicScheme {
-  init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
+public class SchemeTonalSpot: DynamicScheme {
+  public init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
     super.init(
       sourceColorArgb: sourceColorHct.toInt(),
       variant: Variant.tonalSpot,

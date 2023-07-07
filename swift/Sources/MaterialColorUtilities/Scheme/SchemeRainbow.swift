@@ -15,8 +15,8 @@
 import Foundation
 
 /// A playful theme - the source color's hue does not appear in the theme.
-class SchemeRainbow: DynamicScheme {
-  init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
+public class SchemeRainbow: DynamicScheme {
+  public init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
     super.init(
       sourceColorArgb: sourceColorHct.toInt(),
       variant: Variant.rainbow,

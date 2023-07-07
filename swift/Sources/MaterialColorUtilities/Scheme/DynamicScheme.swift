@@ -16,22 +16,22 @@
 /// whether or not its dark theme, what the theme style is, etc.), and
 /// provides a set of [TonalPalette]s that can create colors that fit in
 /// with the theme style. Used by [DynamicColor] to resolve into a color.
-class DynamicScheme: Equatable, Hashable {
+public class DynamicScheme: Equatable, Hashable {
   /// The source color of the theme as an ARGB integer.
-  let sourceColorArgb: Int
+  public let sourceColorArgb: Int
 
   /// The source color of the theme in HCT.
-  let sourceColorHct: Hct
+  public let sourceColorHct: Hct
 
   /// The variant, or style, of the theme.
-  let variant: Variant
+  public let variant: Variant
 
   /// Whether or not the scheme is in 'dark mode' or 'light mode'.
-  let isDark: Bool
+  public let isDark: Bool
 
   /// Value from -1 to 1. -1 represents minimum contrast, 0 represents
   /// standard (i.e. the design as spec'd), and 1 represents maximum contrast.
-  let contrastLevel: Double
+  public let contrastLevel: Double
 
   /// Given a tone, produces a color. Hue and chroma of the color are specified
   /// in the design specification of the variant. Usually colorful.
@@ -113,11 +113,11 @@ class DynamicScheme: Equatable, Hashable {
       && errorPalette == other.errorPalette
   }
 
-  static func == (lhs: DynamicScheme, rhs: DynamicScheme) -> Bool {
+  public static func == (lhs: DynamicScheme, rhs: DynamicScheme) -> Bool {
     return type(of: lhs) == type(of: rhs) && lhs.isEqual(to: rhs)
   }
 
-  func hash(into hasher: inout Hasher) {
+  public func hash(into hasher: inout Hasher) {
     hasher.combine(sourceColorArgb)
     hasher.combine(sourceColorHct)
     hasher.combine(variant)

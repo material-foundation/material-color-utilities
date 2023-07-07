@@ -16,7 +16,7 @@ import Foundation
 
 /// A Dynamic Color theme that maxes out colorfulness at each position in the
 /// Primary [TonalPalette].
-class SchemeVibrant: DynamicScheme {
+public class SchemeVibrant: DynamicScheme {
   /// Hues used at breakpoints such that designers can specify a hue rotation
   /// that occurs at a given break point.
   static let hues: [Double] = [0, 41, 61, 101, 131, 181, 251, 301, 360]
@@ -39,7 +39,7 @@ class SchemeVibrant: DynamicScheme {
   /// breakpoints in [hues].
   static let tertiaryRotations: [Double] = [35, 30, 20, 25, 30, 35, 30, 25, 25]
 
-  init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
+  public init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
     super.init(
       sourceColorArgb: sourceColorHct.toInt(),
       variant: Variant.vibrant,

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /// A Dynamic Color theme that is intentionally detached from the input color.
-class SchemeExpressive: DynamicScheme {
+public class SchemeExpressive: DynamicScheme {
   /// Hues used at breakpoints such that designers can specify a hue rotation
   /// that occurs at a given break point.
   static let hues: [Double] = [0, 21, 51, 121, 151, 191, 271, 321, 360]
@@ -46,7 +46,7 @@ class SchemeExpressive: DynamicScheme {
     120,
   ]
 
-  init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
+  public init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
     super.init(
       sourceColorArgb: sourceColorHct.toInt(),
       variant: Variant.expressive,

@@ -23,7 +23,7 @@ private func _isMonochrome(_ scheme: DynamicScheme) -> Bool {
 }
 
 /// Tokens, or named colors, in the Material Design system.
-class MaterialDynamicColors {
+public class MaterialDynamicColors {
   static let contentAccentToneDelta: Double = 15
 
   static func highestSurface(_ scheme: DynamicScheme) -> DynamicColor {
@@ -34,7 +34,7 @@ class MaterialDynamicColors {
     return ViewingConditions.make(backgroundLstar: scheme.isDark ? 30 : 80)
   }
 
-  static let primaryPaletteKeyColor: DynamicColor = DynamicColor(
+  public static let primaryPaletteKeyColor: DynamicColor = DynamicColor(
     name: "primary_palette_key_color",
     palette: { scheme in
       return scheme.primaryPalette
@@ -44,7 +44,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let secondaryPaletteKeyColor: DynamicColor = DynamicColor(
+  public static let secondaryPaletteKeyColor: DynamicColor = DynamicColor(
     name: "secondary_palette_key_color",
     palette: { scheme in
       return scheme.secondaryPalette
@@ -54,7 +54,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let tertiaryPaletteKeyColor: DynamicColor = DynamicColor(
+  public static let tertiaryPaletteKeyColor: DynamicColor = DynamicColor(
     name: "tertiary_palette_key_color",
     palette: { scheme in
       return scheme.tertiaryPalette
@@ -64,7 +64,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let neutralPaletteKeyColor: DynamicColor = DynamicColor(
+  public static let neutralPaletteKeyColor: DynamicColor = DynamicColor(
     name: "neutral_palette_key_color",
     palette: { scheme in
       return scheme.neutralPalette
@@ -74,7 +74,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let neutralVariantPaletteKeyColor: DynamicColor = DynamicColor(
+  public static let neutralVariantPaletteKeyColor: DynamicColor = DynamicColor(
     name: "neutral_variant_palette_key_color",
     palette: { scheme in
       return scheme.neutralVariantPalette
@@ -84,7 +84,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let background: DynamicColor = DynamicColor(
+  public static let background: DynamicColor = DynamicColor(
     name: "background",
     palette: { scheme in
       return scheme.neutralPalette
@@ -95,7 +95,7 @@ class MaterialDynamicColors {
     isBackground: true
   )
 
-  static let onBackground: DynamicColor = DynamicColor(
+  public static let onBackground: DynamicColor = DynamicColor(
     name: "on_background",
     palette: { scheme in
       return scheme.neutralPalette
@@ -109,7 +109,7 @@ class MaterialDynamicColors {
     contrastCurve: ContrastCurve(3, 3, 4.5, 7)
   )
 
-  static let surface: DynamicColor = DynamicColor(
+  public static let surface: DynamicColor = DynamicColor(
     name: "surface",
     palette: { scheme in
       return scheme.neutralPalette
@@ -120,7 +120,7 @@ class MaterialDynamicColors {
     isBackground: true
   )
 
-  static let surfaceDim: DynamicColor = DynamicColor(
+  public static let surfaceDim: DynamicColor = DynamicColor(
     name: "surface_dim",
     palette: { scheme in
       return scheme.neutralPalette
@@ -131,7 +131,7 @@ class MaterialDynamicColors {
     isBackground: true
   )
 
-  static let surfaceBright: DynamicColor = DynamicColor(
+  public static let surfaceBright: DynamicColor = DynamicColor(
     name: "surface_bright",
     palette: { scheme in
       return scheme.neutralPalette
@@ -142,7 +142,7 @@ class MaterialDynamicColors {
     isBackground: true
   )
 
-  static let surfaceContainerLowest: DynamicColor = DynamicColor(
+  public static let surfaceContainerLowest: DynamicColor = DynamicColor(
     name: "surface_container_lowest",
     palette: { scheme in
       return scheme.neutralPalette
@@ -153,7 +153,7 @@ class MaterialDynamicColors {
     isBackground: true
   )
 
-  static let surfaceContainerLow: DynamicColor = DynamicColor(
+  public static let surfaceContainerLow: DynamicColor = DynamicColor(
     name: "surface_container_low",
     palette: { scheme in
       return scheme.neutralPalette
@@ -164,7 +164,7 @@ class MaterialDynamicColors {
     isBackground: true
   )
 
-  static let surfaceContainer: DynamicColor = DynamicColor(
+  public static let surfaceContainer: DynamicColor = DynamicColor(
     name: "surface_container",
     palette: { scheme in
       return scheme.neutralPalette
@@ -175,7 +175,7 @@ class MaterialDynamicColors {
     isBackground: true
   )
 
-  static let surfaceContainerHigh: DynamicColor = DynamicColor(
+  public static let surfaceContainerHigh: DynamicColor = DynamicColor(
     name: "surface_container_high",
     palette: { scheme in
       return scheme.neutralPalette
@@ -186,7 +186,7 @@ class MaterialDynamicColors {
     isBackground: true
   )
 
-  static let surfaceContainerHighest: DynamicColor = DynamicColor(
+  public static let surfaceContainerHighest: DynamicColor = DynamicColor(
     name: "surface_container_highest",
     palette: { scheme in
       return scheme.neutralPalette
@@ -197,7 +197,7 @@ class MaterialDynamicColors {
     isBackground: true
   )
 
-  static let onSurface: DynamicColor = DynamicColor(
+  public static let onSurface: DynamicColor = DynamicColor(
     name: "on_surface",
     palette: { scheme in
       return scheme.neutralPalette
@@ -211,7 +211,7 @@ class MaterialDynamicColors {
     contrastCurve: ContrastCurve(4.5, 7, 11, 21)
   )
 
-  static let surfaceVariant: DynamicColor = DynamicColor(
+  public static let surfaceVariant: DynamicColor = DynamicColor(
     name: "surface_variant",
     palette: { scheme in
       return scheme.neutralVariantPalette
@@ -222,7 +222,7 @@ class MaterialDynamicColors {
     isBackground: true
   )
 
-  static let onSurfaceVariant: DynamicColor = DynamicColor(
+  public static let onSurfaceVariant: DynamicColor = DynamicColor(
     name: "on_surface_variant",
     palette: { scheme in
       return scheme.neutralVariantPalette
@@ -236,7 +236,7 @@ class MaterialDynamicColors {
     contrastCurve: ContrastCurve(3, 4.5, 7, 11)
   )
 
-  static let inverseSurface: DynamicColor = DynamicColor(
+  public static let inverseSurface: DynamicColor = DynamicColor(
     name: "inverse_surface",
     palette: { scheme in
       return scheme.neutralPalette
@@ -246,7 +246,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let inverseOnSurface: DynamicColor = DynamicColor(
+  public static let inverseOnSurface: DynamicColor = DynamicColor(
     name: "inverse_on_surface",
     palette: { scheme in
       return scheme.neutralPalette
@@ -260,7 +260,7 @@ class MaterialDynamicColors {
     contrastCurve: ContrastCurve(4.5, 7, 11, 21)
   )
 
-  static let outline: DynamicColor = DynamicColor(
+  public static let outline: DynamicColor = DynamicColor(
     name: "outline",
     palette: { scheme in
       return scheme.neutralVariantPalette
@@ -274,7 +274,7 @@ class MaterialDynamicColors {
     contrastCurve: ContrastCurve(1.5, 3, 4.5, 7)
   )
 
-  static let outlineVariant: DynamicColor = DynamicColor(
+  public static let outlineVariant: DynamicColor = DynamicColor(
     name: "outline_variant",
     palette: { scheme in
       return scheme.neutralVariantPalette
@@ -288,7 +288,7 @@ class MaterialDynamicColors {
     contrastCurve: ContrastCurve(1, 1, 3, 7)
   )
 
-  static let shadow: DynamicColor = DynamicColor(
+  public static let shadow: DynamicColor = DynamicColor(
     name: "shadow",
     palette: { scheme in
       return scheme.neutralPalette
@@ -298,7 +298,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let scrim: DynamicColor = DynamicColor(
+  public static let scrim: DynamicColor = DynamicColor(
     name: "scrim",
     palette: { scheme in
       return scheme.neutralPalette
@@ -308,7 +308,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let surfaceTint: DynamicColor = DynamicColor(
+  public static let surfaceTint: DynamicColor = DynamicColor(
     name: "surface_tint",
     palette: { scheme in
       return scheme.primaryPalette
@@ -319,7 +319,7 @@ class MaterialDynamicColors {
     isBackground: true
   )
 
-  static let primary: DynamicColor = DynamicColor(
+  public static let primary: DynamicColor = DynamicColor(
     name: "primary",
     palette: { scheme in
       return scheme.primaryPalette
@@ -342,7 +342,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let onPrimary: DynamicColor = DynamicColor(
+  public static let onPrimary: DynamicColor = DynamicColor(
     name: "on_primary",
     palette: { scheme in
       return scheme.primaryPalette
@@ -359,7 +359,7 @@ class MaterialDynamicColors {
     contrastCurve: ContrastCurve(4.5, 7, 11, 21)
   )
 
-  static let primaryContainer: DynamicColor = DynamicColor(
+  public static let primaryContainer: DynamicColor = DynamicColor(
     name: "primary_container",
     palette: { scheme in
       return scheme.primaryPalette
@@ -385,7 +385,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let onPrimaryContainer: DynamicColor = DynamicColor(
+  public static let onPrimaryContainer: DynamicColor = DynamicColor(
     name: "on_primary_container",
     palette: { scheme in
       return scheme.primaryPalette
@@ -406,7 +406,7 @@ class MaterialDynamicColors {
     contrastCurve: ContrastCurve(4.5, 7, 11, 21)
   )
 
-  static let inversePrimary: DynamicColor = DynamicColor(
+  public static let inversePrimary: DynamicColor = DynamicColor(
     name: "inverse_primary",
     palette: { scheme in
       return scheme.primaryPalette
@@ -420,7 +420,7 @@ class MaterialDynamicColors {
     contrastCurve: ContrastCurve(3, 4.5, 7, 11)
   )
 
-  static let secondary: DynamicColor = DynamicColor(
+  public static let secondary: DynamicColor = DynamicColor(
     name: "secondary",
     palette: { scheme in
       return scheme.secondaryPalette
@@ -440,7 +440,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let onSecondary: DynamicColor = DynamicColor(
+  public static let onSecondary: DynamicColor = DynamicColor(
     name: "on_secondary",
     palette: { scheme in
       return scheme.secondaryPalette
@@ -458,7 +458,7 @@ class MaterialDynamicColors {
     contrastCurve: ContrastCurve(4.5, 7, 11, 21)
   )
 
-  static let secondaryContainer: DynamicColor = DynamicColor(
+  public static let secondaryContainer: DynamicColor = DynamicColor(
     name: "secondary_container",
     palette: { scheme in
       return scheme.secondaryPalette
@@ -489,7 +489,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let onSecondaryContainer: DynamicColor = DynamicColor(
+  public static let onSecondaryContainer: DynamicColor = DynamicColor(
     name: "on_secondary_container",
     palette: { scheme in
       return scheme.secondaryPalette
@@ -507,7 +507,7 @@ class MaterialDynamicColors {
     contrastCurve: ContrastCurve(4.5, 7, 11, 21)
   )
 
-  static let tertiary: DynamicColor = DynamicColor(
+  public static let tertiary: DynamicColor = DynamicColor(
     name: "tertiary",
     palette: { scheme in
       return scheme.tertiaryPalette
@@ -530,7 +530,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let onTertiary: DynamicColor = DynamicColor(
+  public static let onTertiary: DynamicColor = DynamicColor(
     name: "on_tertiary",
     palette: { scheme in
       return scheme.tertiaryPalette
@@ -547,7 +547,7 @@ class MaterialDynamicColors {
     contrastCurve: ContrastCurve(4.5, 7, 11, 21)
   )
 
-  static let tertiaryContainer: DynamicColor = DynamicColor(
+  public static let tertiaryContainer: DynamicColor = DynamicColor(
     name: "tertiary_container",
     palette: { scheme in
       return scheme.tertiaryPalette
@@ -576,7 +576,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let onTertiaryContainer: DynamicColor = DynamicColor(
+  public static let onTertiaryContainer: DynamicColor = DynamicColor(
     name: "on_tertiary_container",
     palette: { scheme in
       return scheme.tertiaryPalette
@@ -597,7 +597,7 @@ class MaterialDynamicColors {
     contrastCurve: ContrastCurve(4.5, 7, 11, 21)
   )
 
-  static let error: DynamicColor = DynamicColor(
+  public static let error: DynamicColor = DynamicColor(
     name: "error",
     palette: { scheme in
       return scheme.errorPalette
@@ -617,7 +617,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let onError: DynamicColor = DynamicColor(
+  public static let onError: DynamicColor = DynamicColor(
     name: "on_error",
     palette: { scheme in
       return scheme.errorPalette
@@ -631,7 +631,7 @@ class MaterialDynamicColors {
     contrastCurve: ContrastCurve(4.5, 7, 11, 21)
   )
 
-  static let errorContainer: DynamicColor = DynamicColor(
+  public static let errorContainer: DynamicColor = DynamicColor(
     name: "error_container",
     palette: { scheme in
       return scheme.errorPalette
@@ -651,7 +651,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let onErrorContainer: DynamicColor = DynamicColor(
+  public static let onErrorContainer: DynamicColor = DynamicColor(
     name: "on_error_container",
     palette: { scheme in
       return scheme.errorPalette
@@ -665,7 +665,7 @@ class MaterialDynamicColors {
     contrastCurve: ContrastCurve(4.5, 7, 11, 21)
   )
 
-  static let primaryFixed: DynamicColor = DynamicColor(
+  public static let primaryFixed: DynamicColor = DynamicColor(
     name: "primary_fixed",
     palette: { scheme in
       return scheme.primaryPalette
@@ -686,7 +686,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let primaryFixedDim: DynamicColor = DynamicColor(
+  public static let primaryFixedDim: DynamicColor = DynamicColor(
     name: "primary_fixed_dim",
     palette: { scheme in
       return scheme.primaryPalette
@@ -707,7 +707,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let onPrimaryFixed: DynamicColor = DynamicColor(
+  public static let onPrimaryFixed: DynamicColor = DynamicColor(
     name: "on_primary_fixed",
     palette: { scheme in
       return scheme.primaryPalette
@@ -724,7 +724,7 @@ class MaterialDynamicColors {
     contrastCurve: ContrastCurve(4.5, 7, 11, 21)
   )
 
-  static let onPrimaryFixedVariant: DynamicColor = DynamicColor(
+  public static let onPrimaryFixedVariant: DynamicColor = DynamicColor(
     name: "on_primary_fixed_variant",
     palette: { scheme in
       return scheme.primaryPalette
@@ -741,7 +741,7 @@ class MaterialDynamicColors {
     contrastCurve: ContrastCurve(3, 4.5, 7, 11)
   )
 
-  static let secondaryFixed: DynamicColor = DynamicColor(
+  public static let secondaryFixed: DynamicColor = DynamicColor(
     name: "secondary_fixed",
     palette: { scheme in
       return scheme.secondaryPalette
@@ -762,7 +762,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let secondaryFixedDim: DynamicColor = DynamicColor(
+  public static let secondaryFixedDim: DynamicColor = DynamicColor(
     name: "secondary_fixed_dim",
     palette: { scheme in
       return scheme.secondaryPalette
@@ -783,7 +783,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let onSecondaryFixed: DynamicColor = DynamicColor(
+  public static let onSecondaryFixed: DynamicColor = DynamicColor(
     name: "on_secondary_fixed",
     palette: { scheme in
       return scheme.secondaryPalette
@@ -800,7 +800,7 @@ class MaterialDynamicColors {
     contrastCurve: ContrastCurve(4.5, 7, 11, 21)
   )
 
-  static let onSecondaryFixedVariant: DynamicColor = DynamicColor(
+  public static let onSecondaryFixedVariant: DynamicColor = DynamicColor(
     name: "on_secondary_fixed_variant",
     palette: { scheme in
       return scheme.secondaryPalette
@@ -817,7 +817,7 @@ class MaterialDynamicColors {
     contrastCurve: ContrastCurve(3, 4.5, 7, 11)
   )
 
-  static let tertiaryFixed: DynamicColor = DynamicColor(
+  public static let tertiaryFixed: DynamicColor = DynamicColor(
     name: "tertiary_fixed",
     palette: { scheme in
       return scheme.tertiaryPalette
@@ -838,7 +838,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let tertiaryFixedDim: DynamicColor = DynamicColor(
+  public static let tertiaryFixedDim: DynamicColor = DynamicColor(
     name: "tertiary_fixed_dim",
     palette: { scheme in
       return scheme.tertiaryPalette
@@ -859,7 +859,7 @@ class MaterialDynamicColors {
     }
   )
 
-  static let onTertiaryFixed: DynamicColor = DynamicColor(
+  public static let onTertiaryFixed: DynamicColor = DynamicColor(
     name: "on_tertiary_fixed",
     palette: { scheme in
       return scheme.tertiaryPalette
@@ -876,7 +876,7 @@ class MaterialDynamicColors {
     contrastCurve: ContrastCurve(4.5, 7, 11, 21)
   )
 
-  static let onTertiaryFixedVariant: DynamicColor = DynamicColor(
+  public static let onTertiaryFixedVariant: DynamicColor = DynamicColor(
     name: "on_tertiary_fixed_variant",
     palette: { scheme in
       return scheme.tertiaryPalette

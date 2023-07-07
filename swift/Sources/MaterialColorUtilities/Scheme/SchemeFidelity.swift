@@ -22,8 +22,8 @@ import Foundation
 ///
 /// Tertiary Container is the complement to the source color, using
 /// [TemperatureCache]. It also maintains constant appearance.
-class SchemeFidelity: DynamicScheme {
-  init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
+public class SchemeFidelity: DynamicScheme {
+  public init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
     super.init(
       sourceColorArgb: sourceColorHct.toInt(),
       variant: Variant.fidelity,

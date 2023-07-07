@@ -35,8 +35,8 @@ typealias DynamicSchemeValue<T> = (DynamicScheme) -> T
 /// `DynamicScheme` and returns a value. This ensures ultimate flexibility, any
 /// desired behavior of a color for any design system, but it usually
 /// unnecessary. See the default constructor for more information.
-class DynamicColor {
-  let name: String
+public class DynamicColor {
+  public let name: String
   let palette: DynamicSchemeValue<TonalPalette>
   let tone: DynamicSchemeValue<Double>
   let isBackground: Bool
@@ -107,7 +107,7 @@ class DynamicColor {
   /// - Parameter scheme: Defines the conditions of the user interface, for example,
   ///   whether or not it is dark mode or light mode, and what the desired contrast level is.
   /// - Returns: The color as an integer (ARGB).
-  func getArgb(_ scheme: DynamicScheme) -> Int {
+  public func getArgb(_ scheme: DynamicScheme) -> Int {
     return getHct(scheme).toInt()
   }
 
@@ -116,7 +116,7 @@ class DynamicColor {
   ///   contrast level is.
   /// - Returns: a color, expressed in the HCT color space, that this
   ///   `DynamicColor` is under the conditions in `scheme`.
-  func getHct(_ scheme: DynamicScheme) -> Hct {
+  public func getHct(_ scheme: DynamicScheme) -> Hct {
     if let cachedAnswer = _hctCache[scheme] {
       return cachedAnswer
     }

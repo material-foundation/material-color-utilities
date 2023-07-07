@@ -21,8 +21,8 @@
 /// Tertiary Container is an analogous color, specifically, the analog of a
 /// color wheel divided into 6, and the precise analog is the one found by
 /// increasing hue. It also maintains constant appearance.
-class SchemeContent: DynamicScheme {
-  init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
+public class SchemeContent: DynamicScheme {
+  public init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
     super.init(
       sourceColorArgb: sourceColorHct.toInt(),
       variant: Variant.content,

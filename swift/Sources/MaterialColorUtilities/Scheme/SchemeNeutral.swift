@@ -15,8 +15,8 @@
 import Foundation
 
 /// A Dynamic Color theme that is near grayscale.
-class SchemeNeutral: DynamicScheme {
-  init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
+public class SchemeNeutral: DynamicScheme {
+  public init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
     super.init(
       sourceColorArgb: sourceColorHct.toInt(),
       variant: Variant.neutral,

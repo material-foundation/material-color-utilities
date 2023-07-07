@@ -17,7 +17,7 @@ import Foundation
 /// HCT, hue, chroma, and tone. A color system that provides a perceptually
 /// accurate color measurement system that can also accurately render what
 /// colors will appear as in different lighting environments.
-class Hct: Equatable, Hashable {
+public class Hct: Equatable, Hashable {
   private var _hue: Double
   private var _chroma: Double
   private var _tone: Double
@@ -76,7 +76,7 @@ class Hct: Equatable, Hashable {
     }
   }
 
-  private init(_ argb: Int) {
+  public init(_ argb: Int) {
     self._argb = argb
     let cam16 = Cam16.fromInt(argb)
     self._hue = cam16.hue
@@ -98,11 +98,11 @@ class Hct: Equatable, Hashable {
     return _argb == other._argb
   }
 
-  static func == (lhs: Hct, rhs: Hct) -> Bool {
+  public static func == (lhs: Hct, rhs: Hct) -> Bool {
     return type(of: lhs) == type(of: rhs) && lhs.isEqual(to: rhs)
   }
 
-  func hash(into hasher: inout Hasher) {
+  public func hash(into hasher: inout Hasher) {
     hasher.combine(_argb)
   }
 
