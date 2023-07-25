@@ -16,6 +16,7 @@
 
 #include "cpp/score/score.h"
 
+#include <cstdint>
 #include <map>
 #include <vector>
 
@@ -27,7 +28,7 @@ namespace material_color_utilities {
 namespace {
 
 TEST(ScoreTest, PrioritizesChroma) {
-  std::map<Argb, int> argb_to_population = {
+  std::map<Argb, uint32_t> argb_to_population = {
       {0xff000000, 1}, {0xffffffff, 1}, {0xff0000ff, 1}};
 
   std::vector<Argb> ranked =
@@ -38,7 +39,7 @@ TEST(ScoreTest, PrioritizesChroma) {
 }
 
 TEST(ScoreTest, PrioritizesChromaWhenProportionsEqual) {
-  std::map<Argb, int> argb_to_population = {
+  std::map<Argb, uint32_t> argb_to_population = {
       {0xffff0000, 1}, {0xff00ff00, 1}, {0xff0000ff, 1}};
 
   std::vector<Argb> ranked =
@@ -51,7 +52,7 @@ TEST(ScoreTest, PrioritizesChromaWhenProportionsEqual) {
 }
 
 TEST(ScoreTest, GeneratesGblueWhenNoColorsAvailable) {
-  std::map<Argb, int> argb_to_population = {{0xff000000, 1}};
+  std::map<Argb, uint32_t> argb_to_population = {{0xff000000, 1}};
 
   std::vector<Argb> ranked =
       RankedSuggestions(argb_to_population, {.desired = 4});
@@ -61,7 +62,7 @@ TEST(ScoreTest, GeneratesGblueWhenNoColorsAvailable) {
 }
 
 TEST(ScoreTest, DedupesNearbyHues) {
-  std::map<Argb, int> argb_to_population = {
+  std::map<Argb, uint32_t> argb_to_population = {
       {0xff008772, 1},  // H 180 C 42 T 50
       {0xff318477, 1}   // H 184 C 35 T 50
   };
@@ -74,7 +75,7 @@ TEST(ScoreTest, DedupesNearbyHues) {
 }
 
 TEST(ScoreTest, MaximizesHueDistance) {
-  std::map<Argb, int> argb_to_population = {
+  std::map<Argb, uint32_t> argb_to_population = {
       {0xff008772, 1},  // H 180 C 42 T 50
       {0xff008587, 1},  // H 198 C 50 T 50
       {0xff007ebc, 1}   // H 245 C 50 T 50
@@ -89,7 +90,7 @@ TEST(ScoreTest, MaximizesHueDistance) {
 }
 
 TEST(ScoreTest, GeneratedScenarioOne) {
-  std::map<Argb, int> argb_to_population = {
+  std::map<Argb, uint32_t> argb_to_population = {
       {0xff7ea16d, 67},
       {0xffd8ccae, 67},
       {0xff835c0d, 49},
@@ -106,7 +107,7 @@ TEST(ScoreTest, GeneratedScenarioOne) {
 }
 
 TEST(ScoreTest, GeneratedScenarioTwo) {
-  std::map<Argb, int> argb_to_population = {
+  std::map<Argb, uint32_t> argb_to_population = {
       {0xffd33881, 14},
       {0xff3205cc, 77},
       {0xff0b48cf, 36},
@@ -124,7 +125,7 @@ TEST(ScoreTest, GeneratedScenarioTwo) {
 }
 
 TEST(ScoreTest, GeneratedScenarioThree) {
-  std::map<Argb, int> argb_to_population = {
+  std::map<Argb, uint32_t> argb_to_population = {
       {0xffbe94a6, 23},
       {0xffc33fd7, 42},
       {0xff899f36, 90},
@@ -142,7 +143,7 @@ TEST(ScoreTest, GeneratedScenarioThree) {
 }
 
 TEST(ScoreTest, GeneratedScenarioFour) {
-  std::map<Argb, int> argb_to_population = {
+  std::map<Argb, uint32_t> argb_to_population = {
       {0xffdf241c, 85}, {0xff685859, 44}, {0xffd06d5f, 34},
       {0xff561c54, 27}, {0xff713090, 88},
   };
@@ -157,7 +158,7 @@ TEST(ScoreTest, GeneratedScenarioFour) {
 }
 
 TEST(ScoreTest, GeneratedScenarioFive) {
-  std::map<Argb, int> argb_to_population = {
+  std::map<Argb, uint32_t> argb_to_population = {
       {0xffbe66f8, 41}, {0xff4bbda9, 88}, {0xff80f6f9, 44},
       {0xffab8017, 43}, {0xffe89307, 65},
   };
@@ -173,7 +174,7 @@ TEST(ScoreTest, GeneratedScenarioFive) {
 }
 
 TEST(ScoreTest, GeneratedScenarioSix) {
-  std::map<Argb, int> argb_to_population = {
+  std::map<Argb, uint32_t> argb_to_population = {
       {0xff18ea8f, 93}, {0xff327593, 18}, {0xff066a18, 53},
       {0xfffa8a23, 74}, {0xff04ca1f, 62},
   };
@@ -188,7 +189,7 @@ TEST(ScoreTest, GeneratedScenarioSix) {
 }
 
 TEST(ScoreTest, GeneratedScenarioSeven) {
-  std::map<Argb, int> argb_to_population = {
+  std::map<Argb, uint32_t> argb_to_population = {
       {0xff2e05ed, 23}, {0xff153e55, 90}, {0xff9ab220, 23},
       {0xff153379, 66}, {0xff68bcc3, 81},
   };
@@ -203,7 +204,7 @@ TEST(ScoreTest, GeneratedScenarioSeven) {
 }
 
 TEST(ScoreTest, GeneratedScenarioEight) {
-  std::map<Argb, int> argb_to_population = {
+  std::map<Argb, uint32_t> argb_to_population = {
       {0xff816ec5, 24},
       {0xff6dcb94, 19},
       {0xff3cae91, 98},
@@ -219,7 +220,7 @@ TEST(ScoreTest, GeneratedScenarioEight) {
 }
 
 TEST(ScoreTest, GeneratedScenarioNine) {
-  std::map<Argb, int> argb_to_population = {
+  std::map<Argb, uint32_t> argb_to_population = {
       {0xff206f86, 52}, {0xff4a620d, 96}, {0xfff51401, 85},
       {0xff2b8ebf, 3},  {0xff277766, 59},
   };
@@ -235,7 +236,7 @@ TEST(ScoreTest, GeneratedScenarioNine) {
 }
 
 TEST(ScoreTest, GeneratedScenarioTen) {
-  std::map<Argb, int> argb_to_population = {
+  std::map<Argb, uint32_t> argb_to_population = {
       {0xff8b1d99, 54},
       {0xff27effe, 43},
       {0xff6f558d, 2},

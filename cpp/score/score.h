@@ -52,7 +52,7 @@ struct ScoreOptions {
  * # of colors display in Android 12's wallpaper picker.
  */
 std::vector<Argb> RankedSuggestions(
-    const std::map<Argb, int>& argb_to_population,
+    const std::map<Argb, uint32_t>& argb_to_population,
     const ScoreOptions& options = {});
 }  // namespace material_color_utilities
 

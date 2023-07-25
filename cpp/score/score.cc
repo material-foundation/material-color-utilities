@@ -18,6 +18,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 #include <map>
 #include <utility>
 #include <vector>
@@ -40,12 +41,12 @@ bool CompareScoredHCT(const std::pair<Hct, double>& a,
 }
 
 std::vector<Argb> RankedSuggestions(
-    const std::map<Argb, int>& argb_to_population,
+    const std::map<Argb, uint32_t>& argb_to_population,
     const ScoreOptions& options) {
   // Get the HCT color for each Argb value, while finding the per hue count and
   // total count.
   std::vector<Hct> colors_hct;
-  std::vector<int> hue_population(360, 0);
+  std::vector<uint32_t> hue_population(360, 0);
   double population_sum = 0;
   for (const auto& [argb, population] : argb_to_population) {
     Hct hct(argb);
