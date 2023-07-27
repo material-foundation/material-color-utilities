@@ -17,7 +17,6 @@
 
 import {DislikeAnalyzer} from '../dislike/dislike_analyzer.js';
 import {Hct} from '../hct/hct.js';
-import {ViewingConditions} from '../hct/viewing_conditions.js';
 import {DynamicScheme} from '../scheme/dynamic_scheme.js';
 import {Variant} from '../scheme/variant.js';
 
@@ -62,27 +61,6 @@ function findDesiredChromaByTone(
   }
 
   return answer;
-}
-
-function viewingConditionsForAlbers(scheme: DynamicScheme): ViewingConditions {
-  return ViewingConditions.make(
-      /*whitePoint=*/ undefined,
-      /*adaptingLuminance=*/ undefined,
-      /*backgroundLstar=*/ scheme.isDark ? 30 : 80,
-      /*surround=*/ undefined,
-      /*discountingIlluminant=*/ undefined,
-  );
-}
-
-function performAlbers(prealbers: Hct, scheme: DynamicScheme): number {
-  const albersd =
-      prealbers.inViewingConditions(viewingConditionsForAlbers(scheme));
-  if (DynamicColor.tonePrefersLightForeground(prealbers.tone) &&
-      !DynamicColor.toneAllowsLightForeground(albersd.tone)) {
-    return DynamicColor.enableLightForeground(prealbers.tone);
-  } else {
-    return DynamicColor.enableLightForeground(albersd.tone);
-  }
 }
 
 /**
@@ -308,7 +286,7 @@ export class MaterialDynamicColors {
     tone:
         (s) => {
           if (isFidelity(s)) {
-            return performAlbers(s.sourceColorHct, s);
+            return s.sourceColorHct.tone;
           }
           if (isMonochrome(s)) {
             return s.isDark ? 85 : 25;
@@ -388,11 +366,9 @@ export class MaterialDynamicColors {
           if (!isFidelity(s)) {
             return initialTone;
           }
-          let answer = findDesiredChromaByTone(
+          return findDesiredChromaByTone(
               s.secondaryPalette.hue, s.secondaryPalette.chroma, initialTone,
               s.isDark ? false : true);
-          answer = performAlbers(s.secondaryPalette.getHct(answer), s);
-          return answer;
         },
     isBackground: true,
     background: (s) => MaterialDynamicColors.highestSurface(s),
@@ -460,9 +436,7 @@ export class MaterialDynamicColors {
           if (!isFidelity(s)) {
             return s.isDark ? 30 : 90;
           }
-          const albersTone =
-              performAlbers(s.tertiaryPalette.getHct(s.sourceColorHct.tone), s);
-          const proposedHct = s.tertiaryPalette.getHct(albersTone);
+          const proposedHct = s.tertiaryPalette.getHct(s.sourceColorHct.tone);
           return DislikeAnalyzer.fixIfDisliked(proposedHct).tone;
         },
     isBackground: true,

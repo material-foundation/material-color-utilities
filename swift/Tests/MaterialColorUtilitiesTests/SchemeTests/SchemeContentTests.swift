@@ -37,7 +37,7 @@ final class SchemeContentTests: XCTestCase {
       contrastLevel: 0
     )
 
-    XCTAssertEqual(MaterialDynamicColors.tertiaryContainer.getArgb(scheme), 0xffac_1b57)
+    XCTAssertEqual(MaterialDynamicColors.tertiaryContainer.getArgb(scheme), 0xff98_0249)
   }
 
   func testLightThemeMaxContrastObjectionabeTertiaryContainerDarkens() {

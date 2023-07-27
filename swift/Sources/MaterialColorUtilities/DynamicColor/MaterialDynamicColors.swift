@@ -30,10 +30,6 @@ public class MaterialDynamicColors {
     return scheme.isDark ? surfaceBright : surfaceDim
   }
 
-  static func viewingConditionsForAlbers(_ scheme: DynamicScheme) -> ViewingConditions {
-    return ViewingConditions.make(backgroundLstar: scheme.isDark ? 30 : 80)
-  }
-
   public static let primaryPaletteKeyColor: DynamicColor = DynamicColor(
     name: "primary_palette_key_color",
     palette: { scheme in
@@ -366,7 +362,7 @@ public class MaterialDynamicColors {
     },
     tone: { scheme in
       if _isFidelity(scheme) {
-        return _performAlbers(scheme.sourceColorHct, scheme)
+        return scheme.sourceColorHct.tone
       }
       if _isMonochrome(scheme) {
         return scheme.isDark ? 85 : 25
@@ -471,11 +467,9 @@ public class MaterialDynamicColors {
       if !_isFidelity(scheme) {
         return initialTone
       }
-      var answer = _findDesiredChromaByTone(
+      return _findDesiredChromaByTone(
         scheme.secondaryPalette.hue, scheme.secondaryPalette.chroma, initialTone,
         scheme.isDark ? false : true)
-      answer = _performAlbers(scheme.secondaryPalette.getHct(answer), scheme)
-      return answer
     },
     isBackground: true,
     background: { scheme in
@@ -559,9 +553,7 @@ public class MaterialDynamicColors {
       if !_isFidelity(scheme) {
         return scheme.isDark ? 30 : 90
       }
-      let albersTone =
-        _performAlbers(scheme.tertiaryPalette.getHct(scheme.sourceColorHct.tone), scheme)
-      let proposedHct = scheme.tertiaryPalette.getHct(albersTone)
+      let proposedHct = scheme.tertiaryPalette.getHct(scheme.sourceColorHct.tone)
       return DislikeAnalyzer.fixIfDisliked(proposedHct).tone
     },
     isBackground: true,
@@ -921,16 +913,5 @@ public class MaterialDynamicColors {
     }
 
     return answer
-  }
-
-  static private func _performAlbers(_ prealbers: Hct, _ scheme: DynamicScheme) -> Double {
-    let albersd = prealbers.inViewingConditions(viewingConditionsForAlbers(scheme))
-    if DynamicColor.tonePrefersLightForeground(prealbers.tone)
-      && !DynamicColor.toneAllowsLightForeground(albersd.tone)
-    {
-      return DynamicColor.enableLightForeground(prealbers.tone)
-    } else {
-      return DynamicColor.enableLightForeground(albersd.tone)
-    }
   }
 }

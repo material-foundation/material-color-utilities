@@ -16,7 +16,6 @@ import 'dart:math' as math;
 
 import 'package:material_color_utilities/dislike/dislike_analyzer.dart';
 import 'package:material_color_utilities/hct/hct.dart';
-import 'package:material_color_utilities/hct/viewing_conditions.dart';
 import 'package:material_color_utilities/scheme/dynamic_scheme.dart';
 import 'package:material_color_utilities/scheme/variant.dart';
 
@@ -35,10 +34,6 @@ class MaterialDynamicColors {
   static const double contentAccentToneDelta = 15.0;
   static DynamicColor highestSurface(DynamicScheme s) {
     return s.isDark ? surfaceBright : surfaceDim;
-  }
-
-  static ViewingConditions viewingConditionsForAlbers(DynamicScheme scheme) {
-    return ViewingConditions.make(backgroundLstar: scheme.isDark ? 30 : 80);
   }
 
   static DynamicColor primaryPaletteKeyColor = DynamicColor.fromPalette(
@@ -248,7 +243,7 @@ class MaterialDynamicColors {
     palette: (s) => s.primaryPalette,
     tone: (s) {
       if (_isFidelity(s)) {
-        return _performAlbers(s.sourceColorHct, s);
+        return s.sourceColorHct.tone;
       }
       if (_isMonochrome(s)) {
         return s.isDark ? 85 : 25;
@@ -327,10 +322,8 @@ class MaterialDynamicColors {
       if (!_isFidelity(s)) {
         return initialTone;
       }
-      var answer = _findDesiredChromaByTone(s.secondaryPalette.hue,
+      return _findDesiredChromaByTone(s.secondaryPalette.hue,
           s.secondaryPalette.chroma, initialTone, s.isDark ? false : true);
-      answer = _performAlbers(s.secondaryPalette.getHct(answer), s);
-      return answer;
     },
     isBackground: true,
     background: (s) => MaterialDynamicColors.highestSurface(s),
@@ -396,9 +389,7 @@ class MaterialDynamicColors {
       if (!_isFidelity(s)) {
         return s.isDark ? 30 : 90;
       }
-      final albersTone =
-          _performAlbers(s.tertiaryPalette.getHct(s.sourceColorHct.tone), s);
-      final proposedHct = s.tertiaryPalette.getHct(albersTone);
+      final proposedHct = s.tertiaryPalette.getHct(s.sourceColorHct.tone);
       return DislikeAnalyzer.fixIfDisliked(proposedHct).tone;
     },
     isBackground: true,
@@ -618,16 +609,5 @@ class MaterialDynamicColors {
     }
 
     return answer;
-  }
-
-  static double _performAlbers(Hct prealbers, DynamicScheme scheme) {
-    final albersd =
-        prealbers.inViewingConditions(viewingConditionsForAlbers(scheme));
-    if (DynamicColor.tonePrefersLightForeground(prealbers.tone) &&
-        !DynamicColor.toneAllowsLightForeground(albersd.tone)) {
-      return DynamicColor.enableLightForeground(prealbers.tone);
-    } else {
-      return DynamicColor.enableLightForeground(albersd.tone);
-    }
   }
 }

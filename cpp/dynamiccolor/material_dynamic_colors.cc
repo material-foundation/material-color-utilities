@@ -20,7 +20,6 @@
 
 #include "cpp/cam/cam.h"
 #include "cpp/cam/hct.h"
-#include "cpp/cam/viewing_conditions.h"
 #include "cpp/dislike/dislike.h"
 #include "cpp/dynamiccolor/contrast_curve.h"
 #include "cpp/dynamiccolor/dynamic_color.h"
@@ -110,21 +109,6 @@ Hct InViewingConditions(Hct hct, ViewingConditions vc) {
   Hct recast_hct =
       Hct(recast_in_vc.hue, recast_in_vc.chroma, LstarFromY(viewed_in_vc.b));
   return recast_hct;
-}
-
-ViewingConditions ViewingConditionsForAlbers(const DynamicScheme& scheme) {
-  return DefaultWithBackgroundLstar(scheme.is_dark ? 30.0 : 80.0);
-}
-
-double PerformAlbers(Hct pre_albers, const DynamicScheme& scheme) {
-  Hct albersd =
-      InViewingConditions(pre_albers, ViewingConditionsForAlbers(scheme));
-  if (TonePrefersLightForeground(pre_albers.get_tone()) &&
-      !ToneAllowsLightForeground(albersd.get_tone())) {
-    return EnableLightForeground(pre_albers.get_tone());
-  } else {
-    return EnableLightForeground(albersd.get_tone());
-  }
 }
 
 double FindDesiredChromaByTone(double hue, double chroma, double tone,
@@ -556,7 +540,7 @@ DynamicColor MaterialDynamicColors::PrimaryContainer() {
       /* tone= */
       [](const DynamicScheme& s) -> double {
         if (IsFidelity(s)) {
-          return PerformAlbers(s.source_color_hct, s);
+          return s.source_color_hct.get_tone();
         }
         if (IsMonochrome(s)) {
           return s.is_dark ? 85.0 : 25.0;
@@ -673,11 +657,9 @@ DynamicColor MaterialDynamicColors::SecondaryContainer() {
         if (!IsFidelity(s)) {
           return initialTone;
         }
-        double answer = FindDesiredChromaByTone(
-            s.secondary_palette.get_hue(), s.secondary_palette.get_chroma(),
-            initialTone, s.is_dark ? false : true);
-        answer = PerformAlbers(Hct(s.secondary_palette.get(answer)), s);
-        return answer;
+        return FindDesiredChromaByTone(s.secondary_palette.get_hue(),
+                                       s.secondary_palette.get_chroma(),
+                                       initialTone, s.is_dark ? false : true);
       },
       /* isBackground= */ true,
       /* background= */
@@ -772,9 +754,8 @@ DynamicColor MaterialDynamicColors::TertiaryContainer() {
         if (!IsFidelity(s)) {
           return s.is_dark ? 30.0 : 90.0;
         }
-        double albersTone = PerformAlbers(
-            Hct(s.tertiary_palette.get(s.source_color_hct.get_tone())), s);
-        Hct proposedHct = Hct(s.tertiary_palette.get(albersTone));
+        Hct proposedHct =
+            Hct(s.tertiary_palette.get(s.source_color_hct.get_tone()));
         return FixIfDisliked(proposedHct).get_tone();
       },
       /* isBackground= */ true,

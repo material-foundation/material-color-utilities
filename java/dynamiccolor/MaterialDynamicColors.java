@@ -19,7 +19,6 @@ package dynamiccolor;
 import androidx.annotation.NonNull;
 import dislike.DislikeAnalyzer;
 import hct.Hct;
-import hct.ViewingConditions;
 import scheme.DynamicScheme;
 import scheme.Variant;
 
@@ -395,7 +394,7 @@ public final class MaterialDynamicColors {
         /* palette= */ (s) -> s.primaryPalette,
         /* tone= */ (s) -> {
           if (isFidelity(s)) {
-            return performAlbers(s.sourceColorHct, s);
+            return s.sourceColorHct.getTone();
           }
           if (isMonochrome(s)) {
             return s.isDark ? 85.0 : 25.0;
@@ -490,14 +489,8 @@ public final class MaterialDynamicColors {
           if (!isFidelity(s)) {
             return initialTone;
           }
-          double answer =
-              findDesiredChromaByTone(
-                  s.secondaryPalette.getHue(),
-                  s.secondaryPalette.getChroma(),
-                  initialTone,
-                  !s.isDark);
-          answer = performAlbers(s.secondaryPalette.getHct(answer), s);
-          return answer;
+          return findDesiredChromaByTone(
+              s.secondaryPalette.getHue(), s.secondaryPalette.getChroma(), initialTone, !s.isDark);
         },
         /* isBackground= */ true,
         /* background= */ this::highestSurface,
@@ -574,9 +567,7 @@ public final class MaterialDynamicColors {
           if (!isFidelity(s)) {
             return s.isDark ? 30.0 : 90.0;
           }
-          final double albersTone =
-              performAlbers(s.tertiaryPalette.getHct(s.sourceColorHct.getTone()), s);
-          final Hct proposedHct = s.tertiaryPalette.getHct(albersTone);
+          final Hct proposedHct = s.tertiaryPalette.getHct(s.sourceColorHct.getTone());
           return DislikeAnalyzer.fixIfDisliked(proposedHct).getTone();
         },
         /* isBackground= */ true,
@@ -930,10 +921,6 @@ public final class MaterialDynamicColors {
     return scheme.variant == Variant.FIDELITY || scheme.variant == Variant.CONTENT;
   }
 
-  private static ViewingConditions viewingConditionsForAlbers(DynamicScheme scheme) {
-    return ViewingConditions.defaultWithBackgroundLstar(scheme.isDark ? 30.0 : 80.0);
-  }
-
   private static boolean isMonochrome(DynamicScheme scheme) {
     return scheme.variant == Variant.MONOCHROME;
   }
@@ -965,15 +952,5 @@ public final class MaterialDynamicColors {
     }
 
     return answer;
-  }
-
-  static double performAlbers(Hct prealbers, DynamicScheme scheme) {
-    final Hct albersd = prealbers.inViewingConditions(viewingConditionsForAlbers(scheme));
-    if (DynamicColor.tonePrefersLightForeground(prealbers.getTone())
-        && !DynamicColor.toneAllowsLightForeground(albersd.getTone())) {
-      return DynamicColor.enableLightForeground(prealbers.getTone());
-    } else {
-      return DynamicColor.enableLightForeground(albersd.getTone());
-    }
   }
 }
