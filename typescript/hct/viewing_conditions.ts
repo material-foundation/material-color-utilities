@@ -36,6 +36,41 @@ export class ViewingConditions {
   static DEFAULT = ViewingConditions.make();
 
   /**
+   * The default `whitePoint`, with respect to which the inputs to the method
+   * `Hct.from(h, c, t)` are interpreted.
+   * See {@link ViewingConditions.make} for more information.
+   */
+  static whitePoint = utils.whitePointD65();
+
+  /**
+   * The default `adaptingLuminance`, with respect to which the inputs to the
+   * method `Hct.from(h, c, t)` are interpreted.
+   * See {@link ViewingConditions.make} for more information.
+   */
+  static adaptingLuminance  = (200.0 / Math.PI) * utils.yFromLstar(50.0) / 100.0;
+  
+  /**
+   * The default `backgroundLstar`, with respect to which the inputs to the
+   * method `Hct.from(h, c, t)` are interpreted.
+   * See {@link ViewingConditions.make} for more information.
+   */
+  static backgroundLstar = 50.0;
+
+  /**
+   * The default `surround`, with respect to which the inputs to the method
+   * `Hct.from(h, c, t)` are interpreted.
+   * See {@link ViewingConditions.make} for more information.
+   */
+  static surround = 2.0;
+
+  /**
+   * The default `discountingIlluminant`, with respect to which the inputs to
+   * the method `Hct.from(h, c, t)` are interpreted.
+   * See {@link ViewingConditions.make} for more information.
+   */
+  static discountingIlluminant = false;
+
+  /**
    * Create ViewingConditions from a simple, physically relevant, set of
    * parameters.
    *
@@ -58,10 +93,12 @@ export class ViewingConditions {
    *       self-luminous objects like displays.
    */
   static make(
-      whitePoint = utils.whitePointD65(),
-      adaptingLuminance = (200.0 / Math.PI) * utils.yFromLstar(50.0) / 100.0,
-      backgroundLstar = 50.0, surround = 2.0,
-      discountingIlluminant = false): ViewingConditions {
+      whitePoint = ViewingConditions.whitePoint,
+      adaptingLuminance = ViewingConditions.adaptingLuminance,
+      backgroundLstar = ViewingConditions.backgroundLstar,
+      surround = ViewingConditions.surround,
+      discountingIlluminant = ViewingConditions.discountingIlluminant
+  ): ViewingConditions {
     const xyz = whitePoint;
     const rW = xyz[0] * 0.401288 + xyz[1] * 0.650173 + xyz[2] * -0.051461;
     const gW = xyz[0] * -0.250268 + xyz[1] * 1.204414 + xyz[2] * 0.045854;
