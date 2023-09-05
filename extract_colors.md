@@ -1,6 +1,6 @@
 # Extracting colors from an image
 
-[TOC]
+
 
 To extract colors from an image that are suitable for generating schemes, use
 the `quantize` and `score` libraries.
