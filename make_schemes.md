@@ -101,6 +101,91 @@ Currently the following variants are available:
 
 ### Method 2 — Specifying palettes
 
+You can also create a `DynamicScheme` object by specifying each individual
+palette and providing additional information (source color, variant, light or
+dark mode, contrast).
+
+<section>
+
+###### Dart
+
+```dart
+final scheme = DynamicScheme(
+    sourceColorArgb: 0xFFEB0057,
+    variant: Variant.vibrant,
+    isDark: false,
+    contrastLevel: 0.0,
+    primaryPalette: TonalPalette.fromHct(Hct.fromInt(0xFFEB0057)),
+    secondaryPalette: TonalPalette.fromHct(Hct.fromInt(0xFFF46B00)),
+    tertiaryPalette: TonalPalette.fromHct(Hct.fromInt(0xFF00AB46)),
+    neutralPalette: TonalPalette.fromHct(Hct.fromInt(0xFF949494)),
+    neutralVariantPalette: TonalPalette.fromHct(Hct.fromInt(0xFFBC8877)),
+);
+```
+
+###### Java
+
+```java
+DynamicScheme scheme = new DynamicScheme(
+    /*sourceColorHct=*/ Hct.fromInt(0xFFEB0057),
+    /*variant=*/ Variant.VIBRANT,
+    /*isDark=*/ false,
+    /*contrastLevel=*/ 0.0,
+    /*primaryPalette=*/ TonalPalette.fromInt(0xFFEB0057),
+    /*secondaryPalette=*/ TonalPalette.fromInt(0xFFF46B00),
+    /*tertiaryPalette=*/ TonalPalette.fromInt(0xFF00AB46),
+    /*neutralPalette=*/ TonalPalette.fromInt(0xFF949494),
+    /*neutralVariantPalette=*/ TonalPalette.fromInt(0xFFBC8877));
+```
+
+###### TypeScript
+
+```typescript
+const scheme = new DynamicScheme({
+    sourceColorArgb: 0xFFEB0057,
+    variant: Variant.VIBRANT,
+    isDark: false,
+    contrastLevel: 0.0,
+    primaryPalette: TonalPalette.fromInt(0xFFEB0057),
+    secondaryPalette: TonalPalette.fromInt(0xFFF46B00),
+    tertiaryPalette: TonalPalette.fromInt(0xFF00AB46),
+    neutralPalette: TonalPalette.fromInt(0xFF949494),
+    neutralVariantPalette: TonalPalette.fromInt(0xFFBC8877)
+});
+```
+
+###### C++
+
+```cpp
+DynamicScheme scheme = DynamicScheme(
+    /*source_color_argb=*/ 0xFFEB0057,
+    /*variant=*/ Variant::kVibrant,
+    /*contrast_level=*/ 0.0,
+    /*is_dark=*/ false,
+    /*primary_palette=*/ TonalPalette(0xFFEB0057),
+    /*secondary_palette=*/ TonalPalette(0xFFF46B00),
+    /*tertiary_palette=*/ TonalPalette(0xFF00AB46),
+    /*neutral_palette=*/ TonalPalette(0xFF949494),
+    /*neutral_variant_palette=*/ TonalPalette(0xFFBC8877));
+```
+
+###### Swift
+
+```swift
+let scheme = DynamicScheme(
+    sourceColorArgb: 0xFFEB0057,
+    variant: Variant.vibrant,
+    isDark: false,
+    contrastLevel: 0.0,
+    primaryPalette: TonalPalette.fromHct(Hct(0xFFEB0057)),
+    secondaryPalette: TonalPalette.fromHct(Hct(0xFFF46B00)),
+    tertiaryPalette: TonalPalette.fromHct(Hct(0xFF00AB46)),
+    neutralPalette: TonalPalette.fromHct(Hct(0xFF949494)),
+    neutralVariantPalette: TonalPalette.fromHct(Hct(0xFFBC8877)))
+```
+
+</section>
+
 ## Step 2 — Obtaining colors
 
 To obtain a color from a dynamic scheme, use a `DynamicColor` object on a
