@@ -37,6 +37,108 @@ It includes the following information:
 A `DynamicScheme` object does not store the ARGB or HCT values of individual
 color roles; they are generated upon demand (see below for more information)
 
+## Migrating from `Scheme`
+
+The `Scheme` class will be deprecated soon, as it does not support different
+contrast levels. The functionality of `Scheme` is fully replicated by
+`SchemeTonalSpot` and `SchemeContent`.
+
+<section>
+
+###### Dart
+
+| Instead of …                 | Use …                               |
+| ---------------------------- | ----------------------------------- |
+| `Scheme.light(color)`        | `SchemeTonalSpot(sourceColorHct:    |
+:                              : Hct.fromInt(color), isDark\: false, :
+:                              : contrastLevel\: 0.0)`               :
+| `Scheme.dark(color)`         | `SchemeTonalSpot(sourceColorHct:    |
+:                              : Hct.fromInt(color), isDark\: true,  :
+:                              : contrastLevel\: 0.0)`               :
+| `Scheme.lightContent(color)` | `SchemeContent(sourceColorHct:      |
+:                              : Hct.fromInt(color), isDark\: false, :
+:                              : contrastLevel\: 0.0)`               :
+| `Scheme.darkContent(color)`  | `SchemeContent(sourceColorHct:      |
+:                              : Hct.fromInt(color), isDark\: true,  :
+:                              : contrastLevel\: 0.0)`               :
+
+###### Java
+
+| Instead of …                 | Use …                                         |
+| ---------------------------- | --------------------------------------------- |
+| `Scheme.light(color)`        | `new SchemeTonalSpot(Hct.fromInt(color),      |
+:                              : false, 0.0)`                                  :
+| `Scheme.dark(color)`         | `new SchemeTonalSpot(Hct.fromInt(color),      |
+:                              : true, 0.0)`                                   :
+| `Scheme.lightContent(color)` | `new SchemeContent(Hct.fromInt(color), false, |
+:                              : 0.0)`                                         :
+| `Scheme.darkContent(color)`  | `new SchemeContent(Hct.fromInt(color), true,  |
+:                              : 0.0)`                                         :
+
+###### TypeScript
+
+| Instead of …                 | Use …                                         |
+| ---------------------------- | --------------------------------------------- |
+| `Scheme.light(color)`        | `new SchemeTonalSpot(Hct.fromInt(color),      |
+:                              : false, 0.0)`                                  :
+| `Scheme.dark(color)`         | `new SchemeTonalSpot(Hct.fromInt(color),      |
+:                              : true, 0.0)`                                   :
+| `Scheme.lightContent(color)` | `new SchemeContent(Hct.fromInt(color), false, |
+:                              : 0.0)`                                         :
+| `Scheme.darkContent(color)`  | `new SchemeContent(Hct.fromInt(color), true,  |
+:                              : 0.0)`                                         :
+
+###### C++
+
+| Instead of …                             | Use …                             |
+| ---------------------------------------- | --------------------------------- |
+| `MaterialLightColorScheme(color)`        | `SchemeTonalSpot(Hct(color),      |
+:                                          : false, 0.0)`                      :
+| `MaterialDarkColorScheme(color)`         | `SchemeTonalSpot(Hct(color),      |
+:                                          : true, 0.0)`                       :
+| `MaterialLightContentColorScheme(color)` | `SchemeContent(Hct(color), false, |
+:                                          : 0.0)`                             :
+| `MaterialDarkContentColorScheme(color)`  | `SchemeContent(Hct(color), true,  |
+:                                          : 0.0)`                             :
+
+###### Swift
+
+| Instead of …                 | Use …                               |
+| ---------------------------- | ----------------------------------- |
+| `Scheme.light(color)`        | `SchemeTonalSpot(sourceColorHct:    |
+:                              : Hct.fromInt(color), isDark\: false, :
+:                              : contrastLevel\: 0.0)`               :
+| `Scheme.dark(color)`         | `SchemeTonalSpot(sourceColorHct:    |
+:                              : Hct.fromInt(color), isDark\: true,  :
+:                              : contrastLevel\: 0.0)`               :
+| `Scheme.lightContent(color)` | `SchemeContent(sourceColorHct:      |
+:                              : Hct.fromInt(color), isDark\: false, :
+:                              : contrastLevel\: 0.0)`               :
+| `Scheme.darkContent(color)`  | `SchemeContent(sourceColorHct:      |
+:                              : Hct.fromInt(color), isDark\: true,  :
+:                              : contrastLevel\: 0.0)`               :
+
+</section>
+
+For `Scheme.lightFromCorePalette` and `Scheme.darkFromCorePalette`
+(`MaterialLightColorSchemeFromPalette` and `MaterialDarkColorSchemeFromPalette`
+in C++), please use the `DynamicScheme` constructor instead.
+
+Please see **Step 2 — Obtaining colors** to obtain colors from a
+`DynamicScheme`.
+
+Due to an update in the specification, the values of many color roles have
+changed between `Scheme`, and the new dynamic schemes `SchemeTonalSpot` and
+`SchemeContent`. After migrating, you may need to update your tests.
+
+For `SchemeTonalSpot`, color roles using the "primary" and "neutral" palettes,
+such as `onPrimary` and `outline`, may be affected. Also, the roles `background`
+and `surface` have updated tones.
+
+For `SchemeContent`, all colors may have been affected, because `SchemeContent`
+is a fidelity scheme: the tones of color roles may depend on the tone of the
+seed color.
+
 ## Step 1 — Generating a scheme
 
 ### Method 1 — Using a variant
