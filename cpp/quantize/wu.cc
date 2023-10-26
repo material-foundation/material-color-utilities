@@ -18,12 +18,9 @@
 
 #include <stdlib.h>
 
-#include <array>
 #include <cassert>
 #include <cstdint>
 #include <cstdio>
-#include <iostream>
-#include <ostream>
 #include <vector>
 
 #include "cpp/utils/utils.h"
@@ -51,8 +48,8 @@ constexpr int kIndexCount = ((1 << kIndexBits) + 1);
 constexpr int kTotalSize = (kIndexCount * kIndexCount * kIndexCount);
 constexpr int kMaxColors = 256;
 
-using IntArray = std::array<int64_t, kTotalSize>;
-using DoubleArray = std::array<double, kTotalSize>;
+using IntArray = std::vector<int64_t>;
+using DoubleArray = std::vector<double>;
 
 int GetIndex(int r, int g, int b) {
   return (r << (kIndexBits * 2)) + (r << (kIndexBits + 1)) + (g << kIndexBits) +
@@ -298,11 +295,11 @@ std::vector<Argb> QuantizeWu(const std::vector<Argb>& pixels,
     return std::vector<Argb>();
   }
 
-  IntArray weights = {};
-  IntArray moments_red = {};
-  IntArray moments_green = {};
-  IntArray moments_blue = {};
-  DoubleArray moments = {};
+  IntArray weights(kTotalSize, 0);
+  IntArray moments_red(kTotalSize, 0);
+  IntArray moments_green(kTotalSize, 0);
+  IntArray moments_blue(kTotalSize, 0);
+  DoubleArray moments(kTotalSize, 0.0);
   ConstructHistogram(pixels, weights, moments_red, moments_green, moments_blue,
                      moments);
   ComputeMoments(weights, moments_red, moments_green, moments_blue, moments);
