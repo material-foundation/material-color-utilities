@@ -13,6 +13,10 @@ First, convert an image into **an array of pixels in ARGB
 format**. MCU does not provide this feature; please use the idiomatic method
 provided by your language.
 
+If the image is larger than 128 × 128 pixels, please scale the image down to 128
+× 128 before converting it to an array of pixels. This ensures the speed of
+processing.
+
 For example, in Java, one may use the `BufferedImage.getRGB` method:
 
 ```java
