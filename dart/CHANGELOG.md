@@ -1,3 +1,10 @@
+## 0.9.0 - 2023-11-06
+### Added
+- Added getters for `DynamicScheme`.
+
+### Changed
+- Moved `DynamicScheme` from `scheme/` to `dynamiccolor/`.
+
 ## 0.8.0 - 2023-06-22
 ### Added
 - Add fruit salad color scheme

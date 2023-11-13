@@ -1,5 +1,5 @@
+import 'package:material_color_utilities/dynamiccolor/dynamic_scheme.dart';
 import 'package:material_color_utilities/hct/hct.dart';
-import 'package:material_color_utilities/scheme/dynamic_scheme.dart';
 // Copyright 2022 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");

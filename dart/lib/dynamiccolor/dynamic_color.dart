@@ -15,9 +15,9 @@
 import 'dart:math' as math;
 
 import 'package:material_color_utilities/contrast/contrast.dart';
+import 'package:material_color_utilities/dynamiccolor/dynamic_scheme.dart';
 import 'package:material_color_utilities/hct/hct.dart';
 import 'package:material_color_utilities/palettes/tonal_palette.dart';
-import 'package:material_color_utilities/scheme/dynamic_scheme.dart';
 import 'package:material_color_utilities/utils/math_utils.dart';
 
 import 'src/contrast_curve.dart';

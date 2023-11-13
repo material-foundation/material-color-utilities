@@ -14,11 +14,11 @@
 import 'dart:math' as math;
 
 import 'package:material_color_utilities/dislike/dislike_analyzer.dart';
+import 'package:material_color_utilities/dynamiccolor/dynamic_scheme.dart';
+import 'package:material_color_utilities/dynamiccolor/variant.dart';
 import 'package:material_color_utilities/hct/hct.dart';
 import 'package:material_color_utilities/palettes/tonal_palette.dart';
 import 'package:material_color_utilities/temperature/temperature_cache.dart';
-import 'dynamic_scheme.dart';
-import 'variant.dart';
 
 /// A scheme that places the source color in [Scheme.primaryContainer].
 ///

@@ -11,10 +11,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+import 'package:material_color_utilities/dynamiccolor/dynamic_scheme.dart';
+import 'package:material_color_utilities/dynamiccolor/variant.dart';
 import 'package:material_color_utilities/hct/hct.dart';
 import 'package:material_color_utilities/palettes/tonal_palette.dart';
-import 'dynamic_scheme.dart';
-import 'variant.dart';
 
 /// A Dynamic Color theme that is grayscale.
 class SchemeMonochrome extends DynamicScheme {
