@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@available(*, deprecated, message: "Use `DynamicScheme`")
 class Scheme {
   let primary: Int
   let onPrimary: Int

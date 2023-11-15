@@ -130,4 +130,167 @@ public class DynamicScheme: Equatable, Hashable {
     hasher.combine(neutralVariantPalette)
     hasher.combine(errorPalette)
   }
+
+  var primaryPaletteKeyColor: Int {
+    MaterialDynamicColors.primaryPaletteKeyColor.getArgb(self)
+  }
+  var secondaryPaletteKeyColor: Int {
+    MaterialDynamicColors.secondaryPaletteKeyColor.getArgb(self)
+  }
+  var tertiaryPaletteKeyColor: Int {
+    MaterialDynamicColors.tertiaryPaletteKeyColor.getArgb(self)
+  }
+  var neutralPaletteKeyColor: Int {
+    MaterialDynamicColors.neutralPaletteKeyColor.getArgb(self)
+  }
+  var neutralVariantPaletteKeyColor: Int {
+    MaterialDynamicColors.neutralVariantPaletteKeyColor.getArgb(self)
+  }
+  var background: Int {
+    MaterialDynamicColors.background.getArgb(self)
+  }
+  var onBackground: Int {
+    MaterialDynamicColors.onBackground.getArgb(self)
+  }
+  var surface: Int {
+    MaterialDynamicColors.surface.getArgb(self)
+  }
+  var surfaceDim: Int {
+    MaterialDynamicColors.surfaceDim.getArgb(self)
+  }
+  var surfaceBright: Int {
+    MaterialDynamicColors.surfaceBright.getArgb(self)
+  }
+  var surfaceContainerLowest: Int {
+    MaterialDynamicColors.surfaceContainerLowest.getArgb(self)
+  }
+  var surfaceContainerLow: Int {
+    MaterialDynamicColors.surfaceContainerLow.getArgb(self)
+  }
+  var surfaceContainer: Int {
+    MaterialDynamicColors.surfaceContainer.getArgb(self)
+  }
+  var surfaceContainerHigh: Int {
+    MaterialDynamicColors.surfaceContainerHigh.getArgb(self)
+  }
+  var surfaceContainerHighest: Int {
+    MaterialDynamicColors.surfaceContainerHighest.getArgb(self)
+  }
+  var onSurface: Int {
+    MaterialDynamicColors.onSurface.getArgb(self)
+  }
+  var surfaceVariant: Int {
+    MaterialDynamicColors.surfaceVariant.getArgb(self)
+  }
+  var onSurfaceVariant: Int {
+    MaterialDynamicColors.onSurfaceVariant.getArgb(self)
+  }
+  var inverseSurface: Int {
+    MaterialDynamicColors.inverseSurface.getArgb(self)
+  }
+  var inverseOnSurface: Int {
+    MaterialDynamicColors.inverseOnSurface.getArgb(self)
+  }
+  var outline: Int {
+    MaterialDynamicColors.outline.getArgb(self)
+  }
+  var outlineVariant: Int {
+    MaterialDynamicColors.outlineVariant.getArgb(self)
+  }
+  var shadow: Int {
+    MaterialDynamicColors.shadow.getArgb(self)
+  }
+  var scrim: Int {
+    MaterialDynamicColors.scrim.getArgb(self)
+  }
+  var surfaceTint: Int {
+    MaterialDynamicColors.surfaceTint.getArgb(self)
+  }
+  var primary: Int {
+    MaterialDynamicColors.primary.getArgb(self)
+  }
+  var onPrimary: Int {
+    MaterialDynamicColors.onPrimary.getArgb(self)
+  }
+  var primaryContainer: Int {
+    MaterialDynamicColors.primaryContainer.getArgb(self)
+  }
+  var onPrimaryContainer: Int {
+    MaterialDynamicColors.onPrimaryContainer.getArgb(self)
+  }
+  var inversePrimary: Int {
+    MaterialDynamicColors.inversePrimary.getArgb(self)
+  }
+  var secondary: Int {
+    MaterialDynamicColors.secondary.getArgb(self)
+  }
+  var onSecondary: Int {
+    MaterialDynamicColors.onSecondary.getArgb(self)
+  }
+  var secondaryContainer: Int {
+    MaterialDynamicColors.secondaryContainer.getArgb(self)
+  }
+  var onSecondaryContainer: Int {
+    MaterialDynamicColors.onSecondaryContainer.getArgb(self)
+  }
+  var tertiary: Int {
+    MaterialDynamicColors.tertiary.getArgb(self)
+  }
+  var onTertiary: Int {
+    MaterialDynamicColors.onTertiary.getArgb(self)
+  }
+  var tertiaryContainer: Int {
+    MaterialDynamicColors.tertiaryContainer.getArgb(self)
+  }
+  var onTertiaryContainer: Int {
+    MaterialDynamicColors.onTertiaryContainer.getArgb(self)
+  }
+  var error: Int {
+    MaterialDynamicColors.error.getArgb(self)
+  }
+  var onError: Int {
+    MaterialDynamicColors.onError.getArgb(self)
+  }
+  var errorContainer: Int {
+    MaterialDynamicColors.errorContainer.getArgb(self)
+  }
+  var onErrorContainer: Int {
+    MaterialDynamicColors.onErrorContainer.getArgb(self)
+  }
+  var primaryFixed: Int {
+    MaterialDynamicColors.primaryFixed.getArgb(self)
+  }
+  var primaryFixedDim: Int {
+    MaterialDynamicColors.primaryFixedDim.getArgb(self)
+  }
+  var onPrimaryFixed: Int {
+    MaterialDynamicColors.onPrimaryFixed.getArgb(self)
+  }
+  var onPrimaryFixedVariant: Int {
+    MaterialDynamicColors.onPrimaryFixedVariant.getArgb(self)
+  }
+  var secondaryFixed: Int {
+    MaterialDynamicColors.secondaryFixed.getArgb(self)
+  }
+  var secondaryFixedDim: Int {
+    MaterialDynamicColors.secondaryFixedDim.getArgb(self)
+  }
+  var onSecondaryFixed: Int {
+    MaterialDynamicColors.onSecondaryFixed.getArgb(self)
+  }
+  var onSecondaryFixedVariant: Int {
+    MaterialDynamicColors.onSecondaryFixedVariant.getArgb(self)
+  }
+  var tertiaryFixed: Int {
+    MaterialDynamicColors.tertiaryFixed.getArgb(self)
+  }
+  var tertiaryFixedDim: Int {
+    MaterialDynamicColors.tertiaryFixedDim.getArgb(self)
+  }
+  var onTertiaryFixed: Int {
+    MaterialDynamicColors.onTertiaryFixed.getArgb(self)
+  }
+  var onTertiaryFixedVariant: Int {
+    MaterialDynamicColors.onTertiaryFixedVariant.getArgb(self)
+  }
 }
