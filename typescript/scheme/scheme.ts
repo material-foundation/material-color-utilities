@@ -139,6 +139,26 @@ export class Scheme {
     return this.props.inversePrimary;
   }
 
+  get surfaceContainerLowest(): number {
+    return this.props.surfaceContainerLowest;
+  }
+
+  get surfaceContainerLow(): number {
+    return this.props.surfaceContainerLow;
+  }
+
+  get surfaceContainer(): number {
+    return this.props.surfaceContainer;
+  }
+
+  get surfaceContainerHigh(): number {
+    return this.props.surfaceContainerHigh;
+  }
+
+  get surfaceContainerHighest(): number {
+    return this.props.surfaceContainerHighest;
+  }
+
   /**
    * @param argb ARGB representation of a color.
    * @return Light Material color scheme, based on the color's hue.
@@ -204,7 +224,12 @@ export class Scheme {
       scrim: core.n1.tone(0),
       inverseSurface: core.n1.tone(20),
       inverseOnSurface: core.n1.tone(95),
-      inversePrimary: core.a1.tone(80)
+      inversePrimary: core.a1.tone(80),
+      surfaceContainerLowest: core.n2.tone(100),
+      surfaceContainerLow: core.n2.tone(96),
+      surfaceContainer: core.n2.tone(94),
+      surfaceContainerHigh: core.n2.tone(92),
+      surfaceContainerHighest: core.n2.tone(90),
     });
   }
 
@@ -241,7 +266,12 @@ export class Scheme {
       scrim: core.n1.tone(0),
       inverseSurface: core.n1.tone(90),
       inverseOnSurface: core.n1.tone(20),
-      inversePrimary: core.a1.tone(40)
+      inversePrimary: core.a1.tone(40),
+      surfaceContainerLowest: core.n2.tone(4),
+      surfaceContainerLow: core.n2.tone(10),
+      surfaceContainer: core.n2.tone(12),
+      surfaceContainerHigh: core.n2.tone(17),
+      surfaceContainerHighest: core.n2.tone(22),
     });
   }
 
@@ -274,7 +304,12 @@ export class Scheme {
     scrim: number,
     inverseSurface: number,
     inverseOnSurface: number,
-    inversePrimary: number
+    inversePrimary: number,
+    surfaceContainerLowest: number,
+    surfaceContainerLow: number,
+    surfaceContainer: number,
+    surfaceContainerHigh: number,
+    surfaceContainerHighest: number,
   }) {}
 
   toJSON() {
