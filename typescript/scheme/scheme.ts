@@ -162,55 +162,55 @@ export class Scheme {
   get primaryFixed(): number {
     return this.props.primaryFixed;
   }
-  
+
   get onPrimaryFixed(): number {
     return this.props.onPrimaryFixed;
   }
-  
+
   get primaryFixedDim(): number {
     return this.props.primaryFixedDim;
   }
-  
+
   get onPrimaryFixedVariant(): number {
     return this.props.onPrimaryFixedVariant;
   }
-  
+
   get secondaryFixed(): number {
     return this.props.secondaryFixed;
   }
-  
+
   get onSecondaryFixed(): number {
     return this.props.onSecondaryFixed;
   }
-  
+
   get secondaryFixedDim(): number {
     return this.props.secondaryFixedDim;
   }
-  
+
   get onSecondaryFixedVariant(): number {
     return this.props.onSecondaryFixedVariant;
   }
-  
+
   get tertiaryFixed(): number {
     return this.props.tertiaryFixed;
   }
-  
+
   get onTertiaryFixed(): number {
     return this.props.onTertiaryFixed;
   }
-  
+
   get tertiaryFixedDim(): number {
     return this.props.tertiaryFixedDim;
   }
-  
+
   get onTertiaryFixedVariant(): number {
     return this.props.onTertiaryFixedVariant;
   }
-  
+
   get surfaceBright(): number {
     return this.props.surfaceBright;
   }
-  
+
   get surfaceDim(): number {
     return this.props.surfaceDim;
   }
@@ -268,9 +268,9 @@ export class Scheme {
       onError: core.error.tone(100),
       errorContainer: core.error.tone(90),
       onErrorContainer: core.error.tone(10),
-      background: core.n1.tone(99),
+      background: core.n1.tone(98),
       onBackground: core.n1.tone(10),
-      surface: core.n1.tone(99),
+      surface: core.n1.tone(98),
       onSurface: core.n1.tone(10),
       surfaceVariant: core.n2.tone(90),
       onSurfaceVariant: core.n2.tone(30),
@@ -323,10 +323,10 @@ export class Scheme {
       error: core.error.tone(80),
       onError: core.error.tone(20),
       errorContainer: core.error.tone(30),
-      onErrorContainer: core.error.tone(80),
-      background: core.n1.tone(10),
+      onErrorContainer: core.error.tone(90),
+      background: core.n1.tone(6),
       onBackground: core.n1.tone(90),
-      surface: core.n1.tone(10),
+      surface: core.n1.tone(6),
       onSurface: core.n1.tone(90),
       surfaceVariant: core.n2.tone(30),
       onSurfaceVariant: core.n2.tone(80),
