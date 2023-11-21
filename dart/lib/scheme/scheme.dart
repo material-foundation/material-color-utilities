@@ -18,6 +18,9 @@ import 'package:material_color_utilities/palettes/core_palette.dart';
 
 /// Prefer [ColorScheme]. This class is the same concept as Flutter's
 /// ColorScheme class, inlined to ensure parity across languages.
+@Deprecated('The `Scheme` class is deprecated in favor of `DynamicScheme`.\n'
+    'Please see https://github.com/material-foundation/material-color-utilities/blob/main/make_schemes.md'
+    'for migration guidance.')
 class Scheme {
   final int primary;
   final int onPrimary;

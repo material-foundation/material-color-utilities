@@ -49,46 +49,74 @@ contrast levels. The functionality of `Scheme` is fully replicated by
 
 | Instead of …                 | Use …                               |
 | ---------------------------- | ----------------------------------- |
-| `Scheme.light(color)`        | `SchemeTonalSpot(sourceColorHct: Hct.fromInt(color), isDark: false, contrastLevel: 0.0)` |
-| `Scheme.dark(color)`         | `SchemeTonalSpot(sourceColorHct: Hct.fromInt(color), isDark: true, contrastLevel: 0.0)`  |
-| `Scheme.lightContent(color)` | `SchemeContent(sourceColorHct: Hct.fromInt(color), isDark: false, contrastLevel: 0.0)`   |
-| `Scheme.darkContent(color)`  | `SchemeContent(sourceColorHct: Hct.fromInt(color), isDark: true, contrastLevel: 0.0)`    |
+| `Scheme.light(color)`        | `SchemeTonalSpot(sourceColorHct:    |
+:                              : Hct.fromInt(color), isDark\: false, :
+:                              : contrastLevel\: 0.0)`               :
+| `Scheme.dark(color)`         | `SchemeTonalSpot(sourceColorHct:    |
+:                              : Hct.fromInt(color), isDark\: true,  :
+:                              : contrastLevel\: 0.0)`               :
+| `Scheme.lightContent(color)` | `SchemeContent(sourceColorHct:      |
+:                              : Hct.fromInt(color), isDark\: false, :
+:                              : contrastLevel\: 0.0)`               :
+| `Scheme.darkContent(color)`  | `SchemeContent(sourceColorHct:      |
+:                              : Hct.fromInt(color), isDark\: true,  :
+:                              : contrastLevel\: 0.0)`               :
 
 ###### Java
 
 | Instead of …                 | Use …                                         |
 | ---------------------------- | --------------------------------------------- |
-| `Scheme.light(color)`        | `new SchemeTonalSpot(Hct.fromInt(color), false, 0.0)` |
-| `Scheme.dark(color)`         | `new SchemeTonalSpot(Hct.fromInt(color), true, 0.0)`  |
-| `Scheme.lightContent(color)` | `new SchemeContent(Hct.fromInt(color), false, 0.0)`   |
-| `Scheme.darkContent(color)`  | `new SchemeContent(Hct.fromInt(color), true, 0.0)`    |
+| `Scheme.light(color)`        | `new SchemeTonalSpot(Hct.fromInt(color),      |
+:                              : false, 0.0)`                                  :
+| `Scheme.dark(color)`         | `new SchemeTonalSpot(Hct.fromInt(color),      |
+:                              : true, 0.0)`                                   :
+| `Scheme.lightContent(color)` | `new SchemeContent(Hct.fromInt(color), false, |
+:                              : 0.0)`                                         :
+| `Scheme.darkContent(color)`  | `new SchemeContent(Hct.fromInt(color), true,  |
+:                              : 0.0)`                                         :
 
 ###### TypeScript
 
 | Instead of …                 | Use …                                         |
 | ---------------------------- | --------------------------------------------- |
-| `Scheme.light(color)`        | `new SchemeTonalSpot(Hct.fromInt(color), false, 0.0)` |
-| `Scheme.dark(color)`         | `new SchemeTonalSpot(Hct.fromInt(color), true, 0.0)`  |
-| `Scheme.lightContent(color)` | `new SchemeContent(Hct.fromInt(color), false, 0.0)`   |
-| `Scheme.darkContent(color)`  | `new SchemeContent(Hct.fromInt(color), true, 0.0)`    |
+| `Scheme.light(color)`        | `new SchemeTonalSpot(Hct.fromInt(color),      |
+:                              : false, 0.0)`                                  :
+| `Scheme.dark(color)`         | `new SchemeTonalSpot(Hct.fromInt(color),      |
+:                              : true, 0.0)`                                   :
+| `Scheme.lightContent(color)` | `new SchemeContent(Hct.fromInt(color), false, |
+:                              : 0.0)`                                         :
+| `Scheme.darkContent(color)`  | `new SchemeContent(Hct.fromInt(color), true,  |
+:                              : 0.0)`                                         :
 
 ###### C++
 
 | Instead of …                             | Use …                             |
 | ---------------------------------------- | --------------------------------- |
-| `MaterialLightColorScheme(color)`        | `SchemeTonalSpot(Hct(color), false, 0.0)` |
-| `MaterialDarkColorScheme(color)`         | `SchemeTonalSpot(Hct(color), true, 0.0)`  |
-| `MaterialLightContentColorScheme(color)` | `SchemeContent(Hct(color), false, 0.0)`   |
-| `MaterialDarkContentColorScheme(color)`  | `SchemeContent(Hct(color), true, 0.0)`    |
+| `MaterialLightColorScheme(color)`        | `SchemeTonalSpot(Hct(color),      |
+:                                          : false, 0.0)`                      :
+| `MaterialDarkColorScheme(color)`         | `SchemeTonalSpot(Hct(color),      |
+:                                          : true, 0.0)`                       :
+| `MaterialLightContentColorScheme(color)` | `SchemeContent(Hct(color), false, |
+:                                          : 0.0)`                             :
+| `MaterialDarkContentColorScheme(color)`  | `SchemeContent(Hct(color), true,  |
+:                                          : 0.0)`                             :
 
 ###### Swift
 
 | Instead of …                 | Use …                               |
 | ---------------------------- | ----------------------------------- |
-| `Scheme.light(color)`        | `SchemeTonalSpot(sourceColorHct: Hct.fromInt(color), isDark: false, contrastLevel: 0.0)` |
-| `Scheme.dark(color)`         | `SchemeTonalSpot(sourceColorHct: Hct.fromInt(color), isDark: true, contrastLevel: 0.0)`  |
-| `Scheme.lightContent(color)` | `SchemeContent(sourceColorHct: Hct.fromInt(color), isDark: false, contrastLevel: 0.0)`   |
-| `Scheme.darkContent(color)`  | `SchemeContent(sourceColorHct: Hct.fromInt(color), isDark: true, contrastLevel: 0.0)`    |
+| `Scheme.light(color)`        | `SchemeTonalSpot(sourceColorHct:    |
+:                              : Hct.fromInt(color), isDark\: false, :
+:                              : contrastLevel\: 0.0)`               :
+| `Scheme.dark(color)`         | `SchemeTonalSpot(sourceColorHct:    |
+:                              : Hct.fromInt(color), isDark\: true,  :
+:                              : contrastLevel\: 0.0)`               :
+| `Scheme.lightContent(color)` | `SchemeContent(sourceColorHct:      |
+:                              : Hct.fromInt(color), isDark\: false, :
+:                              : contrastLevel\: 0.0)`               :
+| `Scheme.darkContent(color)`  | `SchemeContent(sourceColorHct:      |
+:                              : Hct.fromInt(color), isDark\: true,  :
+:                              : contrastLevel\: 0.0)`               :
 
 </section>
 
@@ -275,6 +303,13 @@ color from a given `scheme`.
 <section>
 
 ###### Dart
+
+```dart
+final argb = scheme.primary;
+final hct = scheme.getHct(MaterialDynamicColors.primary);
+```
+
+Alternatively:
 
 ```dart
 final argb = MaterialDynamicColors.primary.getArgb(scheme);
