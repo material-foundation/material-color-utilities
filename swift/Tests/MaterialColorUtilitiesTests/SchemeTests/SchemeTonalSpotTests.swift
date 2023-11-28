@@ -19,7 +19,8 @@ import XCTest
 
 final class SchemeTonalSpotTests: XCTestCase {
   func testBlueLightScheme() {
-    let scheme = SchemeTonalSpot(sourceColorHct: Hct(0xff00_00ff), isDark: false, contrastLevel: 0.0)
+    let scheme = SchemeTonalSpot(
+      sourceColorHct: Hct(0xff00_00ff), isDark: false, contrastLevel: 0.0)
 
     XCTAssertEqual(scheme.primary, 0xff55_5992)
   }
@@ -31,7 +32,8 @@ final class SchemeTonalSpotTests: XCTestCase {
   }
 
   func test3rdPartyLightScheme() {
-    let scheme = SchemeTonalSpot(sourceColorHct: Hct(0xff67_50a4), isDark: false, contrastLevel: 0.0)
+    let scheme = SchemeTonalSpot(
+      sourceColorHct: Hct(0xff67_50a4), isDark: false, contrastLevel: 0.0)
 
     XCTAssertEqual(scheme.primary, 0xff65_558f)
     XCTAssertEqual(scheme.secondary, 0xff62_5b71)
@@ -51,7 +53,8 @@ final class SchemeTonalSpotTests: XCTestCase {
   }
 
   func testLightSchemeFromHighChromaColor() {
-    let scheme = SchemeTonalSpot(sourceColorHct: Hct(0xfffa_2bec), isDark: false, contrastLevel: 0.0)
+    let scheme = SchemeTonalSpot(
+      sourceColorHct: Hct(0xfffa_2bec), isDark: false, contrastLevel: 0.0)
 
     XCTAssertEqual(scheme.primary, 0xff81_4c77)
     XCTAssertEqual(scheme.onPrimary, 0xffff_ffff)
@@ -121,7 +124,7 @@ final class SchemeTonalSpotTests: XCTestCase {
   func testLightContentSchemeFromHighChromaColor() {
     let scheme = SchemeContent(sourceColorHct: Hct(0xfffa_2bec), isDark: false, contrastLevel: 0.0)
 
-    XCTAssertEqual(scheme.primary, 0xff92_008b)
+    XCTAssertEqual(scheme.primary, 0xffa7_009e)
     XCTAssertEqual(scheme.onPrimary, 0xffff_ffff)
     XCTAssertEqual(scheme.primaryContainer, 0xffd1_00c6)
     XCTAssertEqual(scheme.onPrimaryContainer, 0xffff_ffff)
@@ -129,7 +132,7 @@ final class SchemeTonalSpotTests: XCTestCase {
     XCTAssertEqual(scheme.onSecondary, 0xffff_ffff)
     XCTAssertEqual(scheme.secondaryContainer, 0xffff_83ec)
     XCTAssertEqual(scheme.onSecondaryContainer, 0xff4a_0045)
-    XCTAssertEqual(scheme.tertiary, 0xffa3_0326)
+    XCTAssertEqual(scheme.tertiary, 0xffb5_1830)
     XCTAssertEqual(scheme.onTertiary, 0xffff_ffff)
     XCTAssertEqual(scheme.tertiaryContainer, 0xffd8_3546)
     XCTAssertEqual(scheme.onTertiaryContainer, 0xffff_ffff)

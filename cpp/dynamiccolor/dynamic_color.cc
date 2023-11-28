@@ -154,9 +154,9 @@ double DynamicColor::GetTone(const DynamicScheme& scheme) {
 
     // 1st round: solve to min, each
     double n_contrast =
-        nearer.contrast_curve_.value().getContrast(scheme.contrast_level);
+        nearer.contrast_curve_.value().get(scheme.contrast_level);
     double f_contrast =
-        farther.contrast_curve_.value().getContrast(scheme.contrast_level);
+        farther.contrast_curve_.value().get(scheme.contrast_level);
 
     // If a color is good enough, it is not adjusted.
     // Initial and adjusted tones for `nearer`
@@ -234,8 +234,7 @@ double DynamicColor::GetTone(const DynamicScheme& scheme) {
 
     double bg_tone = background_.value()(scheme).GetTone(scheme);
 
-    double desired_ratio =
-        contrast_curve_.value().getContrast(scheme.contrast_level);
+    double desired_ratio = contrast_curve_.value().get(scheme.contrast_level);
 
     if (RatioOfTones(bg_tone, answer) >= desired_ratio) {
       // Don't "improve" what's good enough.

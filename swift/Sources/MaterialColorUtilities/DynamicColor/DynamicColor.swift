@@ -157,9 +157,9 @@ public class DynamicColor {
       let expansionDir: Double = scheme.isDark ? 1 : -1
 
       // 1st round: solve to min, each
-      let nContrast = nearer.contrastCurve!.getContrast(scheme.contrastLevel)
+      let nContrast = nearer.contrastCurve!.get(scheme.contrastLevel)
       let fContrast =
-        farther.contrastCurve!.getContrast(scheme.contrastLevel)
+        farther.contrastCurve!.get(scheme.contrastLevel)
 
       // If a color is good enough, it is not adjusted.
       // Initial and adjusted tones for `nearer`
@@ -237,7 +237,7 @@ public class DynamicColor {
         let bgTone = background(scheme).getTone(scheme)
 
         let desiredRatio =
-          self.contrastCurve!.getContrast(scheme.contrastLevel)
+          self.contrastCurve!.get(scheme.contrastLevel)
 
         if Contrast.ratioOfTones(bgTone, answer) >= desiredRatio {
           // Don't "improve" what's good enough.

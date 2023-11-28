@@ -146,7 +146,7 @@ void main() {
       contrastLevel: 0.0,
     );
 
-    expect(scheme.primary, isColor(0xff92008b));
+    expect(scheme.primary, isColor(0xffa7009e));
     expect(scheme.onPrimary, isColor(0xffffffff));
     expect(scheme.primaryContainer, isColor(0xffd100c6));
     expect(scheme.onPrimaryContainer, isColor(0xffffffff));
@@ -154,7 +154,7 @@ void main() {
     expect(scheme.onSecondary, isColor(0xffffffff));
     expect(scheme.secondaryContainer, isColor(0xffff83ec));
     expect(scheme.onSecondaryContainer, isColor(0xff4a0045));
-    expect(scheme.tertiary, isColor(0xffa30326));
+    expect(scheme.tertiary, isColor(0xffb51830));
     expect(scheme.onTertiary, isColor(0xffffffff));
     expect(scheme.tertiaryContainer, isColor(0xffd83546));
     expect(scheme.onTertiaryContainer, isColor(0xffffffff));

@@ -1,3 +1,7 @@
+## 0.10.0 - 2023-11-27
+### Changed
+- Updated `MaterialDynamicColors` to new Contrast Surfaces spec.
+
 ## 0.9.0 - 2023-11-06
 ### Added
 - Added getters for `DynamicScheme`.

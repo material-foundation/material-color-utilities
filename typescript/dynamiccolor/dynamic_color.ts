@@ -213,9 +213,8 @@ export class DynamicColor {
       const expansionDir = scheme.isDark ? 1 : -1;
 
       // 1st round: solve to min, each
-      const nContrast = nearer.contrastCurve!.getContrast(scheme.contrastLevel);
-      const fContrast =
-          farther.contrastCurve!.getContrast(scheme.contrastLevel);
+      const nContrast = nearer.contrastCurve!.get(scheme.contrastLevel);
+      const fContrast = farther.contrastCurve!.get(scheme.contrastLevel);
 
       // If a color is good enough, it is not adjusted.
       // Initial and adjusted tones for `nearer`
@@ -295,8 +294,7 @@ export class DynamicColor {
 
       const bgTone = this.background(scheme).getTone(scheme);
 
-      const desiredRatio =
-          this.contrastCurve!.getContrast(scheme.contrastLevel);
+      const desiredRatio = this.contrastCurve!.get(scheme.contrastLevel);
 
       if (Contrast.ratioOfTones(bgTone, answer) >= desiredRatio) {
         // Don't "improve" what's good enough.

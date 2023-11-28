@@ -14,9 +14,10 @@
 
 import 'package:material_color_utilities/utils/math_utils.dart';
 
-/// A class containing the contrast curve for a dynamic color on its background.
+/// A class containing a value that changes with the contrast level.
 ///
-/// The four values correspond to contrast requirements for contrast levels
+/// Usually represents the contrast requirements for a dynamic color on its
+/// background. The four values correspond to values for contrast levels
 /// -1.0, 0.0, 0.5, and 1.0, respectively.
 class ContrastCurve {
   final double low;
@@ -26,10 +27,10 @@ class ContrastCurve {
 
   /// Creates a `ContrastCurve` object.
   ///
-  /// [low] Contrast requirement for contrast level -1.0
-  /// [normal] Contrast requirement for contrast level 0.0
-  /// [medium] Contrast requirement for contrast level 0.5
-  /// [high] Contrast requirement for contrast level 1.0
+  /// [low] Value for contrast level -1.0
+  /// [normal] Value for contrast level 0.0
+  /// [medium] Value for contrast level 0.5
+  /// [high] Value for contrast level 1.0
   ContrastCurve(
     this.low,
     this.normal,
@@ -37,12 +38,12 @@ class ContrastCurve {
     this.high,
   );
 
-  /// Returns the contrast ratio at a given contrast level.
+  /// Returns the value at a given contrast level.
   ///
   /// [contrastLevel] The contrast level. 0.0 is the default (normal);
   /// -1.0 is the lowest; 1.0 is the highest.
-  /// Returns The contrast ratio, a number between 1.0 and 21.0.
-  double getContrast(double contrastLevel) {
+  /// Returns the value. For contrast ratios, a number between 1.0 and 21.0.
+  double get(double contrastLevel) {
     if (contrastLevel <= -1.0) {
       return low;
     } else if (contrastLevel < 0.0) {

@@ -43,7 +43,7 @@ class _ContrastConstraint extends _Constraint {
     final backgroundColor = background.getHct(scheme);
     final actualContrast =
         Contrast.ratioOfTones(foregroundColor.tone, backgroundColor.tone);
-    final desiredContrast = contrastCurve.getContrast(scheme.contrastLevel);
+    final desiredContrast = contrastCurve.get(scheme.contrastLevel);
 
     if (desiredContrast <= 4.5) {
       // A requirement of <= 4.5 must be met (with tolerance)
@@ -156,37 +156,40 @@ class _BackgroundConstraint extends _Constraint {
 
 final constraints = [
   _ContrastConstraint(
+      MaterialDynamicColors.onSurface, MaterialDynamicColors.surfaceDim,
+      contrastCurve: ContrastCurve(4.5, 7, 11, 21)),
+  _ContrastConstraint(
       MaterialDynamicColors.onSurface, MaterialDynamicColors.surfaceBright,
       contrastCurve: ContrastCurve(4.5, 7, 11, 21)),
+  _ContrastConstraint(
+      MaterialDynamicColors.primary, MaterialDynamicColors.surfaceDim,
+      contrastCurve: ContrastCurve(3, 4.5, 7, 7)),
+  _ContrastConstraint(
+      MaterialDynamicColors.primary, MaterialDynamicColors.surfaceBright,
+      contrastCurve: ContrastCurve(3, 4.5, 7, 7)),
+  _ContrastConstraint(
+      MaterialDynamicColors.secondary, MaterialDynamicColors.surfaceDim,
+      contrastCurve: ContrastCurve(3, 4.5, 7, 7)),
+  _ContrastConstraint(
+      MaterialDynamicColors.secondary, MaterialDynamicColors.surfaceBright,
+      contrastCurve: ContrastCurve(3, 4.5, 7, 7)),
+  _ContrastConstraint(
+      MaterialDynamicColors.tertiary, MaterialDynamicColors.surfaceDim,
+      contrastCurve: ContrastCurve(3, 4.5, 7, 7)),
+  _ContrastConstraint(
+      MaterialDynamicColors.tertiary, MaterialDynamicColors.surfaceBright,
+      contrastCurve: ContrastCurve(3, 4.5, 7, 7)),
+  _ContrastConstraint(
+      MaterialDynamicColors.error, MaterialDynamicColors.surfaceDim,
+      contrastCurve: ContrastCurve(3, 4.5, 7, 7)),
+  _ContrastConstraint(
+      MaterialDynamicColors.error, MaterialDynamicColors.surfaceBright,
+      contrastCurve: ContrastCurve(3, 4.5, 7, 7)),
   _ContrastConstraint(
       MaterialDynamicColors.onSurfaceVariant, MaterialDynamicColors.surfaceDim,
       contrastCurve: ContrastCurve(3, 4.5, 7, 11)),
   _ContrastConstraint(MaterialDynamicColors.onSurfaceVariant,
       MaterialDynamicColors.surfaceBright,
-      contrastCurve: ContrastCurve(3, 4.5, 7, 11)),
-  _ContrastConstraint(
-      MaterialDynamicColors.primary, MaterialDynamicColors.surfaceDim,
-      contrastCurve: ContrastCurve(3, 4.5, 7, 11)),
-  _ContrastConstraint(
-      MaterialDynamicColors.primary, MaterialDynamicColors.surfaceBright,
-      contrastCurve: ContrastCurve(3, 4.5, 7, 11)),
-  _ContrastConstraint(
-      MaterialDynamicColors.secondary, MaterialDynamicColors.surfaceDim,
-      contrastCurve: ContrastCurve(3, 4.5, 7, 11)),
-  _ContrastConstraint(
-      MaterialDynamicColors.secondary, MaterialDynamicColors.surfaceBright,
-      contrastCurve: ContrastCurve(3, 4.5, 7, 11)),
-  _ContrastConstraint(
-      MaterialDynamicColors.tertiary, MaterialDynamicColors.surfaceDim,
-      contrastCurve: ContrastCurve(3, 4.5, 7, 11)),
-  _ContrastConstraint(
-      MaterialDynamicColors.tertiary, MaterialDynamicColors.surfaceBright,
-      contrastCurve: ContrastCurve(3, 4.5, 7, 11)),
-  _ContrastConstraint(
-      MaterialDynamicColors.error, MaterialDynamicColors.surfaceDim,
-      contrastCurve: ContrastCurve(3, 4.5, 7, 11)),
-  _ContrastConstraint(
-      MaterialDynamicColors.error, MaterialDynamicColors.surfaceBright,
       contrastCurve: ContrastCurve(3, 4.5, 7, 11)),
   _ContrastConstraint(
       MaterialDynamicColors.outline, MaterialDynamicColors.surfaceDim,
@@ -196,76 +199,76 @@ final constraints = [
       contrastCurve: ContrastCurve(1.5, 3, 4.5, 7)),
   _ContrastConstraint(
       MaterialDynamicColors.primaryContainer, MaterialDynamicColors.surfaceDim,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(MaterialDynamicColors.primaryContainer,
       MaterialDynamicColors.surfaceBright,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(
       MaterialDynamicColors.primaryFixed, MaterialDynamicColors.surfaceDim,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(
       MaterialDynamicColors.primaryFixed, MaterialDynamicColors.surfaceBright,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(
       MaterialDynamicColors.primaryFixedDim, MaterialDynamicColors.surfaceDim,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(MaterialDynamicColors.primaryFixedDim,
       MaterialDynamicColors.surfaceBright,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(MaterialDynamicColors.secondaryContainer,
       MaterialDynamicColors.surfaceDim,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(MaterialDynamicColors.secondaryContainer,
       MaterialDynamicColors.surfaceBright,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(
       MaterialDynamicColors.secondaryFixed, MaterialDynamicColors.surfaceDim,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(
       MaterialDynamicColors.secondaryFixed, MaterialDynamicColors.surfaceBright,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(
       MaterialDynamicColors.secondaryFixedDim, MaterialDynamicColors.surfaceDim,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(MaterialDynamicColors.secondaryFixedDim,
       MaterialDynamicColors.surfaceBright,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(
       MaterialDynamicColors.tertiaryContainer, MaterialDynamicColors.surfaceDim,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(MaterialDynamicColors.tertiaryContainer,
       MaterialDynamicColors.surfaceBright,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(
       MaterialDynamicColors.tertiaryFixed, MaterialDynamicColors.surfaceDim,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(
       MaterialDynamicColors.tertiaryFixed, MaterialDynamicColors.surfaceBright,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(
       MaterialDynamicColors.tertiaryFixedDim, MaterialDynamicColors.surfaceDim,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(MaterialDynamicColors.tertiaryFixedDim,
       MaterialDynamicColors.surfaceBright,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(
       MaterialDynamicColors.errorContainer, MaterialDynamicColors.surfaceDim,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(
       MaterialDynamicColors.errorContainer, MaterialDynamicColors.surfaceBright,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(
       MaterialDynamicColors.outlineVariant, MaterialDynamicColors.surfaceDim,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(
       MaterialDynamicColors.outlineVariant, MaterialDynamicColors.surfaceBright,
-      contrastCurve: ContrastCurve(0, 0, 3, 7)),
+      contrastCurve: ContrastCurve(0, 0, 3, 4.5)),
   _ContrastConstraint(MaterialDynamicColors.inverseOnSurface,
       MaterialDynamicColors.inverseSurface,
       contrastCurve: ContrastCurve(4.5, 7, 11, 21)),
   _ContrastConstraint(MaterialDynamicColors.inversePrimary,
       MaterialDynamicColors.inverseSurface,
-      contrastCurve: ContrastCurve(3, 4.5, 7, 11)),
+      contrastCurve: ContrastCurve(3, 4.5, 7, 7)),
   _ContrastConstraint(
       MaterialDynamicColors.onPrimary, MaterialDynamicColors.primary,
       contrastCurve: ContrastCurve(4.5, 7, 11, 21)),
@@ -328,16 +331,16 @@ final constraints = [
       contrastCurve: ContrastCurve(3, 4.5, 7, 11)),
   _DeltaConstraint(
       MaterialDynamicColors.primary, MaterialDynamicColors.primaryContainer,
-      delta: 15, polarity: TonePolarity.farther),
+      delta: 10, polarity: TonePolarity.farther),
   _DeltaConstraint(
       MaterialDynamicColors.secondary, MaterialDynamicColors.secondaryContainer,
-      delta: 15, polarity: TonePolarity.farther),
+      delta: 10, polarity: TonePolarity.farther),
   _DeltaConstraint(
       MaterialDynamicColors.tertiary, MaterialDynamicColors.tertiaryContainer,
-      delta: 15, polarity: TonePolarity.farther),
+      delta: 10, polarity: TonePolarity.farther),
   _DeltaConstraint(
       MaterialDynamicColors.error, MaterialDynamicColors.errorContainer,
-      delta: 15, polarity: TonePolarity.farther),
+      delta: 10, polarity: TonePolarity.farther),
   _DeltaConstraint(
       MaterialDynamicColors.primaryFixedDim, MaterialDynamicColors.primaryFixed,
       delta: 10, polarity: TonePolarity.darker),

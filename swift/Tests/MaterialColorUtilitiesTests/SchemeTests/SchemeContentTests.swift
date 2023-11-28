@@ -47,6 +47,6 @@ final class SchemeContentTests: XCTestCase {
       contrastLevel: 1
     )
 
-    XCTAssertEqual(MaterialDynamicColors.tertiaryContainer.getArgb(scheme), 0xff87_0040)
+    XCTAssertEqual(MaterialDynamicColors.tertiaryContainer.getArgb(scheme), 0xff93_0046)
   }
 }

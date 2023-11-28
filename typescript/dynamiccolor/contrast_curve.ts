@@ -18,19 +18,20 @@
 import * as math from '../utils/math_utils.js';
 
 /**
- * A class containing the contrast curve for a dynamic color on its background.
+ * A class containing a value that changes with the contrast level.
  *
- * The four values correspond to contrast requirements for contrast levels
- * -1.0, 0.0, 0.5, and 1.0, respectively.
+ * Usually represents the contrast requirements for a dynamic color on its
+ * background. The four values correspond to values for contrast levels -1.0,
+ * 0.0, 0.5, and 1.0, respectively.
  */
 export class ContrastCurve {
   /**
    * Creates a `ContrastCurve` object.
    *
-   * @param low Contrast requirement for contrast level -1.0
-   * @param normal Contrast requirement for contrast level 0.0
-   * @param medium Contrast requirement for contrast level 0.5
-   * @param high Contrast requirement for contrast level 1.0
+   * @param low Value for contrast level -1.0
+   * @param normal Value for contrast level 0.0
+   * @param medium Value for contrast level 0.5
+   * @param high Value for contrast level 1.0
    */
   constructor(
       readonly low: number,
@@ -40,13 +41,13 @@ export class ContrastCurve {
   ) {}
 
   /**
-   * Returns the contrast ratio at a given contrast level.
+   * Returns the value at a given contrast level.
    *
-   * @param contrastLevel The contrast level. 0.0 is the default (normal);
-   * -1.0 is the lowest; 1.0 is the highest.
-   * @return The contrast ratio, a number between 1.0 and 21.0.
+   * @param contrastLevel The contrast level. 0.0 is the default (normal); -1.0
+   *     is the lowest; 1.0 is the highest.
+   * @return The value. For contrast ratios, a number between 1.0 and 21.0.
    */
-  getContrast(contrastLevel: number): number {
+  get(contrastLevel: number): number {
     if (contrastLevel <= -1.0) {
       return this.low;
     } else if (contrastLevel < 0.0) {

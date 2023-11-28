@@ -222,8 +222,13 @@ describe('DynamicColor', () => {
       {
         kind: 'Contrast',
         values: new ContrastCurve(3, 4.5, 7, 11),
-        fore:
-            ['on_surface_variant', 'primary', 'secondary', 'tertiary', 'error'],
+        fore: ['on_surface_variant'],
+        back: limitingSurfaces,
+      },
+      {
+        kind: 'Contrast',
+        values: new ContrastCurve(3, 4.5, 7, 7),
+        fore: ['primary', 'secondary', 'tertiary', 'error'],
         back: limitingSurfaces,
       },
       {
@@ -234,7 +239,7 @@ describe('DynamicColor', () => {
       },
       {
         kind: 'Contrast',
-        values: new ContrastCurve(0, 0, 3, 7),
+        values: new ContrastCurve(0, 0, 3, 4.5),
         fore: [
           'primary_container',
           'primary_fixed',
@@ -258,7 +263,7 @@ describe('DynamicColor', () => {
       },
       {
         kind: 'Contrast',
-        values: new ContrastCurve(3, 4.5, 7, 11),
+        values: new ContrastCurve(3, 4.5, 7, 7),
         fore: ['inverse_primary'],
         back: ['inverse_surface'],
       },
@@ -329,7 +334,7 @@ describe('DynamicColor', () => {
       // Delta constraints.
       {
         kind: 'Delta',
-        delta: 15,
+        delta: 10,
         respectively: true,
         fore: [
           'primary',
@@ -404,6 +409,8 @@ describe('DynamicColor', () => {
 
       for (const cstr of constraints) {
         if (cstr.kind === 'Contrast') {
+          const contrastTolerance = 0.05;
+
           const minRequirement =
               getMinRequirement(cstr.values!, scheme.contrastLevel);
           const respectively = cstr.respectively ?? false;
@@ -420,11 +427,12 @@ describe('DynamicColor', () => {
             //     A minimum requirement of >4.5 is not reached, while
             //     some colors are not B or White yet.
             const failing = (minRequirement <= 4.5) ?
-                (contrast < minRequirement) :
+                (contrast < minRequirement - contrastTolerance) :
                 (ftone !== 0 && btone !== 0 && ftone !== 100 && btone !== 100 &&
-                 contrast < minRequirement);
+                 contrast < minRequirement - contrastTolerance);
 
-            if (contrast < minRequirement && minRequirement <= 4.5) {
+            if (contrast < minRequirement - contrastTolerance &&
+                minRequirement <= 4.5) {
               // Real fail.
               fail(`Contrast ${fore} ${ftone.toFixed(prec)} ${back} ${
                   btone.toFixed(

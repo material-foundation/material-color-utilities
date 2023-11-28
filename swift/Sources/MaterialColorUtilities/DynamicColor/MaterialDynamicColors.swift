@@ -122,7 +122,7 @@ public class MaterialDynamicColors {
       return scheme.neutralPalette
     },
     tone: { scheme in
-      return scheme.isDark ? 6 : 87
+      return scheme.isDark ? 6 : ContrastCurve(87, 87, 80, 75).get(scheme.contrastLevel)
     },
     isBackground: true
   )
@@ -133,7 +133,7 @@ public class MaterialDynamicColors {
       return scheme.neutralPalette
     },
     tone: { scheme in
-      return scheme.isDark ? 24 : 98
+      return scheme.isDark ? ContrastCurve(24, 24, 29, 34).get(scheme.contrastLevel) : 98
     },
     isBackground: true
   )
@@ -144,7 +144,7 @@ public class MaterialDynamicColors {
       return scheme.neutralPalette
     },
     tone: { scheme in
-      return scheme.isDark ? 4 : 100
+      return scheme.isDark ? ContrastCurve(4, 4, 2, 0).get(scheme.contrastLevel) : 100
     },
     isBackground: true
   )
@@ -155,7 +155,9 @@ public class MaterialDynamicColors {
       return scheme.neutralPalette
     },
     tone: { scheme in
-      return scheme.isDark ? 10 : 96
+      return scheme.isDark
+        ? ContrastCurve(10, 10, 11, 12).get(scheme.contrastLevel)
+        : ContrastCurve(96, 96, 96, 95).get(scheme.contrastLevel)
     },
     isBackground: true
   )
@@ -166,7 +168,9 @@ public class MaterialDynamicColors {
       return scheme.neutralPalette
     },
     tone: { scheme in
-      return scheme.isDark ? 12 : 94
+      return scheme.isDark
+        ? ContrastCurve(12, 12, 16, 20).get(scheme.contrastLevel)
+        : ContrastCurve(94, 94, 92, 90).get(scheme.contrastLevel)
     },
     isBackground: true
   )
@@ -177,7 +181,9 @@ public class MaterialDynamicColors {
       return scheme.neutralPalette
     },
     tone: { scheme in
-      return scheme.isDark ? 17 : 92
+      return scheme.isDark
+        ? ContrastCurve(17, 17, 21, 25).get(scheme.contrastLevel)
+        : ContrastCurve(92, 92, 88, 85).get(scheme.contrastLevel)
     },
     isBackground: true
   )
@@ -188,7 +194,9 @@ public class MaterialDynamicColors {
       return scheme.neutralPalette
     },
     tone: { scheme in
-      return scheme.isDark ? 22 : 90
+      return scheme.isDark
+        ? ContrastCurve(22, 22, 26, 30).get(scheme.contrastLevel)
+        : ContrastCurve(90, 90, 84, 80).get(scheme.contrastLevel)
     },
     isBackground: true
   )
@@ -281,7 +289,7 @@ public class MaterialDynamicColors {
     background: { scheme in
       return highestSurface(scheme)
     },
-    contrastCurve: ContrastCurve(1, 1, 3, 7)
+    contrastCurve: ContrastCurve(1, 1, 3, 4.5)
   )
 
   public static let shadow: DynamicColor = DynamicColor(
@@ -330,11 +338,11 @@ public class MaterialDynamicColors {
     background: { scheme in
       return highestSurface(scheme)
     },
-    contrastCurve: ContrastCurve(3, 4.5, 7, 11),
+    contrastCurve: ContrastCurve(3, 4.5, 7, 7),
     toneDeltaPair: { scheme in
       return ToneDeltaPair(
         MaterialDynamicColors.primaryContainer, MaterialDynamicColors.primary,
-        15, polarity: TonePolarity.nearer, stayTogether: false)
+        10, polarity: TonePolarity.nearer, stayTogether: false)
     }
   )
 
@@ -373,11 +381,11 @@ public class MaterialDynamicColors {
     background: { scheme in
       return highestSurface(scheme)
     },
-    contrastCurve: ContrastCurve(1, 1, 3, 7),
+    contrastCurve: ContrastCurve(1, 1, 3, 4.5),
     toneDeltaPair: { scheme in
       return ToneDeltaPair(
         MaterialDynamicColors.primaryContainer, MaterialDynamicColors.primary,
-        15, polarity: TonePolarity.nearer, stayTogether: false)
+        10, polarity: TonePolarity.nearer, stayTogether: false)
     }
   )
 
@@ -413,7 +421,7 @@ public class MaterialDynamicColors {
     background: { scheme in
       return MaterialDynamicColors.inverseSurface
     },
-    contrastCurve: ContrastCurve(3, 4.5, 7, 11)
+    contrastCurve: ContrastCurve(3, 4.5, 7, 7)
   )
 
   public static let secondary: DynamicColor = DynamicColor(
@@ -428,11 +436,11 @@ public class MaterialDynamicColors {
     background: { scheme in
       return highestSurface(scheme)
     },
-    contrastCurve: ContrastCurve(3, 4.5, 7, 11),
+    contrastCurve: ContrastCurve(3, 4.5, 7, 7),
     toneDeltaPair: { scheme in
       return ToneDeltaPair(
         MaterialDynamicColors.secondaryContainer,
-        MaterialDynamicColors.secondary, 15, polarity: TonePolarity.nearer, stayTogether: false)
+        MaterialDynamicColors.secondary, 10, polarity: TonePolarity.nearer, stayTogether: false)
     }
   )
 
@@ -475,11 +483,11 @@ public class MaterialDynamicColors {
     background: { scheme in
       return highestSurface(scheme)
     },
-    contrastCurve: ContrastCurve(1, 1, 3, 7),
+    contrastCurve: ContrastCurve(1, 1, 3, 4.5),
     toneDeltaPair: { scheme in
       return ToneDeltaPair(
         MaterialDynamicColors.secondaryContainer,
-        MaterialDynamicColors.secondary, 15, polarity: TonePolarity.nearer, stayTogether: false)
+        MaterialDynamicColors.secondary, 10, polarity: TonePolarity.nearer, stayTogether: false)
     }
   )
 
@@ -516,11 +524,11 @@ public class MaterialDynamicColors {
     background: { scheme in
       return highestSurface(scheme)
     },
-    contrastCurve: ContrastCurve(3, 4.5, 7, 11),
+    contrastCurve: ContrastCurve(3, 4.5, 7, 7),
     toneDeltaPair: { scheme in
       return ToneDeltaPair(
         MaterialDynamicColors.tertiaryContainer, MaterialDynamicColors.tertiary,
-        15, polarity: TonePolarity.nearer, stayTogether: false)
+        10, polarity: TonePolarity.nearer, stayTogether: false)
     }
   )
 
@@ -560,11 +568,11 @@ public class MaterialDynamicColors {
     background: { scheme in
       return highestSurface(scheme)
     },
-    contrastCurve: ContrastCurve(1, 1, 3, 7),
+    contrastCurve: ContrastCurve(1, 1, 3, 4.5),
     toneDeltaPair: { scheme in
       return ToneDeltaPair(
         MaterialDynamicColors.tertiaryContainer, MaterialDynamicColors.tertiary,
-        15, polarity: TonePolarity.nearer, stayTogether: false)
+        10, polarity: TonePolarity.nearer, stayTogether: false)
     }
   )
 
@@ -601,10 +609,10 @@ public class MaterialDynamicColors {
     background: { scheme in
       return highestSurface(scheme)
     },
-    contrastCurve: ContrastCurve(3, 4.5, 7, 11),
+    contrastCurve: ContrastCurve(3, 4.5, 7, 7),
     toneDeltaPair: { scheme in
       return ToneDeltaPair(
-        MaterialDynamicColors.errorContainer, MaterialDynamicColors.error, 15,
+        MaterialDynamicColors.errorContainer, MaterialDynamicColors.error, 10,
         polarity: TonePolarity.nearer, stayTogether: false)
     }
   )
@@ -635,10 +643,10 @@ public class MaterialDynamicColors {
     background: { scheme in
       return highestSurface(scheme)
     },
-    contrastCurve: ContrastCurve(1, 1, 3, 7),
+    contrastCurve: ContrastCurve(1, 1, 3, 4.5),
     toneDeltaPair: { scheme in
       return ToneDeltaPair(
-        MaterialDynamicColors.errorContainer, MaterialDynamicColors.error, 15,
+        MaterialDynamicColors.errorContainer, MaterialDynamicColors.error, 10,
         polarity: TonePolarity.nearer, stayTogether: false)
     }
   )
@@ -669,7 +677,7 @@ public class MaterialDynamicColors {
     background: { scheme in
       return highestSurface(scheme)
     },
-    contrastCurve: ContrastCurve(1, 1, 3, 7),
+    contrastCurve: ContrastCurve(1, 1, 3, 4.5),
     toneDeltaPair: { scheme in
       return ToneDeltaPair(
         MaterialDynamicColors.primaryFixed,
@@ -690,7 +698,7 @@ public class MaterialDynamicColors {
     background: { scheme in
       return highestSurface(scheme)
     },
-    contrastCurve: ContrastCurve(1, 1, 3, 7),
+    contrastCurve: ContrastCurve(1, 1, 3, 4.5),
     toneDeltaPair: { scheme in
       return ToneDeltaPair(
         MaterialDynamicColors.primaryFixed,
@@ -745,7 +753,7 @@ public class MaterialDynamicColors {
     background: { scheme in
       return highestSurface(scheme)
     },
-    contrastCurve: ContrastCurve(1, 1, 3, 7),
+    contrastCurve: ContrastCurve(1, 1, 3, 4.5),
     toneDeltaPair: { scheme in
       return ToneDeltaPair(
         MaterialDynamicColors.secondaryFixed,
@@ -766,7 +774,7 @@ public class MaterialDynamicColors {
     background: { scheme in
       return highestSurface(scheme)
     },
-    contrastCurve: ContrastCurve(1, 1, 3, 7),
+    contrastCurve: ContrastCurve(1, 1, 3, 4.5),
     toneDeltaPair: { scheme in
       return ToneDeltaPair(
         MaterialDynamicColors.secondaryFixed,
@@ -821,7 +829,7 @@ public class MaterialDynamicColors {
     background: { scheme in
       return highestSurface(scheme)
     },
-    contrastCurve: ContrastCurve(1, 1, 3, 7),
+    contrastCurve: ContrastCurve(1, 1, 3, 4.5),
     toneDeltaPair: { scheme in
       return ToneDeltaPair(
         MaterialDynamicColors.tertiaryFixed,
@@ -842,7 +850,7 @@ public class MaterialDynamicColors {
     background: { scheme in
       return highestSurface(scheme)
     },
-    contrastCurve: ContrastCurve(1, 1, 3, 7),
+    contrastCurve: ContrastCurve(1, 1, 3, 4.5),
     toneDeltaPair: { scheme in
       return ToneDeltaPair(
         MaterialDynamicColors.tertiaryFixed,
