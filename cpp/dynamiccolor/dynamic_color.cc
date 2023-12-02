@@ -24,9 +24,9 @@
 
 #include "cpp/cam/hct.h"
 #include "cpp/contrast/contrast.h"
+#include "cpp/dynamiccolor/dynamic_scheme.h"
 #include "cpp/dynamiccolor/tone_delta_pair.h"
 #include "cpp/palettes/tones.h"
-#include "cpp/scheme/dynamic_scheme.h"
 
 namespace material_color_utilities {
 

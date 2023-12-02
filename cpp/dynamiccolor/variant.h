@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef CPP_SCHEME_VARIANT_H_
-#define CPP_SCHEME_VARIANT_H_
+#ifndef CPP_DYNAMICCOLOR_VARIANT_H_
+#define CPP_DYNAMICCOLOR_VARIANT_H_
 
 namespace material_color_utilities {
 
@@ -33,4 +33,4 @@ enum class Variant {
 
 }  // namespace material_color_utilities
 
-#endif  // CPP_SCHEME_VARIANT_H_
+#endif  // CPP_DYNAMICCOLOR_VARIANT_H_

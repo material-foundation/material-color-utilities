@@ -23,7 +23,7 @@
 
 #include "cpp/cam/hct.h"
 #include "cpp/dynamiccolor/contrast_curve.h"
-#include "cpp/scheme/dynamic_scheme.h"
+#include "cpp/dynamiccolor/dynamic_scheme.h"
 #include "cpp/utils/utils.h"
 
 namespace material_color_utilities {

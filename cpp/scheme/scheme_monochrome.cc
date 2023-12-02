@@ -17,9 +17,9 @@
 #include "cpp/scheme/scheme_monochrome.h"
 
 #include "cpp/cam/hct.h"
+#include "cpp/dynamiccolor/dynamic_scheme.h"
+#include "cpp/dynamiccolor/variant.h"
 #include "cpp/palettes/tones.h"
-#include "cpp/scheme/dynamic_scheme.h"
-#include "cpp/scheme/variant.h"
 
 namespace material_color_utilities {
 

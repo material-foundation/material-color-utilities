@@ -23,9 +23,9 @@
 #include "cpp/dislike/dislike.h"
 #include "cpp/dynamiccolor/contrast_curve.h"
 #include "cpp/dynamiccolor/dynamic_color.h"
+#include "cpp/dynamiccolor/dynamic_scheme.h"
 #include "cpp/dynamiccolor/tone_delta_pair.h"
-#include "cpp/scheme/dynamic_scheme.h"
-#include "cpp/scheme/variant.h"
+#include "cpp/dynamiccolor/variant.h"
 #include "cpp/utils/utils.h"
 
 namespace material_color_utilities {
