@@ -247,7 +247,7 @@ QuantizerResult QuantizeWsmeans(const std::vector<Argb>& input_pixels,
 
   // Constructs the quantizer result to return.
 
-  std::map<Argb, int> color_to_count;
+  std::map<Argb, uint32_t> color_to_count;
   for (size_t i = 0; i < swatches.size(); i++) {
     color_to_count[swatches[i].argb] = swatches[i].population;
   }

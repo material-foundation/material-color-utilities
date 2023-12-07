@@ -50,7 +50,7 @@ TEST(CelebiTest, OneRed) {
   pixels.push_back(0xffff0000);
   QuantizerResult result = QuantizeCelebi(pixels, 256);
   EXPECT_EQ(result.color_to_count.size(), 1u);
-  EXPECT_EQ(result.color_to_count[0xffff0000], 1);
+  EXPECT_EQ(result.color_to_count[0xffff0000], 1u);
 }
 
 TEST(CelebiTest, OneGreen) {
@@ -58,7 +58,7 @@ TEST(CelebiTest, OneGreen) {
   pixels.push_back(0xff00ff00);
   QuantizerResult result = QuantizeCelebi(pixels, 256);
   EXPECT_EQ(result.color_to_count.size(), 1u);
-  EXPECT_EQ(result.color_to_count[0xff00ff00], 1);
+  EXPECT_EQ(result.color_to_count[0xff00ff00], 1u);
 }
 
 TEST(CelebiTest, OneBlue) {
@@ -66,7 +66,7 @@ TEST(CelebiTest, OneBlue) {
   pixels.push_back(0xff0000ff);
   QuantizerResult result = QuantizeCelebi(pixels, 256);
   EXPECT_EQ(result.color_to_count.size(), 1u);
-  EXPECT_EQ(result.color_to_count[0xff0000ff], 1);
+  EXPECT_EQ(result.color_to_count[0xff0000ff], 1u);
 }
 
 TEST(CelebiTest, FiveBlue) {
@@ -76,7 +76,7 @@ TEST(CelebiTest, FiveBlue) {
   }
   QuantizerResult result = QuantizeCelebi(pixels, 256);
   EXPECT_EQ(result.color_to_count.size(), 1u);
-  EXPECT_EQ(result.color_to_count[0xff0000ff], 5);
+  EXPECT_EQ(result.color_to_count[0xff0000ff], 5u);
 }
 
 TEST(CelebiTest, OneRedOneGreenOneBlue) {
@@ -86,9 +86,9 @@ TEST(CelebiTest, OneRedOneGreenOneBlue) {
   pixels.push_back(0xff0000ff);
   QuantizerResult result = QuantizeCelebi(pixels, 256);
   EXPECT_EQ(result.color_to_count.size(), 3u);
-  EXPECT_EQ(result.color_to_count[0xffff0000], 1);
-  EXPECT_EQ(result.color_to_count[0xff00ff00], 1);
-  EXPECT_EQ(result.color_to_count[0xff0000ff], 1);
+  EXPECT_EQ(result.color_to_count[0xffff0000], 1u);
+  EXPECT_EQ(result.color_to_count[0xff00ff00], 1u);
+  EXPECT_EQ(result.color_to_count[0xff0000ff], 1u);
 }
 
 TEST(CelebiTest, TwoRedThreeGreen) {
@@ -100,8 +100,8 @@ TEST(CelebiTest, TwoRedThreeGreen) {
   pixels.push_back(0xff00ff00);
   QuantizerResult result = QuantizeCelebi(pixels, 256);
   EXPECT_EQ(result.color_to_count.size(), 2u);
-  EXPECT_EQ(result.color_to_count[0xffff0000], 2);
-  EXPECT_EQ(result.color_to_count[0xff00ff00], 3);
+  EXPECT_EQ(result.color_to_count[0xffff0000], 2u);
+  EXPECT_EQ(result.color_to_count[0xff00ff00], 3u);
 }
 
 TEST(CelebiTest, NoColors) {

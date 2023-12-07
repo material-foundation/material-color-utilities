@@ -26,7 +26,7 @@
 namespace material_color_utilities {
 
 struct QuantizerResult {
-  std::map<Argb, int> color_to_count;
+  std::map<Argb, uint32_t> color_to_count;
   std::map<Argb, Argb> input_pixel_to_cluster_pixel;
 };
 

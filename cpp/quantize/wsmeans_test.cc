@@ -51,7 +51,7 @@ TEST(WsmeansTest, OneRedAndO) {
   std::vector<Argb> starting_clusters;
   QuantizerResult result = QuantizeWsmeans(pixels, starting_clusters, 256);
   EXPECT_EQ(result.color_to_count.size(), 1u);
-  EXPECT_EQ(result.color_to_count[0xff141216], 1);
+  EXPECT_EQ(result.color_to_count[0xff141216], 1u);
 }
 
 TEST(WsmeansTest, OneRed) {
@@ -60,7 +60,7 @@ TEST(WsmeansTest, OneRed) {
   std::vector<Argb> starting_clusters;
   QuantizerResult result = QuantizeWsmeans(pixels, starting_clusters, 256);
   EXPECT_EQ(result.color_to_count.size(), 1u);
-  EXPECT_EQ(result.color_to_count[0xffff0000], 1);
+  EXPECT_EQ(result.color_to_count[0xffff0000], 1u);
 }
 
 TEST(WsmeansTest, OneGreen) {
@@ -69,7 +69,7 @@ TEST(WsmeansTest, OneGreen) {
   std::vector<Argb> starting_clusters;
   QuantizerResult result = QuantizeWsmeans(pixels, starting_clusters, 256);
   EXPECT_EQ(result.color_to_count.size(), 1u);
-  EXPECT_EQ(result.color_to_count[0xff00ff00], 1);
+  EXPECT_EQ(result.color_to_count[0xff00ff00], 1u);
 }
 
 TEST(WsmeansTest, OneBlue) {
@@ -78,7 +78,7 @@ TEST(WsmeansTest, OneBlue) {
   std::vector<Argb> starting_clusters;
   QuantizerResult result = QuantizeWsmeans(pixels, starting_clusters, 256);
   EXPECT_EQ(result.color_to_count.size(), 1u);
-  EXPECT_EQ(result.color_to_count[0xff0000ff], 1);
+  EXPECT_EQ(result.color_to_count[0xff0000ff], 1u);
 }
 
 TEST(WsmeansTest, FiveBlue) {
@@ -89,7 +89,7 @@ TEST(WsmeansTest, FiveBlue) {
   std::vector<Argb> starting_clusters;
   QuantizerResult result = QuantizeWsmeans(pixels, starting_clusters, 256);
   EXPECT_EQ(result.color_to_count.size(), 1u);
-  EXPECT_EQ(result.color_to_count[0xff0000ff], 5);
+  EXPECT_EQ(result.color_to_count[0xff0000ff], 5u);
 }
 
 }  // namespace
