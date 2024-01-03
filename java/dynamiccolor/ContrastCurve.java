@@ -16,7 +16,6 @@
 
 package dynamiccolor;
 
-import androidx.annotation.NonNull;
 import utils.MathUtils;
 
 /**
@@ -60,7 +59,6 @@ public final class ContrastCurve {
    *     is the highest.
    * @return The value. For contrast ratios, a number between 1.0 and 21.0.
    */
-  @NonNull
   public double get(double contrastLevel) {
     if (contrastLevel <= -1.0) {
       return this.low;
