@@ -23,7 +23,7 @@ import Foundation
 /// representing ARBG colors. Correctness (constant hue and chroma) of the input
 /// is not enforced. [get] will only return the input colors, corresponding to
 /// [commonTones].
-class TonalPalette: Equatable, Hashable {
+public class TonalPalette: Equatable, Hashable {
   /// Commonly-used tone values.
   static let commonTones = [
     0,
@@ -146,7 +146,7 @@ class TonalPalette: Equatable, Hashable {
   /// color with corresponding [tone].
   /// If the class was instantiated from a fixed-size list of color ints, [tone]
   /// must be in [commonTones].
-  func tone(_ tone: Double) -> Int {
+  public func tone(_ tone: Double) -> Int {
     if _cache[tone] == nil {
       _cache[tone] = Hct.from(hue, chroma, tone).toInt()
     }
@@ -161,11 +161,11 @@ class TonalPalette: Equatable, Hashable {
     return _hue == other._hue && _chroma == other._chroma
   }
 
-  static func == (lhs: TonalPalette, rhs: TonalPalette) -> Bool {
+  public static func == (lhs: TonalPalette, rhs: TonalPalette) -> Bool {
     return type(of: lhs) == type(of: rhs) && lhs.isEqual(to: rhs)
   }
 
-  func hash(into hasher: inout Hasher) {
+  public func hash(into hasher: inout Hasher) {
     hasher.combine(_hue)
     hasher.combine(_chroma)
   }

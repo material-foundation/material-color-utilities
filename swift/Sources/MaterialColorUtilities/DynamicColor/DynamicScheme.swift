@@ -35,26 +35,26 @@ public class DynamicScheme: Equatable, Hashable {
 
   /// Given a tone, produces a color. Hue and chroma of the color are specified
   /// in the design specification of the variant. Usually colorful.
-  let primaryPalette: TonalPalette
+  public let primaryPalette: TonalPalette
 
   /// Given a tone, produces a color. Hue and chroma of the color are specified
   /// in the design specification of the variant. Usually less colorful.
-  let secondaryPalette: TonalPalette
+  public let secondaryPalette: TonalPalette
 
   /// Given a tone, produces a color. Hue and chroma of the color are specified
   /// in the design specification of the variant. Usually a different hue from
   /// primary and colorful.
-  let tertiaryPalette: TonalPalette
+  public let tertiaryPalette: TonalPalette
 
   /// Given a tone, produces a color. Hue and chroma of the color are specified
   /// in the design specification of the variant. Usually not colorful at all,
   /// intended for background & surface colors.
-  let neutralPalette: TonalPalette
+  public let neutralPalette: TonalPalette
 
   /// Given a tone, produces a color. Hue and chroma of the color are specified
   /// in the design specification of the variant. Usually not colorful, but
   /// slightly more colorful than Neutral. Intended for backgrounds & surfaces.
-  let neutralVariantPalette: TonalPalette
+  public let neutralVariantPalette: TonalPalette
 
   /// Given a tone, produces a reddish, colorful, color.
   let errorPalette: TonalPalette
