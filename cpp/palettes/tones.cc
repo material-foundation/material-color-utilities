@@ -16,6 +16,8 @@
 
 #include "cpp/palettes/tones.h"
 
+#include <cmath>
+
 #include "cpp/cam/cam.h"
 #include "cpp/cam/hct.h"
 
