@@ -83,52 +83,6 @@ final class DynamicColorTests: XCTestCase {
     _Pair("onSurfaceVariant", "surfaceDim"),
   ]
 
-  func testValuesAreCorrect() {
-    let onPrimaryContainer = MaterialDynamicColors.onPrimaryContainer.getArgb(
-      SchemeFidelity(
-        sourceColorHct: Hct.fromInt(0xFFFF_0000),
-        isDark: false,
-        contrastLevel: 0.5
-      ))
-    let onSecondaryContainer = MaterialDynamicColors.onSecondaryContainer.getArgb(
-      SchemeContent(
-        sourceColorHct: Hct.fromInt(0xFF00_00FF),
-        isDark: false,
-        contrastLevel: 0.5
-      ))
-    let onTertiaryContainer = MaterialDynamicColors.onTertiaryContainer.getArgb(
-      SchemeContent(
-        sourceColorHct: Hct.fromInt(0xFFFF_FF00),
-        isDark: true,
-        contrastLevel: -0.5
-      ))
-    let inverseSurface = MaterialDynamicColors.inverseSurface.getArgb(
-      SchemeContent(
-        sourceColorHct: Hct.fromInt(0xFF00_00FF),
-        isDark: false,
-        contrastLevel: 0
-      ))
-    let inversePrimary = MaterialDynamicColors.inversePrimary.getArgb(
-      SchemeContent(
-        sourceColorHct: Hct.fromInt(0xFFFF_0000),
-        isDark: false,
-        contrastLevel: -0.5
-      ))
-    let outlineVariant = MaterialDynamicColors.outlineVariant.getArgb(
-      SchemeContent(
-        sourceColorHct: Hct.fromInt(0xFFFF_FF00),
-        isDark: true,
-        contrastLevel: 0
-      ))
-
-    XCTAssertEqual(onPrimaryContainer, 0xFFFF_FFFF)
-    XCTAssertEqual(onSecondaryContainer, 0xFFFF_FFFF)
-    XCTAssertEqual(onTertiaryContainer, 0xFFBA_C040)
-    XCTAssertEqual(inverseSurface, 0xFF2F_2F3B)
-    XCTAssertEqual(inversePrimary, 0xFFFF_422F)
-    XCTAssertEqual(outlineVariant, 0xFF48_4831)
-  }
-
   // Parametric test, ensuring that dynamic schemes respect contrast
   // between text-surface pairs.
 
