@@ -1,3 +1,8 @@
+## 0.11.0 - 2024-02-20
+### Changed
+- Updated `TonalPalette.fromList` so that it provides colors at any tone, not
+  only at `commonTones`.
+
 ## 0.10.0 - 2023-11-27
 ### Changed
 - Updated `MaterialDynamicColors` to new Contrast Surfaces spec.

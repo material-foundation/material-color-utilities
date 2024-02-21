@@ -13,9 +13,11 @@
 // limitations under the License.
 
 import 'package:matcher/matcher.dart';
+import 'package:material_color_utilities/hct/cam16.dart';
 import 'package:material_color_utilities/utils/string_utils.dart';
 
 Matcher isColor(int color) => _ColorMatcher(color);
+Matcher isCloseToColor(int color) => _ColorMatcherApproximate(color);
 
 class _ColorMatcher extends Matcher {
   _ColorMatcher(this._argb);
@@ -44,6 +46,43 @@ class _ColorMatcher extends Matcher {
   ) {
     return mismatchDescription
         .add('expected hex code\n  ')
+        .add(StringUtils.hexFromArgb(_argb))
+        .add('\nbut got\n  ')
+        .add(StringUtils.hexFromArgb(item as int));
+  }
+}
+
+class _ColorMatcherApproximate extends Matcher {
+  _ColorMatcherApproximate(this._argb);
+
+  final int _argb;
+
+  @override
+  bool matches(dynamic object, Map<dynamic, dynamic> matchState) {
+    if (object is! int) {
+      return false;
+    }
+    // Succeeds if the two colors are fairly indistinguishable to the human eye,
+    // using the value 5 as a threshold.
+    return Cam16.fromInt(object).distance(Cam16.fromInt(_argb)) <= 5;
+  }
+
+  @override
+  Description describe(Description description) {
+    return description.add(
+      'color is close to ${StringUtils.hexFromArgb(_argb)}',
+    );
+  }
+
+  @override
+  Description describeMismatch(
+    dynamic item,
+    Description mismatchDescription,
+    Map<dynamic, dynamic> matchState,
+    bool verbose,
+  ) {
+    return mismatchDescription
+        .add('expected close to hex code\n  ')
         .add(StringUtils.hexFromArgb(_argb))
         .add('\nbut got\n  ')
         .add(StringUtils.hexFromArgb(item as int));

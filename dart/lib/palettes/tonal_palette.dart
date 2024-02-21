@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:math' as math;
 import 'package:collection/collection.dart' show ListEquality;
-
 import 'package:material_color_utilities/hct/hct.dart';
 
 /// A convenience class for retrieving colors that are constant in hue and
@@ -46,31 +44,32 @@ class TonalPalette {
 
   static final commonSize = commonTones.length;
 
-  final Hct? _keyColor;
-  Hct get keyColor => _keyColor ?? Hct.from(0.0, 0.0, 0.0);
-  final double? _hue;
-  double get hue => _hue ?? 0.0;
-  final double? _chroma;
-  double get chroma => _chroma ?? 0.0;
+  final double hue;
+  final double chroma;
+  final Hct keyColor;
+
+  /// A cache containing keys-value pairs where:
+  /// - keys are integers that represent tones, and
+  /// - values are colors in ARGB format.
   final Map<int, int> _cache;
+  final bool _isFromCache;
 
   TonalPalette._fromHct(Hct hct)
       : _cache = {},
-        _hue = hct.hue,
-        _chroma = hct.chroma,
-        _keyColor = hct;
+        hue = hct.hue,
+        chroma = hct.chroma,
+        keyColor = hct,
+        _isFromCache = false;
 
-  TonalPalette._fromHueAndChroma(double hue, double chroma)
+  TonalPalette._fromHueAndChroma(this.hue, this.chroma)
       : _cache = {},
-        _hue = hue,
-        _chroma = chroma,
-        _keyColor = createKeyColor(hue, chroma);
+        keyColor = createKeyColor(hue, chroma),
+        _isFromCache = false;
 
-  TonalPalette._fromCache(Map<int, int> cache)
+  TonalPalette._fromCache(Map<int, int> cache, this.hue, this.chroma)
       : _cache = cache,
-        _hue = null,
-        _chroma = null,
-        _keyColor = null;
+        keyColor = createKeyColor(hue, chroma),
+        _isFromCache = true;
 
   /// Create colors using [hue] and [chroma].
   static TonalPalette of(double hue, double chroma) {
@@ -90,7 +89,28 @@ class TonalPalette {
     var cache = <int, int>{};
     commonTones.asMap().forEach(
         (int index, int toneValue) => cache[toneValue] = colors[index]);
-    return TonalPalette._fromCache(cache);
+
+    // Approximately deduces the original hue and chroma that generated this
+    // list of colors.
+    // Uses the hue and chroma of the provided color with the highest chroma.
+
+    var bestHue = 0.0, bestChroma = 0.0;
+    for (final argb in colors) {
+      final hct = Hct.fromInt(argb);
+
+      // If the color is too close to white, its chroma may have been
+      // affected by a known issue, so we ignore it.
+      // https://github.com/material-foundation/material-color-utilities/issues/140
+
+      if (hct.tone > 98.0) continue;
+
+      if (hct.chroma > bestChroma) {
+        bestHue = hct.hue;
+        bestChroma = hct.chroma;
+      }
+    }
+
+    return TonalPalette._fromCache(cache, bestHue, bestChroma);
   }
 
   /// Creates a key color from a [hue] and a [chroma].
@@ -138,53 +158,45 @@ class TonalPalette {
   /// Inverse of [fromList].
   List<int> get asList => commonTones.map((int tone) => get(tone)).toList();
 
-  /// Returns the ARGB representation of an HCT color.
+  /// Returns the ARGB representation of an HCT color at the given [tone].
   ///
-  /// If the class was instantiated from [_hue] and [_chroma], will return the
-  /// color with corresponding [tone].
-  /// If the class was instantiated from a fixed-size list of color ints, [tone]
-  /// must be in [commonTones].
+  /// If the palette is constructed from a list of colors
+  /// (i.e. using [fromList]), the color provided at construction is returned
+  /// if possible; otherwise the result is generated from the deduced
+  /// [hue] and [chroma].
+  ///
+  /// If the palette is constructed from a hue and chroma (i.e. using [of] or
+  /// [fromHct]), the result is generated from the given [hue] and [chroma].
   int get(int tone) {
-    if (_hue == null || _chroma == null) {
-      if (!_cache.containsKey(tone)) {
-        throw (ArgumentError.value(
-          tone,
-          'tone',
-          'When a TonalPalette is created with fromList, tone must be one of '
-              '$commonTones',
-        ));
-      } else {
-        return _cache[tone]!;
-      }
-    }
-    final chroma = (tone >= 90.0) ? math.min(_chroma!, 40.0) : _chroma!;
     return _cache.putIfAbsent(
-        tone, () => Hct.from(_hue!, chroma, tone.toDouble()).toInt());
+      tone,
+      () => Hct.from(hue, chroma, tone.toDouble()).toInt(),
+    );
   }
 
+  /// Returns the HCT color at the given [tone].
+  ///
+  /// If the palette is constructed from a list of colors
+  /// (i.e. using [fromList]), the color provided at construction is returned
+  /// if possible; otherwise the result is generated from the deduced
+  /// [hue] and [chroma].
+  ///
+  /// If the palette is constructed from a hue and chroma (i.e. using [of] or
+  /// [fromHct]), the result is generated from the given [hue] and [chroma].
   Hct getHct(double tone) {
-    if (_hue == null || _chroma == null) {
-      if (!_cache.containsKey(tone)) {
-        throw (ArgumentError.value(
-          tone,
-          'tone',
-          'When a TonalPalette is created with fromList, tone must be one of '
-              '$commonTones',
-        ));
-      }
+    if (_cache.containsKey(tone)) {
+      return Hct.fromInt(_cache[tone]!);
+    } else {
+      return Hct.from(hue, chroma, tone);
     }
-    return Hct.from(_hue!, _chroma!, tone);
   }
 
   @override
   bool operator ==(Object other) {
     if (other is TonalPalette) {
-      if (_hue != null &&
-          _chroma != null &&
-          other._hue != null &&
-          other._chroma != null) {
+      if (!_isFromCache && !other._isFromCache) {
         // Both created with .of or .fromHct
-        return _hue == other._hue && _chroma == other._chroma;
+        return hue == other.hue && chroma == other.chroma;
       } else {
         return ListEquality().equals(asList, other.asList);
       }
@@ -194,8 +206,8 @@ class TonalPalette {
 
   @override
   int get hashCode {
-    if (_hue != null && _chroma != null) {
-      return Object.hash(_hue, _chroma);
+    if (!_isFromCache) {
+      return Object.hash(hue, chroma);
     } else {
       return Object.hashAll(asList);
     }
@@ -203,10 +215,10 @@ class TonalPalette {
 
   @override
   String toString() {
-    if (_hue != null && _chroma != null) {
-      return 'TonalPalette.of($_hue, $_chroma)';
+    if (!_isFromCache) {
+      return 'TonalPalette.of($hue, $chroma)';
     } else {
-      return 'TonalPalette.fromList($_cache)';
+      return 'TonalPalette.fromList($asList)';
     }
   }
 }

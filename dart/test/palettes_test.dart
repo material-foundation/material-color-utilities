@@ -17,6 +17,8 @@ import 'package:material_color_utilities/palettes/core_palette.dart';
 import 'package:material_color_utilities/palettes/tonal_palette.dart';
 import 'package:test/test.dart';
 
+import './utils/color_matcher.dart';
+
 void main() {
   group('TonalPalette', () {
     group('[.of and .fromList constructors]', () {
@@ -106,26 +108,65 @@ void main() {
     });
 
     group('[.fromList constructor]', () {
-      test('tones of i', () async {
-        final ints = List.generate(TonalPalette.commonSize, (i) => i);
-        final tones = TonalPalette.fromList(ints);
+      final hueChromaPalette = TonalPalette.of(270, 36);
+      final cachedPalette =
+          TonalPalette.commonTones.map(hueChromaPalette.get).toList();
+      final brokenPalette = [
+        cachedPalette[0],
+        cachedPalette[1],
+        Hct.from(180, 24, 20).toInt(),
+        cachedPalette[3],
+        cachedPalette[4],
+        cachedPalette[5],
+        cachedPalette[6],
+        cachedPalette[7],
+        cachedPalette[8],
+        Hct.from(0, 12, 90).toInt(),
+        cachedPalette[10],
+        cachedPalette[11],
+        cachedPalette[12],
+      ];
 
-        expect(tones.get(100), 12);
-        expect(tones.get(99), 11);
-        expect(tones.get(95), 10);
-        expect(tones.get(90), 9);
-        expect(tones.get(80), 8);
-        expect(tones.get(70), 7);
-        expect(tones.get(60), 6);
-        expect(tones.get(50), 5);
-        expect(tones.get(40), 4);
-        expect(tones.get(30), 3);
-        expect(tones.get(20), 2);
-        expect(tones.get(10), 1);
-        expect(tones.get(0), 0);
+      final rebuiltPalette = TonalPalette.fromList(brokenPalette);
 
-        /// Tone not in [TonalPalette.commonTones]
-        expect(() => tones.get(3), throwsA(isA<ArgumentError>()));
+      test('correctly deduces original hue and chroma', () {
+        expect(rebuiltPalette.hue, closeTo(270, 1));
+        expect(rebuiltPalette.chroma, closeTo(36, 1));
+      });
+
+      test('low-chroma noise does not affect the hue and chroma deduced', () {
+        final rebuiltCleanPalette = TonalPalette.fromList(cachedPalette);
+
+        expect(rebuiltPalette.hue, rebuiltCleanPalette.hue);
+        expect(rebuiltPalette.chroma, rebuiltCleanPalette.chroma);
+      });
+
+      test('returns cached colors when possible', () {
+        expect(rebuiltPalette.get(20), isColor(brokenPalette[2]));
+        expect(rebuiltPalette.get(50), isColor(brokenPalette[5]));
+        expect(rebuiltPalette.get(90), isColor(brokenPalette[9]));
+        expect(rebuiltPalette.get(99), isColor(brokenPalette[11]));
+      });
+
+      test('correctly deduces colors at other tones', () {
+        expect(
+          rebuiltPalette.get(15),
+          isCloseToColor(hueChromaPalette.get(15)),
+        );
+        expect(
+          rebuiltPalette.get(53),
+          isCloseToColor(hueChromaPalette.get(53)),
+        );
+        expect(
+          rebuiltPalette.get(78),
+          isCloseToColor(hueChromaPalette.get(78)),
+        );
+      });
+
+      test('deduced colors have correct tone', () {
+        expect(rebuiltPalette.getHct(15).tone, closeTo(15, 1));
+        expect(rebuiltPalette.getHct(53).tone, closeTo(53, 1));
+        expect(rebuiltPalette.getHct(78).tone, closeTo(78, 1));
       });
 
       test('asList', () {
@@ -135,17 +176,64 @@ void main() {
       });
 
       test('operator == and hashCode', () {
-        final intsAB = List.generate(TonalPalette.commonSize, (i) => i);
-        final tonesA = TonalPalette.fromList(intsAB);
-        final tonesB = TonalPalette.fromList(intsAB);
-        final intsC = List.generate(TonalPalette.commonSize, (i) => 1);
-        final tonesC = TonalPalette.fromList(intsC);
+        // This test confirms that `==` and `hashCode` behave the way they are
+        // expected to behave. By defining five palettes, three from hue and
+        // chroma, and two from lists, we expect their `hashCode` to be
+        // distinct, and that their equality should satisfy the following grid:
+        //
+        // ==? 1   2   3   4   5
+        // 1   YES -   -   YES -
+        // 2   -   YES -   -   -
+        // 3   -   -   YES -   -
+        // 4   YES -   -   YES -
+        // 5   -   -   -   -   YES
 
-        expect(tonesA, tonesB);
-        expect(tonesB, isNot(tonesC));
+        final palette1 = TonalPalette.of(270, 36);
+        final palette2 = TonalPalette.of(180, 36);
+        final palette3 = TonalPalette.of(270, 12);
 
-        expect(tonesA.hashCode, tonesB.hashCode);
-        expect(tonesB.hashCode, isNot(tonesC.hashCode));
+        final palette4 = TonalPalette.fromList(palette1.asList);
+        final brokenList = [...palette1.asList];
+        brokenList[2] = Hct.from(180, 24, 20).toInt();
+        brokenList[9] = Hct.from(0, 12, 90).toInt();
+        final palette5 = TonalPalette.fromList(brokenList);
+
+        expect(palette1, palette1);
+        expect(palette1, isNot(palette2));
+        expect(palette1, isNot(palette3));
+        expect(palette1, palette4);
+        expect(palette1, isNot(palette5));
+
+        expect(palette2, isNot(palette1));
+        expect(palette2, palette2);
+        expect(palette2, isNot(palette3));
+        expect(palette2, isNot(palette4));
+        expect(palette2, isNot(palette5));
+
+        expect(palette3, isNot(palette1));
+        expect(palette3, isNot(palette2));
+        expect(palette3, palette3);
+        expect(palette3, isNot(palette4));
+        expect(palette3, isNot(palette5));
+
+        expect(palette4, palette1);
+        expect(palette4, isNot(palette2));
+        expect(palette4, isNot(palette3));
+        expect(palette4, palette4);
+        expect(palette4, isNot(palette5));
+
+        expect(palette5, isNot(palette1));
+        expect(palette5, isNot(palette2));
+        expect(palette5, isNot(palette3));
+        expect(palette5, isNot(palette4));
+        expect(palette5, palette5);
+
+        // They should have five distinct hash codes (ignoring hash collision).
+        final hashCodes = [palette1, palette2, palette3, palette4, palette5]
+            .map((x) => x.hashCode)
+            .toSet()
+            .toList();
+        expect(hashCodes, hasLength(5));
       });
     });
   });
