@@ -215,6 +215,10 @@ export class Scheme {
     return this.props.surfaceDim;
   }
 
+  get surfaceTint(): number {
+    return this.props.surfaceTint;
+  }
+
   /**
    * @param argb ARGB representation of a color.
    * @return Light Material color scheme, based on the color's hue.
@@ -281,11 +285,11 @@ export class Scheme {
       inverseSurface: core.n1.tone(20),
       inverseOnSurface: core.n1.tone(95),
       inversePrimary: core.a1.tone(80),
-      surfaceContainerLowest: core.n2.tone(100),
-      surfaceContainerLow: core.n2.tone(96),
-      surfaceContainer: core.n2.tone(94),
-      surfaceContainerHigh: core.n2.tone(92),
-      surfaceContainerHighest: core.n2.tone(90),
+      surfaceContainerLowest: core.n1.tone(100),
+      surfaceContainerLow: core.n1.tone(96),
+      surfaceContainer: core.n1.tone(94),
+      surfaceContainerHigh: core.n1.tone(92),
+      surfaceContainerHighest: core.n1.tone(90),
       primaryFixed: core.a1.tone(90),
       onPrimaryFixed: core.a1.tone(10),
       primaryFixedDim: core.a1.tone(80),
@@ -300,6 +304,7 @@ export class Scheme {
       onTertiaryFixedVariant: core.a3.tone(30),
       surfaceBright: core.n1.tone(98),
       surfaceDim: core.n1.tone(87),
+      surfaceTint: core.a1.tone(40),
     });
   }
 
@@ -337,11 +342,11 @@ export class Scheme {
       inverseSurface: core.n1.tone(90),
       inverseOnSurface: core.n1.tone(20),
       inversePrimary: core.a1.tone(40),
-      surfaceContainerLowest: core.n2.tone(4),
-      surfaceContainerLow: core.n2.tone(10),
-      surfaceContainer: core.n2.tone(12),
-      surfaceContainerHigh: core.n2.tone(17),
-      surfaceContainerHighest: core.n2.tone(22),
+      surfaceContainerLowest: core.n1.tone(4),
+      surfaceContainerLow: core.n1.tone(10),
+      surfaceContainer: core.n1.tone(12),
+      surfaceContainerHigh: core.n1.tone(17),
+      surfaceContainerHighest: core.n1.tone(22),
       primaryFixed: core.a1.tone(90),
       onPrimaryFixed: core.a1.tone(10),
       primaryFixedDim: core.a1.tone(80),
@@ -354,8 +359,9 @@ export class Scheme {
       onTertiaryFixed: core.a3.tone(10),
       tertiaryFixedDim: core.a3.tone(80),
       onTertiaryFixedVariant: core.a3.tone(30),
-      surfaceBright: core.n1.tone(98),
-      surfaceDim: core.n1.tone(87),
+      surfaceBright: core.n1.tone(24),
+      surfaceDim: core.n1.tone(6),
+      surfaceTint: core.a1.tone(80),
     });
   }
 
@@ -408,6 +414,7 @@ export class Scheme {
     onTertiaryFixedVariant: number,
     surfaceBright: number,
     surfaceDim: number,
+    surfaceTint: number,
   }) {}
 
   toJSON() {
