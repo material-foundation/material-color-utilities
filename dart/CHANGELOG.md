@@ -1,3 +1,7 @@
+## 0.11.1 - 2024-03-11
+### Fixed
+- Fixed Apache license
+
 ## 0.11.0 - 2024-02-20
 ### Changed
 - Updated `TonalPalette.fromList` so that it provides colors at any tone, not
