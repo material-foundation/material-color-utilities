@@ -16,6 +16,8 @@
 
 #include "cpp/scheme/scheme_expressive.h"
 
+#include <vector>
+
 #include "cpp/cam/hct.h"
 #include "cpp/dynamiccolor/dynamic_scheme.h"
 #include "cpp/dynamiccolor/variant.h"

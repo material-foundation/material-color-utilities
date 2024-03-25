@@ -16,6 +16,7 @@
 
 #include "cpp/temperature/temperature_cache.h"
 
+#include <algorithm>
 #include <map>
 #include <vector>
 

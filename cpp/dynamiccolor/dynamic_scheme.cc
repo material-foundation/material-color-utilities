@@ -16,6 +16,8 @@
 
 #include "cpp/dynamiccolor/dynamic_scheme.h"
 
+#include <vector>
+
 #include "cpp/cam/hct.h"
 #include "cpp/dynamiccolor/material_dynamic_colors.h"
 #include "cpp/dynamiccolor/variant.h"

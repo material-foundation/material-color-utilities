@@ -20,6 +20,7 @@
 #include <cmath>
 #include <functional>
 #include <optional>
+#include <string>
 #include <vector>
 
 #include "cpp/cam/hct.h"
