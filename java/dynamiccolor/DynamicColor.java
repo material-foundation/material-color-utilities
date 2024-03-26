@@ -25,7 +25,6 @@ import com.google.errorprone.annotations.Var;
 import contrast.Contrast;
 import hct.Hct;
 import palettes.TonalPalette;
-import scheme.DynamicScheme;
 import utils.MathUtils;
 import java.util.ArrayList;
 import java.util.HashMap;

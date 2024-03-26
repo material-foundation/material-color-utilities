@@ -19,6 +19,8 @@ package scheme;
 import static java.lang.Math.max;
 
 import dislike.DislikeAnalyzer;
+import dynamiccolor.DynamicScheme;
+import dynamiccolor.Variant;
 import hct.Hct;
 import palettes.TonalPalette;
 import temperature.TemperatureCache;

@@ -296,6 +296,7 @@ final hct = MaterialDynamicColors.primary.getHct(scheme);
 
 ```java
 MaterialDynamicColors materialDynamicColors = new MaterialDynamicColors();
+int argb = scheme.getPrimary();
 int argb = materialDynamicColors.primary().getArgb(scheme);
 Hct hct = materialDynamicColors.primary().getHct(scheme);
 ```

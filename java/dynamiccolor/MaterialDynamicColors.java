@@ -19,8 +19,6 @@ package dynamiccolor;
 import androidx.annotation.NonNull;
 import dislike.DislikeAnalyzer;
 import hct.Hct;
-import scheme.DynamicScheme;
-import scheme.Variant;
 
 /** Named colors, otherwise known as tokens, or roles, in the Material Design system. */
 // Prevent lint for Function.apply not being available on Android before API level 14 (4.0.1).
