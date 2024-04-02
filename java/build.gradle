@@ -1,0 +1,22 @@
+plugins {
+    id("java-library")
+}
+
+repositories {
+    mavenCentral()
+    google()
+}
+
+dependencies {
+    api("androidx.annotation:annotation:1.7.1")
+    implementation("com.google.errorprone:error_prone_annotation:2.26.1")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += ["--release", "8"]
+}
