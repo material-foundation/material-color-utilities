@@ -1,5 +1,8 @@
 plugins {
     id("java-library")
+    id("maven-publish")
+    id("signing")
+    id("io.github.gradle-nexus.publish-plugin") version "2.0.0-rc-2"
 }
 
 repositories {
@@ -8,15 +11,70 @@ repositories {
 }
 
 dependencies {
-    api("androidx.annotation:annotation:1.7.1")
+    api("androidx.annotation:annotation:1.0.0")
     implementation("com.google.errorprone:error_prone_annotation:2.26.1")
 }
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+    withJavadocJar()
+    withSourcesJar()
+}
+
+javadoc {
+    failOnError = false
+    options.addBooleanOption('html5', true)
 }
 
 tasks.withType(JavaCompile).configureEach {
     options.compilerArgs += ["--release", "8"]
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = "me.tatarka.google.material"
+            artifactId = "material-color-utilities"
+            version = "0.1"
+
+            from components.java
+
+            pom {
+                name = "Material Color Utilities"
+                description = "Algorithms and utilities that power the Material Design 3 (M3) color system, including choosing theme colors from images and creating tones of colors; all in a new color space."
+                url = "https://github.com/evant/material-color-utilities"
+                licenses {
+                    license {
+                        name = "The Apache Software License, Version 2.0"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "evant"
+                        name = "Eva Tatarka"
+                    }
+                }
+                scm {
+                    connection = "https://github.com/evant/material-color-utilities"
+                    developerConnection = "https://github.com/evant/material-color-utilities"
+                    url = "https://github.com/evant/material-color-utilities"
+                }
+            }
+        }
+    }
+}
+
+nexusPublishing {
+    repositories {
+        sonatype()
+    }
+}
+
+signing {
+    setRequired {
+        findProperty("signing.keyId") != null
+    }
+    sign(publishing.publications["maven"])
 }
