@@ -16,12 +16,11 @@
  */
 
 import {DislikeAnalyzer} from '../dislike/dislike_analyzer.js';
+import {DynamicScheme} from '../dynamiccolor/dynamic_scheme.js';
+import {Variant} from '../dynamiccolor/variant.js';
 import {Hct} from '../hct/hct.js';
 import {TonalPalette} from '../palettes/tonal_palette.js';
 import {TemperatureCache} from '../temperature/temperature_cache.js';
-
-import {DynamicScheme} from './dynamic_scheme.js';
-import {Variant} from './variant.js';
 
 /**
  * A scheme that places the source color in `Scheme.primaryContainer`.

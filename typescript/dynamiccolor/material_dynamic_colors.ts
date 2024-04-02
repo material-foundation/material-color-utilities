@@ -17,12 +17,12 @@
 
 import {DislikeAnalyzer} from '../dislike/dislike_analyzer.js';
 import {Hct} from '../hct/hct.js';
-import {DynamicScheme} from '../scheme/dynamic_scheme.js';
-import {Variant} from '../scheme/variant.js';
 
 import {ContrastCurve} from './contrast_curve.js';
 import {DynamicColor} from './dynamic_color.js';
+import {DynamicScheme} from './dynamic_scheme.js';
 import {ToneDeltaPair} from './tone_delta_pair.js';
+import {Variant} from './variant.js';
 
 function isFidelity(scheme: DynamicScheme): boolean {
   return scheme.variant === Variant.FIDELITY ||

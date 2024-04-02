@@ -57,6 +57,27 @@ describe('fixed colors', () => {
         .toBeCloseTo(30.0, 0);
   });
 
+  it('fixed ARGB colors in non-monochrome schemes', () => {
+    const scheme = new SchemeTonalSpot(
+        Hct.fromInt(0xFFFF0000),
+        true,
+        0.0,
+    );
+
+    expect(scheme.primaryFixed).toBe(0xFFFFDAD4);
+    expect(scheme.primaryFixedDim).toBe(0xFFFFB4A8);
+    expect(scheme.onPrimaryFixed).toBe(0xFF3A0905);
+    expect(scheme.onPrimaryFixedVariant).toBe(0xFF73342A);
+    expect(scheme.secondaryFixed).toBe(0xFFFFDAD4);
+    expect(scheme.secondaryFixedDim).toBe(0xFFE7BDB6);
+    expect(scheme.onSecondaryFixed).toBe(0xFF2C1512);
+    expect(scheme.onSecondaryFixedVariant).toBe(0xFF5D3F3B);
+    expect(scheme.tertiaryFixed).toBe(0xFFFBDFA6);
+    expect(scheme.tertiaryFixedDim).toBe(0xFFDEC48C);
+    expect(scheme.onTertiaryFixed).toBe(0xFF251A00);
+    expect(scheme.onTertiaryFixedVariant).toBe(0xFF564419);
+  });
+
   it('fixed colors in light monochrome schemes', () => {
     const scheme = new SchemeMonochrome(
         Hct.fromInt(0xFFFF0000),

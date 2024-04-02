@@ -20,6 +20,11 @@
 import {CorePalette} from '../palettes/core_palette.js';
 
 /**
+ * DEPRECATED. The `Scheme` class is deprecated in favor of `DynamicScheme`.
+ * Please see
+ * https://github.com/material-foundation/material-color-utilities/blob/main/make_schemes.md
+ * for migration guidance.
+ *
  * Represents a Material color scheme, a mapping of color roles to colors.
  */
 export class Scheme {

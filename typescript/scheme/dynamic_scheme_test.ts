@@ -17,7 +17,7 @@
 
 import 'jasmine';
 
-import {DynamicScheme} from './dynamic_scheme.js';
+import {DynamicScheme} from '../dynamiccolor/dynamic_scheme.js';
 import {Hct} from '../hct/hct.js';
 
 describe('dynamic scheme test', () => {

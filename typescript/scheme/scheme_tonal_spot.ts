@@ -15,12 +15,11 @@
  * limitations under the License.
  */
 
+import {DynamicScheme} from '../dynamiccolor/dynamic_scheme.js';
+import {Variant} from '../dynamiccolor/variant.js';
 import {Hct} from '../hct/hct.js';
 import {TonalPalette} from '../palettes/tonal_palette.js';
 import * as math from '../utils/math_utils.js';
-
-import {DynamicScheme} from './dynamic_scheme.js';
-import {Variant} from './variant.js';
 
 /**
  * A Dynamic Color theme with low to medium colorfulness and a Tertiary

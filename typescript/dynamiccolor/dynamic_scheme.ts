@@ -19,6 +19,8 @@ import {Hct} from '../hct/hct.js';
 import {TonalPalette} from '../palettes/tonal_palette.js';
 import * as math from '../utils/math_utils.js';
 
+import {DynamicColor} from './dynamic_color.js';
+import {MaterialDynamicColors} from './material_dynamic_colors.js';
 import {Variant} from './variant.js';
 
 /**
@@ -170,5 +172,230 @@ export class DynamicScheme {
     // If this statement executes, something is wrong, there should have been a
     // rotation found using the arrays.
     return sourceHue;
+  }
+
+
+  getArgb(dynamicColor: DynamicColor): number {
+    return dynamicColor.getArgb(this);
+  }
+
+  getHct(dynamicColor: DynamicColor): Hct {
+    return dynamicColor.getHct(this);
+  }
+
+  get primaryPaletteKeyColor(): number {
+    return this.getArgb(MaterialDynamicColors.primaryPaletteKeyColor);
+  }
+
+  get secondaryPaletteKeyColor(): number {
+    return this.getArgb(MaterialDynamicColors.secondaryPaletteKeyColor);
+  }
+
+  get tertiaryPaletteKeyColor(): number {
+    return this.getArgb(MaterialDynamicColors.tertiaryPaletteKeyColor);
+  }
+
+  get neutralPaletteKeyColor(): number {
+    return this.getArgb(MaterialDynamicColors.neutralPaletteKeyColor);
+  }
+
+  get neutralVariantPaletteKeyColor(): number {
+    return this.getArgb(MaterialDynamicColors.neutralVariantPaletteKeyColor);
+  }
+
+  get background(): number {
+    return this.getArgb(MaterialDynamicColors.background);
+  }
+
+  get onBackground(): number {
+    return this.getArgb(MaterialDynamicColors.onBackground);
+  }
+
+  get surface(): number {
+    return this.getArgb(MaterialDynamicColors.surface);
+  }
+
+  get surfaceDim(): number {
+    return this.getArgb(MaterialDynamicColors.surfaceDim);
+  }
+
+  get surfaceBright(): number {
+    return this.getArgb(MaterialDynamicColors.surfaceBright);
+  }
+
+  get surfaceContainerLowest(): number {
+    return this.getArgb(MaterialDynamicColors.surfaceContainerLowest);
+  }
+
+  get surfaceContainerLow(): number {
+    return this.getArgb(MaterialDynamicColors.surfaceContainerLow);
+  }
+
+  get surfaceContainer(): number {
+    return this.getArgb(MaterialDynamicColors.surfaceContainer);
+  }
+
+  get surfaceContainerHigh(): number {
+    return this.getArgb(MaterialDynamicColors.surfaceContainerHigh);
+  }
+
+  get surfaceContainerHighest(): number {
+    return this.getArgb(MaterialDynamicColors.surfaceContainerHighest);
+  }
+
+  get onSurface(): number {
+    return this.getArgb(MaterialDynamicColors.onSurface);
+  }
+
+  get surfaceVariant(): number {
+    return this.getArgb(MaterialDynamicColors.surfaceVariant);
+  }
+
+  get onSurfaceVariant(): number {
+    return this.getArgb(MaterialDynamicColors.onSurfaceVariant);
+  }
+
+  get inverseSurface(): number {
+    return this.getArgb(MaterialDynamicColors.inverseSurface);
+  }
+
+  get inverseOnSurface(): number {
+    return this.getArgb(MaterialDynamicColors.inverseOnSurface);
+  }
+
+  get outline(): number {
+    return this.getArgb(MaterialDynamicColors.outline);
+  }
+
+  get outlineVariant(): number {
+    return this.getArgb(MaterialDynamicColors.outlineVariant);
+  }
+
+  get shadow(): number {
+    return this.getArgb(MaterialDynamicColors.shadow);
+  }
+
+  get scrim(): number {
+    return this.getArgb(MaterialDynamicColors.scrim);
+  }
+
+  get surfaceTint(): number {
+    return this.getArgb(MaterialDynamicColors.surfaceTint);
+  }
+
+  get primary(): number {
+    return this.getArgb(MaterialDynamicColors.primary);
+  }
+
+  get onPrimary(): number {
+    return this.getArgb(MaterialDynamicColors.onPrimary);
+  }
+
+  get primaryContainer(): number {
+    return this.getArgb(MaterialDynamicColors.primaryContainer);
+  }
+
+  get onPrimaryContainer(): number {
+    return this.getArgb(MaterialDynamicColors.onPrimaryContainer);
+  }
+
+  get inversePrimary(): number {
+    return this.getArgb(MaterialDynamicColors.inversePrimary);
+  }
+
+  get secondary(): number {
+    return this.getArgb(MaterialDynamicColors.secondary);
+  }
+
+  get onSecondary(): number {
+    return this.getArgb(MaterialDynamicColors.onSecondary);
+  }
+
+  get secondaryContainer(): number {
+    return this.getArgb(MaterialDynamicColors.secondaryContainer);
+  }
+
+  get onSecondaryContainer(): number {
+    return this.getArgb(MaterialDynamicColors.onSecondaryContainer);
+  }
+
+  get tertiary(): number {
+    return this.getArgb(MaterialDynamicColors.tertiary);
+  }
+
+  get onTertiary(): number {
+    return this.getArgb(MaterialDynamicColors.onTertiary);
+  }
+
+  get tertiaryContainer(): number {
+    return this.getArgb(MaterialDynamicColors.tertiaryContainer);
+  }
+
+  get onTertiaryContainer(): number {
+    return this.getArgb(MaterialDynamicColors.onTertiaryContainer);
+  }
+
+  get error(): number {
+    return this.getArgb(MaterialDynamicColors.error);
+  }
+
+  get onError(): number {
+    return this.getArgb(MaterialDynamicColors.onError);
+  }
+
+  get errorContainer(): number {
+    return this.getArgb(MaterialDynamicColors.errorContainer);
+  }
+
+  get onErrorContainer(): number {
+    return this.getArgb(MaterialDynamicColors.onErrorContainer);
+  }
+
+  get primaryFixed(): number {
+    return this.getArgb(MaterialDynamicColors.primaryFixed);
+  }
+
+  get primaryFixedDim(): number {
+    return this.getArgb(MaterialDynamicColors.primaryFixedDim);
+  }
+
+  get onPrimaryFixed(): number {
+    return this.getArgb(MaterialDynamicColors.onPrimaryFixed);
+  }
+
+  get onPrimaryFixedVariant(): number {
+    return this.getArgb(MaterialDynamicColors.onPrimaryFixedVariant);
+  }
+
+  get secondaryFixed(): number {
+    return this.getArgb(MaterialDynamicColors.secondaryFixed);
+  }
+
+  get secondaryFixedDim(): number {
+    return this.getArgb(MaterialDynamicColors.secondaryFixedDim);
+  }
+
+  get onSecondaryFixed(): number {
+    return this.getArgb(MaterialDynamicColors.onSecondaryFixed);
+  }
+
+  get onSecondaryFixedVariant(): number {
+    return this.getArgb(MaterialDynamicColors.onSecondaryFixedVariant);
+  }
+
+  get tertiaryFixed(): number {
+    return this.getArgb(MaterialDynamicColors.tertiaryFixed);
+  }
+
+  get tertiaryFixedDim(): number {
+    return this.getArgb(MaterialDynamicColors.tertiaryFixedDim);
+  }
+
+  get onTertiaryFixed(): number {
+    return this.getArgb(MaterialDynamicColors.onTertiaryFixed);
+  }
+
+  get onTertiaryFixedVariant(): number {
+    return this.getArgb(MaterialDynamicColors.onTertiaryFixedVariant);
   }
 }

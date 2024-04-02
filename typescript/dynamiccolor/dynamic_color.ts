@@ -18,10 +18,10 @@
 import {Contrast} from '../contrast/contrast.js';
 import {Hct} from '../hct/hct.js';
 import {TonalPalette} from '../palettes/tonal_palette.js';
-import {DynamicScheme} from '../scheme/dynamic_scheme.js';
 import * as math from '../utils/math_utils.js';
 
 import {ContrastCurve} from './contrast_curve.js';
+import {DynamicScheme} from './dynamic_scheme.js';
 import {ToneDeltaPair} from './tone_delta_pair.js';
 
 /**

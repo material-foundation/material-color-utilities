@@ -304,6 +304,7 @@ Hct hct = materialDynamicColors.primary().getHct(scheme);
 ###### TypeScript
 
 ```typescript
+const argb = scheme.primary;
 const argb = MaterialDynamicColors.primary.getArgb(scheme);
 const hct = MaterialDynamicColors.primary.getHct(scheme);
 ```
