@@ -17,11 +17,11 @@ protocol Quantizer {
     -> QuantizerResult
 }
 
-class QuantizerResult {
-  let colorToCount: [Int: Int]
-  let inputPixelToClusterPixel: [Int: Int]
+public class QuantizerResult {
+  public let colorToCount: [Int: Int]
+  public let inputPixelToClusterPixel: [Int: Int]
 
-  init(_ colorToCount: [Int: Int], inputPixelToClusterPixel: [Int: Int] = [:]) {
+  public init(_ colorToCount: [Int: Int], inputPixelToClusterPixel: [Int: Int] = [:]) {
     self.colorToCount = colorToCount
     self.inputPixelToClusterPixel = inputPixelToClusterPixel
   }
