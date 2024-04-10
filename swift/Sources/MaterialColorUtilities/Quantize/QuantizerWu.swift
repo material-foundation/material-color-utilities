@@ -35,7 +35,11 @@ class QuantizerWu: Quantizer {
     -> QuantizerResult
   {
     let result = QuantizerMap().quantize(pixels, maxColors)
-    constructHistogram(result.colorToCount)
+
+    var colorToPopulation = result.colorToCount.map({ (color: $0.key, population: $0.value) })
+      .sorted(by: { $0.population > $1.population })
+
+    constructHistogram(colorToPopulation)
     computeMoments()
     let createBoxesResult = createBoxes(maxColors)
     let results = createResult(createBoxesResult.resultCount)
@@ -54,15 +58,15 @@ class QuantizerWu: Quantizer {
     return red + green + blue + r + g + b
   }
 
-  func constructHistogram(_ pixels: [Int: Int]) {
+  func constructHistogram(_ pixels: [(color: Int, population: Int)]) {
     weights = [Int](repeating: 0, count: QuantizerWu.totalSize)
     momentsR = [Int](repeating: 0, count: QuantizerWu.totalSize)
     momentsG = [Int](repeating: 0, count: QuantizerWu.totalSize)
     momentsB = [Int](repeating: 0, count: QuantizerWu.totalSize)
     moments = [Double](repeating: 0, count: QuantizerWu.totalSize)
     for entry in pixels {
-      let pixel = entry.key
-      let count = entry.value
+      let pixel = entry.color
+      let count = entry.population
 
       let red = ColorUtils.redFromArgb(pixel)
       let green = ColorUtils.greenFromArgb(pixel)

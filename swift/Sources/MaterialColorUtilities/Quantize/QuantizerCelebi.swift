@@ -26,7 +26,7 @@ public class QuantizerCelebi: Quantizer {
     let wsmeansResult = QuantizerWsmeans.quantize(
       pixels,
       maxColors,
-      startingClusters: Array(wuResult.colorToCount.keys),
+      startingClusters: Array(wuResult.colorToCount.keys).sorted(by: { $0 > $1 }),
       pointProvider: PointProviderLab(),
       returnInputPixelToClusterPixel: returnInputPixelToClusterPixel
     )
