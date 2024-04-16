@@ -22,11 +22,11 @@
 /// Methods refer to tone, T in the the HCT color space.
 /// Tone is equivalent to L* in the L*a*b* color space, or L in the LCH color
 /// space.
-class Contrast {
+public class Contrast {
   /// Returns a contrast ratio, which ranges from 1 to 21.
   /// [toneA] Tone between 0 and 100. Values outside will be clamped.
   /// [toneB] Tone between 0 and 100. Values outside will be clamped.
-  static func ratioOfTones(_ toneA: Double, _ toneB: Double) -> Double {
+  public static func ratioOfTones(_ toneA: Double, _ toneB: Double) -> Double {
     let toneA = MathUtils.clampDouble(0, 100, toneA)
     let toneB = MathUtils.clampDouble(0, 100, toneB)
     return ratioOfYs(ColorUtils.yFromLstar(toneA), ColorUtils.yFromLstar(toneB))
@@ -46,7 +46,7 @@ class Contrast {
   /// Range is 0 to 100. Invalid values will result in -1 being returned.
   /// [ratio] Contrast ratio of return value and [tone].
   /// Range is 1 to 21, invalid values have undefined behavior.
-  static func lighter(tone: Double, ratio: Double) -> Double {
+  public static func lighter(tone: Double, ratio: Double) -> Double {
     if tone < 0 || tone > 100 {
       return -1
     }
@@ -76,7 +76,7 @@ class Contrast {
   /// Range is 0 to 100. Invalid values will result in -1 being returned.
   /// [ratio] Contrast ratio of return value and [tone].
   /// Range is 1 to 21, invalid values have undefined behavior.
-  static func darker(tone: Double, ratio: Double) -> Double {
+  public static func darker(tone: Double, ratio: Double) -> Double {
     if tone < 0 || tone > 100 {
       return -1
     }
@@ -111,7 +111,7 @@ class Contrast {
   /// Range is 0 to 100. Invalid values will result in 100 being returned.
   /// [ratio] Desired contrast ratio of return value and tone parameter.
   /// Range is 1 to 21, invalid values have undefined behavior.
-  static func lighterUnsafe(tone: Double, ratio: Double) -> Double {
+  public static func lighterUnsafe(tone: Double, ratio: Double) -> Double {
     let lighterSafe = lighter(tone: tone, ratio: ratio)
     return lighterSafe < 0 ? 100 : lighterSafe
   }
@@ -128,7 +128,7 @@ class Contrast {
   /// Range is 0 to 100. Invalid values will result in 0 being returned.
   /// [ratio] Desired contrast ratio of return value and tone parameter.
   /// Range is 1 to 21, invalid values have undefined behavior.
-  static func darkerUnsafe(tone: Double, ratio: Double) -> Double {
+  public static func darkerUnsafe(tone: Double, ratio: Double) -> Double {
     let darkerSafe = darker(tone: tone, ratio: ratio)
     return darkerSafe < 0 ? 0 : darkerSafe
   }

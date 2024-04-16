@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-class MathUtils {
+public class MathUtils {
   /// The signum function.
   ///
   /// Returns 1 if num > 0, -1 if num < 0, and 0 if num = 0
-  @inlinable static func signum(_ value: Double) -> Int {
+  @inlinable public static func signum(_ value: Double) -> Int {
     if value < 0 {
       return -1
     } else if value == 0 {
@@ -29,7 +29,7 @@ class MathUtils {
   /// The linear interpolation function.
   ///
   /// Returns start if amount = 0 and stop if amount = 1
-  @inlinable static func lerp(_ start: Double, _ stop: Double, _ amount: Double) -> Double {
+  @inlinable public static func lerp(_ start: Double, _ stop: Double, _ amount: Double) -> Double {
     return (1 - amount) * start + amount * stop
   }
 
@@ -37,7 +37,7 @@ class MathUtils {
   ///
   /// Returns input when min <= input <= max, and either min or max
   /// otherwise.
-  @inlinable static func clampInt(_ min: Int, _ max: Int, _ input: Int) -> Int {
+  @inlinable public static func clampInt(_ min: Int, _ max: Int, _ input: Int) -> Int {
     if input < min {
       return min
     } else if input > max {
@@ -50,7 +50,8 @@ class MathUtils {
   ///
   /// Returns input when min <= input <= max, and either min or max
   /// otherwise.
-  @inlinable static func clampDouble(_ min: Double, _ max: Double, _ input: Double) -> Double {
+  @inlinable public static func clampDouble(_ min: Double, _ max: Double, _ input: Double) -> Double
+  {
     if input < min {
       return min
     } else if input > max {
@@ -64,7 +65,7 @@ class MathUtils {
   ///
   /// Returns a degree measure between 0 (inclusive) and 360
   /// (exclusive).
-  @inlinable static func sanitizeDegreesInt(_ degrees: Int) -> Int {
+  @inlinable public static func sanitizeDegreesInt(_ degrees: Int) -> Int {
     var degrees = degrees % 360
     if degrees < 0 {
       degrees = degrees + 360
@@ -76,7 +77,7 @@ class MathUtils {
   ///
   /// Returns a degree measure between 0.0 (inclusive) and 360.0
   /// (exclusive).
-  @inlinable static func sanitizeDegreesDouble(_ degrees: Double) -> Double {
+  @inlinable public static func sanitizeDegreesDouble(_ degrees: Double) -> Double {
     var degrees = degrees.truncatingRemainder(dividingBy: 360)
     if degrees < 0 {
       degrees = degrees + 360
@@ -96,18 +97,18 @@ class MathUtils {
   /// Returns -1 if decreasing from leads to the shortest travel
   /// distance, 1 if increasing from leads to the shortest travel
   /// distance.
-  @inlinable static func rotationDirection(_ from: Double, _ to: Double) -> Double {
+  @inlinable public static func rotationDirection(_ from: Double, _ to: Double) -> Double {
     let increasingDifference = sanitizeDegreesDouble(to - from)
     return increasingDifference <= 180 ? 1 : -1
   }
 
   /// Distance of two points on a circle, represented using degrees.
-  @inlinable static func differenceDegrees(_ a: Double, _ b: Double) -> Double {
+  @inlinable public static func differenceDegrees(_ a: Double, _ b: Double) -> Double {
     return 180 - abs(abs(a - b) - 180)
   }
 
   /// Multiplies a 1x3 row vector with a 3x3 matrix.
-  @inlinable static func matrixMultiply(_ row: [Double], _ matrix: [[Double]]) -> [Double] {
+  @inlinable public static func matrixMultiply(_ row: [Double], _ matrix: [[Double]]) -> [Double] {
     let a = row[0] * matrix[0][0] + row[1] * matrix[0][1] + row[2] * matrix[0][2]
     let b = row[0] * matrix[1][0] + row[1] * matrix[1][1] + row[2] * matrix[1][2]
     let c = row[0] * matrix[2][0] + row[1] * matrix[2][1] + row[2] * matrix[2][2]

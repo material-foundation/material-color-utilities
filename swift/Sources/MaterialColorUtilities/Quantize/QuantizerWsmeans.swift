@@ -42,7 +42,7 @@ class DistanceAndIndex: Comparable {
   }
 }
 
-class QuantizerWsmeans {
+public class QuantizerWsmeans {
   static var debug: Bool = false
 
   static func debugLog(_ log: String) {
@@ -51,7 +51,7 @@ class QuantizerWsmeans {
     }
   }
 
-  static func quantize(
+  public static func quantize(
     _ inputPixels: [Int],
     _ maxColors: Int,
     startingClusters: [Int] = [],

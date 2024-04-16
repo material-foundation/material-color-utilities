@@ -12,16 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-class PointProviderLab: PointProvider {
-  func fromInt(_ argb: Int) -> [Double] {
+public class PointProviderLab: PointProvider {
+  public init() {}
+
+  public func fromInt(_ argb: Int) -> [Double] {
     return ColorUtils.labFromArgb(argb)
   }
 
-  func toInt(_ lab: [Double]) -> Int {
+  public func toInt(_ lab: [Double]) -> Int {
     return ColorUtils.argbFromLab(lab[0], lab[1], lab[2])
   }
 
-  func distance(_ one: [Double], _ two: [Double]) -> Double {
+  public func distance(_ one: [Double], _ two: [Double]) -> Double {
     let dL = (one[0] - two[0])
     let dA = (one[1] - two[1])
     let dB = (one[2] - two[2])

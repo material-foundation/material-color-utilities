@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /// Functions for blending in HCT and CAM16.
-class Blend {
+public class Blend {
   /// Blend the design color's HCT hue towards the key color's HCT
   /// hue, in a way that leaves the original color recognizable and
   /// recognizably shifted towards the key color.
@@ -23,7 +23,7 @@ class Blend {
   /// Returns The design color with a hue shifted towards the
   /// system's color, a slightly warmer/cooler variant of the design
   /// color's hue.
-  static func harmonize(_ designColor: Int, _ sourceColor: Int) -> Int {
+  public static func harmonize(_ designColor: Int, _ sourceColor: Int) -> Int {
     let fromHct = Hct.fromInt(designColor)
     let toHct = Hct.fromInt(sourceColor)
     let differenceDegrees = MathUtils.differenceDegrees(fromHct.hue, toHct.hue)
@@ -41,7 +41,7 @@ class Blend {
   /// [amount] how much blending to perform; 0.0 >= and <= 1.0
   /// Returns from, with a hue blended towards to. Chroma and tone
   /// are constant.
-  static func hctHue(_ from: Int, _ to: Int, _ amount: Double) -> Int {
+  public static func hctHue(_ from: Int, _ to: Int, _ amount: Double) -> Int {
     let ucs = cam16Ucs(from, to, amount)
     let ucsCam = Cam16.fromInt(ucs)
     let fromCam = Cam16.fromInt(from)
@@ -56,7 +56,7 @@ class Blend {
   /// [amount] how much blending to perform; 0.0 >= and <= 1.0
   /// Returns from, blended towards to. Hue, chroma, and tone will
   /// change.
-  static func cam16Ucs(_ from: Int, _ to: Int, _ amount: Double) -> Int {
+  public static func cam16Ucs(_ from: Int, _ to: Int, _ amount: Double) -> Int {
     let fromCam = Cam16.fromInt(from)
     let toCam = Cam16.fromInt(to)
     let fromJ = fromCam.jstar

@@ -22,11 +22,11 @@ import Foundation
 ///
 /// See Palmer and Schloss, 2010 or Schloss and Palmer's Chapter 21 in Handbook
 /// of Color Psychology (2015).
-class DislikeAnalyzer {
+public class DislikeAnalyzer {
   /// Returns true if [hct] is disliked.
   ///
   /// Disliked is defined as a dark yellow-green that is not neutral.
-  static func isDisliked(_ hct: Hct) -> Bool {
+  public static func isDisliked(_ hct: Hct) -> Bool {
     let huePasses = round(hct.hue) >= 90 && round(hct.hue) <= 111
     let chromaPasses = round(hct.chroma) > 16
     let tonePasses = round(hct.tone) < 65
@@ -35,7 +35,7 @@ class DislikeAnalyzer {
   }
 
   /// If [hct] is disliked, lighten it to make it likable.
-  static func fixIfDisliked(_ hct: Hct) -> Hct {
+  public static func fixIfDisliked(_ hct: Hct) -> Hct {
     if isDisliked(hct) {
       return Hct.from(hct.hue, hct.chroma, 70)
     }

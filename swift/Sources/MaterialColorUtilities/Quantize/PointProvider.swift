@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-protocol PointProvider {
+public protocol PointProvider {
   func fromInt(_ argb: Int) -> [Double]
   func toInt(_ lab: [Double]) -> Int
   func distance(_ one: [Double], _ two: [Double]) -> Double

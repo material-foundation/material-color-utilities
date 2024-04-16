@@ -16,11 +16,11 @@
 public class SchemeExpressive: DynamicScheme {
   /// Hues used at breakpoints such that designers can specify a hue rotation
   /// that occurs at a given break point.
-  static let hues: [Double] = [0, 21, 51, 121, 151, 191, 271, 321, 360]
+  public static let hues: [Double] = [0, 21, 51, 121, 151, 191, 271, 321, 360]
 
   /// Hue rotations of the Secondary [TonalPalette], corresponding to the
   /// breakpoints in [hues].
-  static let secondaryRotations: [Double] = [
+  public static let secondaryRotations: [Double] = [
     45,
     95,
     45,
@@ -34,7 +34,7 @@ public class SchemeExpressive: DynamicScheme {
 
   /// Hue rotations of the Tertiary [TonalPalette], corresponding to the
   /// breakpoints in [hues].
-  static let tertiaryRotations: [Double] = [
+  public static let tertiaryRotations: [Double] = [
     120,
     120,
     20,

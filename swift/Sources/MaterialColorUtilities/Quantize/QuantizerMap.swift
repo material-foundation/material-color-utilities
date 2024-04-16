@@ -12,8 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-class QuantizerMap: Quantizer {
-  func quantize(_ pixels: [Int], _ maxColors: Int, returnInputPixelToClusterPixel: Bool = false)
+public class QuantizerMap: Quantizer {
+  public func quantize(
+    _ pixels: [Int], _ maxColors: Int, returnInputPixelToClusterPixel: Bool = false
+  )
     -> QuantizerResult
   {
     var countByColor: [Int: Int] = [:]

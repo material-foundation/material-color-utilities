@@ -14,7 +14,7 @@
 
 import Foundation
 
-class QuantizerWu: Quantizer {
+public class QuantizerWu: Quantizer {
   var weights: [Int] = []
   var momentsR: [Int] = []
   var momentsG: [Int] = []
@@ -31,7 +31,9 @@ class QuantizerWu: Quantizer {
   static let sideLength: Int = 33
   static let totalSize: Int = 35937
 
-  func quantize(_ pixels: [Int], _ maxColors: Int, returnInputPixelToClusterPixel: Bool = false)
+  public func quantize(
+    _ pixels: [Int], _ maxColors: Int, returnInputPixelToClusterPixel: Bool = false
+  )
     -> QuantizerResult
   {
     let result = QuantizerMap().quantize(pixels, maxColors)
@@ -50,7 +52,7 @@ class QuantizerWu: Quantizer {
     return QuantizerResult(colorToCount)
   }
 
-  static func getIndex(_ r: Int, _ g: Int, _ b: Int) -> Int {
+  public static func getIndex(_ r: Int, _ g: Int, _ b: Int) -> Int {
     let indexBits = QuantizerWu.indexBits
     let red = r << (indexBits * 2)
     let green = r << (indexBits + 1)
@@ -58,7 +60,7 @@ class QuantizerWu: Quantizer {
     return red + green + blue + r + g + b
   }
 
-  func constructHistogram(_ pixels: [(color: Int, population: Int)]) {
+  public func constructHistogram(_ pixels: [(color: Int, population: Int)]) {
     weights = [Int](repeating: 0, count: QuantizerWu.totalSize)
     momentsR = [Int](repeating: 0, count: QuantizerWu.totalSize)
     momentsG = [Int](repeating: 0, count: QuantizerWu.totalSize)
@@ -87,7 +89,7 @@ class QuantizerWu: Quantizer {
     }
   }
 
-  func computeMoments() {
+  public func computeMoments() {
     for r in 1..<QuantizerWu.sideLength {
       var area = [Int](repeating: 0, count: QuantizerWu.sideLength)
       var areaR = [Int](repeating: 0, count: QuantizerWu.sideLength)
@@ -125,7 +127,7 @@ class QuantizerWu: Quantizer {
     }
   }
 
-  func createBoxes(_ maxColorCount: Int) -> CreateBoxesResult {
+  public func createBoxes(_ maxColorCount: Int) -> CreateBoxesResult {
     cubes = []
     for _ in 0..<maxColorCount {
       cubes.append(Box())
@@ -176,7 +178,7 @@ class QuantizerWu: Quantizer {
     )
   }
 
-  func createResult(_ colorCount: Int) -> [Int] {
+  public func createResult(_ colorCount: Int) -> [Int] {
     var colors: [Int] = []
     for i in 0..<colorCount {
       let cube = cubes[i]
@@ -192,7 +194,7 @@ class QuantizerWu: Quantizer {
     return colors
   }
 
-  func variance(_ cube: Box) -> Double {
+  public func variance(_ cube: Box) -> Double {
     let dr = QuantizerWu.volume(cube, momentsR)
     let dg = QuantizerWu.volume(cube, momentsG)
     let db = QuantizerWu.volume(cube, momentsB)
@@ -211,7 +213,7 @@ class QuantizerWu: Quantizer {
     return xx - Double(hypotenuse / volume_)
   }
 
-  func cut(_ one: Box, _ two: Box) -> Bool {
+  public func cut(_ one: Box, _ two: Box) -> Bool {
     let wholeR = QuantizerWu.volume(one, momentsR)
     let wholeG = QuantizerWu.volume(one, momentsG)
     let wholeB = QuantizerWu.volume(one, momentsB)
@@ -269,7 +271,7 @@ class QuantizerWu: Quantizer {
     return true
   }
 
-  func maximize(
+  public func maximize(
     _ cube: Box, _ direction: Direction, _ first: Int, _ last: Int, _ wholeR: Int, _ wholeG: Int,
     _ wholeB: Int, _ wholeW: Int
   ) -> MaximizeResult {
@@ -316,7 +318,7 @@ class QuantizerWu: Quantizer {
     return MaximizeResult(cutLocation: cut, maximum: max)
   }
 
-  static func volume(_ cube: Box, _ moment: [Int]) -> Int {
+  public static func volume(_ cube: Box, _ moment: [Int]) -> Int {
     return
       (moment[getIndex(cube.r1, cube.g1, cube.b1)] - moment[getIndex(cube.r1, cube.g1, cube.b0)]
       - moment[getIndex(cube.r1, cube.g0, cube.b1)] + moment[getIndex(cube.r1, cube.g0, cube.b0)]
@@ -324,7 +326,7 @@ class QuantizerWu: Quantizer {
       + moment[getIndex(cube.r0, cube.g0, cube.b1)] - moment[getIndex(cube.r0, cube.g0, cube.b0)])
   }
 
-  static func bottom(_ cube: Box, _ direction: Direction, _ moment: [Int]) -> Int {
+  public static func bottom(_ cube: Box, _ direction: Direction, _ moment: [Int]) -> Int {
     switch direction {
     case Direction.red:
       return -moment[getIndex(cube.r0, cube.g1, cube.b1)]
@@ -341,7 +343,9 @@ class QuantizerWu: Quantizer {
     }
   }
 
-  static func top(_ cube: Box, _ direction: Direction, _ position: Int, _ moment: [Int]) -> Int {
+  public static func top(_ cube: Box, _ direction: Direction, _ position: Int, _ moment: [Int])
+    -> Int
+  {
     switch direction {
     case Direction.red:
       return
@@ -362,13 +366,13 @@ class QuantizerWu: Quantizer {
   }
 }
 
-enum Direction {
+public enum Direction {
   case red
   case green
   case blue
 }
 
-class MaximizeResult {
+public class MaximizeResult {
   // < 0 if cut impossible
   var cutLocation: Int
   var maximum: Double
@@ -379,7 +383,7 @@ class MaximizeResult {
   }
 }
 
-class CreateBoxesResult {
+public class CreateBoxesResult {
   var requestedCount: Int
   var resultCount: Int
 
@@ -389,7 +393,7 @@ class CreateBoxesResult {
   }
 }
 
-class Box {
+public class Box {
   var r0: Int
   var r1: Int
   var g0: Int

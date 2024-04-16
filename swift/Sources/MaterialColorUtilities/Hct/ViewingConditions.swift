@@ -25,12 +25,12 @@ import Foundation
 ///
 /// This class caches intermediate values of the CAM16 conversion process that
 /// depend only on viewing conditions, enabling speed ups.
-class ViewingConditions {
-  static func standard() -> ViewingConditions {
+public class ViewingConditions {
+  public static func standard() -> ViewingConditions {
     return sRgb()
   }
 
-  static func sRgb() -> ViewingConditions {
+  public static func sRgb() -> ViewingConditions {
     return make()
   }
 
@@ -97,7 +97,7 @@ class ViewingConditions {
   /// [backgroundLstar]: average luminance of 10 degrees around color.
   /// [surround]: brightness of the entire environment.
   /// [discountingIlluminant]: whether eyes have adjusted to lighting.
-  static func make(
+  public static func make(
     whitePoint: [Double]? = nil,
     adaptingLuminance: Double = -1,
     backgroundLstar: Double = 50,

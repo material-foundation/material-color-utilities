@@ -31,7 +31,7 @@ public class Hct: Equatable, Hashable {
   /// limited sRGB gamut for display. This will change its ARGB/integer
   /// representation. If the HCT color is outside of the sRGB gamut, chroma
   /// will decrease until it is inside the gamut.
-  var hue: Double {
+  public var hue: Double {
     get { return _hue }
     set {
       _argb = HctSolver.solveToInt(newValue, chroma, tone)
@@ -47,7 +47,7 @@ public class Hct: Equatable, Hashable {
   /// limited sRGB gamut for display. This will change its ARGB/integer
   /// representation. If the HCT color is outside of the sRGB gamut, chroma
   /// will decrease until it is inside the gamut.
-  var chroma: Double {
+  public var chroma: Double {
     get { return _chroma }
     set {
       _argb = HctSolver.solveToInt(hue, newValue, tone)
@@ -65,7 +65,7 @@ public class Hct: Equatable, Hashable {
   /// limited sRGB gamut for display. This will change its ARGB/integer
   /// representation. If the HCT color is outside of the sRGB gamut, chroma
   /// will decrease until it is inside the gamut.
-  var tone: Double {
+  public var tone: Double {
     get { return _tone }
     set {
       _argb = HctSolver.solveToInt(hue, chroma, newValue)
@@ -89,7 +89,7 @@ public class Hct: Equatable, Hashable {
   ///    lower than the requested chroma. Chroma has a different maximum for any
   ///    given hue and tone.
   /// 0 <= [tone] <= 100; informally, lightness. Invalid values are corrected.
-  static func from(_ hue: Double, _ chroma: Double, _ tone: Double) -> Hct {
+  public static func from(_ hue: Double, _ chroma: Double, _ tone: Double) -> Hct {
     let argb = HctSolver.solveToInt(hue, chroma, tone)
     return Hct(argb)
   }
@@ -111,7 +111,7 @@ public class Hct: Equatable, Hashable {
   }
 
   /// HCT representation of [argb].
-  static func fromInt(_ argb: Int) -> Hct {
+  public static func fromInt(_ argb: Int) -> Hct {
     return Hct(argb)
   }
 
@@ -131,7 +131,7 @@ public class Hct: Equatable, Hashable {
   /// CAM16, a color appearance model, and uses it to make these calculations.
   ///
   /// See [ViewingConditions.make] for parameters affecting color appearance.
-  func inViewingConditions(_ vc: ViewingConditions) -> Hct {
+  public func inViewingConditions(_ vc: ViewingConditions) -> Hct {
     // 1. Use CAM16 to find XYZ coordinates of color in specified VC.
     let cam16 = Cam16.fromInt(toInt())
     let viewedInVc = cam16.xyzInViewingConditions(vc)

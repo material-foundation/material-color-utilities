@@ -17,7 +17,7 @@
 /// Usually represents the contrast requirements for a dynamic color on its
 /// background. The four values correspond to values for contrast levels
 /// -1.0, 0.0, 0.5, and 1.0, respectively.
-struct ContrastCurve {
+public struct ContrastCurve {
   let low: Double
   let normal: Double
   let medium: Double
@@ -28,7 +28,7 @@ struct ContrastCurve {
   ///   - normal: Value for contrast level 0.0
   ///   - medium: Value for contrast level 0.5
   ///   - high: Value for contrast level 1.0
-  init(_ low: Double, _ normal: Double, _ medium: Double, _ high: Double) {
+  public init(_ low: Double, _ normal: Double, _ medium: Double, _ high: Double) {
     self.low = low
     self.normal = normal
     self.medium = medium
@@ -41,7 +41,7 @@ struct ContrastCurve {
   ///   -1.0 is the lowest; 1.0 is the highest.
   ///
   /// - Returns: The value. For contrast ratios, a number between 1.0 and 21.0.
-  func get(_ contrastLevel: Double) -> Double {
+  public func get(_ contrastLevel: Double) -> Double {
     if contrastLevel <= -1.0 {
       return self.low
     } else if contrastLevel < 0.0 {

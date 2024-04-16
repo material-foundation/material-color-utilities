@@ -27,7 +27,7 @@ enum TonePolarity {
 /// background, this is for special cases when designers want tonal distance,
 /// literally contrast, between two colors that don't have a background /
 /// foreground relationship or a contrast guarantee.
-struct ToneDeltaPair {
+public struct ToneDeltaPair {
   let subject: DynamicColor
   let basis: DynamicColor
   let delta: Double

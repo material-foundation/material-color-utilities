@@ -17,16 +17,16 @@ import Foundation
 /// An intermediate concept between the key color for a UI theme, and a full
 /// color scheme. 5 tonal palettes are generated, all except one use the same
 /// hue as the key color, and all vary in chroma.
-class CorePalette: Equatable, Hashable {
+public class CorePalette: Equatable, Hashable {
   /// The number of generated tonal palettes.
   static let size = 5
 
-  let primary: TonalPalette
-  let secondary: TonalPalette
-  let tertiary: TonalPalette
-  let neutral: TonalPalette
-  let neutralVariant: TonalPalette
-  let error: TonalPalette
+  public let primary: TonalPalette
+  public let secondary: TonalPalette
+  public let tertiary: TonalPalette
+  public let neutral: TonalPalette
+  public let neutralVariant: TonalPalette
+  public let error: TonalPalette
 
   init(
     primary: TonalPalette, secondary: TonalPalette, tertiary: TonalPalette, neutral: TonalPalette,
@@ -41,7 +41,7 @@ class CorePalette: Equatable, Hashable {
   }
 
   /// Create a [CorePalette] from a source ARGB color.
-  static func of(_ argb: Int) -> CorePalette {
+  public static func of(_ argb: Int) -> CorePalette {
     let cam = Cam16.fromInt(argb)
     return CorePalette._of(cam.hue, cam.chroma)
   }
@@ -57,7 +57,7 @@ class CorePalette: Equatable, Hashable {
   }
 
   /// Create a content [CorePalette] from a source ARGB color.
-  static func contentOf(_ argb: Int) -> CorePalette {
+  public static func contentOf(_ argb: Int) -> CorePalette {
     let cam = Cam16.fromInt(argb)
     return CorePalette._contentOf(cam.hue, cam.chroma)
   }
@@ -77,11 +77,11 @@ class CorePalette: Equatable, Hashable {
       && neutral == other.neutral && neutralVariant == other.neutralVariant
   }
 
-  static func == (lhs: CorePalette, rhs: CorePalette) -> Bool {
+  static public func == (lhs: CorePalette, rhs: CorePalette) -> Bool {
     return type(of: lhs) == type(of: rhs) && lhs.isEqual(to: rhs)
   }
 
-  func hash(into hasher: inout Hasher) {
+  public func hash(into hasher: inout Hasher) {
     hasher.combine(primary)
     hasher.combine(secondary)
     hasher.combine(tertiary)

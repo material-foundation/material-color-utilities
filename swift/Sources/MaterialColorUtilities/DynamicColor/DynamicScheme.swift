@@ -59,7 +59,7 @@ public class DynamicScheme: Equatable, Hashable {
   /// Given a tone, produces a reddish, colorful, color.
   let errorPalette: TonalPalette
 
-  init(
+  public init(
     sourceColorArgb: Int, sourceColorHct: Hct? = nil, variant: Variant, isDark: Bool,
     contrastLevel: Double = 0, primaryPalette: TonalPalette, secondaryPalette: TonalPalette,
     tertiaryPalette: TonalPalette, neutralPalette: TonalPalette,
@@ -78,7 +78,9 @@ public class DynamicScheme: Equatable, Hashable {
     self.errorPalette = errorPalette ?? TonalPalette.of(25.0, 84.0)
   }
 
-  static func getRotatedHue(_ sourceColor: Hct, _ hues: [Double], _ rotations: [Double]) -> Double {
+  public static func getRotatedHue(_ sourceColor: Hct, _ hues: [Double], _ rotations: [Double])
+    -> Double
+  {
     let sourceHue = sourceColor.hue
     assert(hues.count == rotations.count)
     if rotations.count == 1 {
@@ -131,166 +133,166 @@ public class DynamicScheme: Equatable, Hashable {
     hasher.combine(errorPalette)
   }
 
-  var primaryPaletteKeyColor: Int {
+  public var primaryPaletteKeyColor: Int {
     MaterialDynamicColors.primaryPaletteKeyColor.getArgb(self)
   }
-  var secondaryPaletteKeyColor: Int {
+  public var secondaryPaletteKeyColor: Int {
     MaterialDynamicColors.secondaryPaletteKeyColor.getArgb(self)
   }
-  var tertiaryPaletteKeyColor: Int {
+  public var tertiaryPaletteKeyColor: Int {
     MaterialDynamicColors.tertiaryPaletteKeyColor.getArgb(self)
   }
-  var neutralPaletteKeyColor: Int {
+  public var neutralPaletteKeyColor: Int {
     MaterialDynamicColors.neutralPaletteKeyColor.getArgb(self)
   }
-  var neutralVariantPaletteKeyColor: Int {
+  public var neutralVariantPaletteKeyColor: Int {
     MaterialDynamicColors.neutralVariantPaletteKeyColor.getArgb(self)
   }
-  var background: Int {
+  public var background: Int {
     MaterialDynamicColors.background.getArgb(self)
   }
-  var onBackground: Int {
+  public var onBackground: Int {
     MaterialDynamicColors.onBackground.getArgb(self)
   }
-  var surface: Int {
+  public var surface: Int {
     MaterialDynamicColors.surface.getArgb(self)
   }
-  var surfaceDim: Int {
+  public var surfaceDim: Int {
     MaterialDynamicColors.surfaceDim.getArgb(self)
   }
-  var surfaceBright: Int {
+  public var surfaceBright: Int {
     MaterialDynamicColors.surfaceBright.getArgb(self)
   }
-  var surfaceContainerLowest: Int {
+  public var surfaceContainerLowest: Int {
     MaterialDynamicColors.surfaceContainerLowest.getArgb(self)
   }
-  var surfaceContainerLow: Int {
+  public var surfaceContainerLow: Int {
     MaterialDynamicColors.surfaceContainerLow.getArgb(self)
   }
-  var surfaceContainer: Int {
+  public var surfaceContainer: Int {
     MaterialDynamicColors.surfaceContainer.getArgb(self)
   }
-  var surfaceContainerHigh: Int {
+  public var surfaceContainerHigh: Int {
     MaterialDynamicColors.surfaceContainerHigh.getArgb(self)
   }
-  var surfaceContainerHighest: Int {
+  public var surfaceContainerHighest: Int {
     MaterialDynamicColors.surfaceContainerHighest.getArgb(self)
   }
-  var onSurface: Int {
+  public var onSurface: Int {
     MaterialDynamicColors.onSurface.getArgb(self)
   }
-  var surfaceVariant: Int {
+  public var surfaceVariant: Int {
     MaterialDynamicColors.surfaceVariant.getArgb(self)
   }
-  var onSurfaceVariant: Int {
+  public var onSurfaceVariant: Int {
     MaterialDynamicColors.onSurfaceVariant.getArgb(self)
   }
-  var inverseSurface: Int {
+  public var inverseSurface: Int {
     MaterialDynamicColors.inverseSurface.getArgb(self)
   }
-  var inverseOnSurface: Int {
+  public var inverseOnSurface: Int {
     MaterialDynamicColors.inverseOnSurface.getArgb(self)
   }
-  var outline: Int {
+  public var outline: Int {
     MaterialDynamicColors.outline.getArgb(self)
   }
-  var outlineVariant: Int {
+  public var outlineVariant: Int {
     MaterialDynamicColors.outlineVariant.getArgb(self)
   }
-  var shadow: Int {
+  public var shadow: Int {
     MaterialDynamicColors.shadow.getArgb(self)
   }
-  var scrim: Int {
+  public var scrim: Int {
     MaterialDynamicColors.scrim.getArgb(self)
   }
-  var surfaceTint: Int {
+  public var surfaceTint: Int {
     MaterialDynamicColors.surfaceTint.getArgb(self)
   }
-  var primary: Int {
+  public var primary: Int {
     MaterialDynamicColors.primary.getArgb(self)
   }
-  var onPrimary: Int {
+  public var onPrimary: Int {
     MaterialDynamicColors.onPrimary.getArgb(self)
   }
-  var primaryContainer: Int {
+  public var primaryContainer: Int {
     MaterialDynamicColors.primaryContainer.getArgb(self)
   }
-  var onPrimaryContainer: Int {
+  public var onPrimaryContainer: Int {
     MaterialDynamicColors.onPrimaryContainer.getArgb(self)
   }
-  var inversePrimary: Int {
+  public var inversePrimary: Int {
     MaterialDynamicColors.inversePrimary.getArgb(self)
   }
-  var secondary: Int {
+  public var secondary: Int {
     MaterialDynamicColors.secondary.getArgb(self)
   }
-  var onSecondary: Int {
+  public var onSecondary: Int {
     MaterialDynamicColors.onSecondary.getArgb(self)
   }
-  var secondaryContainer: Int {
+  public var secondaryContainer: Int {
     MaterialDynamicColors.secondaryContainer.getArgb(self)
   }
-  var onSecondaryContainer: Int {
+  public var onSecondaryContainer: Int {
     MaterialDynamicColors.onSecondaryContainer.getArgb(self)
   }
-  var tertiary: Int {
+  public var tertiary: Int {
     MaterialDynamicColors.tertiary.getArgb(self)
   }
-  var onTertiary: Int {
+  public var onTertiary: Int {
     MaterialDynamicColors.onTertiary.getArgb(self)
   }
-  var tertiaryContainer: Int {
+  public var tertiaryContainer: Int {
     MaterialDynamicColors.tertiaryContainer.getArgb(self)
   }
-  var onTertiaryContainer: Int {
+  public var onTertiaryContainer: Int {
     MaterialDynamicColors.onTertiaryContainer.getArgb(self)
   }
-  var error: Int {
+  public var error: Int {
     MaterialDynamicColors.error.getArgb(self)
   }
-  var onError: Int {
+  public var onError: Int {
     MaterialDynamicColors.onError.getArgb(self)
   }
-  var errorContainer: Int {
+  public var errorContainer: Int {
     MaterialDynamicColors.errorContainer.getArgb(self)
   }
-  var onErrorContainer: Int {
+  public var onErrorContainer: Int {
     MaterialDynamicColors.onErrorContainer.getArgb(self)
   }
-  var primaryFixed: Int {
+  public var primaryFixed: Int {
     MaterialDynamicColors.primaryFixed.getArgb(self)
   }
-  var primaryFixedDim: Int {
+  public var primaryFixedDim: Int {
     MaterialDynamicColors.primaryFixedDim.getArgb(self)
   }
-  var onPrimaryFixed: Int {
+  public var onPrimaryFixed: Int {
     MaterialDynamicColors.onPrimaryFixed.getArgb(self)
   }
-  var onPrimaryFixedVariant: Int {
+  public var onPrimaryFixedVariant: Int {
     MaterialDynamicColors.onPrimaryFixedVariant.getArgb(self)
   }
-  var secondaryFixed: Int {
+  public var secondaryFixed: Int {
     MaterialDynamicColors.secondaryFixed.getArgb(self)
   }
-  var secondaryFixedDim: Int {
+  public var secondaryFixedDim: Int {
     MaterialDynamicColors.secondaryFixedDim.getArgb(self)
   }
-  var onSecondaryFixed: Int {
+  public var onSecondaryFixed: Int {
     MaterialDynamicColors.onSecondaryFixed.getArgb(self)
   }
-  var onSecondaryFixedVariant: Int {
+  public var onSecondaryFixedVariant: Int {
     MaterialDynamicColors.onSecondaryFixedVariant.getArgb(self)
   }
-  var tertiaryFixed: Int {
+  public var tertiaryFixed: Int {
     MaterialDynamicColors.tertiaryFixed.getArgb(self)
   }
-  var tertiaryFixedDim: Int {
+  public var tertiaryFixedDim: Int {
     MaterialDynamicColors.tertiaryFixedDim.getArgb(self)
   }
-  var onTertiaryFixed: Int {
+  public var onTertiaryFixed: Int {
     MaterialDynamicColors.onTertiaryFixed.getArgb(self)
   }
-  var onTertiaryFixedVariant: Int {
+  public var onTertiaryFixedVariant: Int {
     MaterialDynamicColors.onTertiaryFixedVariant.getArgb(self)
   }
 }

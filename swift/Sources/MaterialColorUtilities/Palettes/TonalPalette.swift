@@ -25,7 +25,7 @@ import Foundation
 /// [commonTones].
 public class TonalPalette: Equatable, Hashable {
   /// Commonly-used tone values.
-  static let commonTones = [
+  public static let commonTones = [
     0,
     10,
     20,
@@ -46,11 +46,11 @@ public class TonalPalette: Equatable, Hashable {
   }
 
   private let _hue: Double
-  var hue: Double {
+  public var hue: Double {
     return _hue
   }
   private let _chroma: Double
-  var chroma: Double {
+  public var chroma: Double {
     return _chroma
   }
   private let _keyColor: Hct
@@ -86,7 +86,7 @@ public class TonalPalette: Equatable, Hashable {
   }
 
   /// Create a Tonal Palette from hue and chroma of [hct].
-  static func fromHct(_ hct: Hct) -> TonalPalette {
+  public static func fromHct(_ hct: Hct) -> TonalPalette {
     return TonalPalette(hct: hct)
   }
 
@@ -96,7 +96,7 @@ public class TonalPalette: Equatable, Hashable {
   }
 
   /// Create colors using [hue] and [chroma].
-  static func of(_ hue: Double, _ chroma: Double) -> TonalPalette {
+  public static func of(_ hue: Double, _ chroma: Double) -> TonalPalette {
     return TonalPalette(hue: hue, chroma: chroma)
   }
 
@@ -153,7 +153,7 @@ public class TonalPalette: Equatable, Hashable {
     return _cache[tone]!
   }
 
-  func getHct(_ tone: Double) -> Hct {
+  public func getHct(_ tone: Double) -> Hct {
     return Hct.fromInt(self.tone(tone))
   }
 

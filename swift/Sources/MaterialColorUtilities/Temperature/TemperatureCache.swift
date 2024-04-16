@@ -27,15 +27,15 @@ class TemperatureCache {
   private var _inputRelativeTemperature: Double = -1
   private var _complement: Hct? = nil
 
-  var warmest: Hct {
+  public var warmest: Hct {
     return hctsByTemp.last!
   }
 
-  var coldest: Hct {
+  public var coldest: Hct {
     return hctsByTemp.first!
   }
 
-  init(_ input: Hct) {
+  public init(_ input: Hct) {
     self.input = input
   }
 
@@ -50,7 +50,7 @@ class TemperatureCache {
   ///
   /// [count] The number of colors to return, includes the input color.
   /// [divisions] The number of divisions on the color wheel.
-  func analogous(count: Int = 5, divisions: Int = 12) -> [Hct] {
+  public func analogous(count: Int = 5, divisions: Int = 12) -> [Hct] {
     let startHue = Int(round(input.hue))
     let startHct = hctsByHue[startHue]
     var lastTemp = relativeTemperature(startHct)
@@ -140,7 +140,7 @@ class TemperatureCache {
   /// In art, this is usually described as being across the color wheel.
   /// History of this shows intent as a color that is just as cool-warm as the
   /// input color is warm-cool.
-  var complement: Hct {
+  public var complement: Hct {
     if _complement != nil {
       return _complement!
     }
@@ -182,7 +182,7 @@ class TemperatureCache {
 
   /// Temperature relative to all colors with the same chroma and tone.
   /// Value on a scale from 0 to 1.
-  func relativeTemperature(_ hct: Hct) -> Double {
+  public func relativeTemperature(_ hct: Hct) -> Double {
     let range = tempsByHct[warmest]! - tempsByHct[coldest]!
     let differenceFromColdest = tempsByHct[hct]! - tempsByHct[coldest]!
 
@@ -195,7 +195,7 @@ class TemperatureCache {
   }
 
   /// Relative temperature of the input color. See [relativeTemperature].
-  var inputRelativeTemperature: Double {
+  public var inputRelativeTemperature: Double {
     if _inputRelativeTemperature >= 0 {
       return _inputRelativeTemperature
     }
@@ -212,7 +212,7 @@ class TemperatureCache {
 
   /// HCTs for all hues, with the same chroma/tone as the input.
   /// Sorted from coldest first to warmest last.
-  var hctsByTemp: [Hct] {
+  public var hctsByTemp: [Hct] {
     if !_hctsByTemp.isEmpty {
       return _hctsByTemp
     }
@@ -231,7 +231,7 @@ class TemperatureCache {
   }
 
   /// A Map with keys of HCTs in [hctsByTemp], values of raw temperature.
-  var tempsByHct: [Hct: Double] {
+  public var tempsByHct: [Hct: Double] {
     if !_tempsByHct.isEmpty {
       return _tempsByHct
     }
@@ -248,7 +248,7 @@ class TemperatureCache {
 
   /// HCTs for all hues, with the same chroma/tone as the input.
   /// Sorted ascending, hue 0 to 360.
-  var hctsByHue: [Hct] {
+  public var hctsByHue: [Hct] {
     if !_hctsByHue.isEmpty {
       return _hctsByHue
     }
@@ -262,7 +262,7 @@ class TemperatureCache {
   }
 
   /// Determines if an angle is between two other angles, rotating clockwise.
-  static func isBetween(angle: Double, a: Double, b: Double) -> Bool {
+  public static func isBetween(angle: Double, a: Double, b: Double) -> Bool {
     if a < b {
       return a <= angle && angle <= b
     } else {
@@ -287,7 +287,7 @@ class TemperatureCache {
   ///   Assuming max of 130 chroma, -9.66.
   /// - Upper bound: -0.52 + (chroma ^ 1.07 / 20). L*a*b* chroma is infinite.
   ///   Assuming max of 130 chroma, 8.61.
-  static func rawTemperature(_ color: Hct) -> Double {
+  public static func rawTemperature(_ color: Hct) -> Double {
     let lab = ColorUtils.labFromArgb(color.toInt())
     let hue = MathUtils.sanitizeDegreesDouble(
       atan2(lab[2], lab[1]) * 180.0 / Double.pi)

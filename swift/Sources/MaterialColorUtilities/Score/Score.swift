@@ -30,7 +30,7 @@ private struct ScoredHCT {
 /// Enables use of a high cluster count for image quantization, thus ensuring
 /// colors aren't muddied, while curating the high cluster count to a much
 ///  smaller number of appropriate choices.
-enum Score {
+public enum Score {
   static private let targetChroma: Double = 48.0  // A1 Chroma
   static private let weightProportion: Double = 0.7
   static private let weightChromaAbove: Double = 0.3
@@ -55,7 +55,7 @@ enum Score {
   ///   a theme, a default fallback color will be provided, Google Blue. The
   ///   default number of colors returned is 4, simply because thats the # of
   ///   colors display in Android 12's wallpaper picker.
-  static func score(
+  public static func score(
     _ colorsToPopulation: [Int: Int], desired: Int = 4, fallbackColorARGB: Int = 0xff42_85F4,
     filter: Bool = true
   )

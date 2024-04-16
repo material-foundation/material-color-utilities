@@ -14,7 +14,7 @@
 
 import Foundation
 
-typealias DynamicSchemeValue<T> = (DynamicScheme) -> T
+public typealias DynamicSchemeValue<T> = (DynamicScheme) -> T
 
 /// A color that adjusts itself based on UI state provided by `DynamicScheme`.
 ///
@@ -82,7 +82,7 @@ public class DynamicColor {
   /// don't want to have a formal relationship or a principled value for their
   /// tone distance based on common contrast / tone delta values, yet, want
   /// tone distance.
-  init(
+  public init(
     name: String,
     palette: @escaping DynamicSchemeValue<TonalPalette>,
     tone: @escaping DynamicSchemeValue<Double>,
@@ -133,7 +133,7 @@ public class DynamicColor {
   ///   contrast level is.
   /// - Returns: a tone, T in the HCT color space, that this `DynamicColor` is under
   ///   the conditions in `scheme`.
-  func getTone(_ scheme: DynamicScheme) -> Double {
+  public func getTone(_ scheme: DynamicScheme) -> Double {
     let decreasingContrast = scheme.contrastLevel < 0
 
     // Case 1: dual foreground, pair of colors with delta constraint.
@@ -313,7 +313,7 @@ public class DynamicColor {
   ///   - ratio: The contrast ratio desired between `bgTone` and the return value.
   ///
   /// - Returns: The desired foreground tone.
-  static func foregroundTone(_ bgTone: Double, _ ratio: Double) -> Double {
+  public static func foregroundTone(_ bgTone: Double, _ ratio: Double) -> Double {
     let lighterTone = Contrast.lighterUnsafe(tone: bgTone, ratio: ratio)
     let darkerTone = Contrast.darkerUnsafe(tone: bgTone, ratio: ratio)
     let lighterRatio = Contrast.ratioOfTones(lighterTone, bgTone)
@@ -345,7 +345,7 @@ public class DynamicColor {
   /// reasonably close to supporting it.
   /// - Parameter tone: The tone to be adjusted.
   /// - Returns: The (possibly updated) tone.
-  static func enableLightForeground(_ tone: Double) -> Double {
+  public static func enableLightForeground(_ tone: Double) -> Double {
     if tonePrefersLightForeground(tone) && !toneAllowsLightForeground(tone) {
       return 49
     }
@@ -365,7 +365,7 @@ public class DynamicColor {
   ///
   /// - Parameter tone: The tone to be judged.
   /// - Returns: whether `tone` prefers a light foreground.
-  static func tonePrefersLightForeground(_ tone: Double) -> Bool {
+  public static func tonePrefersLightForeground(_ tone: Double) -> Bool {
     return round(tone) < 60
   }
 
@@ -374,7 +374,7 @@ public class DynamicColor {
   ///
   /// - Parameter tone: The tone to be judged.
   /// - Returns: whether `tone` allows a light foreground.
-  static func toneAllowsLightForeground(_ tone: Double) -> Bool {
+  public static func toneAllowsLightForeground(_ tone: Double) -> Bool {
     return round(tone) <= 49
   }
 }

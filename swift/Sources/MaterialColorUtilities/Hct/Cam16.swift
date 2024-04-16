@@ -44,13 +44,13 @@ import Foundation
 /// For example, white under the traditional assumption of a midday sun white
 /// point is accurately measured as a slightly chromatic blue by
 /// (roughly, hue 203, chroma 3, lightness 100)
-class Cam16 {
+public class Cam16 {
   /// Like red, orange, yellow, green, etc.
-  let hue: Double
+  public let hue: Double
 
   /// Informally, colorfulness / color intensity. Like saturation in HSL,
   /// except perceptually accurate.
-  let chroma: Double
+  public let chroma: Double
 
   /// Lightness
   let j: Double
@@ -65,13 +65,13 @@ class Cam16 {
   let s: Double
 
   /// CAM16-UCS J coordinate
-  let jstar: Double
+  public let jstar: Double
 
   /// CAM16-UCS a coordinate
-  let astar: Double
+  public let astar: Double
 
   /// CAM16-UCS b coordinate
-  let bstar: Double
+  public let bstar: Double
 
   /// All of the CAM16 dimensions can be calculated from 3 of the dimensions, in
   /// the following combinations:
@@ -80,7 +80,7 @@ class Cam16 {
   /// Prefer using a static method that constructs from 3 of those dimensions.
   /// This constructor is intended for those methods to use to return all
   /// possible dimensions.
-  init(
+  public init(
     _ hue: Double,
     _ chroma: Double,
     _ j: Double,
@@ -105,7 +105,7 @@ class Cam16 {
   /// CAM16 instances also have coordinates in the CAM16-UCS space, called J*,
   /// a*, b*, or jstar, astar, bstar in code. CAM16-UCS is included in the CAM16
   /// specification, and should be used when measuring distances between colors.
-  @inlinable func distance(_ other: Cam16) -> Double {
+  @inlinable public func distance(_ other: Cam16) -> Double {
     let dJ = jstar - other.jstar
     let dA = astar - other.astar
     let dB = bstar - other.bstar
@@ -116,12 +116,12 @@ class Cam16 {
 
   /// Convert [argb] to CAM16, assuming the color was viewed in default viewing
   /// conditions.
-  static func fromInt(_ argb: Int) -> Cam16 {
+  public static func fromInt(_ argb: Int) -> Cam16 {
     return fromIntInViewingConditions(argb, ViewingConditions.sRgb())
   }
 
   /// Given [viewingConditions], convert [argb] to
-  static func fromIntInViewingConditions(_ argb: Int, _ viewingConditions: ViewingConditions)
+  public static func fromIntInViewingConditions(_ argb: Int, _ viewingConditions: ViewingConditions)
     -> Cam16
   {
     // Transform ARGB int to XYZ
@@ -134,7 +134,7 @@ class Cam16 {
 
   /// Given color expressed in XYZ and viewed in [viewingConditions], convert to
   ///
-  static func fromXyzInViewingConditions(
+  public static func fromXyzInViewingConditions(
     _ x: Double, _ y: Double, _ z: Double, _ viewingConditions: ViewingConditions
   ) -> Cam16 {
     // Transform XYZ to 'cone'/'rgb' responses
@@ -208,13 +208,13 @@ class Cam16 {
 
   /// Create a CAM16 color from lightness [j], chroma [c], and hue [h],
   /// assuming the color was viewed in default viewing conditions.
-  static func fromJch(_ j: Double, _ c: Double, _ h: Double) -> Cam16 {
+  public static func fromJch(_ j: Double, _ c: Double, _ h: Double) -> Cam16 {
     return fromJchInViewingConditions(j, c, h, ViewingConditions.sRgb())
   }
 
   /// Create a CAM16 color from lightness [j], chroma [c], and hue [h],
   /// in [viewingConditions].
-  static func fromJchInViewingConditions(
+  public static func fromJchInViewingConditions(
     _ J: Double, _ C: Double, _ h: Double, _ viewingConditions: ViewingConditions
   ) -> Cam16 {
     let Q =
@@ -234,13 +234,13 @@ class Cam16 {
 
   /// Create a CAM16 color from CAM16-UCS coordinates [jstar], [astar], [bstar].
   /// assuming the color was viewed in default viewing conditions.
-  static func fromUcs(_ jstar: Double, _ astar: Double, _ bstar: Double) -> Cam16 {
+  public static func fromUcs(_ jstar: Double, _ astar: Double, _ bstar: Double) -> Cam16 {
     return fromUcsInViewingConditions(jstar, astar, bstar, ViewingConditions.standard())
   }
 
   /// Create a CAM16 color from CAM16-UCS coordinates [jstar], [astar], [bstar].
   /// in [viewingConditions].
-  static func fromUcsInViewingConditions(
+  public static func fromUcsInViewingConditions(
     _ jstar: Double, _ astar: Double, _ bstar: Double, _ viewingConditions: ViewingConditions
   ) -> Cam16 {
     let a = astar
@@ -259,7 +259,7 @@ class Cam16 {
 
   /// ARGB representation of color, assuming the color was viewed in default
   /// viewing conditions.
-  func toInt() -> Int {
+  public func toInt() -> Int {
     return viewed(ViewingConditions.sRgb())
   }
 
@@ -268,14 +268,14 @@ class Cam16 {
 
   /// ARGB representation of a color, given the color was viewed in
   /// [viewingConditions]
-  func viewed(_ viewingConditions: ViewingConditions) -> Int {
+  public func viewed(_ viewingConditions: ViewingConditions) -> Int {
     let xyz = xyzInViewingConditions(viewingConditions, array: viewedArray)
     let argb = ColorUtils.argbFromXyz(xyz[0], xyz[1], xyz[2])
     return argb
   }
 
   /// XYZ representation of CAM16 seen in [viewingConditions].
-  func xyzInViewingConditions(_ viewingConditions: ViewingConditions, array: [Double]? = nil)
+  public func xyzInViewingConditions(_ viewingConditions: ViewingConditions, array: [Double]? = nil)
     -> [Double]
   {
     let alpha =

@@ -14,9 +14,9 @@
 
 import Foundation
 
-class StringUtils {
+public class StringUtils {
   /// Convert from a hex color to a argb color
-  @inlinable static func hexFromArgb(_ argb: Int, leadingHashSign: Bool = true) -> String {
+  @inlinable public static func hexFromArgb(_ argb: Int, leadingHashSign: Bool = true) -> String {
     let red = ColorUtils.redFromArgb(argb)
     let green = ColorUtils.greenFromArgb(argb)
     let blue = ColorUtils.blueFromArgb(argb)
@@ -24,7 +24,7 @@ class StringUtils {
   }
 
   /// Convert a string containing a hex color to a argb color
-  @inlinable static func argbFromHex(_ hex: String) -> Int? {
+  @inlinable public static func argbFromHex(_ hex: String) -> Int? {
     if hex.hasPrefix("#") {
       return Int(hex.dropFirst(), radix: 16)
     } else {
@@ -32,7 +32,7 @@ class StringUtils {
     }
   }
 
-  static private func hex(_ value: Int) -> String {
+  static public func hex(_ value: Int) -> String {
     return String(format: "%02X", value)
   }
 }
