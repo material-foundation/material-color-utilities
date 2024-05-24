@@ -39,6 +39,42 @@ final class TonalPalettesTests: XCTestCase {
     XCTAssertEqual(tones.tone(3), 0xff00_003c)
   }
 
+  func testKeyColor_exactChromaAvailable() {
+    // Requested chroma is exactly achievable at a certain tone.
+    let palette = TonalPalette(hue: 50.0, chroma: 60.0)
+    let result = palette.keyColor
+
+    XCTAssertEqual(result.hue, 50.0, accuracy: 10.0)
+    XCTAssertEqual(result.chroma, 60.0, accuracy: 0.5)
+    // Tone might vary, but should be within the range from 0 to 100.
+    XCTAssertTrue(result.tone > 0 && result.tone < 100)
+  }
+
+  func testKeyColor_unusuallyHighChroma() {
+    // Requested chroma is above what is achievable. For Hue 149, chroma peak is 89.6 at Tone 87.9.
+    // The result key color's chroma should be close to the chroma peak.
+    let palette = TonalPalette(hue: 149.0, chroma: 200.0)
+    let result = palette.keyColor
+
+    XCTAssertEqual(result.hue, 149.0, accuracy: 10.0)
+    XCTAssertGreaterThan(result.chroma, 89.0)
+    // Tone might vary, but should be within the range from 0 to 100.
+    XCTAssertTrue(result.tone > 0 && result.tone < 100)
+  }
+
+  func testKeyColor_unusuallyLowChroma() {
+    // By definition, the key color should be the first tone, starting from Tone 50, matching the
+    // given hue and chroma. When requesting a very low chroma, the result should be close to Tone
+    // 50, since most tones can produce a low chroma.
+    let palette = TonalPalette(hue: 50.0, chroma: 3.0)
+    let result = palette.keyColor
+
+    // Higher error tolerance for hue when the requested chroma is unusually low.
+    XCTAssertEqual(result.hue, 50.0, accuracy: 10.0)
+    XCTAssertEqual(result.chroma, 3.0, accuracy: 0.5)
+    XCTAssertEqual(result.tone, 50.0, accuracy: 0.5)
+  }
+
   func testOfOperatorAndHash() {
     let hctAB = Hct.fromInt(0xff00_00ff)
     let tonesA = TonalPalette.of(hctAB.hue, hctAB.chroma)

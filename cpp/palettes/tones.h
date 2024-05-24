@@ -17,6 +17,8 @@
 #ifndef CPP_PALETTES_TONES_H_
 #define CPP_PALETTES_TONES_H_
 
+#include <unordered_map>
+
 #include "cpp/cam/hct.h"
 #include "cpp/utils/utils.h"
 
@@ -45,8 +47,31 @@ class TonalPalette {
   double hue_;
   double chroma_;
   Hct key_color_;
+};
 
-  Hct createKeyColor(double hue, double chroma);
+/**
+ * Key color is a color that represents the hue and chroma of a tonal palette
+ */
+class KeyColor {
+ public:
+  KeyColor(double hue, double requested_chroma);
+  /**
+   * Creates a key color from a [hue] and a [chroma].
+   * The key color is the first tone, starting from T50, matching the given hue
+   * and chroma.
+   *
+   * @return Key color in Hct.
+   */
+  Hct create();
+
+ private:
+  const double max_chroma_value_ = 200.0;
+  double hue_;
+  double requested_chroma_;
+  // Cache that maps tone to max chroma to avoid duplicated HCT calculation.
+  std::unordered_map<double, double> chroma_cache_;
+
+  double max_chroma(double tone);
 };
 
 }  // namespace material_color_utilities

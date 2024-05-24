@@ -1,3 +1,7 @@
+## 0.11.2 - 2024-04-30
+### Changed
+- Updated `TonalPalette` to use new key color algorithm.
+
 ## 0.11.1 - 2024-03-11
 ### Fixed
 - Fixed Apache license

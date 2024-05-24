@@ -27,7 +27,7 @@ TonalPalette::TonalPalette(Argb argb) : key_color_(0.0, 0.0, 0.0) {
   Cam cam = CamFromInt(argb);
   hue_ = cam.hue;
   chroma_ = cam.chroma;
-  key_color_ = createKeyColor(cam.hue, cam.chroma);
+  key_color_ = KeyColor(cam.hue, cam.chroma).create();
 }
 
 TonalPalette::TonalPalette(Hct hct)
@@ -40,7 +40,7 @@ TonalPalette::TonalPalette(double hue, double chroma)
     : key_color_(hue, chroma, 0.0) {
   hue_ = hue;
   chroma_ = chroma;
-  key_color_ = createKeyColor(hue, chroma);
+  key_color_ = KeyColor(hue, chroma).create();
 }
 
 TonalPalette::TonalPalette(double hue, double chroma, Hct key_color)
@@ -54,38 +54,63 @@ Argb TonalPalette::get(double tone) const {
   return IntFromHcl(hue_, chroma_, tone);
 }
 
-Hct TonalPalette::createKeyColor(double hue, double chroma) {
-  double start_tone = 50.0;
-  Hct smallest_delta_hct(hue, chroma, start_tone);
-  double smallest_delta = abs(smallest_delta_hct.get_chroma() - chroma);
-  // Starting from T50, check T+/-delta to see if they match the requested
-  // chroma.
-  //
-  // Starts from T50 because T50 has the most chroma available, on
-  // average. Thus it is most likely to have a direct answer and minimize
-  // iteration.
-  for (double delta = 1.0; delta < 50.0; delta += 1.0) {
-    // Termination condition rounding instead of minimizing delta to avoid
-    // case where requested chroma is 16.51, and the closest chroma is 16.49.
-    // Error is minimized, but when rounded and displayed, requested chroma
-    // is 17, key color's chroma is 16.
-    if (round(chroma) == round(smallest_delta_hct.get_chroma())) {
-      return smallest_delta_hct;
-    }
-    Hct hct_add(hue, chroma, start_tone + delta);
-    double hct_add_delta = abs(hct_add.get_chroma() - chroma);
-    if (hct_add_delta < smallest_delta) {
-      smallest_delta = hct_add_delta;
-      smallest_delta_hct = hct_add;
-    }
-    Hct hct_subtract(hue, chroma, start_tone - delta);
-    double hct_subtract_delta = abs(hct_subtract.get_chroma() - chroma);
-    if (hct_subtract_delta < smallest_delta) {
-      smallest_delta = hct_subtract_delta;
-      smallest_delta_hct = hct_subtract;
+KeyColor::KeyColor(double hue, double requested_chroma)
+    : hue_(hue), requested_chroma_(requested_chroma) {}
+
+Hct KeyColor::create() {
+  // Pivot around T50 because T50 has the most chroma available, on
+  // average. Thus it is most likely to have a direct answer.
+  const int pivot_tone = 50;
+  const int tone_step_size = 1;
+  // Epsilon to accept values slightly higher than the requested chroma.
+  const double epsilon = 0.01;
+
+  // Binary search to find the tone that can provide a chroma that is closest
+  // to the requested chroma.
+  int lower_tone = 0;
+  int upper_tone = 100;
+  while (lower_tone < upper_tone) {
+    const int mid_tone = (lower_tone + upper_tone) / 2;
+    bool is_ascending =
+        max_chroma(mid_tone) < max_chroma(mid_tone + tone_step_size);
+    bool sufficient_chroma =
+        max_chroma(mid_tone) >= requested_chroma_ - epsilon;
+
+    if (sufficient_chroma) {
+      // Either range [lower_tone, mid_tone] or [mid_tone, upper_tone] has
+      // the answer, so search in the range that is closer the pivot tone.
+      if (abs(lower_tone - pivot_tone) < abs(upper_tone - pivot_tone)) {
+        upper_tone = mid_tone;
+      } else {
+        if (lower_tone == mid_tone) {
+          return Hct(hue_, requested_chroma_, lower_tone);
+        }
+        lower_tone = mid_tone;
+      }
+    } else {
+      // As there's no sufficient chroma in the mid_tone, follow the direction
+      // to the chroma peak.
+      if (is_ascending) {
+        lower_tone = mid_tone + tone_step_size;
+      } else {
+        // Keep mid_tone for potential chroma peak.
+        upper_tone = mid_tone;
+      }
     }
   }
-  return smallest_delta_hct;
+
+  return Hct(hue_, requested_chroma_, lower_tone);
 }
+
+double KeyColor::max_chroma(double tone) {
+  auto it = chroma_cache_.find(tone);
+  if (it != chroma_cache_.end()) {
+    return it->second;
+  }
+
+  double chroma = Hct(hue_, max_chroma_value_, tone).get_chroma();
+  chroma_cache_[tone] = chroma;
+  return chroma;
+};
 
 }  // namespace material_color_utilities

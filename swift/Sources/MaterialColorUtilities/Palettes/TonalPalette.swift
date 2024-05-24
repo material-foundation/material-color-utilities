@@ -80,7 +80,7 @@ public class TonalPalette: Equatable, Hashable {
     self.init(
       hue: hue,
       chroma: chroma,
-      keyColor: TonalPalette.createKeyColor(hue, chroma),
+      keyColor: KeyColor(hue: hue, requestedChroma: chroma).create(),
       cache: [:]
     )
   }
@@ -100,47 +100,7 @@ public class TonalPalette: Equatable, Hashable {
     return TonalPalette(hue: hue, chroma: chroma)
   }
 
-  /// Creates a key color from a [hue] and a [chroma].
-  /// The key color is the first tone, starting from T50, matching the given hue and chroma.
-  /// Key color [Hct]
-  static func createKeyColor(_ hue: Double, _ chroma: Double) -> Hct {
-    let startTone: Double = 50.0
-    var smallestDeltaHct = Hct.from(hue, chroma, startTone)
-    var smallestDelta: Double = abs(smallestDeltaHct.chroma - chroma)
-    // Starting from T50, check T+/-delta to see if they match the requested
-    // chroma.
-    //
-    // Starts from T50 because T50 has the most chroma available, on
-    // average. Thus it is most likely to have a direct answer and minimize
-    // iteration.
-    for delta in (1...49) {
-      // Termination condition rounding instead of minimizing delta to avoid
-      // case where requested chroma is 16.51, and the closest chroma is 16.49.
-      // Error is minimized, but when rounded and displayed, requested chroma
-      // is 17, key color's chroma is 16.
-      if round(chroma) == round(smallestDeltaHct.chroma) {
-        return smallestDeltaHct
-      }
-
-      let hctAdd = Hct.from(hue, chroma, startTone + Double(delta))
-      let hctAddDelta: Double = abs(hctAdd.chroma - chroma)
-      if hctAddDelta < smallestDelta {
-        smallestDelta = hctAddDelta
-        smallestDeltaHct = hctAdd
-      }
-
-      let hctSubtract = Hct.from(hue, chroma, startTone - Double(delta))
-      let hctSubtractDelta: Double = abs(hctSubtract.chroma - chroma)
-      if hctSubtractDelta < smallestDelta {
-        smallestDelta = hctSubtractDelta
-        smallestDeltaHct = hctSubtract
-      }
-    }
-
-    return smallestDeltaHct
-  }
-
-  /// Returns the ARGB representation of an HCT color.
+  /// Returns the ARGB representation of an Hct color.
   ///
   /// If the class was instantiated from [_hue] and [_chroma], will return the
   /// color with corresponding [tone].
@@ -172,5 +132,76 @@ public class TonalPalette: Equatable, Hashable {
 
   public var description: String {
     return "TonalPalette.of(\(hue), \(chroma))"
+  }
+}
+
+/// Key color is a color that represents the hue and chroma of a tonal palette.
+private class KeyColor {
+  let hue: Double
+  let requestedChroma: Double
+
+  /// Cache that maps (hue, tone) to max chroma to avoid duplicated Hct calculation.
+  private var chromaCache: [Int: Double] = [:]
+  private let maxChromaValue = 200.0
+
+  init(hue: Double, requestedChroma: Double) {
+    self.hue = hue
+    self.requestedChroma = requestedChroma
+  }
+
+  /// Creates a key color from a [hue] and a [chroma].
+  /// The key color is the first tone, starting from T50, matching the given hue and chroma.
+  /// Key color [Hct]
+  func create() -> Hct {
+    /// Pivot around T50 because T50 has the most chroma available, on average. Thus it is most
+    /// likely to have a direct answer.
+    let pivotTone = 50
+    let toneStepSize = 1
+    /// Epsilon to accept values slightly higher than the requested chroma.
+    let epsilon = 0.01
+
+    /// Binary search to find the tone that can provide a chroma that is closest
+    /// to the requested chroma.
+    var lowerTone = 0
+    var upperTone = 100
+
+    while lowerTone < upperTone {
+      let midTone = (lowerTone + upperTone) / 2
+      let isAscending =
+        maxChroma(tone: midTone) < maxChroma(tone: midTone + toneStepSize)
+      let sufficientChroma = maxChroma(tone: midTone) >= requestedChroma - epsilon
+
+      if sufficientChroma {
+        /// Either range [lowerTone, midTone] or [midTone, upperTone] has answer, so search in the
+        /// range that is closer the pivot tone.
+        if abs(lowerTone - pivotTone) < abs(upperTone - pivotTone) {
+          upperTone = midTone
+        } else {
+          if lowerTone == midTone {
+            return Hct.from(hue, requestedChroma, Double(lowerTone))
+          }
+          lowerTone = midTone
+        }
+      } else if isAscending {
+        /// As there is no sufficient chroma in the midTone, follow the direction to the chroma
+        /// peak.
+        lowerTone = midTone + toneStepSize
+      } else {
+        /// Keep midTone for potential chroma peak.
+        upperTone = midTone
+      }
+    }
+
+    return Hct.from(hue, requestedChroma, Double(lowerTone))
+  }
+
+  /// Find the maximum chroma for a given tone
+  private func maxChroma(tone: Int) -> Double {
+    return chromaCache[tone]
+      ?? {
+        let chroma = Hct.from(self.hue, self.maxChromaValue, Double(tone)).chroma
+        chromaCache[tone] = chroma
+        return chroma
+      }()
   }
 }

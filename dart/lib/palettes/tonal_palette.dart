@@ -63,12 +63,12 @@ class TonalPalette {
 
   TonalPalette._fromHueAndChroma(this.hue, this.chroma)
       : _cache = {},
-        keyColor = createKeyColor(hue, chroma),
+        keyColor = KeyColor(hue, chroma).create(),
         _isFromCache = false;
 
   TonalPalette._fromCache(Map<int, int> cache, this.hue, this.chroma)
       : _cache = cache,
-        keyColor = createKeyColor(hue, chroma),
+        keyColor = KeyColor(hue, chroma).create(),
         _isFromCache = true;
 
   /// Create colors using [hue] and [chroma].
@@ -111,46 +111,6 @@ class TonalPalette {
     }
 
     return TonalPalette._fromCache(cache, bestHue, bestChroma);
-  }
-
-  /// Creates a key color from a [hue] and a [chroma].
-  /// The key color is the first tone, starting from T50, matching the given hue and chroma.
-  /// Key color [Hct]
-  static Hct createKeyColor(double hue, double chroma) {
-    double startTone = 50.0;
-    Hct smallestDeltaHct = Hct.from(hue, chroma, startTone);
-    double smallestDelta = (smallestDeltaHct.chroma - chroma).abs();
-    // Starting from T50, check T+/-delta to see if they match the requested
-    // chroma.
-    //
-    // Starts from T50 because T50 has the most chroma available, on
-    // average. Thus it is most likely to have a direct answer and minimize
-    // iteration.
-    for (double delta = 1.0; delta < 50.0; delta += 1.0) {
-      // Termination condition rounding instead of minimizing delta to avoid
-      // case where requested chroma is 16.51, and the closest chroma is 16.49.
-      // Error is minimized, but when rounded and displayed, requested chroma
-      // is 17, key color's chroma is 16.
-      if (chroma.round() == smallestDeltaHct.chroma.round()) {
-        return smallestDeltaHct;
-      }
-
-      final Hct hctAdd = Hct.from(hue, chroma, startTone + delta);
-      final double hctAddDelta = (hctAdd.chroma - chroma).abs();
-      if (hctAddDelta < smallestDelta) {
-        smallestDelta = hctAddDelta;
-        smallestDeltaHct = hctAdd;
-      }
-
-      final Hct hctSubtract = Hct.from(hue, chroma, startTone - delta);
-      final double hctSubtractDelta = (hctSubtract.chroma - chroma).abs();
-      if (hctSubtractDelta < smallestDelta) {
-        smallestDelta = hctSubtractDelta;
-        smallestDeltaHct = hctSubtract;
-      }
-    }
-
-    return smallestDeltaHct;
   }
 
   /// Returns a fixed-size list of ARGB color ints for common tone values.
@@ -220,5 +180,75 @@ class TonalPalette {
     } else {
       return 'TonalPalette.fromList($asList)';
     }
+  }
+}
+
+/// Key color is a color that represents the hue and chroma of a tonal palette.
+class KeyColor {
+  final double hue;
+  final double requestedChroma;
+
+  /// Cache that maps (hue, tone) to max chroma to avoid duplicated HCT
+  /// calculation.
+  final Map<int, double> _chromaCache = {};
+  final double _maxChromaValue = 200.0;
+
+  KeyColor(this.hue, this.requestedChroma);
+
+  /// Creates a key color from a [hue] and a [chroma].
+  /// The key color is the first tone, starting from T50, matching the given hue
+  /// and chroma.
+  ///
+  /// @return Key color [Hct]
+  Hct create() {
+    // Pivot around T50 because T50 has the most chroma available, on
+    // average. Thus it is most likely to have a direct answer.
+    const int pivotTone = 50;
+    const int toneStepSize = 1;
+    // Epsilon to accept values slightly higher than the requested chroma.
+    const double epsilon = 0.01;
+
+    // Binary search to find the tone that can provide a chroma that is closest
+    // to the requested chroma.
+    int lowerTone = 0;
+    int upperTone = 100;
+    while (lowerTone < upperTone) {
+      final int midTone = (lowerTone + upperTone) ~/ 2;
+      final bool isAscending =
+          _maxChroma(midTone) < _maxChroma(midTone + toneStepSize);
+      final bool sufficientChroma =
+          _maxChroma(midTone) >= requestedChroma - epsilon;
+
+      if (sufficientChroma) {
+        // Either range [lowerTone, midTone] or [midTone, upperTone] has
+        // the answer, so search in the range that is closer the pivot tone.
+        if ((lowerTone - pivotTone).abs() < (upperTone - pivotTone).abs()) {
+          upperTone = midTone;
+        } else {
+          if (lowerTone == midTone) {
+            return Hct.from(hue, requestedChroma, lowerTone.toDouble());
+          }
+          lowerTone = midTone;
+        }
+      } else {
+        // As there is no sufficient chroma in the midTone, follow the direction
+        // to the chroma peak.
+        if (isAscending) {
+          lowerTone = midTone + toneStepSize;
+        } else {
+          // Keep midTone for potential chroma peak.
+          upperTone = midTone;
+        }
+      }
+    }
+
+    return Hct.from(hue, requestedChroma, lowerTone.toDouble());
+  }
+
+  // Find the maximum chroma for a given tone
+  double _maxChroma(int tone) {
+    return _chromaCache.putIfAbsent(tone, () {
+      return Hct.from(hue, _maxChromaValue, tone.toDouble()).chroma;
+    });
   }
 }

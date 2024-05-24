@@ -316,4 +316,44 @@ void main() {
       expect(core.secondary.get(0), 0xff000000);
     });
   });
+
+  group('KeyColor', () {
+    test('exact chroma is available', () {
+      // Requested chroma is exactly achievable at a certain tone.
+      final palette = TonalPalette.of(50.0, 60.0);
+      final result = palette.keyColor;
+
+      expect(result.hue, closeTo(50.0, 10.0));
+      expect(result.chroma, closeTo(60.0, 0.5));
+      // Tone might vary, but should be within the range from 0 to 100.
+      expect(result.tone, greaterThan(0));
+      expect(result.tone, lessThan(100));
+    });
+
+    test('requesting unusually high chroma', () {
+      // Requested chroma is above what is achievable. For Hue 149, chroma peak is 89.6 at Tone 87.9.
+      // The result key color's chroma should be close to the chroma peak.
+      final palette = TonalPalette.of(149.0, 200.0);
+      final result = palette.keyColor;
+
+      expect(result.hue, closeTo(149.0, 10.0));
+      expect(result.chroma, greaterThan(89.0));
+      // Tone might vary, but should be within the range from 0 to 100.
+      expect(result.tone, greaterThan(0));
+      expect(result.tone, lessThan(100));
+    });
+
+    test('requesting unusually low chroma', () {
+      // By definition, the key color should be the first tone, starting from Tone 50, matching the
+      // given hue and chroma. When requesting a very low chroma, the result should be close to Tone
+      // 50, since most tones can produce a low chroma.
+      final palette = TonalPalette.of(50.0, 3.0);
+      final result = palette.keyColor;
+
+      // Higher error tolerance for hue when the requested chroma is unusually low.
+      expect(result.hue, closeTo(50.0, 10.0));
+      expect(result.chroma, closeTo(3.0, 0.5));
+      expect(result.tone, closeTo(50.0, 0.5));
+    });
+  });
 }
