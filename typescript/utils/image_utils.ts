@@ -35,7 +35,7 @@ export async function sourceColorFromImage(image: HTMLImageElement) {
       reject(new Error('Could not get canvas context'));
       return;
     }
-    const callback = () => {
+    const loadCallback = () => {
       canvas.width = image.width;
       canvas.height = image.height;
       context.drawImage(image, 0, 0);
@@ -50,10 +50,14 @@ export async function sourceColorFromImage(image: HTMLImageElement) {
       const [sx, sy, sw, sh] = rect;
       resolve(context.getImageData(sx, sy, sw, sh).data);
     };
+    const errorCallback = () => {
+      reject(new Error('Image load failed'));
+    };
     if (image.complete) {
-      callback();
+      loadCallback();
     } else {
-      image.onload = callback;
+      image.onload = loadCallback;
+      image.onerror = errorCallback;
     }
   });
 
