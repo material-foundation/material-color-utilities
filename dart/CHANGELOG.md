@@ -1,3 +1,7 @@
+## 0.12.0 - 2024-06-06
+### Changed
+- Updated `MaterialDynamicColors` to use the expressive on-colors spec.
+
 ## 0.11.2 - 2024-04-30
 ### Changed
 - Updated `TonalPalette` to use new key color algorithm.

@@ -434,12 +434,12 @@ public final class MaterialDynamicColors {
           if (isMonochrome(s)) {
             return s.isDark ? 0.0 : 100.0;
           }
-          return s.isDark ? 90.0 : 10.0;
+          return s.isDark ? 90.0 : 30.0;
         },
         /* isBackground= */ false,
         /* background= */ (s) -> primaryContainer(),
         /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(4.5, 7.0, 11.0, 21.0),
+        /* contrastCurve= */ new ContrastCurve(3.0, 4.5, 7.0, 11.0),
         /* toneDeltaPair= */ null);
   }
 
@@ -519,15 +519,18 @@ public final class MaterialDynamicColors {
         /* name= */ "on_secondary_container",
         /* palette= */ (s) -> s.secondaryPalette,
         /* tone= */ (s) -> {
-          if (!isFidelity(s)) {
+          if (isMonochrome(s)) {
             return s.isDark ? 90.0 : 10.0;
+          }
+          if (!isFidelity(s)) {
+            return s.isDark ? 90.0 : 30.0;
           }
           return DynamicColor.foregroundTone(secondaryContainer().tone.apply(s), 4.5);
         },
         /* isBackground= */ false,
         /* background= */ (s) -> secondaryContainer(),
         /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(4.5, 7.0, 11.0, 21.0),
+        /* contrastCurve= */ new ContrastCurve(3.0, 4.5, 7.0, 11.0),
         /* toneDeltaPair= */ null);
   }
 
@@ -601,14 +604,14 @@ public final class MaterialDynamicColors {
             return s.isDark ? 0.0 : 100.0;
           }
           if (!isFidelity(s)) {
-            return s.isDark ? 90.0 : 10.0;
+            return s.isDark ? 90.0 : 30.0;
           }
           return DynamicColor.foregroundTone(tertiaryContainer().tone.apply(s), 4.5);
         },
         /* isBackground= */ false,
         /* background= */ (s) -> tertiaryContainer(),
         /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(4.5, 7.0, 11.0, 21.0),
+        /* contrastCurve= */ new ContrastCurve(3.0, 4.5, 7.0, 11.0),
         /* toneDeltaPair= */ null);
   }
 
@@ -658,11 +661,16 @@ public final class MaterialDynamicColors {
     return new DynamicColor(
         /* name= */ "on_error_container",
         /* palette= */ (s) -> s.errorPalette,
-        /* tone= */ (s) -> s.isDark ? 90.0 : 10.0,
+        /* tone= */ (s) -> {
+          if (isMonochrome(s)) {
+            return s.isDark ? 90.0 : 10.0;
+          }
+          return s.isDark ? 90.0 : 30.0;
+        },
         /* isBackground= */ false,
         /* background= */ (s) -> errorContainer(),
         /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(4.5, 7.0, 11.0, 21.0),
+        /* contrastCurve= */ new ContrastCurve(3.0, 4.5, 7.0, 11.0),
         /* toneDeltaPair= */ null);
   }
 

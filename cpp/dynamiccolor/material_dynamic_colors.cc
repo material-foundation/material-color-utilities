@@ -593,7 +593,8 @@ DynamicColor MaterialDynamicColors::PrimaryContainer() {
 
 DynamicColor MaterialDynamicColors::OnPrimaryContainer() {
   return DynamicColor(
-      /* name= */ "on_primary_container",
+      /* name= */
+      "on_primary_container",
       /* palette= */
       [](const DynamicScheme& s) -> TonalPalette { return s.primary_palette; },
       /* tone= */
@@ -604,13 +605,13 @@ DynamicColor MaterialDynamicColors::OnPrimaryContainer() {
         if (IsMonochrome(s)) {
           return s.is_dark ? 0.0 : 100.0;
         }
-        return s.is_dark ? 90.0 : 10.0;
+        return s.is_dark ? 90.0 : 30.0;
       },
       /* isBackground= */ false,
       /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return PrimaryContainer(); },
       /* secondBackground= */ nullopt,
-      /* contrastCurve= */ ContrastCurve(4.5, 7.0, 11.0, 21.0),
+      /* contrastCurve= */ ContrastCurve(3.0, 4.5, 7.0, 11.0),
       /* toneDeltaPair= */ nullopt);
 }
 
@@ -707,15 +708,19 @@ DynamicColor MaterialDynamicColors::SecondaryContainer() {
 
 DynamicColor MaterialDynamicColors::OnSecondaryContainer() {
   return DynamicColor(
-      /* name= */ "on_secondary_container",
+      /* name= */
+      "on_secondary_container",
       /* palette= */
       [](const DynamicScheme& s) -> TonalPalette {
         return s.secondary_palette;
       },
       /* tone= */
       [](const DynamicScheme& s) -> double {
-        if (!IsFidelity(s)) {
+        if (IsMonochrome(s)) {
           return s.is_dark ? 90.0 : 10.0;
+        }
+        if (!IsFidelity(s)) {
+          return s.is_dark ? 90.0 : 30.0;
         }
         return ForegroundTone(SecondaryContainer().tone_(s), 4.5);
       },
@@ -725,7 +730,7 @@ DynamicColor MaterialDynamicColors::OnSecondaryContainer() {
         return SecondaryContainer();
       },
       /* secondBackground= */ nullopt,
-      /* contrastCurve= */ ContrastCurve(4.5, 7.0, 11.0, 21.0),
+      /* contrastCurve= */ ContrastCurve(3.0, 4.5, 7.0, 11.0),
       /* toneDeltaPair= */ nullopt);
 }
 
@@ -804,7 +809,8 @@ DynamicColor MaterialDynamicColors::TertiaryContainer() {
 
 DynamicColor MaterialDynamicColors::OnTertiaryContainer() {
   return DynamicColor(
-      /* name= */ "on_tertiary_container",
+      /* name= */
+      "on_tertiary_container",
       /* palette= */
       [](const DynamicScheme& s) -> TonalPalette { return s.tertiary_palette; },
       /* tone= */
@@ -813,7 +819,7 @@ DynamicColor MaterialDynamicColors::OnTertiaryContainer() {
           return s.is_dark ? 0.0 : 100.0;
         }
         if (!IsFidelity(s)) {
-          return s.is_dark ? 90.0 : 10.0;
+          return s.is_dark ? 90.0 : 30.0;
         }
         return ForegroundTone(TertiaryContainer().tone_(s), 4.5);
       },
@@ -823,7 +829,7 @@ DynamicColor MaterialDynamicColors::OnTertiaryContainer() {
         return TertiaryContainer();
       },
       /* secondBackground= */ nullopt,
-      /* contrastCurve= */ ContrastCurve(4.5, 7.0, 11.0, 21.0),
+      /* contrastCurve= */ ContrastCurve(3.0, 4.5, 7.0, 11.0),
       /* toneDeltaPair= */ nullopt);
 }
 
@@ -882,16 +888,22 @@ DynamicColor MaterialDynamicColors::ErrorContainer() {
 
 DynamicColor MaterialDynamicColors::OnErrorContainer() {
   return DynamicColor(
-      /* name= */ "on_error_container",
+      /* name= */
+      "on_error_container",
       /* palette= */
       [](const DynamicScheme& s) -> TonalPalette { return s.error_palette; },
       /* tone= */
-      [](const DynamicScheme& s) -> double { return s.is_dark ? 90.0 : 10.0; },
+      [](const DynamicScheme& s) -> double {
+        if (IsMonochrome(s)) {
+          return s.is_dark ? 90.0 : 10.0;
+        }
+        return s.is_dark ? 90.0 : 30.0;
+      },
       /* isBackground= */ false,
       /* background= */
       [](const DynamicScheme& s) -> DynamicColor { return ErrorContainer(); },
       /* secondBackground= */ nullopt,
-      /* contrastCurve= */ ContrastCurve(4.5, 7.0, 11.0, 21.0),
+      /* contrastCurve= */ ContrastCurve(3.0, 4.5, 7.0, 11.0),
       /* toneDeltaPair= */ nullopt);
 }
 

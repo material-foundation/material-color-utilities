@@ -279,22 +279,33 @@ describe('DynamicColor', () => {
           'on_secondary',
           'on_tertiary',
           'on_error',
-          'on_primary_container',
-          'on_secondary_container',
-          'on_tertiary_container',
-          'on_error_container',
         ],
         back: [
           'primary',
           'secondary',
           'tertiary',
           'error',
+        ],
+      },
+
+      {
+        kind: 'Contrast',
+        respectively: true,
+        values: new ContrastCurve(3, 4.5, 7, 11),
+        fore: [
+          'on_primary_container',
+          'on_secondary_container',
+          'on_tertiary_container',
+          'on_error_container',
+        ],
+        back: [
           'primary_container',
           'secondary_container',
           'tertiary_container',
           'error_container',
         ],
       },
+
       {
         kind: 'Contrast',
         values: new ContrastCurve(4.5, 7, 11, 21),

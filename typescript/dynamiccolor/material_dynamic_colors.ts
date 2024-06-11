@@ -324,10 +324,10 @@ export class MaterialDynamicColors {
           if (isMonochrome(s)) {
             return s.isDark ? 0 : 100;
           }
-          return s.isDark ? 90 : 10;
+          return s.isDark ? 90 : 30;
         },
     background: (s) => MaterialDynamicColors.primaryContainer,
-    contrastCurve: new ContrastCurve(4.5, 7, 11, 21),
+    contrastCurve: new ContrastCurve(3, 4.5, 7, 11),
   });
 
   static inversePrimary = DynamicColor.fromPalette({
@@ -394,14 +394,17 @@ export class MaterialDynamicColors {
     palette: (s) => s.secondaryPalette,
     tone:
         (s) => {
-          if (!isFidelity(s)) {
+          if (isMonochrome(s)) {
             return s.isDark ? 90 : 10;
+          }
+          if (!isFidelity(s)) {
+            return s.isDark ? 90 : 30;
           }
           return DynamicColor.foregroundTone(
               MaterialDynamicColors.secondaryContainer.tone(s), 4.5);
         },
     background: (s) => MaterialDynamicColors.secondaryContainer,
-    contrastCurve: new ContrastCurve(4.5, 7, 11, 21),
+    contrastCurve: new ContrastCurve(3, 4.5, 7, 11),
   });
 
   static tertiary = DynamicColor.fromPalette({
@@ -467,13 +470,13 @@ export class MaterialDynamicColors {
             return s.isDark ? 0 : 100;
           }
           if (!isFidelity(s)) {
-            return s.isDark ? 90 : 10;
+            return s.isDark ? 90 : 30;
           }
           return DynamicColor.foregroundTone(
               MaterialDynamicColors.tertiaryContainer.tone(s), 4.5);
         },
     background: (s) => MaterialDynamicColors.tertiaryContainer,
-    contrastCurve: new ContrastCurve(4.5, 7, 11, 21),
+    contrastCurve: new ContrastCurve(3, 4.5, 7, 11),
   });
 
   static error = DynamicColor.fromPalette({
@@ -511,9 +514,15 @@ export class MaterialDynamicColors {
   static onErrorContainer = DynamicColor.fromPalette({
     name: 'on_error_container',
     palette: (s) => s.errorPalette,
-    tone: (s) => s.isDark ? 90 : 10,
+    tone:
+        (s) => {
+          if (isMonochrome(s)) {
+            return s.isDark ? 90 : 10;
+          }
+          return s.isDark ? 90 : 30;
+        },
     background: (s) => MaterialDynamicColors.errorContainer,
-    contrastCurve: new ContrastCurve(4.5, 7, 11, 21),
+    contrastCurve: new ContrastCurve(3, 4.5, 7, 11),
   });
 
   static primaryFixed = DynamicColor.fromPalette({

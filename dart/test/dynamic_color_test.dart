@@ -12,15 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:material_color_utilities/hct/hct.dart';
 import 'package:material_color_utilities/contrast/contrast.dart';
 import 'package:material_color_utilities/dynamiccolor/dynamic_color.dart';
 import 'package:material_color_utilities/dynamiccolor/material_dynamic_colors.dart';
+import 'package:material_color_utilities/hct/hct.dart';
 import 'package:material_color_utilities/scheme/scheme_content.dart';
 import 'package:material_color_utilities/scheme/scheme_fidelity.dart';
 import 'package:material_color_utilities/scheme/scheme_monochrome.dart';
 import 'package:material_color_utilities/scheme/scheme_tonal_spot.dart';
-
 import 'package:test/test.dart';
 
 final seedColors = [
@@ -120,7 +119,7 @@ void main() {
         isDark: true,
         contrastLevel: -0.5,
       )),
-      equals(0xffbac040),
+      equals(0xff959b1a),
     );
     expect(
       MaterialDynamicColors.inverseSurface.getArgb(SchemeContent(

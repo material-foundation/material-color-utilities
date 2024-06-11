@@ -402,12 +402,12 @@ public class MaterialDynamicColors {
       if _isMonochrome(scheme) {
         return scheme.isDark ? 0 : 100
       }
-      return scheme.isDark ? 90 : 10
+      return scheme.isDark ? 90 : 30
     },
     background: { scheme in
       return MaterialDynamicColors.primaryContainer
     },
-    contrastCurve: ContrastCurve(4.5, 7, 11, 21)
+    contrastCurve: ContrastCurve(3, 4.5, 7, 11)
   )
 
   public static let inversePrimary: DynamicColor = DynamicColor(
@@ -497,8 +497,11 @@ public class MaterialDynamicColors {
       return scheme.secondaryPalette
     },
     tone: { scheme in
-      if !_isFidelity(scheme) {
+      if _isMonochrome(scheme) {
         return scheme.isDark ? 90 : 10
+      }
+      if !_isFidelity(scheme) {
+        return scheme.isDark ? 90 : 30
       }
       return DynamicColor.foregroundTone(
         MaterialDynamicColors.secondaryContainer.tone(scheme), 4.5)
@@ -506,7 +509,7 @@ public class MaterialDynamicColors {
     background: { scheme in
       return MaterialDynamicColors.secondaryContainer
     },
-    contrastCurve: ContrastCurve(4.5, 7, 11, 21)
+    contrastCurve: ContrastCurve(3, 4.5, 7, 11)
   )
 
   public static let tertiary: DynamicColor = DynamicColor(
@@ -586,7 +589,7 @@ public class MaterialDynamicColors {
         return scheme.isDark ? 0 : 100
       }
       if !_isFidelity(scheme) {
-        return scheme.isDark ? 90 : 10
+        return scheme.isDark ? 90 : 30
       }
       return DynamicColor.foregroundTone(
         MaterialDynamicColors.tertiaryContainer.tone(scheme), 4.5)
@@ -594,7 +597,7 @@ public class MaterialDynamicColors {
     background: { scheme in
       return MaterialDynamicColors.tertiaryContainer
     },
-    contrastCurve: ContrastCurve(4.5, 7, 11, 21)
+    contrastCurve: ContrastCurve(3, 4.5, 7, 11)
   )
 
   public static let error: DynamicColor = DynamicColor(
@@ -657,12 +660,15 @@ public class MaterialDynamicColors {
       return scheme.errorPalette
     },
     tone: { scheme in
-      return scheme.isDark ? 90 : 10
+      if _isMonochrome(scheme) {
+        return scheme.isDark ? 90 : 10
+      }
+      return scheme.isDark ? 90 : 30
     },
     background: { scheme in
       return MaterialDynamicColors.errorContainer
     },
-    contrastCurve: ContrastCurve(4.5, 7, 11, 21)
+    contrastCurve: ContrastCurve(3, 4.5, 7, 11)
   )
 
   public static let primaryFixed: DynamicColor = DynamicColor(
