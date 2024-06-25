@@ -21,6 +21,7 @@ export * from './dislike/dislike_analyzer.js';
 export * from './dynamiccolor/dynamic_color.js';
 export * from './dynamiccolor/dynamic_scheme.js';
 export * from './dynamiccolor/material_dynamic_colors.js';
+export * from './dynamiccolor/variant.js';
 export * from './hct/cam16.js';
 export * from './hct/hct.js';
 export * from './hct/viewing_conditions.js';
