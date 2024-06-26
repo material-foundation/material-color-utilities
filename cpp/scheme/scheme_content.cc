@@ -16,6 +16,8 @@
 
 #include "cpp/scheme/scheme_content.h"
 
+#include <cmath>
+
 #include "cpp/cam/hct.h"
 #include "cpp/dislike/dislike.h"
 #include "cpp/dynamiccolor/dynamic_scheme.h"
