@@ -52,7 +52,7 @@ double DynamicScheme::GetRotatedHue(Hct source_color, std::vector<double> hues,
     return SanitizeDegreesDouble(source_color.get_hue() + rotations[0]);
   }
   int size = hues.size();
-  for (int i = 0; i <= (size - 2); i++) {
+  for (int i = 0; i <= (size - 2); ++i) {
     double this_hue = hues[i];
     double next_hue = hues[i + 1];
     if (this_hue < source_hue && source_hue < next_hue) {
