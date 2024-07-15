@@ -25,7 +25,7 @@ import Foundation
 public class SchemeFidelity: DynamicScheme {
   public init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
     super.init(
-      sourceColorArgb: sourceColorHct.toInt(),
+      sourceColorHct: sourceColorHct,
       variant: Variant.fidelity,
       isDark: isDark,
       contrastLevel: contrastLevel,

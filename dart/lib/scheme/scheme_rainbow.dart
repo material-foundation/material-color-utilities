@@ -25,7 +25,7 @@ class SchemeRainbow extends DynamicScheme {
     required super.isDark,
     required super.contrastLevel,
   }) : super(
-          sourceColorArgb: sourceColorHct.toInt(),
+          sourceColorHct: sourceColorHct,
           variant: Variant.rainbow,
           primaryPalette: TonalPalette.of(
             sourceColorHct.hue,

@@ -49,7 +49,7 @@ import {Variant} from './variant.js';
  * backgrounds & surfaces.
  */
 interface DynamicSchemeOptions {
-  sourceColorArgb: number;
+  sourceColorHct: Hct;
   variant: Variant;
   contrastLevel: number;
   isDark: boolean;
@@ -128,11 +128,11 @@ export class DynamicScheme {
   readonly neutralVariantPalette: TonalPalette;
 
   constructor(args: DynamicSchemeOptions) {
-    this.sourceColorArgb = args.sourceColorArgb;
+    this.sourceColorArgb = args.sourceColorHct.toInt();
     this.variant = args.variant;
     this.contrastLevel = args.contrastLevel;
     this.isDark = args.isDark;
-    this.sourceColorHct = Hct.fromInt(args.sourceColorArgb);
+    this.sourceColorHct = args.sourceColorHct;
     this.primaryPalette = args.primaryPalette;
     this.secondaryPalette = args.secondaryPalette;
     this.tertiaryPalette = args.tertiaryPalette;

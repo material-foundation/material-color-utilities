@@ -18,7 +18,7 @@ import Foundation
 public class SchemeRainbow: DynamicScheme {
   public init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
     super.init(
-      sourceColorArgb: sourceColorHct.toInt(),
+      sourceColorHct: sourceColorHct,
       variant: Variant.rainbow,
       isDark: isDark,
       contrastLevel: contrastLevel,

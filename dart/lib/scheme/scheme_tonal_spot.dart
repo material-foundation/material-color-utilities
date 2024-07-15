@@ -26,7 +26,7 @@ class SchemeTonalSpot extends DynamicScheme {
     required super.isDark,
     required super.contrastLevel,
   }) : super(
-          sourceColorArgb: sourceColorHct.toInt(),
+          sourceColorHct: sourceColorHct,
           variant: Variant.tonalSpot,
           primaryPalette: TonalPalette.of(sourceColorHct.hue, 36.0),
           secondaryPalette: TonalPalette.of(sourceColorHct.hue, 16.0),

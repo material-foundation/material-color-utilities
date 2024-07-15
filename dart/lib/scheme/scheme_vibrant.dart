@@ -46,7 +46,7 @@ class SchemeVibrant extends DynamicScheme {
     required super.isDark,
     required super.contrastLevel,
   }) : super(
-          sourceColorArgb: sourceColorHct.toInt(),
+          sourceColorHct: sourceColorHct,
           variant: Variant.vibrant,
           primaryPalette: TonalPalette.of(sourceColorHct.hue, 200.0),
           secondaryPalette: TonalPalette.of(

@@ -25,7 +25,7 @@ class SchemeFruitSalad extends DynamicScheme {
     required super.isDark,
     required super.contrastLevel,
   }) : super(
-          sourceColorArgb: sourceColorHct.toInt(),
+          sourceColorHct: sourceColorHct,
           variant: Variant.fruitSalad,
           primaryPalette: TonalPalette.of(
             MathUtils.sanitizeDegreesDouble(sourceColorHct.hue - 50.0),

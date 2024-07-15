@@ -18,7 +18,7 @@ import Foundation
 public class SchemeFruitSalad: DynamicScheme {
   public init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
     super.init(
-      sourceColorArgb: sourceColorHct.toInt(),
+      sourceColorHct: sourceColorHct,
       variant: Variant.fruitSalad,
       isDark: isDark,
       contrastLevel: contrastLevel,

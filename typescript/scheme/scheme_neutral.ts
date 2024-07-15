@@ -24,7 +24,7 @@ import {TonalPalette} from '../palettes/tonal_palette.js';
 export class SchemeNeutral extends DynamicScheme {
   constructor(sourceColorHct: Hct, isDark: boolean, contrastLevel: number) {
     super({
-      sourceColorArgb: sourceColorHct.toInt(),
+      sourceColorHct,
       variant: Variant.NEUTRAL,
       contrastLevel,
       isDark,

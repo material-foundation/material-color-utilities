@@ -34,7 +34,7 @@ class SchemeFidelity extends DynamicScheme {
     required super.isDark,
     required super.contrastLevel,
   }) : super(
-          sourceColorArgb: sourceColorHct.toInt(),
+          sourceColorHct: sourceColorHct,
           variant: Variant.fidelity,
           primaryPalette: TonalPalette.of(
             sourceColorHct.hue,

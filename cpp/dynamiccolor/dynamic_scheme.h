@@ -39,7 +39,7 @@ struct DynamicScheme {
   TonalPalette neutral_variant_palette;
   TonalPalette error_palette;
 
-  DynamicScheme(Argb source_color_argb, Variant variant, double contrast_level,
+  DynamicScheme(Hct source_color_hct, Variant variant, double contrast_level,
                 bool is_dark, TonalPalette primary_palette,
                 TonalPalette secondary_palette, TonalPalette tertiary_palette,
                 TonalPalette neutral_palette,

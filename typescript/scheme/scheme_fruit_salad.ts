@@ -27,7 +27,7 @@ import * as math from '../utils/math_utils.js';
 export class SchemeFruitSalad extends DynamicScheme {
   constructor(sourceColorHct: Hct, isDark: boolean, contrastLevel: number) {
     super({
-      sourceColorArgb: sourceColorHct.toInt(),
+      sourceColorHct,
       variant: Variant.FRUIT_SALAD,
       contrastLevel,
       isDark,

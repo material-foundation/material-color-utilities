@@ -34,7 +34,7 @@ import {TemperatureCache} from '../temperature/temperature_cache.js';
 export class SchemeContent extends DynamicScheme {
   constructor(sourceColorHct: Hct, isDark: boolean, contrastLevel: number) {
     super({
-      sourceColorArgb: sourceColorHct.toInt(),
+      sourceColorHct,
       variant: Variant.CONTENT,
       contrastLevel,
       isDark,

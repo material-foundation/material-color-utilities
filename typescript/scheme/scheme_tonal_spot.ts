@@ -30,7 +30,7 @@ import * as math from '../utils/math_utils.js';
 export class SchemeTonalSpot extends DynamicScheme {
   constructor(sourceColorHct: Hct, isDark: boolean, contrastLevel: number) {
     super({
-      sourceColorArgb: sourceColorHct.toInt(),
+      sourceColorHct,
       variant: Variant.TONAL_SPOT,
       contrastLevel,
       isDark,

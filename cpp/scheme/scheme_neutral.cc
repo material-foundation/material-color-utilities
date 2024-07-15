@@ -26,7 +26,7 @@ namespace material_color_utilities {
 SchemeNeutral::SchemeNeutral(Hct set_source_color_hct, bool set_is_dark,
                              double set_contrast_level)
     : DynamicScheme(
-          /*source_color_argb:*/ set_source_color_hct.ToInt(),
+          /*set_source_color_hct:*/ set_source_color_hct,
           /*variant:*/ Variant::kNeutral,
           /*contrast_level:*/ set_contrast_level,
           /*is_dark:*/ set_is_dark,

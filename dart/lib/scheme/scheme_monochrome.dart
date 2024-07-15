@@ -23,7 +23,7 @@ class SchemeMonochrome extends DynamicScheme {
     required super.isDark,
     required super.contrastLevel,
   }) : super(
-          sourceColorArgb: sourceColorHct.toInt(),
+          sourceColorHct: sourceColorHct,
           variant: Variant.monochrome,
           primaryPalette: TonalPalette.of(sourceColorHct.hue, 0.0),
           secondaryPalette: TonalPalette.of(sourceColorHct.hue, 0.0),

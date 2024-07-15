@@ -75,7 +75,7 @@ export class SchemeVibrant extends DynamicScheme {
 
   constructor(sourceColorHct: Hct, isDark: boolean, contrastLevel: number) {
     super({
-      sourceColorArgb: sourceColorHct.toInt(),
+      sourceColorHct,
       variant: Variant.VIBRANT,
       contrastLevel,
       isDark,

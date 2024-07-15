@@ -18,7 +18,7 @@ import Foundation
 public class SchemeMonochrome: DynamicScheme {
   public init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
     super.init(
-      sourceColorArgb: sourceColorHct.toInt(),
+      sourceColorHct: sourceColorHct,
       variant: Variant.monochrome,
       isDark: isDark,
       contrastLevel: contrastLevel,

@@ -35,7 +35,7 @@ class SchemeContent extends DynamicScheme {
     required super.isDark,
     required super.contrastLevel,
   }) : super(
-          sourceColorArgb: sourceColorHct.toInt(),
+          sourceColorHct: sourceColorHct,
           variant: Variant.content,
           primaryPalette: TonalPalette.of(
             sourceColorHct.hue,

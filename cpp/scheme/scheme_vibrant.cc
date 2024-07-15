@@ -36,7 +36,7 @@ const std::vector<double> kTertiaryRotations = {35, 30, 20, 25, 30,
 SchemeVibrant::SchemeVibrant(Hct set_source_color_hct, bool set_is_dark,
                              double set_contrast_level)
     : DynamicScheme(
-          /*source_color_argb:*/ set_source_color_hct.ToInt(),
+          /*set_source_color_hct:*/ set_source_color_hct,
           /*variant:*/ Variant::kVibrant,
           /*contrast_level:*/ set_contrast_level,
           /*is_dark:*/ set_is_dark,

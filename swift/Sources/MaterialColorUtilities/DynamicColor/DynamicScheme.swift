@@ -60,13 +60,13 @@ public class DynamicScheme: Equatable, Hashable {
   let errorPalette: TonalPalette
 
   public init(
-    sourceColorArgb: Int, sourceColorHct: Hct? = nil, variant: Variant, isDark: Bool,
+    sourceColorHct: Hct, variant: Variant, isDark: Bool,
     contrastLevel: Double = 0, primaryPalette: TonalPalette, secondaryPalette: TonalPalette,
     tertiaryPalette: TonalPalette, neutralPalette: TonalPalette,
     neutralVariantPalette: TonalPalette, errorPalette: TonalPalette? = nil
   ) {
-    self.sourceColorArgb = sourceColorArgb
-    self.sourceColorHct = sourceColorHct ?? Hct.fromInt(sourceColorArgb)
+    self.sourceColorArgb = sourceColorHct.toInt()
+    self.sourceColorHct = sourceColorHct
     self.variant = variant
     self.isDark = isDark
     self.contrastLevel = contrastLevel

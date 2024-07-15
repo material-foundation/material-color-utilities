@@ -48,7 +48,7 @@ public class SchemeExpressive: DynamicScheme {
 
   public init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
     super.init(
-      sourceColorArgb: sourceColorHct.toInt(),
+      sourceColorHct: sourceColorHct,
       variant: Variant.expressive,
       isDark: isDark,
       contrastLevel: contrastLevel,

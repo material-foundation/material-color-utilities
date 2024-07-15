@@ -23,7 +23,7 @@ class SchemeNeutral extends DynamicScheme {
     required super.isDark,
     required super.contrastLevel,
   }) : super(
-          sourceColorArgb: sourceColorHct.toInt(),
+          sourceColorHct: sourceColorHct,
           variant: Variant.neutral,
           primaryPalette: TonalPalette.of(sourceColorHct.hue, 12.0),
           secondaryPalette: TonalPalette.of(sourceColorHct.hue, 8.0),

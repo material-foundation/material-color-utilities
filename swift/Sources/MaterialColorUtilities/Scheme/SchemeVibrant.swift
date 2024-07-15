@@ -41,7 +41,7 @@ public class SchemeVibrant: DynamicScheme {
 
   public init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
     super.init(
-      sourceColorArgb: sourceColorHct.toInt(),
+      sourceColorHct: sourceColorHct,
       variant: Variant.vibrant,
       isDark: isDark,
       contrastLevel: contrastLevel,

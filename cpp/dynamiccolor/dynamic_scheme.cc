@@ -26,14 +26,14 @@
 
 namespace material_color_utilities {
 
-DynamicScheme::DynamicScheme(Argb source_color_argb, Variant variant,
+DynamicScheme::DynamicScheme(Hct source_color_hct, Variant variant,
                              double contrast_level, bool is_dark,
                              TonalPalette primary_palette,
                              TonalPalette secondary_palette,
                              TonalPalette tertiary_palette,
                              TonalPalette neutral_palette,
                              TonalPalette neutral_variant_palette)
-    : source_color_hct(Hct(source_color_argb)),
+    : source_color_hct(source_color_hct),
       variant(variant),
       is_dark(is_dark),
       contrast_level(contrast_level),

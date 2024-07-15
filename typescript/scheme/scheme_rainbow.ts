@@ -27,7 +27,7 @@ import * as math from '../utils/math_utils.js';
 export class SchemeRainbow extends DynamicScheme {
   constructor(sourceColorHct: Hct, isDark: boolean, contrastLevel: number) {
     super({
-      sourceColorArgb: sourceColorHct.toInt(),
+      sourceColorHct,
       variant: Variant.RAINBOW,
       contrastLevel,
       isDark,

@@ -24,7 +24,7 @@ import {TonalPalette} from '../palettes/tonal_palette.js';
 export class SchemeMonochrome extends DynamicScheme {
   constructor(sourceColorHct: Hct, isDark: boolean, contrastLevel: number) {
     super({
-      sourceColorArgb: sourceColorHct.toInt(),
+      sourceColorHct,
       variant: Variant.MONOCHROME,
       contrastLevel,
       isDark,

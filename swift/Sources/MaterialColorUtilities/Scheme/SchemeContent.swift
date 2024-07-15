@@ -24,7 +24,7 @@
 public class SchemeContent: DynamicScheme {
   public init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
     super.init(
-      sourceColorArgb: sourceColorHct.toInt(),
+      sourceColorHct: sourceColorHct,
       variant: Variant.content,
       isDark: isDark,
       contrastLevel: contrastLevel,

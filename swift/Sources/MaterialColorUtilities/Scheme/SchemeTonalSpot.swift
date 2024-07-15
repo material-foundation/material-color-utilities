@@ -20,7 +20,7 @@ import Foundation
 public class SchemeTonalSpot: DynamicScheme {
   public init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
     super.init(
-      sourceColorArgb: sourceColorHct.toInt(),
+      sourceColorHct: sourceColorHct,
       variant: Variant.tonalSpot,
       isDark: isDark,
       contrastLevel: contrastLevel,
