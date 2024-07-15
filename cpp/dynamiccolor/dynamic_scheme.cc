@@ -16,6 +16,7 @@
 
 #include "cpp/dynamiccolor/dynamic_scheme.h"
 
+#include <optional>
 #include <vector>
 
 #include "cpp/cam/hct.h"
@@ -32,7 +33,8 @@ DynamicScheme::DynamicScheme(Hct source_color_hct, Variant variant,
                              TonalPalette secondary_palette,
                              TonalPalette tertiary_palette,
                              TonalPalette neutral_palette,
-                             TonalPalette neutral_variant_palette)
+                             TonalPalette neutral_variant_palette,
+                             std::optional<TonalPalette> error_palette)
     : source_color_hct(source_color_hct),
       variant(variant),
       is_dark(is_dark),
@@ -42,7 +44,7 @@ DynamicScheme::DynamicScheme(Hct source_color_hct, Variant variant,
       tertiary_palette(tertiary_palette),
       neutral_palette(neutral_palette),
       neutral_variant_palette(neutral_variant_palette),
-      error_palette(TonalPalette(25.0, 84.0)) {}
+      error_palette(error_palette.value_or(TonalPalette(25.0, 84.0))) {}
 
 double DynamicScheme::GetRotatedHue(Hct source_color, std::vector<double> hues,
                                     std::vector<double> rotations) {

@@ -17,6 +17,7 @@
 #ifndef CPP_DYNAMICCOLOR_DYNAMIC_SCHEME_H_
 #define CPP_DYNAMICCOLOR_DYNAMIC_SCHEME_H_
 
+#include <optional>
 #include <vector>
 
 #include "cpp/cam/hct.h"
@@ -43,7 +44,8 @@ struct DynamicScheme {
                 bool is_dark, TonalPalette primary_palette,
                 TonalPalette secondary_palette, TonalPalette tertiary_palette,
                 TonalPalette neutral_palette,
-                TonalPalette neutral_variant_palette);
+                TonalPalette neutral_variant_palette,
+                std::optional<TonalPalette> error_palette = std::nullopt);
 
   static double GetRotatedHue(Hct source_color, std::vector<double> hues,
                               std::vector<double> rotations);

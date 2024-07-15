@@ -76,8 +76,9 @@ class DynamicScheme {
     required this.tertiaryPalette,
     required this.neutralPalette,
     required this.neutralVariantPalette,
+    TonalPalette? errorPalette,
   })  : sourceColorArgb = sourceColorHct.toInt(),
-        errorPalette = TonalPalette.of(25.0, 84.0);
+        errorPalette = errorPalette ?? TonalPalette.of(25.0, 84.0);
 
   static double getRotatedHue(
       Hct sourceColor, List<double> hues, List<double> rotations) {

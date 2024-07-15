@@ -58,6 +58,7 @@ interface DynamicSchemeOptions {
   tertiaryPalette: TonalPalette;
   neutralPalette: TonalPalette;
   neutralVariantPalette: TonalPalette;
+  errorPalette?: TonalPalette;
 }
 
 /**
@@ -138,7 +139,8 @@ export class DynamicScheme {
     this.tertiaryPalette = args.tertiaryPalette;
     this.neutralPalette = args.neutralPalette;
     this.neutralVariantPalette = args.neutralVariantPalette;
-    this.errorPalette = TonalPalette.fromHueAndChroma(25.0, 84.0);
+    this.errorPalette =
+        args.errorPalette ?? TonalPalette.fromHueAndChroma(25.0, 84.0);
   }
 
   /**
