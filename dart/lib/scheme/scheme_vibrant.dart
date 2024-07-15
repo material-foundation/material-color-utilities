@@ -21,11 +21,11 @@ import 'package:material_color_utilities/palettes/tonal_palette.dart';
 class SchemeVibrant extends DynamicScheme {
   /// Hues used at breakpoints such that designers can specify a hue rotation
   /// that occurs at a given break point.
-  static final hues = <double>[0, 41, 61, 101, 131, 181, 251, 301, 360];
+  static final _hues = <double>[0, 41, 61, 101, 131, 181, 251, 301, 360];
 
   /// Hue rotations of the Secondary [TonalPalette], corresponding to the
-  /// breakpoints in [hues].
-  static final secondaryRotations = <double>[
+  /// breakpoints in [_hues].
+  static final _secondaryRotations = <double>[
     18,
     15,
     10,
@@ -38,8 +38,18 @@ class SchemeVibrant extends DynamicScheme {
   ];
 
   /// Hue rotations of the Tertiary [TonalPalette], corresponding to the
-  /// breakpoints in [hues].
-  static final tertiaryRotations = <double>[35, 30, 20, 25, 30, 35, 30, 25, 25];
+  /// breakpoints in [_hues].
+  static final _tertiaryRotations = <double>[
+    35,
+    30,
+    20,
+    25,
+    30,
+    35,
+    30,
+    25,
+    25
+  ];
 
   SchemeVibrant({
     required Hct sourceColorHct,
@@ -51,12 +61,12 @@ class SchemeVibrant extends DynamicScheme {
           primaryPalette: TonalPalette.of(sourceColorHct.hue, 200.0),
           secondaryPalette: TonalPalette.of(
             DynamicScheme.getRotatedHue(
-                sourceColorHct, hues, secondaryRotations),
+                sourceColorHct, _hues, _secondaryRotations),
             24.0,
           ),
           tertiaryPalette: TonalPalette.of(
             DynamicScheme.getRotatedHue(
-                sourceColorHct, hues, tertiaryRotations),
+                sourceColorHct, _hues, _tertiaryRotations),
             32.0,
           ),
           neutralPalette: TonalPalette.of(sourceColorHct.hue, 10.0),
