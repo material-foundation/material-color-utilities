@@ -1,4 +1,4 @@
-// Copyright 2023 Google LLC
+// Copyright 2023-2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,20 +18,69 @@ import Foundation
 /// [TonalPalette] with a hue related to the source color. The default
 /// Material You theme on Android 12 and 13.
 public class SchemeTonalSpot: DynamicScheme {
-  public init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
+  public convenience init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
+    let palettes = CorePalettesTonalSpot(sourceColorHct: sourceColorHct)
+    self.init(
+      sourceColorHct: sourceColorHct,
+      palettes: palettes,
+      isDark: isDark,
+      contrastLevel: contrastLevel)
+  }
+
+  fileprivate init(
+    sourceColorHct: Hct, palettes: CorePalettes, isDark: Bool, contrastLevel: Double
+  ) {
     super.init(
       sourceColorHct: sourceColorHct,
-      variant: Variant.tonalSpot,
+      variant: .tonalSpot,
       isDark: isDark,
       contrastLevel: contrastLevel,
-      primaryPalette: TonalPalette.of(sourceColorHct.hue, 36.0),
-      secondaryPalette: TonalPalette.of(sourceColorHct.hue, 16.0),
-      tertiaryPalette: TonalPalette.of(
-        MathUtils.sanitizeDegreesDouble(sourceColorHct.hue + 60.0),
-        24.0
-      ),
-      neutralPalette: TonalPalette.of(sourceColorHct.hue, 6.0),
-      neutralVariantPalette: TonalPalette.of(sourceColorHct.hue, 8.0)
+      primaryPalette: palettes.primary,
+      secondaryPalette: palettes.secondary,
+      tertiaryPalette: palettes.tertiary,
+      neutralPalette: palettes.neutral,
+      neutralVariantPalette: palettes.neutralVariant)
+  }
+}
+
+/// Use [SchemeTonalSpotProvider] when you need to create multiple [SchemeTonalSpot] from the same
+/// source color.
+///
+/// This provider reduces overlapped computation by reusing tonal palettes.
+public struct SchemeTonalSpotProvider: DynamicSchemeProvider {
+  private let sourceColorHct: Hct
+  private let palettes: CorePalettes
+
+  public init(sourceColorHct: Hct) {
+    self.sourceColorHct = sourceColorHct
+    self.palettes = CorePalettesTonalSpot(sourceColorHct: sourceColorHct)
+  }
+
+  public func scheme(isDark: Bool, contrastLevel: Double) -> DynamicScheme {
+    SchemeTonalSpot(
+      sourceColorHct: sourceColorHct,
+      palettes: palettes,
+      isDark: isDark,
+      contrastLevel: contrastLevel)
+  }
+}
+
+/// Core palettes of [SchemeTonalSpot].
+private struct CorePalettesTonalSpot: CorePalettes {
+  let primary: TonalPalette
+  let secondary: TonalPalette
+  let tertiary: TonalPalette
+  let neutral: TonalPalette
+  let neutralVariant: TonalPalette
+
+  init(sourceColorHct: Hct) {
+    self.primary = TonalPalette.of(sourceColorHct.hue, 36.0)
+    self.secondary = TonalPalette.of(sourceColorHct.hue, 16.0)
+    self.tertiary = TonalPalette.of(
+      MathUtils.sanitizeDegreesDouble(sourceColorHct.hue + 60.0),
+      24.0
     )
+    self.neutral = TonalPalette.of(sourceColorHct.hue, 6.0)
+    self.neutralVariant = TonalPalette.of(sourceColorHct.hue, 8.0)
   }
 }

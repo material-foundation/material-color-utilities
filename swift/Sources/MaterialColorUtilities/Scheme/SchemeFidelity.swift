@@ -1,4 +1,4 @@
-// Copyright 2023 Google LLC
+// Copyright 2023-2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,42 +14,85 @@
 
 import Foundation
 
-/// A scheme that places the source color in [Scheme.primaryContainer].
+/// A Dynamic Color theme that places the source color in [Scheme.primaryContainer].
 ///
 /// Primary Container is the source color, adjusted for color relativity.
-/// It maintains constant appearance in light mode and dark mode.
-/// This adds ~5 tone in light mode, and subtracts ~5 tone in dark mode.
+/// It maintains constant appearance in both light and dark mode by adjusting the source color's
+/// tone by adding 5 tones in light mode and subtracting 5 tone in dark mode.
 ///
-/// Tertiary Container is the complement to the source color, using
-/// [TemperatureCache]. It also maintains constant appearance.
+/// Tertiary Container is the complement to the source color, using [TemperatureCache]. It also
+/// maintains constant appearance.
 public class SchemeFidelity: DynamicScheme {
-  public init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
+  public convenience init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
+    let palettes = CorePalettesFidelity(sourceColorHct: sourceColorHct)
+    self.init(
+      sourceColorHct: sourceColorHct,
+      palettes: palettes,
+      isDark: isDark,
+      contrastLevel: contrastLevel
+    )
+  }
+
+  fileprivate init(
+    sourceColorHct: Hct, palettes: CorePalettes, isDark: Bool, contrastLevel: Double
+  ) {
     super.init(
       sourceColorHct: sourceColorHct,
-      variant: Variant.fidelity,
+      variant: .fidelity,
       isDark: isDark,
       contrastLevel: contrastLevel,
-      primaryPalette: TonalPalette.of(
-        sourceColorHct.hue,
-        sourceColorHct.chroma
-      ),
-      secondaryPalette: TonalPalette.of(
-        sourceColorHct.hue,
-        max(sourceColorHct.chroma - 32.0, sourceColorHct.chroma * 0.5)
-      ),
-      tertiaryPalette: TonalPalette.fromHct(
-        DislikeAnalyzer.fixIfDisliked(
-          TemperatureCache(sourceColorHct).complement
-        )
-      ),
-      neutralPalette: TonalPalette.of(
-        sourceColorHct.hue,
-        sourceColorHct.chroma / 8.0
-      ),
-      neutralVariantPalette: TonalPalette.of(
-        sourceColorHct.hue,
-        (sourceColorHct.chroma / 8.0) + 4.0
+      primaryPalette: palettes.primary,
+      secondaryPalette: palettes.secondary,
+      tertiaryPalette: palettes.tertiary,
+      neutralPalette: palettes.neutral,
+      neutralVariantPalette: palettes.neutralVariant
+    )
+  }
+}
+
+/// Use [SchemeFidelityProvider] when you need to create multiple [SchemeFidelity] instances from
+/// the same source color.
+///
+/// This provider reduces overlapped computation by reusing tonal palettes.
+public struct SchemeFidelityProvider: DynamicSchemeProvider {
+  private let sourceColorHct: Hct
+  private let palettes: CorePalettes
+
+  public init(sourceColorHct: Hct) {
+    self.sourceColorHct = sourceColorHct
+    self.palettes = CorePalettesFidelity(sourceColorHct: sourceColorHct)
+  }
+
+  public func scheme(isDark: Bool, contrastLevel: Double) -> DynamicScheme {
+    SchemeFidelity(
+      sourceColorHct: sourceColorHct,
+      palettes: palettes,
+      isDark: isDark,
+      contrastLevel: contrastLevel
+    )
+  }
+}
+
+/// Core palettes of [SchemeFidelity].
+private struct CorePalettesFidelity: CorePalettes {
+  let primary: TonalPalette
+  let secondary: TonalPalette
+  let tertiary: TonalPalette
+  let neutral: TonalPalette
+  let neutralVariant: TonalPalette
+
+  init(sourceColorHct: Hct) {
+    self.primary = TonalPalette.of(sourceColorHct.hue, sourceColorHct.chroma)
+    self.secondary = TonalPalette.of(
+      sourceColorHct.hue,
+      max(sourceColorHct.chroma - 32.0, sourceColorHct.chroma * 0.5)
+    )
+    self.tertiary = TonalPalette.fromHct(
+      DislikeAnalyzer.fixIfDisliked(
+        TemperatureCache(sourceColorHct).complement
       )
     )
+    self.neutral = TonalPalette.of(sourceColorHct.hue, sourceColorHct.chroma / 8.0)
+    self.neutralVariant = TonalPalette.of(sourceColorHct.hue, (sourceColorHct.chroma / 8.0) + 4.0)
   }
 }

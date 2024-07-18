@@ -1,4 +1,4 @@
-// Copyright 2023 Google LLC
+// Copyright 2023-2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,18 +16,68 @@ import Foundation
 
 /// A playful theme - the source color's hue does not appear in the theme.
 public class SchemeRainbow: DynamicScheme {
-  public init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
+  public convenience init(sourceColorHct: Hct, isDark: Bool, contrastLevel: Double) {
+    let palettes = CorePalettesRainbow(sourceColorHct: sourceColorHct)
+    self.init(
+      sourceColorHct: sourceColorHct,
+      palettes: palettes,
+      isDark: isDark,
+      contrastLevel: contrastLevel)
+  }
+
+  fileprivate init(
+    sourceColorHct: Hct, palettes: CorePalettes, isDark: Bool, contrastLevel: Double
+  ) {
     super.init(
       sourceColorHct: sourceColorHct,
-      variant: Variant.rainbow,
+      variant: .rainbow,
       isDark: isDark,
       contrastLevel: contrastLevel,
-      primaryPalette: TonalPalette.of(sourceColorHct.hue, 48.0),
-      secondaryPalette: TonalPalette.of(sourceColorHct.hue, 16.0),
-      tertiaryPalette: TonalPalette.of(
-        MathUtils.sanitizeDegreesDouble(sourceColorHct.hue + 60.0), 24.0),
-      neutralPalette: TonalPalette.of(sourceColorHct.hue, 0.0),
-      neutralVariantPalette: TonalPalette.of(sourceColorHct.hue, 0.0)
+      primaryPalette: palettes.primary,
+      secondaryPalette: palettes.secondary,
+      tertiaryPalette: palettes.tertiary,
+      neutralPalette: palettes.neutral,
+      neutralVariantPalette: palettes.neutralVariant
     )
+  }
+}
+
+/// Use [SchemeRainbowProvider] when you need to create multiple [SchemeRainbow] from the same
+/// source color.
+///
+/// This provider reduces overlapped computation by reusing tonal palettes.
+public struct SchemeRainbowProvider: DynamicSchemeProvider {
+  private let sourceColorHct: Hct
+  private let palettes: CorePalettes
+
+  public init(sourceColorHct: Hct) {
+    self.sourceColorHct = sourceColorHct
+    self.palettes = CorePalettesRainbow(sourceColorHct: sourceColorHct)
+  }
+
+  public func scheme(isDark: Bool, contrastLevel: Double) -> DynamicScheme {
+    SchemeRainbow(
+      sourceColorHct: sourceColorHct,
+      palettes: palettes,
+      isDark: isDark,
+      contrastLevel: contrastLevel)
+  }
+}
+
+/// Core palettes of [SchemeRainbow].
+private struct CorePalettesRainbow: CorePalettes {
+  let primary: TonalPalette
+  let secondary: TonalPalette
+  let tertiary: TonalPalette
+  let neutral: TonalPalette
+  let neutralVariant: TonalPalette
+
+  init(sourceColorHct: Hct) {
+    self.primary = TonalPalette.of(sourceColorHct.hue, 48.0)
+    self.secondary = TonalPalette.of(sourceColorHct.hue, 16.0)
+    self.tertiary = TonalPalette.of(
+      MathUtils.sanitizeDegreesDouble(sourceColorHct.hue + 60.0), 24.0)
+    self.neutral = TonalPalette.of(sourceColorHct.hue, 0.0)
+    self.neutralVariant = TonalPalette.of(sourceColorHct.hue, 0.0)
   }
 }

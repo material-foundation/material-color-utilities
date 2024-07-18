@@ -1,4 +1,4 @@
-// Copyright 2023 Google LLC
+// Copyright 2023-2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -187,5 +187,32 @@ final class SchemeTonalSpotTests: XCTestCase {
     XCTAssertEqual(scheme.inverseSurface, 0xfff4_dceb)
     XCTAssertEqual(scheme.inverseOnSurface, 0xff3b_2c37)
     XCTAssertEqual(scheme.inversePrimary, 0xffab_00a2)
+  }
+
+  func testSchemeTonalSpotProvider_returnsIdeniticalSchemeWithSameSourceColor() {
+    let sourceColorHct = Hct(0xfffa_2bec)
+    let isDark = false
+    let contrastLevel = 0.0
+
+    let scheme = SchemeTonalSpot(
+      sourceColorHct: sourceColorHct, isDark: isDark, contrastLevel: contrastLevel)
+    let provider = SchemeTonalSpotProvider(sourceColorHct: sourceColorHct)
+    let schemeByProvider = provider.scheme(isDark: isDark, contrastLevel: contrastLevel)
+
+    XCTAssertEqual(scheme, schemeByProvider)
+  }
+
+  func testSchemeTonalSpotProvider_reusesTonalPalettes() {
+    let provider = SchemeTonalSpotProvider(sourceColorHct: Hct(0xfffa_2bec))
+
+    let scheme1 = provider.scheme(isDark: true, contrastLevel: 0.0)
+    let scheme2 = provider.scheme(isDark: false, contrastLevel: 1.0)
+
+    // Check if the same tonal palettes are being reused
+    XCTAssertIdentical(scheme1.primaryPalette, scheme2.primaryPalette)
+    XCTAssertIdentical(scheme1.secondaryPalette, scheme2.secondaryPalette)
+    XCTAssertIdentical(scheme1.tertiaryPalette, scheme2.tertiaryPalette)
+    XCTAssertIdentical(scheme1.neutralPalette, scheme2.neutralPalette)
+    XCTAssertIdentical(scheme1.neutralVariantPalette, scheme2.neutralVariantPalette)
   }
 }
