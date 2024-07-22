@@ -18,36 +18,194 @@ import XCTest
 @testable import MaterialColorUtilities
 
 final class SchemeContentTests: XCTestCase {
-  func testLightThemeMinContrastObjectionabeTertiaryContainerLightens() {
+
+  func testKeyColors() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: false, contrastLevel: 0.0)
+    XCTAssertEqual(scheme.primaryPaletteKeyColor, 0xff08_0c_ff)
+    XCTAssertEqual(scheme.secondaryPaletteKeyColor, 0xff65_6d_d3)
+    XCTAssertEqual(scheme.tertiaryPaletteKeyColor, 0xff81_00_9f)
+    XCTAssertEqual(scheme.neutralPaletteKeyColor, 0xff76_76_84)
+    XCTAssertEqual(scheme.neutralVariantPaletteKeyColor, 0xff75_75_89)
+  }
+
+  func testLightTheme_MinContrast_Primary() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: false, contrastLevel: -1.0)
+    XCTAssertEqual(scheme.primary, 0xff56_60_ff)
+  }
+
+  func testLightTheme_StandardContrast_Primary() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: false, contrastLevel: 0.0)
+    XCTAssertEqual(scheme.primary, 0xff00_01_bb)
+  }
+
+  func testLightTheme_MaxContrast_Primary() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: false, contrastLevel: 1.0)
+    XCTAssertEqual(scheme.primary, 0xff00_01_9f)
+  }
+
+  func testLightTheme_MinContrast_PrimaryContainer() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: false, contrastLevel: -1.0)
+    XCTAssertEqual(scheme.primaryContainer, 0xffd5_d6_ff)
+  }
+
+  func testLightTheme_StandardContrast_PrimaryContainer() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: false, contrastLevel: 0.0)
+    XCTAssertEqual(scheme.primaryContainer, 0xff00_00_ff)
+  }
+
+  func testLightTheme_MaxContrast_PrimaryContainer() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: false, contrastLevel: 1.0)
+    XCTAssertEqual(scheme.primaryContainer, 0xff00_00_f6)
+  }
+
+  func testLightTheme_MinContrast_TertiaryContainer() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: false, contrastLevel: -1.0)
+    XCTAssertEqual(scheme.tertiaryContainer, 0xfffa_c9_ff)
+  }
+
+  func testLightTheme_StandardContrast_TertiaryContainer() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: false, contrastLevel: 0.0)
+    XCTAssertEqual(scheme.tertiaryContainer, 0xff81_00_9f)
+  }
+
+  func testLightTheme_MaxContrast_TertiaryContainer() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: false, contrastLevel: 1.0)
+    XCTAssertEqual(scheme.tertiaryContainer, 0xff7d_00_9a)
+  }
+
+  func testLightTheme_MinContrast_OnPrimaryContainer() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: false, contrastLevel: -1.0)
+    XCTAssertEqual(scheme.onPrimaryContainer, 0xff5e_68_ff)
+  }
+
+  func testLightTheme_StandardContrast_OnPrimaryContainer() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: false, contrastLevel: 0.0)
+    XCTAssertEqual(scheme.onPrimaryContainer, 0xffb3_b7_ff)
+  }
+
+  func testLightTheme_MaxContrast_OnPrimaryContainer() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: false, contrastLevel: 1.0)
+    XCTAssertEqual(scheme.onPrimaryContainer, 0xffff_ffff)
+  }
+
+  func testLightTheme_MinContrast_Surface() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: false, contrastLevel: -1)
+    XCTAssertEqual(scheme.surface, 0xfffb_f8_ff)
+  }
+
+  func testLightTheme_StandardContrast_Surface() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: false, contrastLevel: 0.0)
+    XCTAssertEqual(scheme.surface, 0xfffb_f8_ff)
+  }
+
+  func testLightTheme_MaxContrast_Surface() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: false, contrastLevel: 1.0)
+    XCTAssertEqual(scheme.surface, 0xfffb_f8_ff)
+  }
+
+  func testDarkTheme_MinContrast_Primary() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: true, contrastLevel: -1.0)
+    XCTAssertEqual(scheme.primary, 0xff7c_84_ff)
+  }
+
+  func testDarkTheme_StandardContrast_Primary() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: true, contrastLevel: 0.0)
+    XCTAssertEqual(scheme.primary, 0xffbe_c2_ff)
+  }
+
+  func testDarkTheme_MaxContrast_Primary() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: true, contrastLevel: 1.0)
+    XCTAssertEqual(scheme.primary, 0xfff0_ee_ff)
+  }
+
+  func testDarkTheme_MinContrast_PrimaryContainer() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: true, contrastLevel: -1.0)
+    XCTAssertEqual(scheme.primaryContainer, 0xff00_01_c9)
+  }
+
+  func testDarkTheme_StandardContrast_PrimaryContainer() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: true, contrastLevel: 0.0)
+    XCTAssertEqual(scheme.primaryContainer, 0xff00_00_ff)
+  }
+
+  func testDarkTheme_MaxContrast_PrimaryContainer() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: true, contrastLevel: 1.0)
+    XCTAssertEqual(scheme.primaryContainer, 0xffba_bd_ff)
+  }
+
+  func testDarkTheme_MinContrast_OnPrimaryContainer() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: true, contrastLevel: -1.0)
+    XCTAssertEqual(scheme.onPrimaryContainer, 0xff6b_75_ff)
+  }
+
+  func testDarkTheme_StandardContrast_OnPrimaryContainer() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: true, contrastLevel: 0.0)
+    XCTAssertEqual(scheme.onPrimaryContainer, 0xffb3_b7_ff)
+  }
+
+  func testDarkTheme_MaxContrast_OnPrimaryContainer() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: true, contrastLevel: 1.0)
+    XCTAssertEqual(scheme.onPrimaryContainer, 0xff00_00_3d)
+  }
+
+  func testDarkTheme_MinContrast_OnTertiaryContainer() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: true, contrastLevel: -1.0)
+    XCTAssertEqual(scheme.onTertiaryContainer, 0xffc2_54_de)
+  }
+
+  func testDarkTheme_StandardContrast_OnTertiaryContainer() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: true, contrastLevel: 0.0)
+    XCTAssertEqual(scheme.onTertiaryContainer, 0xfff0_9f_ff)
+  }
+
+  func testDarkTheme_MaxContrast_OnTertiaryContainer() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: true, contrastLevel: 1.0)
+    XCTAssertEqual(scheme.onTertiaryContainer, 0xff1a_00_22)
+  }
+
+  func testDarkTheme_MinContrast_Surface() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: true, contrastLevel: -1.0)
+    XCTAssertEqual(scheme.surface, 0xff12_12_1d)
+  }
+
+  func testDarkTheme_StandardContrast_Surface() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: true, contrastLevel: 0.0)
+    XCTAssertEqual(scheme.surface, 0xff12_12_1d)
+  }
+
+  func testDarkTheme_MaxContrast_Surface() {
+    let scheme = SchemeContent(sourceColorHct: Hct(0xff00_00ff), isDark: true, contrastLevel: 1.0)
+    XCTAssertEqual(scheme.surface, 0xff12_12_1d)
+  }
+
+  func testLightTheme_MinContrast_ObjectionabeTertiaryContainerLightens() {
     let scheme = SchemeContent(
       sourceColorHct: Hct.fromInt(0xff85_0096),
       isDark: false,
       contrastLevel: -1
     )
 
-    let color = MaterialDynamicColors.tertiaryContainer.getArgb(scheme)
-
-    XCTAssertEqual(color, 0xffff_ccd7)
+    XCTAssertEqual(scheme.tertiaryContainer, 0xffff_ccd7)
   }
 
-  func testLightThemeStandardContrastObjectionabeTertiaryContainerLightens() {
+  func testLightTheme_StandardContrast_ObjectionabeTertiaryContainerLightens() {
     let scheme = SchemeContent(
       sourceColorHct: Hct.fromInt(0xff85_0096),
       isDark: false,
       contrastLevel: 0
     )
 
-    XCTAssertEqual(MaterialDynamicColors.tertiaryContainer.getArgb(scheme), 0xff98_0249)
+    XCTAssertEqual(scheme.tertiaryContainer, 0xff98_0249)
   }
 
-  func testLightThemeMaxContrastObjectionabeTertiaryContainerDarkens() {
+  func testLightTheme_MaxContrast_ObjectionabeTertiaryContainerDarkens() {
     let scheme = SchemeContent(
       sourceColorHct: Hct.fromInt(0xff85_0096),
       isDark: false,
       contrastLevel: 1
     )
 
-    XCTAssertEqual(MaterialDynamicColors.tertiaryContainer.getArgb(scheme), 0xff93_0046)
+    XCTAssertEqual(scheme.tertiaryContainer, 0xff93_0046)
   }
 
   func testSchemeContentProvider_returnsIdeniticalSchemeWithSameSourceColor() {
