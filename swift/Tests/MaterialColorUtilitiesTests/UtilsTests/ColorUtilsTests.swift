@@ -24,6 +24,21 @@ final class ColorUtilsTests: XCTestCase {
     }
   }
 
+  func testArgbFromRgbReturnsCorrectValueForBlack() {
+    XCTAssertEqual(ColorUtils.argbFromRgb(0, 0, 0), 0xff00_0000)
+    XCTAssertEqual(ColorUtils.argbFromRgb(0, 0, 0), 4_278_190_080)
+  }
+
+  func testArgbFromRgbReturnsCorrectValueForWhite() {
+    XCTAssertEqual(ColorUtils.argbFromRgb(255, 255, 255), 0xffff_ffff)
+    XCTAssertEqual(ColorUtils.argbFromRgb(255, 255, 255), 4_294_967_295)
+  }
+
+  func testArgbFromRgbReturnsCorrectValueForRandomColor() {
+    XCTAssertEqual(ColorUtils.argbFromRgb(50, 150, 250), 0xff32_96fa)
+    XCTAssertEqual(ColorUtils.argbFromRgb(50, 150, 250), 4_281_505_530)
+  }
+
   func testYToLstarToY() {
     for y in createRange(0, 100, 1001) {
       let result = ColorUtils.yFromLstar(ColorUtils.lstarFromY(y))

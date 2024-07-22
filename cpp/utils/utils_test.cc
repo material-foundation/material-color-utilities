@@ -33,6 +33,21 @@ constexpr double kMatrix[3][3] = {
     {-7, -8, -9},
 };
 
+TEST(ArgbFromRgbTest, ReturnsCorrectValueForBlack) {
+  EXPECT_EQ(ArgbFromRgb(0, 0, 0), 0xff000000);
+  EXPECT_EQ(ArgbFromRgb(0, 0, 0), 4278190080);
+}
+
+TEST(ArgbFromRgbTest, ReturnsCorrectValueForWhite) {
+  EXPECT_EQ(ArgbFromRgb(255, 255, 255), 0xffffffff);
+  EXPECT_EQ(ArgbFromRgb(255, 255, 255), 4294967295);
+}
+
+TEST(ArgbFromRgbTest, ReturnsCorrectValueForRandomColor) {
+  EXPECT_EQ(ArgbFromRgb(50, 150, 250), 0xff3296fa);
+  EXPECT_EQ(ArgbFromRgb(50, 150, 250), 4281505530);
+}
+
 TEST(UtilsTest, Signum) {
   EXPECT_EQ(Signum(0.001), 1);
   EXPECT_EQ(Signum(3.0), 1);

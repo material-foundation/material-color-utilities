@@ -33,6 +33,23 @@ void main() {
     }
   });
 
+  group('argbFromRgb', () {
+    test('returns correct value for black', () {
+      expect(ColorUtils.argbFromRgb(0, 0, 0), 0xff000000);
+      expect(ColorUtils.argbFromRgb(0, 0, 0), 4278190080);
+    });
+
+    test('returns correct value for white', () {
+      expect(ColorUtils.argbFromRgb(255, 255, 255), 0xffffffff);
+      expect(ColorUtils.argbFromRgb(255, 255, 255), 4294967295);
+    });
+
+    test('returns correct value for random color', () {
+      expect(ColorUtils.argbFromRgb(50, 150, 250), 0xff3296fa);
+      expect(ColorUtils.argbFromRgb(50, 150, 250), 4281505530);
+    });
+  });
+
   test('y_to_lstar_to_y', () {
     for (final y in _range(0, 100, 1001)) {
       expect(

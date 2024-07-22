@@ -20,6 +20,23 @@ import 'jasmine';
 import * as colorUtils from './color_utils.js';
 import * as mathUtils from './math_utils.js';
 
+describe('argbFromRgb', () => {
+  it('returns correct value for black', () => {
+    expect(colorUtils.argbFromRgb(255, 255, 255)).toBe(0xffffffff);
+    expect(colorUtils.argbFromRgb(255, 255, 255)).toBe(4294967295);
+  });
+
+  it('returns correct value for white', () => {
+    expect(colorUtils.argbFromRgb(0, 0, 0)).toBe(0xff000000);
+    expect(colorUtils.argbFromRgb(0, 0, 0)).toBe(4278190080);
+  });
+
+  it('returns correct value for random color', () => {
+    expect(colorUtils.argbFromRgb(50, 150, 250)).toBe(0xff3296fa);
+    expect(colorUtils.argbFromRgb(50, 150, 250)).toBe(4281505530);
+  });
+});
+
 function rotationDirection(from: number, to: number): number {
   const a = to - from;
   const b = to - from + 360.0;
