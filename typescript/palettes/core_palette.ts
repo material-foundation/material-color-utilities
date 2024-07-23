@@ -20,7 +20,8 @@ import {Hct} from '../hct/hct.js';
 import {TonalPalette} from './tonal_palette.js';
 
 /**
- * Set of colors to generate a [CorePalette] from
+ * @deprecated Use {@link DynamicScheme} for color scheme generation.
+ * Use {@link CorePalettes} for core palettes container class.
  */
 export interface CorePaletteColors {
   primary: number;
@@ -35,6 +36,9 @@ export interface CorePaletteColors {
  * An intermediate concept between the key color for a UI theme, and a full
  * color scheme. 5 sets of tones are generated, all except one use the same hue
  * as the key color, and all vary in chroma.
+ *
+ * @deprecated Use {@link DynamicScheme} for color scheme generation.
+ * Use {@link CorePalettes} for core palettes container class.
  */
 export class CorePalette {
   a1: TonalPalette;
@@ -46,6 +50,9 @@ export class CorePalette {
 
   /**
    * @param argb ARGB representation of a color
+   *
+   * @deprecated Use {@link DynamicScheme} for color scheme generation.
+   * Use {@link CorePalettes} for core palettes container class.
    */
   static of(argb: number): CorePalette {
     return new CorePalette(argb, false);
@@ -53,6 +60,9 @@ export class CorePalette {
 
   /**
    * @param argb ARGB representation of a color
+   *
+   * @deprecated Use {@link DynamicScheme} for color scheme generation.
+   * Use {@link CorePalettes} for core palettes container class.
    */
   static contentOf(argb: number): CorePalette {
     return new CorePalette(argb, true);
@@ -60,6 +70,9 @@ export class CorePalette {
 
   /**
    * Create a [CorePalette] from a set of colors
+   *
+   * @deprecated Use {@link DynamicScheme} for color scheme generation.
+   * Use {@link CorePalettes} for core palettes container class.
    */
   static fromColors(colors: CorePaletteColors): CorePalette {
     return CorePalette.createPaletteFromColors(false, colors);
@@ -67,6 +80,9 @@ export class CorePalette {
 
   /**
    * Create a content [CorePalette] from a set of colors
+   *
+   * @deprecated Use {@link DynamicScheme} for color scheme generation.
+   * Use {@link CorePalettes} for core palettes container class.
    */
   static contentFromColors(colors: CorePaletteColors): CorePalette {
     return CorePalette.createPaletteFromColors(true, colors);

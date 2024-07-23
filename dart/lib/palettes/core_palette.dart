@@ -20,6 +20,8 @@ import 'package:material_color_utilities/palettes/tonal_palette.dart';
 /// An intermediate concept between the key color for a UI theme, and a full
 /// color scheme. 5 tonal palettes are generated, all except one use the same
 /// hue as the key color, and all vary in chroma.
+@Deprecated('Use [DynamicScheme] for color scheme generation.'
+    'Use [CorePalettes] for core palettes container class.')
 class CorePalette {
   /// The number of generated tonal palettes.
   static const size = 5;
@@ -32,11 +34,15 @@ class CorePalette {
   final TonalPalette error = TonalPalette.of(25, 84);
 
   /// Create a [CorePalette] from a source ARGB color.
+  @Deprecated('Use [DynamicScheme] for color scheme generation.'
+      'Use [CorePalettes] for core palettes container class.')
   static CorePalette of(int argb) {
     final cam = Cam16.fromInt(argb);
     return CorePalette._(cam.hue, cam.chroma);
   }
 
+  @Deprecated('Use [DynamicScheme] for color scheme generation.'
+      'Use [CorePalettes] for core palettes container class.')
   CorePalette._(double hue, double chroma)
       : primary = TonalPalette.of(hue, math.max(48, chroma)),
         secondary = TonalPalette.of(hue, 16),
@@ -50,6 +56,8 @@ class CorePalette {
     return CorePalette._contentOf(cam.hue, cam.chroma);
   }
 
+  @Deprecated('Use [DynamicScheme] for color scheme generation.'
+      'Use [CorePalettes] for core palettes container class.')
   CorePalette._contentOf(double hue, double chroma)
       : primary = TonalPalette.of(hue, chroma),
         secondary = TonalPalette.of(hue, chroma / 3),
@@ -61,6 +69,8 @@ class CorePalette {
   /// representing concatenated tonal palettes.
   ///
   /// Inverse of [asList].
+  @Deprecated('Use [DynamicScheme] for color scheme generation.'
+      'Use [CorePalettes] for core palettes container class.')
   CorePalette.fromList(List<int> colors)
       : assert(colors.length == size * TonalPalette.commonSize),
         primary = TonalPalette.fromList(
@@ -77,6 +87,8 @@ class CorePalette {
   /// Returns a list of ARGB color [int]s from concatenated tonal palettes.
   ///
   /// Inverse of [CorePalette.fromList].
+  @Deprecated('Use [DynamicScheme] for color scheme generation.'
+      'Use [CorePalettes] for core palettes container class.')
   List<int> asList() => [
         ...primary.asList,
         ...secondary.asList,

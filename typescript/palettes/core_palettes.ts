@@ -1,5 +1,6 @@
-/*
- * Copyright 2022 Google LLC
+/**
+ * @license
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +15,16 @@
  * limitations under the License.
  */
 
-#ifndef CPP_PALETTES_CORE_H_
-#define CPP_PALETTES_CORE_H_
-
-#include "cpp/palettes/tones.h"
-
-namespace material_color_utilities {
+import {TonalPalette} from './tonal_palette.js';
 
 /**
  * Comprises foundational palettes to build a color scheme. Generated from a
  * source color, these palettes will then be part of a [DynamicScheme] together
  * with appearance preferences.
-*/
-typedef struct {
-    TonalPalette primary;
-    TonalPalette secondary;
-    TonalPalette tertiary;
-    TonalPalette neutral;
-    TonalPalette neutral_variant;
-} CorePalettes;
-
-}  // namespace material_color_utilities
-
-#endif  // CPP_PALETTES_CORE_H_
+ */
+export class CorePalettes {
+  constructor(
+      public primary: TonalPalette, public secondary: TonalPalette,
+      public tertiary: TonalPalette, public neutral: TonalPalette,
+      public neutralVariant: TonalPalette) {}
+}
