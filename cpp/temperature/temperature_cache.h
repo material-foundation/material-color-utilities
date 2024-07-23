@@ -19,6 +19,7 @@
 
 #include <map>
 #include <vector>
+#include <optional>
 
 #include "cpp/cam/hct.h"
 
