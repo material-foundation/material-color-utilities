@@ -1,8 +1,22 @@
 # Material Color Utilities
 
-Algorithms and utilities that power the Material Design 3 (M3) color system,
-including choosing theme colors from images and creating tones of colors; all in
-a new color space.
+Color is a powerful design tool and part of the Material system along with
+styles like typography and shape. In products, colors and the way they are used
+can be vast and varied. An app’s color scheme can express brand and style.
+Semantic colors can communicate meaning. And color control contrast supports
+visual accessibility.
+
+In many design systems of the past, designers manually picked app colors to
+support the necessary range of color applications and use cases. Material 3
+introduces a dynamic color system, which does not rely on hand-picked colors.
+Instead, it uses color algorithms to generate beautiful, accessible color
+schemes based on dynamic inputs like a user’s wallpaper. This enables greater
+flexibility, personalization, and expression, all while streamlining work for
+designers and teams.
+
+Material Color Ultilities (MCU) powers dynamic color with a set of color
+libraries containing algorithms and utilities that make it easier for you to
+develop color themes and schemes in your app.
 
 <video autoplay muted loop src="https://user-images.githubusercontent.com/6655696/146014425-8e8e04bc-e646-4cc2-a3e7-97497a3e1b09.mp4" data-canonical-src="https://user-images.githubusercontent.com/6655696/146014425-8e8e04bc-e646-4cc2-a3e7-97497a3e1b09.mp4" class="d-block rounded-bottom-2 width-fit" style="max-width:640px;"></video>
 
@@ -16,28 +30,22 @@ Dart        | ✅             | [![pub package](https://img.shields.io/pub/v/mat
 Java        | ✅             | [MDC-Android](https://github.com/material-components/material-components-android/blob/master/docs/theming/Color.md)
 Swift       | ✅             |
 TypeScript  | ✅             | [![npm package](https://badgen.net/npm/v/@material/material-color-utilities)](https://npmjs.com/package/@material/material-color-utilities)
-GLSL        | *Coming soon* |
 
 Need another platform/language? Check the
 [existing issues](https://github.com/material-foundation/material-color-utilities/labels/library%3A%20new)
 or open a new one.
 
-## Usage
-
-### Cheat sheet
+## Capabilities Overview
 
 <a href="https://github.com/material-foundation/material-color-utilities/raw/main/cheat_sheet.png">
     <img alt="library cheat sheet" src="https://github.com/material-foundation/material-color-utilities/raw/main/cheat_sheet.png" style="max-width:640px;" />
 </a>
 
-### Components
-
-The library is composed of multiple components, each with its own folder and
-tests, each as small as possible.
-
-This enables easy merging and updating of subsets into other libraries, such as
-Material Design Components, Android System UI, etc. Not all consumers will need
-every component — ex. MDC doesn’t need quantization/scoring/image extraction.
+The library consists of various components, each having its own folder and
+ tests, designed to be as self-contained as possible. This enables seamless
+ integration of subsets into other libraries, like Material Design Components
+ and Android System UI. Some consumers do not require all components, for
+ example, MDC doesn’t need quantization, scoring, image extraction.
 
 
 | Components       | Purpose                                                   |
@@ -54,16 +62,14 @@ every component — ex. MDC doesn’t need quantization/scoring/image extraction
 | **temperature**  | Obtain analogous and complementary colors                 |
 | **utilities**    | Color — convert between color spaces needed to implement HCT/CAM16 <br>Math — functions for ex. ensuring hue is between 0 and 360, clamping, etc. <br>String - convert between strings and integers |
 
-## Background
+## Learn about color science
 
 [The Science of Color & Design - Material Design](https://material.io/blog/science-of-color-design)
 
-## Design tooling
+## Try it out
 
-The
-[Material Theme Builder](https://www.figma.com/community/plugin/1034969338659738588/Material-Theme-Builder)
-Figma plugin and
-[web tool](https://material-foundation.github.io/material-theme-builder/) are
-recommended for design workflows. The Material Theme Builder delivers dynamic
-color to where design is done. Designers can take an existing design, and see
-what it looks like under different themes, with just a couple clicks.
+### Material Theme Builder 
+
+We recommend incorporating Material Theme Builder 
+[Figma plugin](https://www.figma.com/community/plugin/1034969338659738588/Material-Theme-Builder) and
+[web tool](https://material-foundation.github.io/material-theme-builder/) into the design workflow. With them, designers can easily experiment with different dynamic color themes and see how they transform their designs with just a few clicks.

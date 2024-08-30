@@ -1,37 +1,13 @@
-# Contrast
+# Refining Contrast
 
+In this guide, you will learn how to manually refine color contrast using the
+MCU contrast library. For optimal color contrast, we recommend using the
+`DynamicColor` and `DynamicScheme` features in your production.
 
+See [Contrast for Accessibility](../concepts/contrast_for_accessibility.md) for
+a conceptual overview.
 
-## Overview
-
-MCU uses **contrast ratio** to measure the contrast between colors and ensure
-legibility. The `contrast` part of the library contains a few helper functions
-related to contrast ratios.
-
-Contrast ratio is based on `Y`, a component in the CIEXYZ color space that
-measures brightness. `Y` is in a one-to-one relationship with `L*` from CIELab.
-
-Given two colors where the lighter color's `Y` is `yL` the darker color's `Y` is
-`yD`, the contrast ratio is defined as:
-
-```
-contrast_ratio = (yL + 5.0) / (yD + 5.0)
-```
-
-The contrast ratio between a color and itself is 1.0.
-
-The contrast ratio between black and white is 21.0.
-
-Generally, text is considered legible against a background when the two colors
-have a contrast ratio of at least 4.5.
-
-## Usage
-
-The contrast library allows manual control of contrast. However, we recommend
-using the `DynamicColor` and `DynamicScheme` features in production, which are
-able to generate color schemes that contrast well.
-
-## Measuring contrast
+## Calculating contrast ratio
 
 To measure the contrast of two colors, use the `ratioOfTones` method on the
 tones (`L*`) of the two colors.
@@ -114,8 +90,9 @@ cannot be reached, whereas `darkerUnsafe` and `lighterUnsafe` will return `0`
 (tone of black) and `100` (tone of white), respectively, making the contrast
 ratio as high as possible.
 
-The word "unsafe" in the names mean they may return a color without guaranteeing
-contrast ratio. These functions do not cause actual damage.
+The word "unsafe" in the names means they may return a color without
+guaranteeing contrast ratio. These functions do not crash but their output
+colors may not meet accessibility standards.
 
 <section>
 

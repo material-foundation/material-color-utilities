@@ -1,23 +1,17 @@
 # Extracting colors from an image
 
-
-
-To extract colors from an image that are suitable for generating schemes, use
-the `quantize` and `score` libraries.
-
-TODO: Insert here a diagram for image-to-colors extraction.
+See [Color Extraction](../concepts/color_extraction.md) for a conceptual
+overview.
 
 ## Step 1 — Image to Pixels
 
-First, convert an image into **an array of pixels in ARGB
-format**. MCU does not provide this feature; please use the idiomatic method
-provided by your language.
-
-If the image is larger than 128 × 128 pixels, please scale the image down to 128
-× 128 before converting it to an array of pixels. This ensures the speed of
+The first step is to convert an image into **an array of pixels in ARGB
+format**. Prior to that, please resize it to 128 × 128 dimensions for faster
 processing.
 
-For example, in Java, one may use the `BufferedImage.getRGB` method:
+MCU does not provide this feature, so you’ll have to rely on the idiomatic
+method in your programming language. For example, in Java, one may use the
+`BufferedImage.getRGB` method:
 
 ```java
 import java.awt.image.BufferedImage;
@@ -76,7 +70,7 @@ let quantizerResult = QuantizerCelebi().quantize(pixels, maxColors)
 The parameter `maxColors` is a limit on the number of colors returned by the
 quantizer. A reasonable default is 128.
 
-## Step 3 — Prominent Colors to Suitable Seed Colors
+## Step 3 — Prominent Colors to Source Colors
 
 Use the `Score.score` method provided by the `score` library to extract colors
 that are suitable as seeds for color schemes, ranked by decreasing suitability.
