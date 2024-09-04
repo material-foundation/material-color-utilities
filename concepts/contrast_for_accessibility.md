@@ -21,8 +21,8 @@ format.
 
 Contrast ratio is based on `Y`, a component in the CIEXYZ color space that
 measures brightness. `Y` is in a one-to-one relationship with `L*` from CIELab.
-Given two colors where the lighter color's `Y` is `yL` the darker color's `Y` is
-`yD`, the contrast ratio is defined as:
+Given two colors where the lighter color's `Y` is `yL` and the darker color's
+`Y` is `yD`, the contrast ratio is defined as:
 
 ```
 contrast_ratio = (yL + 5.0) / (yD + 5.0)

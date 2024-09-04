@@ -48,7 +48,7 @@ Key metrics include:
 ## To color themes
 
 Ever wonder how Pixel extracts colors from a phone wallpaper to create
-accessible and beautiful UIs? The steps can be summarized as below,
+accessible and beautiful UIs? The steps can be summarized as follows:
 
 1.  Quantize to obtain a representative set of colors from the wallpaper.
 1.  Score to obtain suitable source colors.

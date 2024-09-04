@@ -3,7 +3,7 @@
 Color is a powerful design tool and part of the Material system along with
 styles like typography and shape. In products, colors and the way they are used
 can be vast and varied. An app’s color scheme can express brand and style.
-Semantic colors can communicate meaning. And color control contrast supports
+Semantic colors can communicate meaning. And color contrast control supports
 visual accessibility.
 
 In many design systems of the past, designers manually picked app colors to
@@ -68,8 +68,11 @@ The library consists of various components, each having its own folder and
 
 ## Try it out
 
-### Material Theme Builder 
+### Material Theme Builder
 
-We recommend incorporating Material Theme Builder 
-[Figma plugin](https://www.figma.com/community/plugin/1034969338659738588/Material-Theme-Builder) and
-[web tool](https://material-foundation.github.io/material-theme-builder/) into the design workflow. With them, designers can easily experiment with different dynamic color themes and see how they transform their designs with just a few clicks.
+We recommend incorporating the Material Theme Builder
+[Figma plugin](https://www.figma.com/community/plugin/1034969338659738588/Material-Theme-Builder)
+and [web tool](https://material-foundation.github.io/material-theme-builder/)
+into the design workflow. With them, designers can easily experiment with
+different dynamic color themes and see how they transform their designs with
+just a few clicks.

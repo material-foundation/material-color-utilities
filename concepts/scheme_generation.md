@@ -2,8 +2,8 @@
 
 ## Requirements for Dynamic Scheme
 
-As described in [Dynamic Color Scheme](dynamic_color_scheme.md), MCU generating
-a `DynamicScheme` is to create colors that satisfy constraints on visual
+As described in [Dynamic Color Scheme](dynamic_color_scheme.md), `DynamicScheme`
+generation aims to generate colors that satisfy constraints on visual
 accessibility and visual expression and trueness of colors.
 
 ### Hard constraints
@@ -16,19 +16,19 @@ accessibility and visual expression and trueness of colors.
 1.  secondaryContainer prioritizes matching chroma over tone. This implies that
     it may adjust tone, in a specific direction, to achieve chroma as close as
     possible to the desired chroma.
-1.  tertiaryContainer should not be disliked or lightened otherwises.
+1.  tertiaryContainer should not be disliked, otherwise it would be lightened.
 
 ### Soft constraints
 
 1.  Tone should be as close to a "reference standard" as possible.
-1.  The distribution of tone should be even across colors.
+1.  The distribution of tones should be even across colors.
 1.  The contrast level should ideally be at a certain level, but it is not
     required.
 
 ## How MCU derives Dynamic Scheme
 
 Above constraints are expressed as algebraic formulas and solved in the
-following steps,
+following steps:
 
 ### 1. Starting tone specs
 

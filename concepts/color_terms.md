@@ -10,12 +10,13 @@ constraints in Dynamic Scheme.
 [Material color roles](https://m3.material.io/styles/color/roles) are like the
 "numbers" on a paint-by-number canvas. They are the connective tissue between
 elements of the UI and what color goes where. Roughly speaking, MCU assigns each
-color role with a value from a specific tonal palette. For example, `onSurface`
-color, use a color from the Neutral Palette with tone 30 in light scheme.
+color role with a value from a specific tonal palette. For example, the
+`onSurface` color uses a color from the Neutral Palette with tone 30 in light
+scheme.
 
 ### Dynamic Scheme
 
-Dynamic Scheme comprised by color attributes that are combined in a
+The Dynamic Scheme is comprised of color attributes that are combined in a
 predetermined way to meet the needs of a user context or preference. It is
 essentially a mapping of color roles to color at specific tone in a tonal
 palette. For example, primary = *207H 80C 90T*, onPrimary = *207H 80C 40T*.

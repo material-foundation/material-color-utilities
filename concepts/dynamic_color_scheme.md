@@ -25,12 +25,12 @@ smaller difference create lower contrast.
 ## What is Dynamic Scheme?
 
 `DynamicScheme` is the most important interface for dynamic color clients. It is
-a scheme that clients can choose what color goes to which elements of the UI. A
-helpful analogy is to think of UI as a paint-by-number canvas, with color roles
-representing the "numbers" and `DynamicScheme` acting as a guideline to map from
-those numbers to actual colors. `DynamicScheme` abstracts away the exact color
-values, and the app developers only need to choose which color role to use at
-each element of the UI.
+a scheme that clients can use to choose what color goes to which elements of the
+UI. A helpful analogy is to think of UI as a paint-by-number canvas, with color
+roles representing the "numbers" and `DynamicScheme` acting as a guideline to
+map from those numbers to actual colors. `DynamicScheme` abstracts away the
+exact color values, and the app developers only need to choose which color role
+to use at each element of the UI.
 
 More specifically, `DynamicScheme` comprises assignments of color values from
 tonal palettes generated from user or app developer's preference to color roles.

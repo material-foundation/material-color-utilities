@@ -42,7 +42,7 @@ them with the `DynamicColor` class. We provide color role APIs like
 
 #### Method 1 — Using a variant
 
-The recommended way to generate a scheme from a source color is to use scheme
+The recommended way to generate a scheme from a source color is to use a scheme
 variant constructor, such as `SchemeTonalSpot`. The following example generates
 a `SchemeTonalSpot` scheme in light mode and default contrast from `hct` as
 source color in HCT format.
@@ -84,7 +84,7 @@ let scheme = SchemeTonalSpot(
 
 </section>
 
-We provide below variants:
+We provide the below variants:
 
 *   Content
 *   Expressive
