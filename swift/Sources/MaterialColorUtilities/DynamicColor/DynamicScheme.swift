@@ -57,7 +57,7 @@ public class DynamicScheme: Equatable, Hashable {
   public let neutralVariantPalette: TonalPalette
 
   /// Given a tone, produces a reddish, colorful, color.
-  let errorPalette: TonalPalette
+  public let errorPalette: TonalPalette
 
   public init(
     sourceColorHct: Hct, variant: Variant, isDark: Bool,
