@@ -61,6 +61,16 @@ export async function sourceColorFromImage(image: HTMLImageElement) {
     }
   });
 
+  return sourceColorFromImageBytes(imageBytes);
+}
+
+/**
+ * Get the source color from image bytes.
+ *
+ * @param imageBytes The image bytes
+ * @return Source color - the color most suitable for creating a UI theme
+ */
+export function sourceColorFromImageBytes(imageBytes: Uint8ClampedArray) {
   // Convert Image data to Pixel Array
   const pixels: number[] = [];
   for (let i = 0; i < imageBytes.length; i += 4) {
