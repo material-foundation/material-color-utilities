@@ -144,6 +144,86 @@ export class Scheme {
     return this.props.inversePrimary;
   }
 
+  get surfaceContainerLowest(): number {
+    return this.props.surfaceContainerLowest;
+  }
+
+  get surfaceContainerLow(): number {
+    return this.props.surfaceContainerLow;
+  }
+
+  get surfaceContainer(): number {
+    return this.props.surfaceContainer;
+  }
+
+  get surfaceContainerHigh(): number {
+    return this.props.surfaceContainerHigh;
+  }
+
+  get surfaceContainerHighest(): number {
+    return this.props.surfaceContainerHighest;
+  }
+
+  get primaryFixed(): number {
+    return this.props.primaryFixed;
+  }
+
+  get onPrimaryFixed(): number {
+    return this.props.onPrimaryFixed;
+  }
+
+  get primaryFixedDim(): number {
+    return this.props.primaryFixedDim;
+  }
+
+  get onPrimaryFixedVariant(): number {
+    return this.props.onPrimaryFixedVariant;
+  }
+
+  get secondaryFixed(): number {
+    return this.props.secondaryFixed;
+  }
+
+  get onSecondaryFixed(): number {
+    return this.props.onSecondaryFixed;
+  }
+
+  get secondaryFixedDim(): number {
+    return this.props.secondaryFixedDim;
+  }
+
+  get onSecondaryFixedVariant(): number {
+    return this.props.onSecondaryFixedVariant;
+  }
+
+  get tertiaryFixed(): number {
+    return this.props.tertiaryFixed;
+  }
+
+  get onTertiaryFixed(): number {
+    return this.props.onTertiaryFixed;
+  }
+
+  get tertiaryFixedDim(): number {
+    return this.props.tertiaryFixedDim;
+  }
+
+  get onTertiaryFixedVariant(): number {
+    return this.props.onTertiaryFixedVariant;
+  }
+
+  get surfaceBright(): number {
+    return this.props.surfaceBright;
+  }
+
+  get surfaceDim(): number {
+    return this.props.surfaceDim;
+  }
+
+  get surfaceTint(): number {
+    return this.props.surfaceTint;
+  }
+
   /**
    * @param argb ARGB representation of a color.
    * @return Light Material color scheme, based on the color's hue.
@@ -197,9 +277,9 @@ export class Scheme {
       onError: core.error.tone(100),
       errorContainer: core.error.tone(90),
       onErrorContainer: core.error.tone(10),
-      background: core.n1.tone(99),
+      background: core.n1.tone(98),
       onBackground: core.n1.tone(10),
-      surface: core.n1.tone(99),
+      surface: core.n1.tone(98),
       onSurface: core.n1.tone(10),
       surfaceVariant: core.n2.tone(90),
       onSurfaceVariant: core.n2.tone(30),
@@ -209,7 +289,27 @@ export class Scheme {
       scrim: core.n1.tone(0),
       inverseSurface: core.n1.tone(20),
       inverseOnSurface: core.n1.tone(95),
-      inversePrimary: core.a1.tone(80)
+      inversePrimary: core.a1.tone(80),
+      surfaceContainerLowest: core.n1.tone(100),
+      surfaceContainerLow: core.n1.tone(96),
+      surfaceContainer: core.n1.tone(94),
+      surfaceContainerHigh: core.n1.tone(92),
+      surfaceContainerHighest: core.n1.tone(90),
+      primaryFixed: core.a1.tone(90),
+      onPrimaryFixed: core.a1.tone(10),
+      primaryFixedDim: core.a1.tone(80),
+      onPrimaryFixedVariant: core.a1.tone(30),
+      secondaryFixed: core.a2.tone(90),
+      onSecondaryFixed: core.a2.tone(10),
+      secondaryFixedDim: core.a2.tone(80),
+      onSecondaryFixedVariant: core.a2.tone(30),  
+      tertiaryFixed: core.a3.tone(90),
+      onTertiaryFixed: core.a3.tone(10),
+      tertiaryFixedDim: core.a3.tone(80),
+      onTertiaryFixedVariant: core.a3.tone(30),
+      surfaceBright: core.n1.tone(98),
+      surfaceDim: core.n1.tone(87),
+      surfaceTint: core.a1.tone(40),
     });
   }
 
@@ -233,10 +333,10 @@ export class Scheme {
       error: core.error.tone(80),
       onError: core.error.tone(20),
       errorContainer: core.error.tone(30),
-      onErrorContainer: core.error.tone(80),
-      background: core.n1.tone(10),
+      onErrorContainer: core.error.tone(90),
+      background: core.n1.tone(6),
       onBackground: core.n1.tone(90),
-      surface: core.n1.tone(10),
+      surface: core.n1.tone(6),
       onSurface: core.n1.tone(90),
       surfaceVariant: core.n2.tone(30),
       onSurfaceVariant: core.n2.tone(80),
@@ -246,7 +346,27 @@ export class Scheme {
       scrim: core.n1.tone(0),
       inverseSurface: core.n1.tone(90),
       inverseOnSurface: core.n1.tone(20),
-      inversePrimary: core.a1.tone(40)
+      inversePrimary: core.a1.tone(40),
+      surfaceContainerLowest: core.n1.tone(4),
+      surfaceContainerLow: core.n1.tone(10),
+      surfaceContainer: core.n1.tone(12),
+      surfaceContainerHigh: core.n1.tone(17),
+      surfaceContainerHighest: core.n1.tone(22),
+      primaryFixed: core.a1.tone(90),
+      onPrimaryFixed: core.a1.tone(10),
+      primaryFixedDim: core.a1.tone(80),
+      onPrimaryFixedVariant: core.a1.tone(30),
+      secondaryFixed: core.a2.tone(90),
+      onSecondaryFixed: core.a2.tone(10),
+      secondaryFixedDim: core.a2.tone(80),
+      onSecondaryFixedVariant: core.a2.tone(30),  
+      tertiaryFixed: core.a3.tone(90),
+      onTertiaryFixed: core.a3.tone(10),
+      tertiaryFixedDim: core.a3.tone(80),
+      onTertiaryFixedVariant: core.a3.tone(30),
+      surfaceBright: core.n1.tone(24),
+      surfaceDim: core.n1.tone(6),
+      surfaceTint: core.a1.tone(80),
     });
   }
 
@@ -279,7 +399,27 @@ export class Scheme {
     scrim: number,
     inverseSurface: number,
     inverseOnSurface: number,
-    inversePrimary: number
+    inversePrimary: number,
+    surfaceContainerLowest: number,
+    surfaceContainerLow: number,
+    surfaceContainer: number,
+    surfaceContainerHigh: number,
+    surfaceContainerHighest: number,
+    primaryFixed: number,
+    onPrimaryFixed: number,
+    primaryFixedDim: number,
+    onPrimaryFixedVariant: number,
+    secondaryFixed: number,
+    onSecondaryFixed: number,
+    secondaryFixedDim: number,
+    onSecondaryFixedVariant: number  
+    tertiaryFixed: number,
+    onTertiaryFixed: number,
+    tertiaryFixedDim: number,
+    onTertiaryFixedVariant: number,
+    surfaceBright: number,
+    surfaceDim: number,
+    surfaceTint: number,
   }) {}
 
   toJSON() {
