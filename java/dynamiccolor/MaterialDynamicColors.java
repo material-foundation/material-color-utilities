@@ -17,8 +17,11 @@
 package dynamiccolor;
 
 import androidx.annotation.NonNull;
+import com.google.common.base.Function;
 import dislike.DislikeAnalyzer;
 import hct.Hct;
+import java.util.Arrays;
+import java.util.List;
 
 /** Named colors, otherwise known as tokens, or roles, in the Material Design system. */
 // Prevent lint for Function.apply not being available on Android before API level 14 (4.0.1).
@@ -931,6 +934,73 @@ public final class MaterialDynamicColors {
   public DynamicColor textHintInverse() {
     return DynamicColor.fromPalette(
         "text_hint_inverse", (s) -> s.neutralPalette, (s) -> s.isDark ? 10.0 : 90.0);
+  }
+
+  @NonNull
+  public static List<Function<MaterialDynamicColors, DynamicColor>> allDynamicColors() {
+    return Arrays.asList(
+        MaterialDynamicColors::primaryPaletteKeyColor,
+        MaterialDynamicColors::secondaryPaletteKeyColor,
+        MaterialDynamicColors::tertiaryPaletteKeyColor,
+        MaterialDynamicColors::neutralPaletteKeyColor,
+        MaterialDynamicColors::neutralVariantPaletteKeyColor,
+        MaterialDynamicColors::background,
+        MaterialDynamicColors::onBackground,
+        MaterialDynamicColors::surface,
+        MaterialDynamicColors::surfaceDim,
+        MaterialDynamicColors::surfaceBright,
+        MaterialDynamicColors::surfaceContainerLowest,
+        MaterialDynamicColors::surfaceContainerLow,
+        MaterialDynamicColors::surfaceContainer,
+        MaterialDynamicColors::surfaceContainerHigh,
+        MaterialDynamicColors::surfaceContainerHighest,
+        MaterialDynamicColors::onSurface,
+        MaterialDynamicColors::surfaceVariant,
+        MaterialDynamicColors::onSurfaceVariant,
+        MaterialDynamicColors::inverseSurface,
+        MaterialDynamicColors::inverseOnSurface,
+        MaterialDynamicColors::outline,
+        MaterialDynamicColors::outlineVariant,
+        MaterialDynamicColors::shadow,
+        MaterialDynamicColors::scrim,
+        MaterialDynamicColors::surfaceTint,
+        MaterialDynamicColors::primary,
+        MaterialDynamicColors::onPrimary,
+        MaterialDynamicColors::primaryContainer,
+        MaterialDynamicColors::onPrimaryContainer,
+        MaterialDynamicColors::inversePrimary,
+        MaterialDynamicColors::secondary,
+        MaterialDynamicColors::onSecondary,
+        MaterialDynamicColors::secondaryContainer,
+        MaterialDynamicColors::onSecondaryContainer,
+        MaterialDynamicColors::tertiary,
+        MaterialDynamicColors::onTertiary,
+        MaterialDynamicColors::tertiaryContainer,
+        MaterialDynamicColors::onTertiaryContainer,
+        MaterialDynamicColors::error,
+        MaterialDynamicColors::onError,
+        MaterialDynamicColors::errorContainer,
+        MaterialDynamicColors::onErrorContainer,
+        MaterialDynamicColors::primaryFixed,
+        MaterialDynamicColors::primaryFixedDim,
+        MaterialDynamicColors::onPrimaryFixed,
+        MaterialDynamicColors::onPrimaryFixedVariant,
+        MaterialDynamicColors::secondaryFixed,
+        MaterialDynamicColors::secondaryFixedDim,
+        MaterialDynamicColors::onSecondaryFixed,
+        MaterialDynamicColors::onSecondaryFixedVariant,
+        MaterialDynamicColors::tertiaryFixed,
+        MaterialDynamicColors::tertiaryFixedDim,
+        MaterialDynamicColors::onTertiaryFixed,
+        MaterialDynamicColors::onTertiaryFixedVariant,
+        MaterialDynamicColors::controlActivated,
+        MaterialDynamicColors::controlNormal,
+        MaterialDynamicColors::controlHighlight,
+        MaterialDynamicColors::textPrimaryInverse,
+        MaterialDynamicColors::textSecondaryAndTertiaryInverse,
+        MaterialDynamicColors::textPrimaryInverseDisableOnly,
+        MaterialDynamicColors::textSecondaryAndTertiaryInverseDisabled,
+        MaterialDynamicColors::textHintInverse);
   }
 
   private boolean isFidelity(DynamicScheme scheme) {
