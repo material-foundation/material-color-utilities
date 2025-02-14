@@ -32,7 +32,7 @@
     "**/*.ts"
   ],
   "exclude": [
-    "**/*_test.ts",
+    // "**/*_test.ts",
     "node_modules"
   ]
 }
