@@ -2,17 +2,14 @@ import { setupBuildHistogram } from './pipelines/buildHistogram.js';
 import { setupComputeMoments } from './pipelines/computeMoments.js';
 import { setupCreateBox } from './pipelines/createBox.js';
 import { setupCreateResult } from './pipelines/createResult.js';
-import { floatArrayToHex } from '../utils/color_utils.js';
 
 export async function extractDominantColorsWuGPU(
     device: GPUDevice,
-    source: ImageBitmap,
+    texture: GPUTexture,
+    textureSize: number,
     K: number
 ): Promise<GPUBuffer> {
     const WORKGROUP_SIZE = 16;
-
-    const width = source.width;
-    const height = source.height;
 
     const TOTAL_SIZE = 35937;
     const {
@@ -25,7 +22,7 @@ export async function extractDominantColorsWuGPU(
         inputBindGroup,
         buildHistogramBindGroup,
         buildHistogramBindGroupLayout
-    } = await setupBuildHistogram(device, source);
+    } = await setupBuildHistogram(device, texture);
 
     const {
         computeMomentsAxisBindGroups,
@@ -54,7 +51,7 @@ export async function extractDominantColorsWuGPU(
     buildHistogramPass.setPipeline(buildHistogramPipeline);
     buildHistogramPass.setBindGroup(0, inputBindGroup);
     buildHistogramPass.setBindGroup(1, buildHistogramBindGroup);
-    buildHistogramPass.dispatchWorkgroups(Math.ceil(width / WORKGROUP_SIZE), Math.ceil(height / WORKGROUP_SIZE));
+    buildHistogramPass.dispatchWorkgroups(Math.ceil(textureSize / 256));
     buildHistogramPass.end();
 
     const workGroupsPerDim = Math.ceil(32 / WORKGROUP_SIZE);
@@ -119,43 +116,4 @@ export async function extractDominantColorsWuGPU(
     await device.queue.onSubmittedWorkDone();
 
     return resultsBuffer;
-}
-
-export async function extractDominantColorsWu(
-    imageSource: ImageBitmap,
-    K: number
-): Promise<string[]> {
-    if (typeof navigator === 'undefined') {
-        throw new Error('Not in browser environment');
-    }
-
-    const adapter = await navigator.gpu.requestAdapter();
-    const device = await adapter?.requestDevice();
-    if (!device) {
-        throw new Error('WebGPU not supported');
-    }
-
-    const source = await createImageBitmap(imageSource, { colorSpaceConversion: 'none' });
-    const resultsBuffer = await extractDominantColorsWuGPU(device, source, K);
-
-    const stagingResultsBuffer = device.createBuffer({
-        size: 3 * K * Float32Array.BYTES_PER_ELEMENT,
-        usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ
-    });
-
-    const encoder = device.createCommandEncoder();
-    encoder.copyBufferToBuffer(
-        resultsBuffer, 0,
-        stagingResultsBuffer, 0,
-        3 * K * Float32Array.BYTES_PER_ELEMENT
-    );
-    device.queue.submit([encoder.finish()]);
-
-    await stagingResultsBuffer.mapAsync(GPUMapMode.READ, 0, 3 * K * Float32Array.BYTES_PER_ELEMENT);
-    const mappedData = stagingResultsBuffer.getMappedRange();
-    const results = new Float32Array(mappedData.slice(0));
-    stagingResultsBuffer.unmap();
-
-    const hexColors = floatArrayToHex(results.filter(x => x >= 0));
-    return hexColors;
 }

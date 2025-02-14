@@ -1,3 +1,5 @@
+import * as colorUtils from '../../../utils/color_utils.js';
+
 interface ComputeResult {
     colorCount: number;
     centroidsBuffer: GPUBuffer;
@@ -9,21 +11,15 @@ interface ComputeResult {
 
 export async function setupCompute(
     device: GPUDevice,
-    source: ImageBitmap,
+    pixels: number[],
     K: number
 ): Promise<ComputeResult> {
-    const canvas = new OffscreenCanvas(source.width, source.height);
-    const ctx = canvas.getContext('2d', { willReadFrequently: true }) as OffscreenCanvasRenderingContext2D;
-    if (!ctx) {
-        throw new Error('Could not get 2D context');
-    }
-    ctx.drawImage(source, 0, 0);
-    const imageData = ctx.getImageData(0, 0, source.width, source.height).data;
     const colorHistogram = new Map<number, number>();
-    for (let i = 0; i < imageData.length; i += 4) {
-        const r = imageData[i];
-        const g = imageData[i + 1];
-        const b = imageData[i + 2];
+    for (let i = 0; i < pixels.length; i++) {
+        const pixel = pixels[i];
+        const r = colorUtils.redFromArgb(pixel);
+        const g = colorUtils.greenFromArgb(pixel);
+        const b = colorUtils.blueFromArgb(pixel);
         const key = (r << 16) | (g << 8) | b;
         colorHistogram.set(key, (colorHistogram.get(key) ?? 0) + 1);
     }

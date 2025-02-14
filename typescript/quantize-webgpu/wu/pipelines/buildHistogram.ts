@@ -10,7 +10,7 @@ interface BuildHistogramResult {
     buildHistogramBindGroupLayout: GPUBindGroupLayout;
 }
 
-export async function setupBuildHistogram(device: GPUDevice, source: ImageBitmap): Promise<BuildHistogramResult> {
+export async function setupBuildHistogram(device: GPUDevice, texture: GPUTexture): Promise<BuildHistogramResult> {
     const histogramSize = 35937;
     const weightsBuffer = device.createBuffer({
         label: 'weights',
@@ -37,22 +37,6 @@ export async function setupBuildHistogram(device: GPUDevice, source: ImageBitmap
         size: histogramSize * 4,
         usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC
     });
-
-    const computeTexture = device.createTexture({
-        format: 'rgba8unorm',
-        size: [source.width, source.height],
-        usage:
-            GPUTextureUsage.TEXTURE_BINDING |
-            GPUTextureUsage.COPY_DST |
-            GPUTextureUsage.RENDER_ATTACHMENT |
-            GPUTextureUsage.STORAGE_BINDING
-    });
-
-    device.queue.copyExternalImageToTexture(
-        { source, flipY: true },
-        { texture: computeTexture },
-        { width: source.width, height: source.height }
-    );
 
     const inputBindGroupLayout = device.createBindGroupLayout({
         entries: [{
@@ -90,7 +74,7 @@ export async function setupBuildHistogram(device: GPUDevice, source: ImageBitmap
     const inputBindGroup = device.createBindGroup({
         layout: inputBindGroupLayout,
         entries: [
-            { binding: 0, resource: computeTexture.createView() }
+            { binding: 0, resource: texture.createView() }
         ]
     });
 

@@ -11,7 +11,7 @@ fn get_index(r: u32, g: u32, b: u32) -> u32 {
     return (r << (2 * INDEX_BITS)) + (r << (INDEX_BITS + 1)) + r + (g << INDEX_BITS) + g + b;
 }
 
-@compute @workgroup_size(16, 16)
+@compute @workgroup_size(256)
 fn cs(@builtin(global_invocation_id) id: vec3u) {
     let dimensions = textureDimensions(tex);
     let width = u32(dimensions.x);
