@@ -16,10 +16,13 @@
 
 package scheme;
 
+import static dynamiccolor.DynamicScheme.Platform.PHONE;
+
+import dynamiccolor.ColorSpec.SpecVersion;
+import dynamiccolor.ColorSpecs;
 import dynamiccolor.DynamicScheme;
 import dynamiccolor.Variant;
 import hct.Hct;
-import palettes.TonalPalette;
 
 /** A monochrome theme, colors are purely black / white / gray. */
 public class SchemeMonochrome extends DynamicScheme {
@@ -29,10 +32,18 @@ public class SchemeMonochrome extends DynamicScheme {
         Variant.MONOCHROME,
         isDark,
         contrastLevel,
-        TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 0.0),
-        TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 0.0),
-        TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 0.0),
-        TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 0.0),
-        TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 0.0));
+        ColorSpecs.get(SpecVersion.SPEC_2021)
+            .getPrimaryPalette(Variant.MONOCHROME, sourceColorHct, isDark, PHONE, contrastLevel),
+        ColorSpecs.get(SpecVersion.SPEC_2021)
+            .getSecondaryPalette(Variant.MONOCHROME, sourceColorHct, isDark, PHONE, contrastLevel),
+        ColorSpecs.get(SpecVersion.SPEC_2021)
+            .getTertiaryPalette(Variant.MONOCHROME, sourceColorHct, isDark, PHONE, contrastLevel),
+        ColorSpecs.get(SpecVersion.SPEC_2021)
+            .getNeutralPalette(Variant.MONOCHROME, sourceColorHct, isDark, PHONE, contrastLevel),
+        ColorSpecs.get(SpecVersion.SPEC_2021)
+            .getNeutralVariantPalette(
+                Variant.MONOCHROME, sourceColorHct, isDark, PHONE, contrastLevel),
+        ColorSpecs.get(SpecVersion.SPEC_2021)
+            .getErrorPalette(Variant.MONOCHROME, sourceColorHct, isDark, PHONE, contrastLevel));
   }
 }

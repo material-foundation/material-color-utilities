@@ -16,14 +16,13 @@
 
 package scheme;
 
-import static java.lang.Math.max;
+import static dynamiccolor.DynamicScheme.Platform.PHONE;
 
-import dislike.DislikeAnalyzer;
+import dynamiccolor.ColorSpec.SpecVersion;
+import dynamiccolor.ColorSpecs;
 import dynamiccolor.DynamicScheme;
 import dynamiccolor.Variant;
 import hct.Hct;
-import palettes.TonalPalette;
-import temperature.TemperatureCache;
 
 /**
  * A scheme that places the source color in Scheme.primaryContainer.
@@ -44,17 +43,18 @@ public class SchemeContent extends DynamicScheme {
         Variant.CONTENT,
         isDark,
         contrastLevel,
-        TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), sourceColorHct.getChroma()),
-        TonalPalette.fromHueAndChroma(
-            sourceColorHct.getHue(),
-            max(sourceColorHct.getChroma() - 32.0, sourceColorHct.getChroma() * 0.5)),
-        TonalPalette.fromHct(
-            DislikeAnalyzer.fixIfDisliked(
-                new TemperatureCache(sourceColorHct)
-                    .getAnalogousColors(/* count= */ 3, /* divisions= */ 6)
-                    .get(2))),
-        TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), sourceColorHct.getChroma() / 8.0),
-        TonalPalette.fromHueAndChroma(
-            sourceColorHct.getHue(), (sourceColorHct.getChroma() / 8.0) + 4.0));
+        ColorSpecs.get(SpecVersion.SPEC_2021)
+            .getPrimaryPalette(Variant.CONTENT, sourceColorHct, isDark, PHONE, contrastLevel),
+        ColorSpecs.get(SpecVersion.SPEC_2021)
+            .getSecondaryPalette(Variant.CONTENT, sourceColorHct, isDark, PHONE, contrastLevel),
+        ColorSpecs.get(SpecVersion.SPEC_2021)
+            .getTertiaryPalette(Variant.CONTENT, sourceColorHct, isDark, PHONE, contrastLevel),
+        ColorSpecs.get(SpecVersion.SPEC_2021)
+            .getNeutralPalette(Variant.CONTENT, sourceColorHct, isDark, PHONE, contrastLevel),
+        ColorSpecs.get(SpecVersion.SPEC_2021)
+            .getNeutralVariantPalette(
+                Variant.CONTENT, sourceColorHct, isDark, PHONE, contrastLevel),
+        ColorSpecs.get(SpecVersion.SPEC_2021)
+            .getErrorPalette(Variant.CONTENT, sourceColorHct, isDark, PHONE, contrastLevel));
   }
 }

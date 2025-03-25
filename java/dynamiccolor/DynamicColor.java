@@ -16,17 +16,13 @@
 
 package dynamiccolor;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.errorprone.annotations.Var;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import contrast.Contrast;
 import hct.Hct;
 import palettes.TonalPalette;
 import utils.MathUtils;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Function;
 
@@ -60,9 +56,10 @@ public final class DynamicColor {
   public final Function<DynamicScheme, TonalPalette> palette;
   public final Function<DynamicScheme, Double> tone;
   public final boolean isBackground;
+  public final Function<DynamicScheme, Double> chromaMultiplier;
   public final Function<DynamicScheme, DynamicColor> background;
   public final Function<DynamicScheme, DynamicColor> secondBackground;
-  public final ContrastCurve contrastCurve;
+  public final Function<DynamicScheme, ContrastCurve> contrastCurve;
   public final Function<DynamicScheme, ToneDeltaPair> toneDeltaPair;
 
   public final Function<DynamicScheme, Double> opacity;
@@ -107,16 +104,16 @@ public final class DynamicColor {
       @Nullable Function<DynamicScheme, DynamicColor> secondBackground,
       @Nullable ContrastCurve contrastCurve,
       @Nullable Function<DynamicScheme, ToneDeltaPair> toneDeltaPair) {
-
-    this.name = name;
-    this.palette = palette;
-    this.tone = tone;
-    this.isBackground = isBackground;
-    this.background = background;
-    this.secondBackground = secondBackground;
-    this.contrastCurve = contrastCurve;
-    this.toneDeltaPair = toneDeltaPair;
-    this.opacity = null;
+    this(
+        name,
+        palette,
+        tone,
+        isBackground,
+        background,
+        secondBackground,
+        contrastCurve,
+        toneDeltaPair,
+        /* opacity= */ null);
   }
 
   /**
@@ -159,10 +156,35 @@ public final class DynamicColor {
       @Nullable ContrastCurve contrastCurve,
       @Nullable Function<DynamicScheme, ToneDeltaPair> toneDeltaPair,
       @Nullable Function<DynamicScheme, Double> opacity) {
+    this(
+        name,
+        palette,
+        tone,
+        isBackground,
+        null,
+        background,
+        secondBackground,
+        (s) -> contrastCurve,
+        toneDeltaPair,
+        opacity);
+  }
+
+  public DynamicColor(
+      @NonNull String name,
+      @NonNull Function<DynamicScheme, TonalPalette> palette,
+      @NonNull Function<DynamicScheme, Double> tone,
+      boolean isBackground,
+      @Nullable Function<DynamicScheme, Double> chromaMultiplier,
+      @Nullable Function<DynamicScheme, DynamicColor> background,
+      @Nullable Function<DynamicScheme, DynamicColor> secondBackground,
+      @Nullable Function<DynamicScheme, ContrastCurve> contrastCurve,
+      @Nullable Function<DynamicScheme, ToneDeltaPair> toneDeltaPair,
+      @Nullable Function<DynamicScheme, Double> opacity) {
     this.name = name;
     this.palette = palette;
     this.tone = tone;
     this.isBackground = isBackground;
+    this.chromaMultiplier = chromaMultiplier;
     this.background = background;
     this.secondBackground = secondBackground;
     this.contrastCurve = contrastCurve;
@@ -290,14 +312,8 @@ public final class DynamicColor {
     if (cachedAnswer != null) {
       return cachedAnswer;
     }
-    // This is crucial for aesthetics: we aren't simply the taking the standard color
-    // and changing its tone for contrast. Rather, we find the tone for contrast, then
-    // use the specified chroma from the palette to construct a new color.
-    //
-    // For example, this enables colors with standard tone of T90, which has limited chroma, to
-    // "recover" intended chroma as contrast increases.
-    double tone = getTone(scheme);
-    Hct answer = palette.apply(scheme).getHct(tone);
+
+    Hct answer = ColorSpecs.get(scheme.specVersion).getHct(scheme, this);
     // NOMUTANTS--trivial test with onerous dependency injection requirement.
     if (hctCache.size() > 4) {
       hctCache.clear();
@@ -309,178 +325,7 @@ public final class DynamicColor {
 
   /** Returns the tone in HCT, ranging from 0 to 100, of the resolved color given scheme. */
   public double getTone(@NonNull DynamicScheme scheme) {
-    boolean decreasingContrast = scheme.contrastLevel < 0;
-
-    // Case 1: dual foreground, pair of colors with delta constraint.
-    if (toneDeltaPair != null) {
-      ToneDeltaPair toneDeltaPair = this.toneDeltaPair.apply(scheme);
-      DynamicColor roleA = toneDeltaPair.getRoleA();
-      DynamicColor roleB = toneDeltaPair.getRoleB();
-      double delta = toneDeltaPair.getDelta();
-      TonePolarity polarity = toneDeltaPair.getPolarity();
-      boolean stayTogether = toneDeltaPair.getStayTogether();
-
-      DynamicColor bg = background.apply(scheme);
-      double bgTone = bg.getTone(scheme);
-
-      boolean aIsNearer =
-          (polarity == TonePolarity.NEARER
-              || (polarity == TonePolarity.LIGHTER && !scheme.isDark)
-              || (polarity == TonePolarity.DARKER && scheme.isDark));
-      DynamicColor nearer = aIsNearer ? roleA : roleB;
-      DynamicColor farther = aIsNearer ? roleB : roleA;
-      boolean amNearer = name.equals(nearer.name);
-      double expansionDir = scheme.isDark ? 1 : -1;
-
-      // 1st round: solve to min, each
-      double nContrast = nearer.contrastCurve.get(scheme.contrastLevel);
-      double fContrast = farther.contrastCurve.get(scheme.contrastLevel);
-
-      // If a color is good enough, it is not adjusted.
-      // Initial and adjusted tones for `nearer`
-      double nInitialTone = nearer.tone.apply(scheme);
-      @Var
-      double nTone =
-          Contrast.ratioOfTones(bgTone, nInitialTone) >= nContrast
-              ? nInitialTone
-              : DynamicColor.foregroundTone(bgTone, nContrast);
-      // Initial and adjusted tones for `farther`
-      double fInitialTone = farther.tone.apply(scheme);
-      @Var
-      double fTone =
-          Contrast.ratioOfTones(bgTone, fInitialTone) >= fContrast
-              ? fInitialTone
-              : DynamicColor.foregroundTone(bgTone, fContrast);
-
-      if (decreasingContrast) {
-        // If decreasing contrast, adjust color to the "bare minimum"
-        // that satisfies contrast.
-        nTone = DynamicColor.foregroundTone(bgTone, nContrast);
-        fTone = DynamicColor.foregroundTone(bgTone, fContrast);
-      }
-
-      // If constraint is not satisfied, try another round.
-      if ((fTone - nTone) * expansionDir < delta) {
-        // 2nd round: expand farther to match delta.
-        fTone = MathUtils.clampDouble(0, 100, nTone + delta * expansionDir);
-        // If constraint is not satisfied, try another round.
-        if ((fTone - nTone) * expansionDir < delta) {
-          // 3rd round: contract nearer to match delta.
-          nTone = MathUtils.clampDouble(0, 100, fTone - delta * expansionDir);
-        }
-      }
-
-      // Avoids the 50-59 awkward zone.
-      if (50 <= nTone && nTone < 60) {
-        // If `nearer` is in the awkward zone, move it away, together with
-        // `farther`.
-        if (expansionDir > 0) {
-          nTone = 60;
-          fTone = max(fTone, nTone + delta * expansionDir);
-        } else {
-          nTone = 49;
-          fTone = min(fTone, nTone + delta * expansionDir);
-        }
-      } else if (50 <= fTone && fTone < 60) {
-        if (stayTogether) {
-          // Fixes both, to avoid two colors on opposite sides of the "awkward
-          // zone".
-          if (expansionDir > 0) {
-            nTone = 60;
-            fTone = max(fTone, nTone + delta * expansionDir);
-          } else {
-            nTone = 49;
-            fTone = min(fTone, nTone + delta * expansionDir);
-          }
-        } else {
-          // Not required to stay together; fixes just one.
-          if (expansionDir > 0) {
-            fTone = 60;
-          } else {
-            fTone = 49;
-          }
-        }
-      }
-
-      // Returns `nTone` if this color is `nearer`, otherwise `fTone`.
-      return amNearer ? nTone : fTone;
-    } else {
-      // Case 2: No contrast pair; just solve for itself.
-      @Var double answer = tone.apply(scheme);
-
-      if (background == null) {
-        return answer; // No adjustment for colors with no background.
-      }
-
-      double bgTone = background.apply(scheme).getTone(scheme);
-
-      double desiredRatio = contrastCurve.get(scheme.contrastLevel);
-
-      if (Contrast.ratioOfTones(bgTone, answer) >= desiredRatio) {
-        // Don't "improve" what's good enough.
-      } else {
-        // Rough improvement.
-        answer = DynamicColor.foregroundTone(bgTone, desiredRatio);
-      }
-
-      if (decreasingContrast) {
-        answer = DynamicColor.foregroundTone(bgTone, desiredRatio);
-      }
-
-      if (isBackground && 50 <= answer && answer < 60) {
-        // Must adjust
-        if (Contrast.ratioOfTones(49, bgTone) >= desiredRatio) {
-          answer = 49;
-        } else {
-          answer = 60;
-        }
-      }
-
-      if (secondBackground != null) {
-        // Case 3: Adjust for dual backgrounds.
-
-        double bgTone1 = background.apply(scheme).getTone(scheme);
-        double bgTone2 = secondBackground.apply(scheme).getTone(scheme);
-
-        double upper = max(bgTone1, bgTone2);
-        double lower = min(bgTone1, bgTone2);
-
-        if (Contrast.ratioOfTones(upper, answer) >= desiredRatio
-            && Contrast.ratioOfTones(lower, answer) >= desiredRatio) {
-          return answer;
-        }
-
-        // The darkest light tone that satisfies the desired ratio,
-        // or -1 if such ratio cannot be reached.
-        double lightOption = Contrast.lighter(upper, desiredRatio);
-
-        // The lightest dark tone that satisfies the desired ratio,
-        // or -1 if such ratio cannot be reached.
-        double darkOption = Contrast.darker(lower, desiredRatio);
-
-        // Tones suitable for the foreground.
-        ArrayList<Double> availables = new ArrayList<>();
-        if (lightOption != -1) {
-          availables.add(lightOption);
-        }
-        if (darkOption != -1) {
-          availables.add(darkOption);
-        }
-
-        boolean prefersLight =
-            DynamicColor.tonePrefersLightForeground(bgTone1)
-                || DynamicColor.tonePrefersLightForeground(bgTone2);
-        if (prefersLight) {
-          return (lightOption == -1) ? 100 : lightOption;
-        }
-        if (availables.size() == 1) {
-          return availables.get(0);
-        }
-        return (darkOption == -1) ? 0 : darkOption;
-      }
-
-      return answer;
-    }
+    return ColorSpecs.get(scheme.specVersion).getTone(scheme, this);
   }
 
   /**
@@ -542,5 +387,128 @@ public final class DynamicColor {
   /** Tones less than ~T50 always permit white at 4.5 contrast. */
   public static boolean toneAllowsLightForeground(double tone) {
     return Math.round(tone) <= 49;
+  }
+
+  public static Function<DynamicScheme, Double> getInitialToneFromBackground(
+      @Nullable Function<DynamicScheme, DynamicColor> background) {
+    if (background == null) {
+      return (s) -> 50.0;
+    }
+    return (s) -> background.apply(s) != null ? background.apply(s).getTone(s) : 50.0;
+  }
+
+  public Builder toBuilder() {
+    return new Builder()
+        .setName(this.name)
+        .setPalette(this.palette)
+        .setTone(this.tone)
+        .setIsBackground(this.isBackground)
+        .setChromaMultiplier(this.chromaMultiplier)
+        .setBackground(this.background)
+        .setSecondBackground(this.secondBackground)
+        .setContrastCurve(this.contrastCurve)
+        .setToneDeltaPair(this.toneDeltaPair)
+        .setOpacity(this.opacity);
+  }
+
+  /** Builder for {@link DynamicColor}. */
+  public static class Builder {
+    private String name;
+    private Function<DynamicScheme, TonalPalette> palette;
+    private Function<DynamicScheme, Double> tone;
+    private boolean isBackground;
+    private Function<DynamicScheme, Double> chromaMultiplier;
+    private Function<DynamicScheme, DynamicColor> background;
+    private Function<DynamicScheme, DynamicColor> secondBackground;
+    private Function<DynamicScheme, ContrastCurve> contrastCurve;
+    private Function<DynamicScheme, ToneDeltaPair> toneDeltaPair;
+    private Function<DynamicScheme, Double> opacity;
+
+    @CanIgnoreReturnValue
+    public Builder setName(@NonNull String name) {
+      this.name = name;
+      return this;
+    }
+
+    @CanIgnoreReturnValue
+    public Builder setPalette(@NonNull Function<DynamicScheme, TonalPalette> palette) {
+      this.palette = palette;
+      return this;
+    }
+
+    @CanIgnoreReturnValue
+    public Builder setTone(@NonNull Function<DynamicScheme, Double> tone) {
+      this.tone = tone;
+      return this;
+    }
+
+    @CanIgnoreReturnValue
+    public Builder setIsBackground(boolean isBackground) {
+      this.isBackground = isBackground;
+      return this;
+    }
+
+    @CanIgnoreReturnValue
+    public Builder setChromaMultiplier(@NonNull Function<DynamicScheme, Double> chromaMultiplier) {
+      this.chromaMultiplier = chromaMultiplier;
+      return this;
+    }
+
+    @CanIgnoreReturnValue
+    public Builder setBackground(@NonNull Function<DynamicScheme, DynamicColor> background) {
+      this.background = background;
+      return this;
+    }
+
+    @CanIgnoreReturnValue
+    public Builder setSecondBackground(
+        @NonNull Function<DynamicScheme, DynamicColor> secondBackground) {
+      this.secondBackground = secondBackground;
+      return this;
+    }
+
+    @CanIgnoreReturnValue
+    public Builder setContrastCurve(@NonNull Function<DynamicScheme, ContrastCurve> contrastCurve) {
+      this.contrastCurve = contrastCurve;
+      return this;
+    }
+
+    @CanIgnoreReturnValue
+    public Builder setToneDeltaPair(@NonNull Function<DynamicScheme, ToneDeltaPair> toneDeltaPair) {
+      this.toneDeltaPair = toneDeltaPair;
+      return this;
+    }
+
+    @CanIgnoreReturnValue
+    public Builder setOpacity(@NonNull Function<DynamicScheme, Double> opacity) {
+      this.opacity = opacity;
+      return this;
+    }
+
+    public DynamicColor build() {
+      if (this.background == null && this.secondBackground != null) {
+        throw new IllegalArgumentException(
+            "Color " + name + " has secondBackground defined, but background is not defined.");
+      }
+      if (this.background == null && this.contrastCurve != null) {
+        throw new IllegalArgumentException(
+            "Color " + name + " has contrastCurve defined, but background is not defined.");
+      }
+      if (this.background != null && this.contrastCurve == null) {
+        throw new IllegalArgumentException(
+            "Color " + name + " has background defined, but contrastCurve is not defined.");
+      }
+      return new DynamicColor(
+          this.name,
+          this.palette,
+          this.tone == null ? getInitialToneFromBackground(this.background) : this.tone,
+          this.isBackground,
+          this.chromaMultiplier,
+          this.background,
+          this.secondBackground,
+          this.contrastCurve,
+          this.toneDeltaPair,
+          this.opacity);
+    }
   }
 }
