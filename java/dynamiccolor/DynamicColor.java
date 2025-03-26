@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import contrast.Contrast;
+import dynamiccolor.ColorSpec.SpecVersion;
 import hct.Hct;
 import palettes.TonalPalette;
 import utils.MathUtils;
@@ -292,7 +293,7 @@ public final class DynamicColor {
    */
   public int getArgb(@NonNull DynamicScheme scheme) {
     int argb = getHct(scheme).toInt();
-    if (opacity == null) {
+    if (opacity == null || opacity.apply(scheme) == null) {
       return argb;
     }
     double percentage = opacity.apply(scheme);
@@ -485,6 +486,67 @@ public final class DynamicColor {
       return this;
     }
 
+    @CanIgnoreReturnValue
+    Builder extendSpecVersion(SpecVersion specVersion, DynamicColor extendedColor) {
+      validateExtendedColor(specVersion, extendedColor);
+
+      return new Builder()
+          .setName(this.name)
+          .setIsBackground(this.isBackground)
+          .setPalette(
+              (s) -> {
+                Function<DynamicScheme, TonalPalette> palette =
+                    s.specVersion == specVersion ? extendedColor.palette : this.palette;
+                return palette != null ? palette.apply(s) : null;
+              })
+          .setTone(
+              (s) -> {
+                Function<DynamicScheme, Double> tone =
+                    s.specVersion == specVersion ? extendedColor.tone : this.tone;
+                return tone != null ? tone.apply(s) : null;
+              })
+          .setChromaMultiplier(
+              (s) -> {
+                Function<DynamicScheme, Double> chromaMultiplier =
+                    s.specVersion == specVersion
+                        ? extendedColor.chromaMultiplier
+                        : this.chromaMultiplier;
+                return chromaMultiplier != null ? chromaMultiplier.apply(s) : 1.0;
+              })
+          .setBackground(
+              (s) -> {
+                Function<DynamicScheme, DynamicColor> background =
+                    s.specVersion == specVersion ? extendedColor.background : this.background;
+                return background != null ? background.apply(s) : null;
+              })
+          .setSecondBackground(
+              (s) -> {
+                Function<DynamicScheme, DynamicColor> secondBackground =
+                    s.specVersion == specVersion
+                        ? extendedColor.secondBackground
+                        : this.secondBackground;
+                return secondBackground != null ? secondBackground.apply(s) : null;
+              })
+          .setContrastCurve(
+              (s) -> {
+                Function<DynamicScheme, ContrastCurve> contrastCurve =
+                    s.specVersion == specVersion ? extendedColor.contrastCurve : this.contrastCurve;
+                return contrastCurve != null ? contrastCurve.apply(s) : null;
+              })
+          .setToneDeltaPair(
+              (s) -> {
+                Function<DynamicScheme, ToneDeltaPair> toneDeltaPair =
+                    s.specVersion == specVersion ? extendedColor.toneDeltaPair : this.toneDeltaPair;
+                return toneDeltaPair != null ? toneDeltaPair.apply(s) : null;
+              })
+          .setOpacity(
+              (s) -> {
+                Function<DynamicScheme, Double> opacity =
+                    s.specVersion == specVersion ? extendedColor.opacity : this.opacity;
+                return opacity != null ? opacity.apply(s) : null;
+              });
+    }
+
     public DynamicColor build() {
       if (this.background == null && this.secondBackground != null) {
         throw new IllegalArgumentException(
@@ -509,6 +571,32 @@ public final class DynamicColor {
           this.contrastCurve,
           this.toneDeltaPair,
           this.opacity);
+    }
+
+    private void validateExtendedColor(SpecVersion specVersion, DynamicColor extendedColor) {
+      if (!this.name.equals(extendedColor.name)) {
+        throw new IllegalArgumentException(
+            "Attempting to extend color "
+                + this.name
+                + " with color "
+                + extendedColor.name
+                + " of different name for spec version "
+                + specVersion
+                + ".");
+      }
+      if (this.isBackground != extendedColor.isBackground) {
+        throw new IllegalArgumentException(
+            "Attempting to extend color "
+                + this.name
+                + " as a "
+                + (this.isBackground ? "background" : "foreground")
+                + " with color "
+                + extendedColor.name
+                + (extendedColor.isBackground ? "background" : "foreground")
+                + " for spec version "
+                + specVersion
+                + ".");
+      }
     }
   }
 }

@@ -26,8 +26,11 @@ import hct.Hct;
 /** A calm theme, sedated colors that aren't particularly chromatic. */
 public class SchemeTonalSpot extends DynamicScheme {
 
+  private static final SpecVersion DEFAULT_SPEC_VERSION = SpecVersion.SPEC_2021;
+  private static final Platform DEFAULT_PLATFORM = PHONE;
+
   public SchemeTonalSpot(Hct sourceColorHct, boolean isDark, double contrastLevel) {
-    this(sourceColorHct, isDark, contrastLevel, SpecVersion.SPEC_2021, PHONE);
+    this(sourceColorHct, isDark, contrastLevel, DEFAULT_SPEC_VERSION, DEFAULT_PLATFORM);
   }
 
   public SchemeTonalSpot(

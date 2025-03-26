@@ -43,6 +43,14 @@ import java.util.Optional;
 /** {@link ColorSpec} implementation for the 2025 spec. */
 final class ColorSpec2025 extends ColorSpec2021 {
 
+  public ColorSpec2025() {
+    super();
+  }
+
+  public ColorSpec2025(boolean isExtendedFidelity) {
+    super(isExtendedFidelity);
+  }
+
   ////////////////////////////////////////////////////////////////
   // Surfaces [S]                                               //
   ////////////////////////////////////////////////////////////////
@@ -51,329 +59,369 @@ final class ColorSpec2025 extends ColorSpec2021 {
   @Override
   public DynamicColor background() {
     // Remapped to surface for 2025 spec.
-    return surface().toBuilder().setName("background").build();
+    DynamicColor color2025 = surface().toBuilder().setName("background").build();
+    return super.background().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onBackground() {
     // Remapped to onSurface for 2025 spec.
-    return onSurface().toBuilder().setName("on_background").build();
-  }
-
-  @NonNull
-  @Override
-  public DynamicColor surface() {
-    return new DynamicColor.Builder()
-        .setName("surface")
-        .setPalette((s) -> s.neutralPalette)
-        .setTone(
-            (s) -> {
-              if (s.platform == PHONE) {
-                if (s.isDark) {
-                  return 4.0;
-                } else {
-                  if (s.neutralPalette.getKeyColor().isYellow()) {
-                    return 99.0;
-                  } else if (s.variant == VIBRANT) {
-                    return 97.0;
-                  } else {
-                    return 98.0;
-                  }
-                }
-              } else {
-                return 0.0;
-              }
-            })
-        .setIsBackground(true)
+    DynamicColor color2025 = onSurface().toBuilder().setName("on_background").build();
+    return super.onBackground().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
+  public DynamicColor surface() {
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("surface")
+            .setPalette((s) -> s.neutralPalette)
+            .setTone(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    if (s.isDark) {
+                      return 4.0;
+                    } else {
+                      if (s.neutralPalette.getKeyColor().isYellow()) {
+                        return 99.0;
+                      } else if (s.variant == VIBRANT) {
+                        return 97.0;
+                      } else {
+                        return 98.0;
+                      }
+                    }
+                  } else {
+                    return 0.0;
+                  }
+                })
+            .setIsBackground(true)
+            .build();
+    return super.surface().toBuilder().extendSpecVersion(SpecVersion.SPEC_2025, color2025).build();
+  }
+
+  @NonNull
+  @Override
   public DynamicColor surfaceDim() {
-    return new DynamicColor.Builder()
-        .setName("surface_dim")
-        .setPalette((s) -> s.neutralPalette)
-        .setTone(
-            (s) -> {
-              if (s.isDark) {
-                return 4.0;
-              } else {
-                if (s.neutralPalette.getKeyColor().isYellow()) {
-                  return 90.0;
-                } else if (s.variant == VIBRANT) {
-                  return 85.0;
-                } else {
-                  return 87.0;
-                }
-              }
-            })
-        .setIsBackground(true)
-        .setChromaMultiplier(
-            (s) -> {
-              if (!s.isDark) {
-                if (s.variant == NEUTRAL) {
-                  return 2.5;
-                } else if (s.variant == TONAL_SPOT) {
-                  return 1.7;
-                } else if (s.variant == EXPRESSIVE) {
-                  return s.neutralPalette.getKeyColor().isYellow() ? 2.7 : 1.75;
-                } else if (s.variant == VIBRANT) {
-                  return 1.36;
-                }
-              }
-              return 1.0;
-            })
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("surface_dim")
+            .setPalette((s) -> s.neutralPalette)
+            .setTone(
+                (s) -> {
+                  if (s.isDark) {
+                    return 4.0;
+                  } else {
+                    if (s.neutralPalette.getKeyColor().isYellow()) {
+                      return 90.0;
+                    } else if (s.variant == VIBRANT) {
+                      return 85.0;
+                    } else {
+                      return 87.0;
+                    }
+                  }
+                })
+            .setIsBackground(true)
+            .setChromaMultiplier(
+                (s) -> {
+                  if (!s.isDark) {
+                    if (s.variant == NEUTRAL) {
+                      return 2.5;
+                    } else if (s.variant == TONAL_SPOT) {
+                      return 1.7;
+                    } else if (s.variant == EXPRESSIVE) {
+                      return s.neutralPalette.getKeyColor().isYellow() ? 2.7 : 1.75;
+                    } else if (s.variant == VIBRANT) {
+                      return 1.36;
+                    }
+                  }
+                  return 1.0;
+                })
+            .build();
+    return super.surfaceDim().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor surfaceBright() {
-    return new DynamicColor.Builder()
-        .setName("surface_bright")
-        .setPalette((s) -> s.neutralPalette)
-        .setTone(
-            (s) -> {
-              if (s.isDark) {
-                return 18.0;
-              } else {
-                if (s.neutralPalette.getKeyColor().isYellow()) {
-                  return 99.0;
-                } else if (s.variant == VIBRANT) {
-                  return 97.0;
-                } else {
-                  return 98.0;
-                }
-              }
-            })
-        .setIsBackground(true)
-        .setChromaMultiplier(
-            (s) -> {
-              if (s.isDark) {
-                if (s.variant == NEUTRAL) {
-                  return 2.5;
-                } else if (s.variant == TONAL_SPOT) {
-                  return 1.7;
-                } else if (s.variant == EXPRESSIVE) {
-                  return s.neutralPalette.getKeyColor().isYellow() ? 2.7 : 1.75;
-                } else if (s.variant == VIBRANT) {
-                  return 1.36;
-                }
-              }
-              return 1.0;
-            })
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("surface_bright")
+            .setPalette((s) -> s.neutralPalette)
+            .setTone(
+                (s) -> {
+                  if (s.isDark) {
+                    return 18.0;
+                  } else {
+                    if (s.neutralPalette.getKeyColor().isYellow()) {
+                      return 99.0;
+                    } else if (s.variant == VIBRANT) {
+                      return 97.0;
+                    } else {
+                      return 98.0;
+                    }
+                  }
+                })
+            .setIsBackground(true)
+            .setChromaMultiplier(
+                (s) -> {
+                  if (s.isDark) {
+                    if (s.variant == NEUTRAL) {
+                      return 2.5;
+                    } else if (s.variant == TONAL_SPOT) {
+                      return 1.7;
+                    } else if (s.variant == EXPRESSIVE) {
+                      return s.neutralPalette.getKeyColor().isYellow() ? 2.7 : 1.75;
+                    } else if (s.variant == VIBRANT) {
+                      return 1.36;
+                    }
+                  }
+                  return 1.0;
+                })
+            .build();
+    return super.surfaceBright().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor surfaceContainerLowest() {
-    return new DynamicColor.Builder()
-        .setName("surface_container_lowest")
-        .setPalette((s) -> s.neutralPalette)
-        .setTone((s) -> s.isDark ? 0.0 : 100.0)
-        .setIsBackground(true)
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("surface_container_lowest")
+            .setPalette((s) -> s.neutralPalette)
+            .setTone((s) -> s.isDark ? 0.0 : 100.0)
+            .setIsBackground(true)
+            .build();
+    return super.surfaceContainerLowest().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor surfaceContainerLow() {
-    return new DynamicColor.Builder()
-        .setName("surface_container_low")
-        .setPalette((s) -> s.neutralPalette)
-        .setTone(
-            (s) -> {
-              if (s.platform == PHONE) {
-                if (s.isDark) {
-                  return 6.0;
-                } else {
-                  if (s.neutralPalette.getKeyColor().isYellow()) {
-                    return 98.0;
-                  } else if (s.variant == VIBRANT) {
-                    return 95.0;
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("surface_container_low")
+            .setPalette((s) -> s.neutralPalette)
+            .setTone(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    if (s.isDark) {
+                      return 6.0;
+                    } else {
+                      if (s.neutralPalette.getKeyColor().isYellow()) {
+                        return 98.0;
+                      } else if (s.variant == VIBRANT) {
+                        return 95.0;
+                      } else {
+                        return 96.0;
+                      }
+                    }
                   } else {
-                    return 96.0;
+                    return 15.0;
                   }
-                }
-              } else {
-                return 15.0;
-              }
-            })
-        .setIsBackground(true)
-        .setChromaMultiplier(
-            (s) -> {
-              if (s.platform == PHONE) {
-                if (s.variant == NEUTRAL) {
-                  return 1.3;
-                } else if (s.variant == TONAL_SPOT) {
-                  return 1.25;
-                } else if (s.variant == EXPRESSIVE) {
-                  return s.neutralPalette.getKeyColor().isYellow() ? 1.3 : 1.15;
-                } else if (s.variant == VIBRANT) {
-                  return 1.08;
-                }
-              }
-              return 1.0;
-            })
+                })
+            .setIsBackground(true)
+            .setChromaMultiplier(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    if (s.variant == NEUTRAL) {
+                      return 1.3;
+                    } else if (s.variant == TONAL_SPOT) {
+                      return 1.25;
+                    } else if (s.variant == EXPRESSIVE) {
+                      return s.neutralPalette.getKeyColor().isYellow() ? 1.3 : 1.15;
+                    } else if (s.variant == VIBRANT) {
+                      return 1.08;
+                    }
+                  }
+                  return 1.0;
+                })
+            .build();
+    return super.surfaceContainerLow().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor surfaceContainer() {
-    return new DynamicColor.Builder()
-        .setName("surface_container")
-        .setPalette((s) -> s.neutralPalette)
-        .setTone(
-            (s) -> {
-              if (s.platform == PHONE) {
-                if (s.isDark) {
-                  return 9.0;
-                } else {
-                  if (s.neutralPalette.getKeyColor().isYellow()) {
-                    return 96.0;
-                  } else if (s.variant == VIBRANT) {
-                    return 92.0;
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("surface_container")
+            .setPalette((s) -> s.neutralPalette)
+            .setTone(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    if (s.isDark) {
+                      return 9.0;
+                    } else {
+                      if (s.neutralPalette.getKeyColor().isYellow()) {
+                        return 96.0;
+                      } else if (s.variant == VIBRANT) {
+                        return 92.0;
+                      } else {
+                        return 94.0;
+                      }
+                    }
                   } else {
-                    return 94.0;
+                    return 20.0;
                   }
-                }
-              } else {
-                return 20.0;
-              }
-            })
-        .setIsBackground(true)
-        .setChromaMultiplier(
-            (s) -> {
-              if (s.platform == PHONE) {
-                if (s.variant == NEUTRAL) {
-                  return 1.6;
-                } else if (s.variant == TONAL_SPOT) {
-                  return 1.4;
-                } else if (s.variant == EXPRESSIVE) {
-                  return s.neutralPalette.getKeyColor().isYellow() ? 1.6 : 1.3;
-                } else if (s.variant == VIBRANT) {
-                  return 1.15;
-                }
-              }
-              return 1.0;
-            })
+                })
+            .setIsBackground(true)
+            .setChromaMultiplier(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    if (s.variant == NEUTRAL) {
+                      return 1.6;
+                    } else if (s.variant == TONAL_SPOT) {
+                      return 1.4;
+                    } else if (s.variant == EXPRESSIVE) {
+                      return s.neutralPalette.getKeyColor().isYellow() ? 1.6 : 1.3;
+                    } else if (s.variant == VIBRANT) {
+                      return 1.15;
+                    }
+                  }
+                  return 1.0;
+                })
+            .build();
+    return super.surfaceContainer().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor surfaceContainerHigh() {
-    return new DynamicColor.Builder()
-        .setName("surface_container_high")
-        .setPalette((s) -> s.neutralPalette)
-        .setTone(
-            (s) -> {
-              if (s.platform == PHONE) {
-                if (s.isDark) {
-                  return 12.0;
-                } else {
-                  if (s.neutralPalette.getKeyColor().isYellow()) {
-                    return 94.0;
-                  } else if (s.variant == VIBRANT) {
-                    return 90.0;
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("surface_container_high")
+            .setPalette((s) -> s.neutralPalette)
+            .setTone(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    if (s.isDark) {
+                      return 12.0;
+                    } else {
+                      if (s.neutralPalette.getKeyColor().isYellow()) {
+                        return 94.0;
+                      } else if (s.variant == VIBRANT) {
+                        return 90.0;
+                      } else {
+                        return 92.0;
+                      }
+                    }
                   } else {
-                    return 92.0;
+                    return 25.0;
                   }
-                }
-              } else {
-                return 25.0;
-              }
-            })
-        .setIsBackground(true)
-        .setChromaMultiplier(
-            (s) -> {
-              if (s.platform == PHONE) {
-                if (s.variant == NEUTRAL) {
-                  return 1.9;
-                } else if (s.variant == TONAL_SPOT) {
-                  return 1.5;
-                } else if (s.variant == EXPRESSIVE) {
-                  return s.neutralPalette.getKeyColor().isYellow() ? 1.95 : 1.45;
-                } else if (s.variant == VIBRANT) {
-                  return 1.22;
-                }
-              }
-              return 1.0;
-            })
+                })
+            .setIsBackground(true)
+            .setChromaMultiplier(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    if (s.variant == NEUTRAL) {
+                      return 1.9;
+                    } else if (s.variant == TONAL_SPOT) {
+                      return 1.5;
+                    } else if (s.variant == EXPRESSIVE) {
+                      return s.neutralPalette.getKeyColor().isYellow() ? 1.95 : 1.45;
+                    } else if (s.variant == VIBRANT) {
+                      return 1.22;
+                    }
+                  }
+                  return 1.0;
+                })
+            .build();
+    return super.surfaceContainerHigh().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor surfaceContainerHighest() {
-    return new DynamicColor.Builder()
-        .setName("surface_container_highest")
-        .setPalette((s) -> s.neutralPalette)
-        .setTone(
-            (s) -> {
-              if (s.isDark) {
-                return 15.0;
-              } else {
-                if (s.neutralPalette.getKeyColor().isYellow()) {
-                  return 92.0;
-                } else if (s.variant == VIBRANT) {
-                  return 88.0;
-                } else {
-                  return 90.0;
-                }
-              }
-            })
-        .setIsBackground(true)
-        .setChromaMultiplier(
-            (s) -> {
-              if (s.variant == NEUTRAL) {
-                return 2.2;
-              } else if (s.variant == TONAL_SPOT) {
-                return 1.7;
-              } else if (s.variant == EXPRESSIVE) {
-                return s.neutralPalette.getKeyColor().isYellow() ? 2.3 : 1.6;
-              } else if (s.variant == VIBRANT) {
-                return 1.29;
-              }
-              return 1.0;
-            })
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("surface_container_highest")
+            .setPalette((s) -> s.neutralPalette)
+            .setTone(
+                (s) -> {
+                  if (s.isDark) {
+                    return 15.0;
+                  } else {
+                    if (s.neutralPalette.getKeyColor().isYellow()) {
+                      return 92.0;
+                    } else if (s.variant == VIBRANT) {
+                      return 88.0;
+                    } else {
+                      return 90.0;
+                    }
+                  }
+                })
+            .setIsBackground(true)
+            .setChromaMultiplier(
+                (s) -> {
+                  if (s.variant == NEUTRAL) {
+                    return 2.2;
+                  } else if (s.variant == TONAL_SPOT) {
+                    return 1.7;
+                  } else if (s.variant == EXPRESSIVE) {
+                    return s.neutralPalette.getKeyColor().isYellow() ? 2.3 : 1.6;
+                  } else if (s.variant == VIBRANT) {
+                    return 1.29;
+                  }
+                  return 1.0;
+                })
+            .build();
+    return super.surfaceContainerHighest().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onSurface() {
-    return new DynamicColor.Builder()
-        .setName("on_surface")
-        .setPalette((s) -> s.neutralPalette)
-        .setChromaMultiplier(
-            (s) -> {
-              if (s.platform == PHONE) {
-                if (s.variant == NEUTRAL) {
-                  return 2.2;
-                } else if (s.variant == TONAL_SPOT) {
-                  return 1.7;
-                } else if (s.variant == EXPRESSIVE) {
-                  return s.neutralPalette.getKeyColor().isYellow() ? 2.3 : 1.6;
-                } else if (s.variant == VIBRANT) {
-                  return 1.29;
-                }
-              }
-              return 1.0;
-            })
-        .setBackground(
-            (s) -> {
-              if (s.platform == PHONE) {
-                return s.isDark ? surfaceBright() : surfaceDim();
-              } else {
-                return surfaceContainerHigh();
-              }
-            })
-        .setContrastCurve((s) -> getContrastCurve(9))
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("on_surface")
+            .setPalette((s) -> s.neutralPalette)
+            .setChromaMultiplier(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    if (s.variant == NEUTRAL) {
+                      return 2.2;
+                    } else if (s.variant == TONAL_SPOT) {
+                      return 1.7;
+                    } else if (s.variant == EXPRESSIVE) {
+                      return s.neutralPalette.getKeyColor().isYellow() ? 2.3 : 1.6;
+                    } else if (s.variant == VIBRANT) {
+                      return 1.29;
+                    }
+                  }
+                  return 1.0;
+                })
+            .setBackground(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    return s.isDark ? surfaceBright() : surfaceDim();
+                  } else {
+                    return surfaceContainerHigh();
+                  }
+                })
+            .setContrastCurve((s) -> getContrastCurve(9))
+            .build();
+    return super.onSurface().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
@@ -381,134 +429,163 @@ final class ColorSpec2025 extends ColorSpec2021 {
   @Override
   public DynamicColor surfaceVariant() {
     // Remapped to surfaceContainerHighest for 2025 spec.
-    return surfaceContainerHighest().toBuilder().setName("surface_variant").build();
+    DynamicColor color2025 =
+        surfaceContainerHighest().toBuilder().setName("surface_variant").build();
+    return super.surfaceVariant().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onSurfaceVariant() {
-    return new DynamicColor.Builder()
-        .setName("on_surface_variant")
-        .setPalette((s) -> s.neutralPalette)
-        .setChromaMultiplier(
-            (s) -> {
-              if (s.platform == PHONE) {
-                if (s.variant == NEUTRAL) {
-                  return 2.2;
-                } else if (s.variant == TONAL_SPOT) {
-                  return 1.7;
-                } else if (s.variant == EXPRESSIVE) {
-                  return s.neutralPalette.getKeyColor().isYellow() ? 2.3 : 1.6;
-                } else if (s.variant == VIBRANT) {
-                  return 1.29;
-                }
-              }
-              return 1.0;
-            })
-        .setBackground(
-            (s) -> {
-              if (s.platform == PHONE) {
-                return s.isDark ? surfaceBright() : surfaceDim();
-              } else {
-                return surfaceContainerHigh();
-              }
-            })
-        .setContrastCurve((s) -> s.platform == PHONE ? getContrastCurve(4.5) : getContrastCurve(7))
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("on_surface_variant")
+            .setPalette((s) -> s.neutralPalette)
+            .setChromaMultiplier(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    if (s.variant == NEUTRAL) {
+                      return 2.2;
+                    } else if (s.variant == TONAL_SPOT) {
+                      return 1.7;
+                    } else if (s.variant == EXPRESSIVE) {
+                      return s.neutralPalette.getKeyColor().isYellow() ? 2.3 : 1.6;
+                    } else if (s.variant == VIBRANT) {
+                      return 1.29;
+                    }
+                  }
+                  return 1.0;
+                })
+            .setBackground(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    return s.isDark ? surfaceBright() : surfaceDim();
+                  } else {
+                    return surfaceContainerHigh();
+                  }
+                })
+            .setContrastCurve(
+                (s) -> s.platform == PHONE ? getContrastCurve(4.5) : getContrastCurve(7))
+            .build();
+    return super.onSurfaceVariant().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor inverseSurface() {
-    return new DynamicColor.Builder()
-        .setName("inverse_surface")
-        .setPalette((s) -> s.neutralPalette)
-        .setTone((s) -> s.isDark ? 98.0 : 4.0)
-        .setIsBackground(true)
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("inverse_surface")
+            .setPalette((s) -> s.neutralPalette)
+            .setTone((s) -> s.isDark ? 98.0 : 4.0)
+            .setIsBackground(true)
+            .build();
+    return super.inverseSurface().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor inverseOnSurface() {
-    return new DynamicColor.Builder()
-        .setName("inverse_on_surface")
-        .setPalette((s) -> s.neutralPalette)
-        .setBackground((s) -> inverseSurface())
-        .setContrastCurve((s) -> getContrastCurve(7))
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("inverse_on_surface")
+            .setPalette((s) -> s.neutralPalette)
+            .setBackground((s) -> inverseSurface())
+            .setContrastCurve((s) -> getContrastCurve(7))
+            .build();
+    return super.inverseOnSurface().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor outline() {
-    return new DynamicColor.Builder()
-        .setName("outline")
-        .setPalette((s) -> s.neutralPalette)
-        .setChromaMultiplier(
-            (s) -> {
-              if (s.platform == PHONE) {
-                if (s.variant == NEUTRAL) {
-                  return 2.2;
-                } else if (s.variant == TONAL_SPOT) {
-                  return 1.7;
-                } else if (s.variant == EXPRESSIVE) {
-                  return s.neutralPalette.getKeyColor().isYellow() ? 2.3 : 1.6;
-                } else if (s.variant == VIBRANT) {
-                  return 1.29;
-                }
-              }
-              return 1.0;
-            })
-        .setBackground(
-            (s) -> {
-              if (s.platform == PHONE) {
-                return s.isDark ? surfaceBright() : surfaceDim();
-              } else {
-                return surfaceContainerHigh();
-              }
-            })
-        .setContrastCurve((s) -> s.platform == PHONE ? getContrastCurve(3) : getContrastCurve(4.5))
-        .build();
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("outline")
+            .setPalette((s) -> s.neutralPalette)
+            .setChromaMultiplier(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    if (s.variant == NEUTRAL) {
+                      return 2.2;
+                    } else if (s.variant == TONAL_SPOT) {
+                      return 1.7;
+                    } else if (s.variant == EXPRESSIVE) {
+                      return s.neutralPalette.getKeyColor().isYellow() ? 2.3 : 1.6;
+                    } else if (s.variant == VIBRANT) {
+                      return 1.29;
+                    }
+                  }
+                  return 1.0;
+                })
+            .setBackground(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    return s.isDark ? surfaceBright() : surfaceDim();
+                  } else {
+                    return surfaceContainerHigh();
+                  }
+                })
+            .setContrastCurve(
+                (s) -> s.platform == PHONE ? getContrastCurve(3) : getContrastCurve(4.5))
+            .build();
+    return super.outline().toBuilder().extendSpecVersion(SpecVersion.SPEC_2025, color2025).build();
   }
 
   @NonNull
   @Override
   public DynamicColor outlineVariant() {
-    return new DynamicColor.Builder()
-        .setName("outline_variant")
-        .setPalette((s) -> s.neutralPalette)
-        .setChromaMultiplier(
-            (s) -> {
-              if (s.platform == PHONE) {
-                if (s.variant == NEUTRAL) {
-                  return 2.2;
-                } else if (s.variant == TONAL_SPOT) {
-                  return 1.7;
-                } else if (s.variant == EXPRESSIVE) {
-                  return s.neutralPalette.getKeyColor().isYellow() ? 2.3 : 1.6;
-                } else if (s.variant == VIBRANT) {
-                  return 1.29;
-                }
-              }
-              return 1.0;
-            })
-        .setBackground(
-            (s) -> {
-              if (s.platform == PHONE) {
-                return s.isDark ? surfaceBright() : surfaceDim();
-              } else {
-                return surfaceContainerHigh();
-              }
-            })
-        .setContrastCurve((s) -> s.platform == PHONE ? getContrastCurve(1.5) : getContrastCurve(3))
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("outline_variant")
+            .setPalette((s) -> s.neutralPalette)
+            .setChromaMultiplier(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    if (s.variant == NEUTRAL) {
+                      return 2.2;
+                    } else if (s.variant == TONAL_SPOT) {
+                      return 1.7;
+                    } else if (s.variant == EXPRESSIVE) {
+                      return s.neutralPalette.getKeyColor().isYellow() ? 2.3 : 1.6;
+                    } else if (s.variant == VIBRANT) {
+                      return 1.29;
+                    }
+                  }
+                  return 1.0;
+                })
+            .setBackground(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    return s.isDark ? surfaceBright() : surfaceDim();
+                  } else {
+                    return surfaceContainerHigh();
+                  }
+                })
+            .setContrastCurve(
+                (s) -> s.platform == PHONE ? getContrastCurve(1.5) : getContrastCurve(3))
+            .build();
+    return super.outlineVariant().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor surfaceTint() {
-    return primary().toBuilder().setName("surface_tint").build();
+    // Remapped to primary for 2025 spec.
+    DynamicColor color2025 = primary().toBuilder().setName("surface_tint").build();
+    return super.surfaceTint().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
+        .build();
   }
 
   ////////////////////////////////////////////////////////////////
@@ -518,56 +595,59 @@ final class ColorSpec2025 extends ColorSpec2021 {
   @NonNull
   @Override
   public DynamicColor primary() {
-    return new DynamicColor.Builder()
-        .setName("primary")
-        .setPalette((s) -> s.primaryPalette)
-        .setTone(
-            (s) -> {
-              if (s.variant == NEUTRAL) {
-                if (s.platform == PHONE) {
-                  return s.isDark ? 80.0 : 40.0;
-                } else {
-                  return 90.0;
-                }
-              } else if (s.variant == TONAL_SPOT) {
-                if (s.platform == PHONE) {
-                  if (s.isDark) {
-                    return 80.0;
-                  } else {
-                    return tMaxC(s.primaryPalette);
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("primary")
+            .setPalette((s) -> s.primaryPalette)
+            .setTone(
+                (s) -> {
+                  if (s.variant == NEUTRAL) {
+                    if (s.platform == PHONE) {
+                      return s.isDark ? 80.0 : 40.0;
+                    } else {
+                      return 90.0;
+                    }
+                  } else if (s.variant == TONAL_SPOT) {
+                    if (s.platform == PHONE) {
+                      if (s.isDark) {
+                        return 80.0;
+                      } else {
+                        return tMaxC(s.primaryPalette);
+                      }
+                    } else {
+                      return tMaxC(s.primaryPalette, 0, 90);
+                    }
+                  } else if (s.variant == EXPRESSIVE) {
+                    return tMaxC(
+                        s.primaryPalette,
+                        0,
+                        s.primaryPalette.getKeyColor().isYellow()
+                            ? 25
+                            : s.primaryPalette.getKeyColor().isCyan() ? 88 : 98);
+                  } else { // VIBRANT
+                    return tMaxC(
+                        s.primaryPalette, 0, s.primaryPalette.getKeyColor().isCyan() ? 88 : 98);
                   }
-                } else {
-                  return tMaxC(s.primaryPalette, 0, 90);
-                }
-              } else if (s.variant == EXPRESSIVE) {
-                return tMaxC(
-                    s.primaryPalette,
-                    0,
-                    s.primaryPalette.getKeyColor().isYellow()
-                        ? 25
-                        : s.primaryPalette.getKeyColor().isCyan() ? 88 : 98);
-              } else { // VIBRANT
-                return tMaxC(
-                    s.primaryPalette, 0, s.primaryPalette.getKeyColor().isCyan() ? 88 : 98);
-              }
-            })
-        .setIsBackground(true)
-        .setBackground(
-            (s) -> {
-              if (s.platform == PHONE) {
-                return s.isDark ? surfaceBright() : surfaceDim();
-              } else {
-                return surfaceContainerHigh();
-              }
-            })
-        .setContrastCurve((s) -> s.platform == PHONE ? getContrastCurve(4.5) : getContrastCurve(7))
-        .setToneDeltaPair(
-            (s) ->
-                s.platform == PHONE
-                    ? new ToneDeltaPair(
-                        primaryContainer(), primary(), 5.0, RELATIVE_LIGHTER, FARTHER)
-                    : null)
-        .build();
+                })
+            .setIsBackground(true)
+            .setBackground(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    return s.isDark ? surfaceBright() : surfaceDim();
+                  } else {
+                    return surfaceContainerHigh();
+                  }
+                })
+            .setContrastCurve(
+                (s) -> s.platform == PHONE ? getContrastCurve(4.5) : getContrastCurve(7))
+            .setToneDeltaPair(
+                (s) ->
+                    s.platform == PHONE
+                        ? new ToneDeltaPair(
+                            primaryContainer(), primary(), 5.0, RELATIVE_LIGHTER, FARTHER)
+                        : null)
+            .build();
+    return super.primary().toBuilder().extendSpecVersion(SpecVersion.SPEC_2025, color2025).build();
   }
 
   @NonNull
@@ -596,79 +676,104 @@ final class ColorSpec2025 extends ColorSpec2021 {
   @NonNull
   @Override
   public DynamicColor onPrimary() {
-    return new DynamicColor.Builder()
-        .setName("on_primary")
-        .setPalette((s) -> s.primaryPalette)
-        .setBackground((s) -> s.platform == PHONE ? primary() : primaryDim())
-        .setContrastCurve((s) -> s.platform == PHONE ? getContrastCurve(6) : getContrastCurve(7))
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("on_primary")
+            .setPalette((s) -> s.primaryPalette)
+            .setBackground((s) -> s.platform == PHONE ? primary() : primaryDim())
+            .setContrastCurve(
+                (s) -> s.platform == PHONE ? getContrastCurve(6) : getContrastCurve(7))
+            .build();
+    return super.onPrimary().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor primaryContainer() {
-    return new DynamicColor.Builder()
-        .setName("primary_container")
-        .setPalette((s) -> s.primaryPalette)
-        .setTone(
-            (s) -> {
-              if (s.platform == WATCH) {
-                return 30.0;
-              } else if (s.variant == NEUTRAL) {
-                return s.isDark ? 30.0 : 90.0;
-              } else if (s.variant == TONAL_SPOT) {
-                return s.isDark ? tMinC(s.primaryPalette, 35, 93) : tMaxC(s.primaryPalette, 0, 90);
-              } else if (s.variant == EXPRESSIVE) {
-                return s.isDark
-                    ? tMaxC(s.primaryPalette, 30, 93)
-                    : tMaxC(
-                        s.primaryPalette, 78, s.primaryPalette.getKeyColor().isCyan() ? 88 : 90);
-              } else { // VIBRANT
-                return s.isDark
-                    ? tMinC(s.primaryPalette, 66, 93)
-                    : tMaxC(
-                        s.primaryPalette, 66, s.primaryPalette.getKeyColor().isCyan() ? 88 : 93);
-              }
-            })
-        .setIsBackground(true)
-        .setBackground(
-            (s) -> {
-              if (s.platform == PHONE) {
-                return s.isDark ? surfaceBright() : surfaceDim();
-              } else {
-                return null;
-              }
-            })
-        .setToneDeltaPair(
-            (s) ->
-                s.platform == WATCH
-                    ? new ToneDeltaPair(primaryContainer(), primaryDim(), 10.0, DARKER, FARTHER)
-                    : null)
-        .setContrastCurve(
-            (s) -> s.platform == PHONE && s.contrastLevel > 0 ? getContrastCurve(1.5) : null)
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("primary_container")
+            .setPalette((s) -> s.primaryPalette)
+            .setTone(
+                (s) -> {
+                  if (s.platform == WATCH) {
+                    return 30.0;
+                  } else if (s.variant == NEUTRAL) {
+                    return s.isDark ? 30.0 : 90.0;
+                  } else if (s.variant == TONAL_SPOT) {
+                    return s.isDark
+                        ? tMinC(s.primaryPalette, 35, 93)
+                        : tMaxC(s.primaryPalette, 0, 90);
+                  } else if (s.variant == EXPRESSIVE) {
+                    return s.isDark
+                        ? tMaxC(s.primaryPalette, 30, 93)
+                        : tMaxC(
+                            s.primaryPalette,
+                            78,
+                            s.primaryPalette.getKeyColor().isCyan() ? 88 : 90);
+                  } else { // VIBRANT
+                    return s.isDark
+                        ? tMinC(s.primaryPalette, 66, 93)
+                        : tMaxC(
+                            s.primaryPalette,
+                            66,
+                            s.primaryPalette.getKeyColor().isCyan() ? 88 : 93);
+                  }
+                })
+            .setIsBackground(true)
+            .setBackground(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    return s.isDark ? surfaceBright() : surfaceDim();
+                  } else {
+                    return null;
+                  }
+                })
+            .setToneDeltaPair(
+                (s) ->
+                    s.platform == WATCH
+                        ? new ToneDeltaPair(primaryContainer(), primaryDim(), 10.0, DARKER, FARTHER)
+                        : null)
+            .setContrastCurve(
+                (s) -> s.platform == PHONE && s.contrastLevel > 0 ? getContrastCurve(1.5) : null)
+            .build();
+    return super.primaryContainer().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onPrimaryContainer() {
-    return new DynamicColor.Builder()
-        .setName("on_primary_container")
-        .setPalette((s) -> s.primaryPalette)
-        .setBackground((s) -> primaryContainer())
-        .setContrastCurve((s) -> s.platform == PHONE ? getContrastCurve(6) : getContrastCurve(7))
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("on_primary_container")
+            .setPalette((s) -> s.primaryPalette)
+            .setBackground((s) -> primaryContainer())
+            .setContrastCurve(
+                (s) -> s.platform == PHONE ? getContrastCurve(6) : getContrastCurve(7))
+            .build();
+    return super.onPrimaryContainer().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor inversePrimary() {
-    return new DynamicColor.Builder()
-        .setName("inverse_primary")
-        .setPalette((s) -> s.primaryPalette)
-        .setTone((s) -> tMaxC(s.primaryPalette))
-        .setBackground((s) -> inverseSurface())
-        .setContrastCurve((s) -> s.platform == PHONE ? getContrastCurve(6) : getContrastCurve(7))
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("inverse_primary")
+            .setPalette((s) -> s.primaryPalette)
+            .setTone((s) -> tMaxC(s.primaryPalette))
+            .setBackground((s) -> inverseSurface())
+            .setContrastCurve(
+                (s) -> s.platform == PHONE ? getContrastCurve(6) : getContrastCurve(7))
+            .build();
+    return super.inversePrimary().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
@@ -679,37 +784,42 @@ final class ColorSpec2025 extends ColorSpec2021 {
   @NonNull
   @Override
   public DynamicColor secondary() {
-    return new DynamicColor.Builder()
-        .setName("secondary")
-        .setPalette((s) -> s.secondaryPalette)
-        .setTone(
-            (s) -> {
-              if (s.platform == WATCH) {
-                return s.variant == NEUTRAL ? 90.0 : tMaxC(s.secondaryPalette, 0, 90);
-              } else if (s.variant == NEUTRAL) {
-                return s.isDark ? tMinC(s.secondaryPalette, 0, 98) : tMaxC(s.secondaryPalette);
-              } else if (s.variant == VIBRANT) {
-                return tMaxC(s.secondaryPalette, 0, s.isDark ? 90 : 98);
-              } else { // EXPRESSIVE and TONAL_SPOT
-                return s.isDark ? 80.0 : tMaxC(s.secondaryPalette);
-              }
-            })
-        .setIsBackground(true)
-        .setBackground(
-            (s) -> {
-              if (s.platform == PHONE) {
-                return s.isDark ? surfaceBright() : surfaceDim();
-              } else {
-                return surfaceContainerHigh();
-              }
-            })
-        .setContrastCurve((s) -> s.platform == PHONE ? getContrastCurve(4.5) : getContrastCurve(7))
-        .setToneDeltaPair(
-            (s) ->
-                s.platform == PHONE
-                    ? new ToneDeltaPair(
-                        secondaryContainer(), secondary(), 5.0, RELATIVE_LIGHTER, FARTHER)
-                    : null)
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("secondary")
+            .setPalette((s) -> s.secondaryPalette)
+            .setTone(
+                (s) -> {
+                  if (s.platform == WATCH) {
+                    return s.variant == NEUTRAL ? 90.0 : tMaxC(s.secondaryPalette, 0, 90);
+                  } else if (s.variant == NEUTRAL) {
+                    return s.isDark ? tMinC(s.secondaryPalette, 0, 98) : tMaxC(s.secondaryPalette);
+                  } else if (s.variant == VIBRANT) {
+                    return tMaxC(s.secondaryPalette, 0, s.isDark ? 90 : 98);
+                  } else { // EXPRESSIVE and TONAL_SPOT
+                    return s.isDark ? 80.0 : tMaxC(s.secondaryPalette);
+                  }
+                })
+            .setIsBackground(true)
+            .setBackground(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    return s.isDark ? surfaceBright() : surfaceDim();
+                  } else {
+                    return surfaceContainerHigh();
+                  }
+                })
+            .setContrastCurve(
+                (s) -> s.platform == PHONE ? getContrastCurve(4.5) : getContrastCurve(7))
+            .setToneDeltaPair(
+                (s) ->
+                    s.platform == PHONE
+                        ? new ToneDeltaPair(
+                            secondaryContainer(), secondary(), 5.0, RELATIVE_LIGHTER, FARTHER)
+                        : null)
+            .build();
+    return super.secondary().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
@@ -738,61 +848,76 @@ final class ColorSpec2025 extends ColorSpec2021 {
   @NonNull
   @Override
   public DynamicColor onSecondary() {
-    return new DynamicColor.Builder()
-        .setName("on_secondary")
-        .setPalette((s) -> s.secondaryPalette)
-        .setBackground((s) -> s.platform == PHONE ? secondary() : secondaryDim())
-        .setContrastCurve((s) -> s.platform == PHONE ? getContrastCurve(6) : getContrastCurve(7))
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("on_secondary")
+            .setPalette((s) -> s.secondaryPalette)
+            .setBackground((s) -> s.platform == PHONE ? secondary() : secondaryDim())
+            .setContrastCurve(
+                (s) -> s.platform == PHONE ? getContrastCurve(6) : getContrastCurve(7))
+            .build();
+    return super.onSecondary().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor secondaryContainer() {
-    return new DynamicColor.Builder()
-        .setName("secondary_container")
-        .setPalette((s) -> s.secondaryPalette)
-        .setTone(
-            (s) -> {
-              if (s.platform == WATCH) {
-                return 30.0;
-              } else if (s.variant == VIBRANT) {
-                return s.isDark
-                    ? tMinC(s.secondaryPalette, 30, 40)
-                    : tMaxC(s.secondaryPalette, 84, 90);
-              } else if (s.variant == EXPRESSIVE) {
-                return s.isDark ? 15.0 : tMaxC(s.secondaryPalette, 90, 95);
-              } else {
-                return s.isDark ? 25.0 : 90.0;
-              }
-            })
-        .setIsBackground(true)
-        .setBackground(
-            (s) -> {
-              if (s.platform == PHONE) {
-                return s.isDark ? surfaceBright() : surfaceDim();
-              } else {
-                return null;
-              }
-            })
-        .setToneDeltaPair(
-            (s) ->
-                s.platform == WATCH
-                    ? new ToneDeltaPair(secondaryContainer(), secondaryDim(), 10.0, DARKER, FARTHER)
-                    : null)
-        .setContrastCurve(
-            (s) -> s.platform == PHONE && s.contrastLevel > 0 ? getContrastCurve(1.5) : null)
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("secondary_container")
+            .setPalette((s) -> s.secondaryPalette)
+            .setTone(
+                (s) -> {
+                  if (s.platform == WATCH) {
+                    return 30.0;
+                  } else if (s.variant == VIBRANT) {
+                    return s.isDark
+                        ? tMinC(s.secondaryPalette, 30, 40)
+                        : tMaxC(s.secondaryPalette, 84, 90);
+                  } else if (s.variant == EXPRESSIVE) {
+                    return s.isDark ? 15.0 : tMaxC(s.secondaryPalette, 90, 95);
+                  } else {
+                    return s.isDark ? 25.0 : 90.0;
+                  }
+                })
+            .setIsBackground(true)
+            .setBackground(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    return s.isDark ? surfaceBright() : surfaceDim();
+                  } else {
+                    return null;
+                  }
+                })
+            .setToneDeltaPair(
+                (s) ->
+                    s.platform == WATCH
+                        ? new ToneDeltaPair(
+                            secondaryContainer(), secondaryDim(), 10.0, DARKER, FARTHER)
+                        : null)
+            .setContrastCurve(
+                (s) -> s.platform == PHONE && s.contrastLevel > 0 ? getContrastCurve(1.5) : null)
+            .build();
+    return super.secondaryContainer().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onSecondaryContainer() {
-    return new DynamicColor.Builder()
-        .setName("on_secondary_container")
-        .setPalette((s) -> s.secondaryPalette)
-        .setBackground((s) -> secondaryContainer())
-        .setContrastCurve((s) -> s.platform == PHONE ? getContrastCurve(6) : getContrastCurve(7))
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("on_secondary_container")
+            .setPalette((s) -> s.secondaryPalette)
+            .setBackground((s) -> secondaryContainer())
+            .setContrastCurve(
+                (s) -> s.platform == PHONE ? getContrastCurve(6) : getContrastCurve(7))
+            .build();
+    return super.onSecondaryContainer().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
@@ -803,43 +928,46 @@ final class ColorSpec2025 extends ColorSpec2021 {
   @NonNull
   @Override
   public DynamicColor tertiary() {
-    return new DynamicColor.Builder()
-        .setName("tertiary")
-        .setPalette((s) -> s.tertiaryPalette)
-        .setTone(
-            (s) -> {
-              if (s.platform == WATCH) {
-                return s.variant == TONAL_SPOT
-                    ? tMaxC(s.tertiaryPalette, 0, 90)
-                    : tMaxC(s.tertiaryPalette);
-              } else if (s.variant == EXPRESSIVE || s.variant == VIBRANT) {
-                return tMaxC(
-                    s.tertiaryPalette,
-                    /* lowerBound= */ 0,
-                    /* upperBound= */ s.tertiaryPalette.getKeyColor().isCyan()
-                        ? 88
-                        : (s.isDark ? 98 : 100));
-              } else { // NEUTRAL and TONAL_SPOT
-                return s.isDark ? tMaxC(s.tertiaryPalette, 0, 98) : tMaxC(s.tertiaryPalette);
-              }
-            })
-        .setIsBackground(true)
-        .setBackground(
-            (s) -> {
-              if (s.platform == PHONE) {
-                return s.isDark ? surfaceBright() : surfaceDim();
-              } else {
-                return surfaceContainerHigh();
-              }
-            })
-        .setContrastCurve((s) -> s.platform == PHONE ? getContrastCurve(4.5) : getContrastCurve(7))
-        .setToneDeltaPair(
-            (s) ->
-                s.platform == PHONE
-                    ? new ToneDeltaPair(
-                        tertiaryContainer(), tertiary(), 5.0, RELATIVE_LIGHTER, FARTHER)
-                    : null)
-        .build();
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("tertiary")
+            .setPalette((s) -> s.tertiaryPalette)
+            .setTone(
+                (s) -> {
+                  if (s.platform == WATCH) {
+                    return s.variant == TONAL_SPOT
+                        ? tMaxC(s.tertiaryPalette, 0, 90)
+                        : tMaxC(s.tertiaryPalette);
+                  } else if (s.variant == EXPRESSIVE || s.variant == VIBRANT) {
+                    return tMaxC(
+                        s.tertiaryPalette,
+                        /* lowerBound= */ 0,
+                        /* upperBound= */ s.tertiaryPalette.getKeyColor().isCyan()
+                            ? 88
+                            : (s.isDark ? 98 : 100));
+                  } else { // NEUTRAL and TONAL_SPOT
+                    return s.isDark ? tMaxC(s.tertiaryPalette, 0, 98) : tMaxC(s.tertiaryPalette);
+                  }
+                })
+            .setIsBackground(true)
+            .setBackground(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    return s.isDark ? surfaceBright() : surfaceDim();
+                  } else {
+                    return surfaceContainerHigh();
+                  }
+                })
+            .setContrastCurve(
+                (s) -> s.platform == PHONE ? getContrastCurve(4.5) : getContrastCurve(7))
+            .setToneDeltaPair(
+                (s) ->
+                    s.platform == PHONE
+                        ? new ToneDeltaPair(
+                            tertiaryContainer(), tertiary(), 5.0, RELATIVE_LIGHTER, FARTHER)
+                        : null)
+            .build();
+    return super.tertiary().toBuilder().extendSpecVersion(SpecVersion.SPEC_2025, color2025).build();
   }
 
   @Nullable
@@ -866,74 +994,89 @@ final class ColorSpec2025 extends ColorSpec2021 {
   @NonNull
   @Override
   public DynamicColor onTertiary() {
-    return new DynamicColor.Builder()
-        .setName("on_tertiary")
-        .setPalette((s) -> s.tertiaryPalette)
-        .setBackground((s) -> s.platform == PHONE ? tertiary() : tertiaryDim())
-        .setContrastCurve((s) -> s.platform == PHONE ? getContrastCurve(6) : getContrastCurve(7))
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("on_tertiary")
+            .setPalette((s) -> s.tertiaryPalette)
+            .setBackground((s) -> s.platform == PHONE ? tertiary() : tertiaryDim())
+            .setContrastCurve(
+                (s) -> s.platform == PHONE ? getContrastCurve(6) : getContrastCurve(7))
+            .build();
+    return super.onTertiary().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor tertiaryContainer() {
-    return new DynamicColor.Builder()
-        .setName("tertiary_container")
-        .setPalette((s) -> s.tertiaryPalette)
-        .setTone(
-            (s) -> {
-              if (s.platform == WATCH) {
-                return s.variant == TONAL_SPOT
-                    ? tMaxC(s.tertiaryPalette, 0, 90)
-                    : tMaxC(s.tertiaryPalette);
-              } else {
-                if (s.variant == NEUTRAL) {
-                  return s.isDark
-                      ? tMaxC(s.tertiaryPalette, 0, 93)
-                      : tMaxC(s.tertiaryPalette, 0, 96);
-                } else if (s.variant == TONAL_SPOT) {
-                  return tMaxC(s.tertiaryPalette, 0, s.isDark ? 93 : 100);
-                } else if (s.variant == EXPRESSIVE) {
-                  return tMaxC(
-                      s.tertiaryPalette,
-                      /* lowerBound= */ 75,
-                      /* upperBound= */ s.tertiaryPalette.getKeyColor().isCyan()
-                          ? 88
-                          : (s.isDark ? 93 : 100));
-                } else { // VIBRANT
-                  return s.isDark
-                      ? tMaxC(s.tertiaryPalette, 0, 93)
-                      : tMaxC(s.tertiaryPalette, 72, 100);
-                }
-              }
-            })
-        .setIsBackground(true)
-        .setBackground(
-            (s) -> {
-              if (s.platform == PHONE) {
-                return s.isDark ? surfaceBright() : surfaceDim();
-              } else {
-                return null;
-              }
-            })
-        .setToneDeltaPair(
-            (s) ->
-                s.platform == WATCH
-                    ? new ToneDeltaPair(tertiaryContainer(), tertiaryDim(), 10.0, DARKER, FARTHER)
-                    : null)
-        .setContrastCurve(
-            (s) -> s.platform == PHONE && s.contrastLevel > 0 ? getContrastCurve(1.5) : null)
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("tertiary_container")
+            .setPalette((s) -> s.tertiaryPalette)
+            .setTone(
+                (s) -> {
+                  if (s.platform == WATCH) {
+                    return s.variant == TONAL_SPOT
+                        ? tMaxC(s.tertiaryPalette, 0, 90)
+                        : tMaxC(s.tertiaryPalette);
+                  } else {
+                    if (s.variant == NEUTRAL) {
+                      return s.isDark
+                          ? tMaxC(s.tertiaryPalette, 0, 93)
+                          : tMaxC(s.tertiaryPalette, 0, 96);
+                    } else if (s.variant == TONAL_SPOT) {
+                      return tMaxC(s.tertiaryPalette, 0, s.isDark ? 93 : 100);
+                    } else if (s.variant == EXPRESSIVE) {
+                      return tMaxC(
+                          s.tertiaryPalette,
+                          /* lowerBound= */ 75,
+                          /* upperBound= */ s.tertiaryPalette.getKeyColor().isCyan()
+                              ? 88
+                              : (s.isDark ? 93 : 100));
+                    } else { // VIBRANT
+                      return s.isDark
+                          ? tMaxC(s.tertiaryPalette, 0, 93)
+                          : tMaxC(s.tertiaryPalette, 72, 100);
+                    }
+                  }
+                })
+            .setIsBackground(true)
+            .setBackground(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    return s.isDark ? surfaceBright() : surfaceDim();
+                  } else {
+                    return null;
+                  }
+                })
+            .setToneDeltaPair(
+                (s) ->
+                    s.platform == WATCH
+                        ? new ToneDeltaPair(
+                            tertiaryContainer(), tertiaryDim(), 10.0, DARKER, FARTHER)
+                        : null)
+            .setContrastCurve(
+                (s) -> s.platform == PHONE && s.contrastLevel > 0 ? getContrastCurve(1.5) : null)
+            .build();
+    return super.tertiaryContainer().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onTertiaryContainer() {
-    return new DynamicColor.Builder()
-        .setName("on_tertiary_container")
-        .setPalette((s) -> s.tertiaryPalette)
-        .setBackground((s) -> tertiaryContainer())
-        .setContrastCurve((s) -> s.platform == PHONE ? getContrastCurve(6) : getContrastCurve(7))
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("on_tertiary_container")
+            .setPalette((s) -> s.tertiaryPalette)
+            .setBackground((s) -> tertiaryContainer())
+            .setContrastCurve(
+                (s) -> s.platform == PHONE ? getContrastCurve(6) : getContrastCurve(7))
+            .build();
+    return super.onTertiaryContainer().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
@@ -944,33 +1087,37 @@ final class ColorSpec2025 extends ColorSpec2021 {
   @NonNull
   @Override
   public DynamicColor error() {
-    return new DynamicColor.Builder()
-        .setName("error")
-        .setPalette((s) -> s.errorPalette)
-        .setTone(
-            (s) -> {
-              if (s.platform == PHONE) {
-                return s.isDark ? tMinC(s.errorPalette, 0, 98) : tMaxC(s.errorPalette);
-              } else {
-                return tMinC(s.errorPalette);
-              }
-            })
-        .setIsBackground(true)
-        .setBackground(
-            (s) -> {
-              if (s.platform == PHONE) {
-                return s.isDark ? surfaceBright() : surfaceDim();
-              } else {
-                return surfaceContainerHigh();
-              }
-            })
-        .setContrastCurve((s) -> s.platform == PHONE ? getContrastCurve(4.5) : getContrastCurve(7))
-        .setToneDeltaPair(
-            (s) ->
-                s.platform == PHONE
-                    ? new ToneDeltaPair(errorContainer(), error(), 5.0, RELATIVE_LIGHTER, FARTHER)
-                    : null)
-        .build();
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("error")
+            .setPalette((s) -> s.errorPalette)
+            .setTone(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    return s.isDark ? tMinC(s.errorPalette, 0, 98) : tMaxC(s.errorPalette);
+                  } else {
+                    return tMinC(s.errorPalette);
+                  }
+                })
+            .setIsBackground(true)
+            .setBackground(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    return s.isDark ? surfaceBright() : surfaceDim();
+                  } else {
+                    return surfaceContainerHigh();
+                  }
+                })
+            .setContrastCurve(
+                (s) -> s.platform == PHONE ? getContrastCurve(4.5) : getContrastCurve(7))
+            .setToneDeltaPair(
+                (s) ->
+                    s.platform == PHONE
+                        ? new ToneDeltaPair(
+                            errorContainer(), error(), 5.0, RELATIVE_LIGHTER, FARTHER)
+                        : null)
+            .build();
+    return super.error().toBuilder().extendSpecVersion(SpecVersion.SPEC_2025, color2025).build();
   }
 
   @Nullable
@@ -990,55 +1137,67 @@ final class ColorSpec2025 extends ColorSpec2021 {
   @NonNull
   @Override
   public DynamicColor onError() {
-    return new DynamicColor.Builder()
-        .setName("on_error")
-        .setPalette((s) -> s.errorPalette)
-        .setBackground((s) -> s.platform == PHONE ? error() : errorDim())
-        .setContrastCurve((s) -> s.platform == PHONE ? getContrastCurve(6) : getContrastCurve(7))
-        .build();
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("on_error")
+            .setPalette((s) -> s.errorPalette)
+            .setBackground((s) -> s.platform == PHONE ? error() : errorDim())
+            .setContrastCurve(
+                (s) -> s.platform == PHONE ? getContrastCurve(6) : getContrastCurve(7))
+            .build();
+    return super.onError().toBuilder().extendSpecVersion(SpecVersion.SPEC_2025, color2025).build();
   }
 
   @NonNull
   @Override
   public DynamicColor errorContainer() {
-    return new DynamicColor.Builder()
-        .setName("error_container")
-        .setPalette((s) -> s.errorPalette)
-        .setTone(
-            (s) -> {
-              if (s.platform == WATCH) {
-                return 30.0;
-              } else {
-                return s.isDark ? tMinC(s.errorPalette, 30, 93) : tMaxC(s.errorPalette, 0, 90);
-              }
-            })
-        .setIsBackground(true)
-        .setBackground(
-            (s) -> {
-              if (s.platform == PHONE) {
-                return s.isDark ? surfaceBright() : surfaceDim();
-              } else {
-                return null;
-              }
-            })
-        .setToneDeltaPair(
-            (s) ->
-                s.platform == WATCH
-                    ? new ToneDeltaPair(errorContainer(), errorDim(), 10.0, DARKER, FARTHER)
-                    : null)
-        .setContrastCurve(
-            (s) -> s.platform == PHONE && s.contrastLevel > 0 ? getContrastCurve(1.5) : null)
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("error_container")
+            .setPalette((s) -> s.errorPalette)
+            .setTone(
+                (s) -> {
+                  if (s.platform == WATCH) {
+                    return 30.0;
+                  } else {
+                    return s.isDark ? tMinC(s.errorPalette, 30, 93) : tMaxC(s.errorPalette, 0, 90);
+                  }
+                })
+            .setIsBackground(true)
+            .setBackground(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    return s.isDark ? surfaceBright() : surfaceDim();
+                  } else {
+                    return null;
+                  }
+                })
+            .setToneDeltaPair(
+                (s) ->
+                    s.platform == WATCH
+                        ? new ToneDeltaPair(errorContainer(), errorDim(), 10.0, DARKER, FARTHER)
+                        : null)
+            .setContrastCurve(
+                (s) -> s.platform == PHONE && s.contrastLevel > 0 ? getContrastCurve(1.5) : null)
+            .build();
+    return super.errorContainer().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onErrorContainer() {
-    return new DynamicColor.Builder()
-        .setName("on_error_container")
-        .setPalette((s) -> s.errorPalette)
-        .setBackground((s) -> errorContainer())
-        .setContrastCurve((s) -> s.platform == PHONE ? getContrastCurve(4.5) : getContrastCurve(7))
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("on_error_container")
+            .setPalette((s) -> s.errorPalette)
+            .setBackground((s) -> errorContainer())
+            .setContrastCurve(
+                (s) -> s.platform == PHONE ? getContrastCurve(4.5) : getContrastCurve(7))
+            .build();
+    return super.onErrorContainer().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
@@ -1049,50 +1208,66 @@ final class ColorSpec2025 extends ColorSpec2021 {
   @NonNull
   @Override
   public DynamicColor primaryFixed() {
-    return new DynamicColor.Builder()
-        .setName("primary_fixed")
-        .setPalette((s) -> s.primaryPalette)
-        .setTone(
-            (s) -> {
-              DynamicScheme tempS = DynamicScheme.from(s, /* isDark= */ false);
-              return primaryContainer().getTone(tempS);
-            })
-        .setIsBackground(true)
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("primary_fixed")
+            .setPalette((s) -> s.primaryPalette)
+            .setTone(
+                (s) -> {
+                  DynamicScheme tempS = DynamicScheme.from(s, /* isDark= */ false);
+                  return primaryContainer().getTone(tempS);
+                })
+            .setIsBackground(true)
+            .build();
+    return super.primaryFixed().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor primaryFixedDim() {
-    return new DynamicColor.Builder()
-        .setName("primary_fixed_dim")
-        .setPalette((s) -> s.primaryPalette)
-        .setTone((s) -> primaryFixed().getTone(s))
-        .setIsBackground(true)
-        .setToneDeltaPair(
-            (s) -> new ToneDeltaPair(primaryFixedDim(), primaryFixed(), 5.0, DARKER, EXACT))
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("primary_fixed_dim")
+            .setPalette((s) -> s.primaryPalette)
+            .setTone((s) -> primaryFixed().getTone(s))
+            .setIsBackground(true)
+            .setToneDeltaPair(
+                (s) -> new ToneDeltaPair(primaryFixedDim(), primaryFixed(), 5.0, DARKER, EXACT))
+            .build();
+    return super.primaryFixedDim().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onPrimaryFixed() {
-    return new DynamicColor.Builder()
-        .setName("on_primary_fixed")
-        .setPalette((s) -> s.primaryPalette)
-        .setBackground((s) -> primaryFixedDim())
-        .setContrastCurve((s) -> getContrastCurve(7))
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("on_primary_fixed")
+            .setPalette((s) -> s.primaryPalette)
+            .setBackground((s) -> primaryFixedDim())
+            .setContrastCurve((s) -> getContrastCurve(7))
+            .build();
+    return super.onPrimaryFixed().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onPrimaryFixedVariant() {
-    return new DynamicColor.Builder()
-        .setName("on_primary_fixed_variant")
-        .setPalette((s) -> s.primaryPalette)
-        .setBackground((s) -> primaryFixedDim())
-        .setContrastCurve((s) -> getContrastCurve(4.5))
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("on_primary_fixed_variant")
+            .setPalette((s) -> s.primaryPalette)
+            .setBackground((s) -> primaryFixedDim())
+            .setContrastCurve((s) -> getContrastCurve(4.5))
+            .build();
+    return super.onPrimaryFixedVariant().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
@@ -1103,50 +1278,66 @@ final class ColorSpec2025 extends ColorSpec2021 {
   @NonNull
   @Override
   public DynamicColor secondaryFixed() {
-    return new DynamicColor.Builder()
-        .setName("secondary_fixed")
-        .setPalette((s) -> s.secondaryPalette)
-        .setTone(
-            (s) -> {
-              DynamicScheme tempS = DynamicScheme.from(s, /* isDark= */ false);
-              return secondaryContainer().getTone(tempS);
-            })
-        .setIsBackground(true)
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("secondary_fixed")
+            .setPalette((s) -> s.secondaryPalette)
+            .setTone(
+                (s) -> {
+                  DynamicScheme tempS = DynamicScheme.from(s, /* isDark= */ false);
+                  return secondaryContainer().getTone(tempS);
+                })
+            .setIsBackground(true)
+            .build();
+    return super.secondaryFixed().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor secondaryFixedDim() {
-    return new DynamicColor.Builder()
-        .setName("secondary_fixed_dim")
-        .setPalette((s) -> s.secondaryPalette)
-        .setTone((s) -> secondaryFixed().getTone(s))
-        .setIsBackground(true)
-        .setToneDeltaPair(
-            (s) -> new ToneDeltaPair(secondaryFixedDim(), secondaryFixed(), 5.0, DARKER, EXACT))
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("secondary_fixed_dim")
+            .setPalette((s) -> s.secondaryPalette)
+            .setTone((s) -> secondaryFixed().getTone(s))
+            .setIsBackground(true)
+            .setToneDeltaPair(
+                (s) -> new ToneDeltaPair(secondaryFixedDim(), secondaryFixed(), 5.0, DARKER, EXACT))
+            .build();
+    return super.secondaryFixedDim().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onSecondaryFixed() {
-    return new DynamicColor.Builder()
-        .setName("on_secondary_fixed")
-        .setPalette((s) -> s.secondaryPalette)
-        .setBackground((s) -> secondaryFixedDim())
-        .setContrastCurve((s) -> getContrastCurve(7))
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("on_secondary_fixed")
+            .setPalette((s) -> s.secondaryPalette)
+            .setBackground((s) -> secondaryFixedDim())
+            .setContrastCurve((s) -> getContrastCurve(7))
+            .build();
+    return super.onSecondaryFixed().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onSecondaryFixedVariant() {
-    return new DynamicColor.Builder()
-        .setName("on_secondary_fixed_variant")
-        .setPalette((s) -> s.secondaryPalette)
-        .setBackground((s) -> secondaryFixedDim())
-        .setContrastCurve((s) -> getContrastCurve(4.5))
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("on_secondary_fixed_variant")
+            .setPalette((s) -> s.secondaryPalette)
+            .setBackground((s) -> secondaryFixedDim())
+            .setContrastCurve((s) -> getContrastCurve(4.5))
+            .build();
+    return super.onSecondaryFixedVariant().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
@@ -1157,50 +1348,66 @@ final class ColorSpec2025 extends ColorSpec2021 {
   @NonNull
   @Override
   public DynamicColor tertiaryFixed() {
-    return new DynamicColor.Builder()
-        .setName("tertiary_fixed")
-        .setPalette((s) -> s.tertiaryPalette)
-        .setTone(
-            (s) -> {
-              DynamicScheme tempS = DynamicScheme.from(s, /* isDark= */ false);
-              return tertiaryContainer().getTone(tempS);
-            })
-        .setIsBackground(true)
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("tertiary_fixed")
+            .setPalette((s) -> s.tertiaryPalette)
+            .setTone(
+                (s) -> {
+                  DynamicScheme tempS = DynamicScheme.from(s, /* isDark= */ false);
+                  return tertiaryContainer().getTone(tempS);
+                })
+            .setIsBackground(true)
+            .build();
+    return super.tertiaryFixed().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor tertiaryFixedDim() {
-    return new DynamicColor.Builder()
-        .setName("tertiary_fixed_dim")
-        .setPalette((s) -> s.tertiaryPalette)
-        .setTone((s) -> tertiaryFixed().getTone(s))
-        .setIsBackground(true)
-        .setToneDeltaPair(
-            (s) -> new ToneDeltaPair(tertiaryFixedDim(), tertiaryFixed(), 5.0, DARKER, EXACT))
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("tertiary_fixed_dim")
+            .setPalette((s) -> s.tertiaryPalette)
+            .setTone((s) -> tertiaryFixed().getTone(s))
+            .setIsBackground(true)
+            .setToneDeltaPair(
+                (s) -> new ToneDeltaPair(tertiaryFixedDim(), tertiaryFixed(), 5.0, DARKER, EXACT))
+            .build();
+    return super.tertiaryFixedDim().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onTertiaryFixed() {
-    return new DynamicColor.Builder()
-        .setName("on_tertiary_fixed")
-        .setPalette((s) -> s.tertiaryPalette)
-        .setBackground((s) -> tertiaryFixedDim())
-        .setContrastCurve((s) -> getContrastCurve(7))
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("on_tertiary_fixed")
+            .setPalette((s) -> s.tertiaryPalette)
+            .setBackground((s) -> tertiaryFixedDim())
+            .setContrastCurve((s) -> getContrastCurve(7))
+            .build();
+    return super.onTertiaryFixed().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onTertiaryFixedVariant() {
-    return new DynamicColor.Builder()
-        .setName("on_tertiary_fixed_variant")
-        .setPalette((s) -> s.tertiaryPalette)
-        .setBackground((s) -> tertiaryFixedDim())
-        .setContrastCurve((s) -> getContrastCurve(4.5))
+    DynamicColor color2025 =
+        new DynamicColor.Builder()
+            .setName("on_tertiary_fixed_variant")
+            .setPalette((s) -> s.tertiaryPalette)
+            .setBackground((s) -> tertiaryFixedDim())
+            .setContrastCurve((s) -> getContrastCurve(4.5))
+            .build();
+    return super.onTertiaryFixedVariant().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
         .build();
   }
 
@@ -1212,21 +1419,30 @@ final class ColorSpec2025 extends ColorSpec2021 {
   @Override
   public DynamicColor controlActivated() {
     // Remapped to primaryContainer for 2025 spec.
-    return primaryContainer().toBuilder().setName("control_activated").build();
+    DynamicColor color2025 = primaryContainer().toBuilder().setName("control_activated").build();
+    return super.controlActivated().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor controlNormal() {
     // Remapped to onSurfaceVariant for 2025 spec.
-    return onSurfaceVariant().toBuilder().setName("control_normal").build();
+    DynamicColor color2025 = onSurfaceVariant().toBuilder().setName("control_normal").build();
+    return super.controlNormal().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor textPrimaryInverse() {
     // Remapped to inverseOnSurface for 2025 spec.
-    return inverseOnSurface().toBuilder().setName("text_primary_inverse").build();
+    DynamicColor color2025 = inverseOnSurface().toBuilder().setName("text_primary_inverse").build();
+    return super.textPrimaryInverse().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
+        .build();
   }
 
   ////////////////////////////////////////////////////////////////

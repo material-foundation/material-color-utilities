@@ -18,7 +18,6 @@ package dynamiccolor;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import dynamiccolor.ColorSpec.SpecVersion;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
@@ -32,25 +31,17 @@ import java.util.function.Supplier;
 @SuppressWarnings({"AndroidJdkLibsChecker", "NewApi"})
 public final class MaterialDynamicColors {
 
-  @NonNull private final ColorSpec colorSpec;
+  private final ColorSpec colorSpec;
 
   public MaterialDynamicColors() {
-    this(false, SpecVersion.SPEC_2021);
+    this(false);
   }
 
   // Temporary constructor to support extended fidelity experiment.
   // TODO(b/291720794): Once schemes that will permanently use fidelity are identified,
   // remove this and default to the decided behavior.
   public MaterialDynamicColors(boolean isExtendedFidelity) {
-    this(isExtendedFidelity, SpecVersion.SPEC_2021);
-  }
-
-  public MaterialDynamicColors(SpecVersion specVersion) {
-    this(false, specVersion);
-  }
-
-  public MaterialDynamicColors(boolean isExtendedFidelity, SpecVersion specVersion) {
-    colorSpec = ColorSpecs.get(specVersion, isExtendedFidelity);
+    colorSpec = new ColorSpec2025(isExtendedFidelity);
   }
 
   @NonNull

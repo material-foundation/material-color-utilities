@@ -120,296 +120,244 @@ class ColorSpec2021 implements ColorSpec {
   @NonNull
   @Override
   public DynamicColor background() {
-    return new DynamicColor(
-        /* name= */ "background",
-        /* palette= */ (s) -> s.neutralPalette,
-        /* tone= */ (s) -> s.isDark ? 6.0 : 98.0,
-        /* isBackground= */ true,
-        /* background= */ null,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ null,
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("background")
+        .setPalette((s) -> s.neutralPalette)
+        .setTone((s) -> s.isDark ? 6.0 : 98.0)
+        .setIsBackground(true)
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onBackground() {
-    return new DynamicColor(
-        /* name= */ "on_background",
-        /* palette= */ (s) -> s.neutralPalette,
-        /* tone= */ (s) -> s.isDark ? 90.0 : 10.0,
-        /* isBackground= */ false,
-        /* background= */ (s) -> background(),
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(3.0, 3.0, 4.5, 7.0),
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("on_background")
+        .setPalette((s) -> s.neutralPalette)
+        .setTone((s) -> s.isDark ? 90.0 : 10.0)
+        .setBackground((s) -> background())
+        .setContrastCurve((s) -> new ContrastCurve(3.0, 3.0, 4.5, 7.0))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor surface() {
-    return new DynamicColor(
-        /* name= */ "surface",
-        /* palette= */ (s) -> s.neutralPalette,
-        /* tone= */ (s) -> s.isDark ? 6.0 : 98.0,
-        /* isBackground= */ true,
-        /* background= */ null,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ null,
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("surface")
+        .setPalette((s) -> s.neutralPalette)
+        .setTone((s) -> s.isDark ? 6.0 : 98.0)
+        .setIsBackground(true)
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor surfaceDim() {
-    return new DynamicColor(
-        /* name= */ "surface_dim",
-        /* palette= */ (s) -> s.neutralPalette,
-        /* tone= */ (s) ->
-            s.isDark ? 6.0 : new ContrastCurve(87.0, 87.0, 80.0, 75.0).get(s.contrastLevel),
-        /* isBackground= */ true,
-        /* background= */ null,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ null,
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("surface_dim")
+        .setPalette((s) -> s.neutralPalette)
+        .setTone(
+            (s) -> s.isDark ? 6.0 : new ContrastCurve(87.0, 87.0, 80.0, 75.0).get(s.contrastLevel))
+        .setIsBackground(true)
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor surfaceBright() {
-    return new DynamicColor(
-        /* name= */ "surface_bright",
-        /* palette= */ (s) -> s.neutralPalette,
-        /* tone= */ (s) ->
-            s.isDark ? new ContrastCurve(24.0, 24.0, 29.0, 34.0).get(s.contrastLevel) : 98.0,
-        /* isBackground= */ true,
-        /* background= */ null,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ null,
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("surface_bright")
+        .setPalette((s) -> s.neutralPalette)
+        .setTone(
+            (s) -> s.isDark ? new ContrastCurve(24.0, 24.0, 29.0, 34.0).get(s.contrastLevel) : 98.0)
+        .setIsBackground(true)
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor surfaceContainerLowest() {
-    return new DynamicColor(
-        /* name= */ "surface_container_lowest",
-        /* palette= */ (s) -> s.neutralPalette,
-        /* tone= */ (s) ->
-            s.isDark ? new ContrastCurve(4.0, 4.0, 2.0, 0.0).get(s.contrastLevel) : 100.0,
-        /* isBackground= */ true,
-        /* background= */ null,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ null,
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("surface_container_lowest")
+        .setPalette((s) -> s.neutralPalette)
+        .setTone(
+            (s) -> s.isDark ? new ContrastCurve(4.0, 4.0, 2.0, 0.0).get(s.contrastLevel) : 100.0)
+        .setIsBackground(true)
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor surfaceContainerLow() {
-    return new DynamicColor(
-        /* name= */ "surface_container_low",
-        /* palette= */ (s) -> s.neutralPalette,
-        /* tone= */ (s) ->
-            s.isDark
-                ? new ContrastCurve(10.0, 10.0, 11.0, 12.0).get(s.contrastLevel)
-                : new ContrastCurve(96.0, 96.0, 96.0, 95.0).get(s.contrastLevel),
-        /* isBackground= */ true,
-        /* background= */ null,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ null,
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("surface_container_low")
+        .setPalette((s) -> s.neutralPalette)
+        .setTone(
+            (s) ->
+                s.isDark
+                    ? new ContrastCurve(10.0, 10.0, 11.0, 12.0).get(s.contrastLevel)
+                    : new ContrastCurve(96.0, 96.0, 96.0, 95.0).get(s.contrastLevel))
+        .setIsBackground(true)
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor surfaceContainer() {
-    return new DynamicColor(
-        /* name= */ "surface_container",
-        /* palette= */ (s) -> s.neutralPalette,
-        /* tone= */ (s) ->
-            s.isDark
-                ? new ContrastCurve(12.0, 12.0, 16.0, 20.0).get(s.contrastLevel)
-                : new ContrastCurve(94.0, 94.0, 92.0, 90.0).get(s.contrastLevel),
-        /* isBackground= */ true,
-        /* background= */ null,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ null,
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("surface_container")
+        .setPalette((s) -> s.neutralPalette)
+        .setTone(
+            (s) ->
+                s.isDark
+                    ? new ContrastCurve(12.0, 12.0, 16.0, 20.0).get(s.contrastLevel)
+                    : new ContrastCurve(94.0, 94.0, 92.0, 90.0).get(s.contrastLevel))
+        .setIsBackground(true)
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor surfaceContainerHigh() {
-    return new DynamicColor(
-        /* name= */ "surface_container_high",
-        /* palette= */ (s) -> s.neutralPalette,
-        /* tone= */ (s) ->
-            s.isDark
-                ? new ContrastCurve(17.0, 17.0, 21.0, 25.0).get(s.contrastLevel)
-                : new ContrastCurve(92.0, 92.0, 88.0, 85.0).get(s.contrastLevel),
-        /* isBackground= */ true,
-        /* background= */ null,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ null,
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("surface_container_high")
+        .setPalette((s) -> s.neutralPalette)
+        .setTone(
+            (s) ->
+                s.isDark
+                    ? new ContrastCurve(17.0, 17.0, 21.0, 25.0).get(s.contrastLevel)
+                    : new ContrastCurve(92.0, 92.0, 88.0, 85.0).get(s.contrastLevel))
+        .setIsBackground(true)
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor surfaceContainerHighest() {
-    return new DynamicColor(
-        /* name= */ "surface_container_highest",
-        /* palette= */ (s) -> s.neutralPalette,
-        /* tone= */ (s) ->
-            s.isDark
-                ? new ContrastCurve(22.0, 22.0, 26.0, 30.0).get(s.contrastLevel)
-                : new ContrastCurve(90.0, 90.0, 84.0, 80.0).get(s.contrastLevel),
-        /* isBackground= */ true,
-        /* background= */ null,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ null,
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("surface_container_highest")
+        .setPalette((s) -> s.neutralPalette)
+        .setTone(
+            (s) ->
+                s.isDark
+                    ? new ContrastCurve(22.0, 22.0, 26.0, 30.0).get(s.contrastLevel)
+                    : new ContrastCurve(90.0, 90.0, 84.0, 80.0).get(s.contrastLevel))
+        .setIsBackground(true)
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onSurface() {
-    return new DynamicColor(
-        /* name= */ "on_surface",
-        /* palette= */ (s) -> s.neutralPalette,
-        /* tone= */ (s) -> s.isDark ? 90.0 : 10.0,
-        /* isBackground= */ false,
-        /* background= */ this::highestSurface,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(4.5, 7.0, 11.0, 21.0),
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("on_surface")
+        .setPalette((s) -> s.neutralPalette)
+        .setTone((s) -> s.isDark ? 90.0 : 10.0)
+        .setBackground(this::highestSurface)
+        .setContrastCurve((s) -> new ContrastCurve(4.5, 7.0, 11.0, 21.0))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor surfaceVariant() {
-    return new DynamicColor(
-        /* name= */ "surface_variant",
-        /* palette= */ (s) -> s.neutralVariantPalette,
-        /* tone= */ (s) -> s.isDark ? 30.0 : 90.0,
-        /* isBackground= */ true,
-        /* background= */ null,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ null,
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("surface_variant")
+        .setPalette((s) -> s.neutralVariantPalette)
+        .setTone((s) -> s.isDark ? 30.0 : 90.0)
+        .setIsBackground(true)
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onSurfaceVariant() {
-    return new DynamicColor(
-        /* name= */ "on_surface_variant",
-        /* palette= */ (s) -> s.neutralVariantPalette,
-        /* tone= */ (s) -> s.isDark ? 80.0 : 30.0,
-        /* isBackground= */ false,
-        /* background= */ this::highestSurface,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(3.0, 4.5, 7.0, 11.0),
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("on_surface_variant")
+        .setPalette((s) -> s.neutralVariantPalette)
+        .setTone((s) -> s.isDark ? 80.0 : 30.0)
+        .setBackground(this::highestSurface)
+        .setContrastCurve((s) -> new ContrastCurve(3.0, 4.5, 7.0, 11.0))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor inverseSurface() {
-    return new DynamicColor(
-        /* name= */ "inverse_surface",
-        /* palette= */ (s) -> s.neutralPalette,
-        /* tone= */ (s) -> s.isDark ? 90.0 : 20.0,
-        /* isBackground= */ true,
-        /* background= */ null,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ null,
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("inverse_surface")
+        .setPalette((s) -> s.neutralPalette)
+        .setTone((s) -> s.isDark ? 90.0 : 20.0)
+        .setIsBackground(true)
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor inverseOnSurface() {
-    return new DynamicColor(
-        /* name= */ "inverse_on_surface",
-        /* palette= */ (s) -> s.neutralPalette,
-        /* tone= */ (s) -> s.isDark ? 20.0 : 95.0,
-        /* isBackground= */ false,
-        /* background= */ (s) -> inverseSurface(),
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(4.5, 7.0, 11.0, 21.0),
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("inverse_on_surface")
+        .setPalette((s) -> s.neutralPalette)
+        .setTone((s) -> s.isDark ? 20.0 : 95.0)
+        .setBackground((s) -> inverseSurface())
+        .setContrastCurve((s) -> new ContrastCurve(4.5, 7.0, 11.0, 21.0))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor outline() {
-    return new DynamicColor(
-        /* name= */ "outline",
-        /* palette= */ (s) -> s.neutralVariantPalette,
-        /* tone= */ (s) -> s.isDark ? 60.0 : 50.0,
-        /* isBackground= */ false,
-        /* background= */ this::highestSurface,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(1.5, 3.0, 4.5, 7.0),
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("outline")
+        .setPalette((s) -> s.neutralVariantPalette)
+        .setTone((s) -> s.isDark ? 60.0 : 50.0)
+        .setBackground(this::highestSurface)
+        .setContrastCurve((s) -> new ContrastCurve(1.5, 3.0, 4.5, 7.0))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor outlineVariant() {
-    return new DynamicColor(
-        /* name= */ "outline_variant",
-        /* palette= */ (s) -> s.neutralVariantPalette,
-        /* tone= */ (s) -> s.isDark ? 30.0 : 80.0,
-        /* isBackground= */ false,
-        /* background= */ this::highestSurface,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(1.0, 1.0, 3.0, 4.5),
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("outline_variant")
+        .setPalette((s) -> s.neutralVariantPalette)
+        .setTone((s) -> s.isDark ? 30.0 : 80.0)
+        .setBackground(this::highestSurface)
+        .setContrastCurve((s) -> new ContrastCurve(1.0, 1.0, 3.0, 4.5))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor shadow() {
-    return new DynamicColor(
-        /* name= */ "shadow",
-        /* palette= */ (s) -> s.neutralPalette,
-        /* tone= */ (s) -> 0.0,
-        /* isBackground= */ false,
-        /* background= */ null,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ null,
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("shadow")
+        .setPalette((s) -> s.neutralPalette)
+        .setTone((s) -> 0.0)
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor scrim() {
-    return new DynamicColor(
-        /* name= */ "scrim",
-        /* palette= */ (s) -> s.neutralPalette,
-        /* tone= */ (s) -> 0.0,
-        /* isBackground= */ false,
-        /* background= */ null,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ null,
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("scrim")
+        .setPalette((s) -> s.neutralPalette)
+        .setTone((s) -> 0.0)
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor surfaceTint() {
-    return new DynamicColor(
-        /* name= */ "surface_tint",
-        /* palette= */ (s) -> s.primaryPalette,
-        /* tone= */ (s) -> s.isDark ? 80.0 : 40.0,
-        /* isBackground= */ true,
-        /* background= */ null,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ null,
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("surface_tint")
+        .setPalette((s) -> s.primaryPalette)
+        .setTone((s) -> s.isDark ? 80.0 : 40.0)
+        .setIsBackground(true)
+        .build();
   }
 
   ////////////////////////////////////////////////////////////////
@@ -419,21 +367,23 @@ class ColorSpec2021 implements ColorSpec {
   @NonNull
   @Override
   public DynamicColor primary() {
-    return new DynamicColor(
-        /* name= */ "primary",
-        /* palette= */ (s) -> s.primaryPalette,
-        /* tone= */ (s) -> {
-          if (isMonochrome(s)) {
-            return s.isDark ? 100.0 : 0.0;
-          }
-          return s.isDark ? 80.0 : 40.0;
-        },
-        /* isBackground= */ true,
-        /* background= */ this::highestSurface,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(3.0, 4.5, 7.0, 7.0),
-        /* toneDeltaPair= */ (s) ->
-            new ToneDeltaPair(primaryContainer(), primary(), 10.0, TonePolarity.NEARER, false));
+    return new DynamicColor.Builder()
+        .setName("primary")
+        .setPalette((s) -> s.primaryPalette)
+        .setTone(
+            (s) -> {
+              if (isMonochrome(s)) {
+                return s.isDark ? 100.0 : 0.0;
+              }
+              return s.isDark ? 80.0 : 40.0;
+            })
+        .setIsBackground(true)
+        .setBackground(this::highestSurface)
+        .setContrastCurve((s) -> new ContrastCurve(3.0, 4.5, 7.0, 7.0))
+        .setToneDeltaPair(
+            (s) ->
+                new ToneDeltaPair(primaryContainer(), primary(), 10.0, TonePolarity.NEARER, false))
+        .build();
   }
 
   @Nullable
@@ -445,79 +395,77 @@ class ColorSpec2021 implements ColorSpec {
   @NonNull
   @Override
   public DynamicColor onPrimary() {
-    return new DynamicColor(
-        /* name= */ "on_primary",
-        /* palette= */ (s) -> s.primaryPalette,
-        /* tone= */ (s) -> {
-          if (isMonochrome(s)) {
-            return s.isDark ? 10.0 : 90.0;
-          }
-          return s.isDark ? 20.0 : 100.0;
-        },
-        /* isBackground= */ false,
-        /* background= */ (s) -> primary(),
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(4.5, 7.0, 11.0, 21.0),
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("on_primary")
+        .setPalette((s) -> s.primaryPalette)
+        .setTone(
+            (s) -> {
+              if (isMonochrome(s)) {
+                return s.isDark ? 10.0 : 90.0;
+              }
+              return s.isDark ? 20.0 : 100.0;
+            })
+        .setBackground((s) -> primary())
+        .setContrastCurve((s) -> new ContrastCurve(4.5, 7.0, 11.0, 21.0))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor primaryContainer() {
-    return new DynamicColor(
-        /* name= */ "primary_container",
-        /* palette= */ (s) -> s.primaryPalette,
-        /* tone= */ (s) -> {
-          if (isFidelity(s)) {
-            return s.sourceColorHct.getTone();
-          }
-          if (isMonochrome(s)) {
-            return s.isDark ? 85.0 : 25.0;
-          }
-          return s.isDark ? 30.0 : 90.0;
-        },
-        /* isBackground= */ true,
-        /* background= */ this::highestSurface,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(1.0, 1.0, 3.0, 4.5),
-        /* toneDeltaPair= */ (s) ->
-            new ToneDeltaPair(primaryContainer(), primary(), 10.0, TonePolarity.NEARER, false));
+    return new DynamicColor.Builder()
+        .setName("primary_container")
+        .setPalette((s) -> s.primaryPalette)
+        .setTone(
+            (s) -> {
+              if (isFidelity(s)) {
+                return s.sourceColorHct.getTone();
+              }
+              if (isMonochrome(s)) {
+                return s.isDark ? 85.0 : 25.0;
+              }
+              return s.isDark ? 30.0 : 90.0;
+            })
+        .setIsBackground(true)
+        .setBackground(this::highestSurface)
+        .setContrastCurve((s) -> new ContrastCurve(1.0, 1.0, 3.0, 4.5))
+        .setToneDeltaPair(
+            (s) ->
+                new ToneDeltaPair(primaryContainer(), primary(), 10.0, TonePolarity.NEARER, false))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onPrimaryContainer() {
-    return new DynamicColor(
-        /* name= */ "on_primary_container",
-        /* palette= */ (s) -> s.primaryPalette,
-        /* tone= */ (s) -> {
-          if (isFidelity(s)) {
-            return DynamicColor.foregroundTone(primaryContainer().tone.apply(s), 4.5);
-          }
-          if (isMonochrome(s)) {
-            return s.isDark ? 0.0 : 100.0;
-          }
-          return s.isDark ? 90.0 : 30.0;
-        },
-        /* isBackground= */ false,
-        /* background= */ (s) -> primaryContainer(),
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(3.0, 4.5, 7.0, 11.0),
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("on_primary_container")
+        .setPalette((s) -> s.primaryPalette)
+        .setTone(
+            (s) -> {
+              if (isFidelity(s)) {
+                return DynamicColor.foregroundTone(primaryContainer().tone.apply(s), 4.5);
+              }
+              if (isMonochrome(s)) {
+                return s.isDark ? 0.0 : 100.0;
+              }
+              return s.isDark ? 90.0 : 30.0;
+            })
+        .setBackground((s) -> primaryContainer())
+        .setContrastCurve((s) -> new ContrastCurve(3.0, 4.5, 7.0, 11.0))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor inversePrimary() {
-    return new DynamicColor(
-        /* name= */ "inverse_primary",
-        /* palette= */ (s) -> s.primaryPalette,
-        /* tone= */ (s) -> s.isDark ? 40.0 : 80.0,
-        /* isBackground= */ false,
-        /* background= */ (s) -> inverseSurface(),
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(3.0, 4.5, 7.0, 7.0),
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("inverse_primary")
+        .setPalette((s) -> s.primaryPalette)
+        .setTone((s) -> s.isDark ? 40.0 : 80.0)
+        .setBackground((s) -> inverseSurface())
+        .setContrastCurve((s) -> new ContrastCurve(3.0, 4.5, 7.0, 7.0))
+        .build();
   }
 
   ////////////////////////////////////////////////////////////////
@@ -527,16 +475,18 @@ class ColorSpec2021 implements ColorSpec {
   @NonNull
   @Override
   public DynamicColor secondary() {
-    return new DynamicColor(
-        /* name= */ "secondary",
-        /* palette= */ (s) -> s.secondaryPalette,
-        /* tone= */ (s) -> s.isDark ? 80.0 : 40.0,
-        /* isBackground= */ true,
-        /* background= */ this::highestSurface,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(3.0, 4.5, 7.0, 7.0),
-        /* toneDeltaPair= */ (s) ->
-            new ToneDeltaPair(secondaryContainer(), secondary(), 10.0, TonePolarity.NEARER, false));
+    return new DynamicColor.Builder()
+        .setName("secondary")
+        .setPalette((s) -> s.secondaryPalette)
+        .setTone((s) -> s.isDark ? 80.0 : 40.0)
+        .setIsBackground(true)
+        .setBackground(this::highestSurface)
+        .setContrastCurve((s) -> new ContrastCurve(3.0, 4.5, 7.0, 7.0))
+        .setToneDeltaPair(
+            (s) ->
+                new ToneDeltaPair(
+                    secondaryContainer(), secondary(), 10.0, TonePolarity.NEARER, false))
+        .build();
   }
 
   @Nullable
@@ -548,68 +498,71 @@ class ColorSpec2021 implements ColorSpec {
   @NonNull
   @Override
   public DynamicColor onSecondary() {
-    return new DynamicColor(
-        /* name= */ "on_secondary",
-        /* palette= */ (s) -> s.secondaryPalette,
-        /* tone= */ (s) -> {
-          if (isMonochrome(s)) {
-            return s.isDark ? 10.0 : 100.0;
-          } else {
-            return s.isDark ? 20.0 : 100.0;
-          }
-        },
-        /* isBackground= */ false,
-        /* background= */ (s) -> secondary(),
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(4.5, 7.0, 11.0, 21.0),
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("on_secondary")
+        .setPalette((s) -> s.secondaryPalette)
+        .setTone(
+            (s) -> {
+              if (isMonochrome(s)) {
+                return s.isDark ? 10.0 : 100.0;
+              }
+              return s.isDark ? 20.0 : 100.0;
+            })
+        .setBackground((s) -> secondary())
+        .setContrastCurve((s) -> new ContrastCurve(4.5, 7.0, 11.0, 21.0))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor secondaryContainer() {
-    return new DynamicColor(
-        /* name= */ "secondary_container",
-        /* palette= */ (s) -> s.secondaryPalette,
-        /* tone= */ (s) -> {
-          final double initialTone = s.isDark ? 30.0 : 90.0;
-          if (isMonochrome(s)) {
-            return s.isDark ? 30.0 : 85.0;
-          }
-          if (!isFidelity(s)) {
-            return initialTone;
-          }
-          return findDesiredChromaByTone(
-              s.secondaryPalette.getHue(), s.secondaryPalette.getChroma(), initialTone, !s.isDark);
-        },
-        /* isBackground= */ true,
-        /* background= */ this::highestSurface,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(1.0, 1.0, 3.0, 4.5),
-        /* toneDeltaPair= */ (s) ->
-            new ToneDeltaPair(secondaryContainer(), secondary(), 10.0, TonePolarity.NEARER, false));
+    return new DynamicColor.Builder()
+        .setName("secondary_container")
+        .setPalette((s) -> s.secondaryPalette)
+        .setTone(
+            (s) -> {
+              final double initialTone = s.isDark ? 30.0 : 90.0;
+              if (isMonochrome(s)) {
+                return s.isDark ? 30.0 : 85.0;
+              }
+              if (!isFidelity(s)) {
+                return initialTone;
+              }
+              return findDesiredChromaByTone(
+                  s.secondaryPalette.getHue(),
+                  s.secondaryPalette.getChroma(),
+                  initialTone,
+                  !s.isDark);
+            })
+        .setIsBackground(true)
+        .setBackground(this::highestSurface)
+        .setContrastCurve((s) -> new ContrastCurve(1.0, 1.0, 3.0, 4.5))
+        .setToneDeltaPair(
+            (s) ->
+                new ToneDeltaPair(
+                    secondaryContainer(), secondary(), 10.0, TonePolarity.NEARER, false))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onSecondaryContainer() {
-    return new DynamicColor(
-        /* name= */ "on_secondary_container",
-        /* palette= */ (s) -> s.secondaryPalette,
-        /* tone= */ (s) -> {
-          if (isMonochrome(s)) {
-            return s.isDark ? 90.0 : 10.0;
-          }
-          if (!isFidelity(s)) {
-            return s.isDark ? 90.0 : 30.0;
-          }
-          return DynamicColor.foregroundTone(secondaryContainer().tone.apply(s), 4.5);
-        },
-        /* isBackground= */ false,
-        /* background= */ (s) -> secondaryContainer(),
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(3.0, 4.5, 7.0, 11.0),
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("on_secondary_container")
+        .setPalette((s) -> s.secondaryPalette)
+        .setTone(
+            (s) -> {
+              if (isMonochrome(s)) {
+                return s.isDark ? 90.0 : 10.0;
+              }
+              if (!isFidelity(s)) {
+                return s.isDark ? 90.0 : 30.0;
+              }
+              return DynamicColor.foregroundTone(secondaryContainer().tone.apply(s), 4.5);
+            })
+        .setBackground((s) -> secondaryContainer())
+        .setContrastCurve((s) -> new ContrastCurve(3.0, 4.5, 7.0, 11.0))
+        .build();
   }
 
   ////////////////////////////////////////////////////////////////
@@ -619,21 +572,24 @@ class ColorSpec2021 implements ColorSpec {
   @NonNull
   @Override
   public DynamicColor tertiary() {
-    return new DynamicColor(
-        /* name= */ "tertiary",
-        /* palette= */ (s) -> s.tertiaryPalette,
-        /* tone= */ (s) -> {
-          if (isMonochrome(s)) {
-            return s.isDark ? 90.0 : 25.0;
-          }
-          return s.isDark ? 80.0 : 40.0;
-        },
-        /* isBackground= */ true,
-        /* background= */ this::highestSurface,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(3.0, 4.5, 7.0, 7.0),
-        /* toneDeltaPair= */ (s) ->
-            new ToneDeltaPair(tertiaryContainer(), tertiary(), 10.0, TonePolarity.NEARER, false));
+    return new DynamicColor.Builder()
+        .setName("tertiary")
+        .setPalette((s) -> s.tertiaryPalette)
+        .setTone(
+            (s) -> {
+              if (isMonochrome(s)) {
+                return s.isDark ? 90.0 : 25.0;
+              }
+              return s.isDark ? 80.0 : 40.0;
+            })
+        .setIsBackground(true)
+        .setBackground(this::highestSurface)
+        .setContrastCurve((s) -> new ContrastCurve(3.0, 4.5, 7.0, 7.0))
+        .setToneDeltaPair(
+            (s) ->
+                new ToneDeltaPair(
+                    tertiaryContainer(), tertiary(), 10.0, TonePolarity.NEARER, false))
+        .build();
   }
 
   @Nullable
@@ -645,66 +601,67 @@ class ColorSpec2021 implements ColorSpec {
   @NonNull
   @Override
   public DynamicColor onTertiary() {
-    return new DynamicColor(
-        /* name= */ "on_tertiary",
-        /* palette= */ (s) -> s.tertiaryPalette,
-        /* tone= */ (s) -> {
-          if (isMonochrome(s)) {
-            return s.isDark ? 10.0 : 90.0;
-          }
-          return s.isDark ? 20.0 : 100.0;
-        },
-        /* isBackground= */ false,
-        /* background= */ (s) -> tertiary(),
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(4.5, 7.0, 11.0, 21.0),
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("on_tertiary")
+        .setPalette((s) -> s.tertiaryPalette)
+        .setTone(
+            (s) -> {
+              if (isMonochrome(s)) {
+                return s.isDark ? 10.0 : 90.0;
+              }
+              return s.isDark ? 20.0 : 100.0;
+            })
+        .setBackground((s) -> tertiary())
+        .setContrastCurve((s) -> new ContrastCurve(4.5, 7.0, 11.0, 21.0))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor tertiaryContainer() {
-    return new DynamicColor(
-        /* name= */ "tertiary_container",
-        /* palette= */ (s) -> s.tertiaryPalette,
-        /* tone= */ (s) -> {
-          if (isMonochrome(s)) {
-            return s.isDark ? 60.0 : 49.0;
-          }
-          if (!isFidelity(s)) {
-            return s.isDark ? 30.0 : 90.0;
-          }
-          final Hct proposedHct = s.tertiaryPalette.getHct(s.sourceColorHct.getTone());
-          return DislikeAnalyzer.fixIfDisliked(proposedHct).getTone();
-        },
-        /* isBackground= */ true,
-        /* background= */ this::highestSurface,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(1.0, 1.0, 3.0, 4.5),
-        /* toneDeltaPair= */ (s) ->
-            new ToneDeltaPair(tertiaryContainer(), tertiary(), 10.0, TonePolarity.NEARER, false));
+    return new DynamicColor.Builder()
+        .setName("tertiary_container")
+        .setPalette((s) -> s.tertiaryPalette)
+        .setTone(
+            (s) -> {
+              if (isMonochrome(s)) {
+                return s.isDark ? 60.0 : 49.0;
+              }
+              if (!isFidelity(s)) {
+                return s.isDark ? 30.0 : 90.0;
+              }
+              final Hct proposedHct = s.tertiaryPalette.getHct(s.sourceColorHct.getTone());
+              return DislikeAnalyzer.fixIfDisliked(proposedHct).getTone();
+            })
+        .setIsBackground(true)
+        .setBackground(this::highestSurface)
+        .setContrastCurve((s) -> new ContrastCurve(1.0, 1.0, 3.0, 4.5))
+        .setToneDeltaPair(
+            (s) ->
+                new ToneDeltaPair(
+                    tertiaryContainer(), tertiary(), 10.0, TonePolarity.NEARER, false))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onTertiaryContainer() {
-    return new DynamicColor(
-        /* name= */ "on_tertiary_container",
-        /* palette= */ (s) -> s.tertiaryPalette,
-        /* tone= */ (s) -> {
-          if (isMonochrome(s)) {
-            return s.isDark ? 0.0 : 100.0;
-          }
-          if (!isFidelity(s)) {
-            return s.isDark ? 90.0 : 30.0;
-          }
-          return DynamicColor.foregroundTone(tertiaryContainer().tone.apply(s), 4.5);
-        },
-        /* isBackground= */ false,
-        /* background= */ (s) -> tertiaryContainer(),
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(3.0, 4.5, 7.0, 11.0),
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("on_tertiary_container")
+        .setPalette((s) -> s.tertiaryPalette)
+        .setTone(
+            (s) -> {
+              if (isMonochrome(s)) {
+                return s.isDark ? 0.0 : 100.0;
+              }
+              if (!isFidelity(s)) {
+                return s.isDark ? 90.0 : 30.0;
+              }
+              return DynamicColor.foregroundTone(tertiaryContainer().tone.apply(s), 4.5);
+            })
+        .setBackground((s) -> tertiaryContainer())
+        .setContrastCurve((s) -> new ContrastCurve(3.0, 4.5, 7.0, 11.0))
+        .build();
   }
 
   ////////////////////////////////////////////////////////////////
@@ -714,16 +671,16 @@ class ColorSpec2021 implements ColorSpec {
   @NonNull
   @Override
   public DynamicColor error() {
-    return new DynamicColor(
-        /* name= */ "error",
-        /* palette= */ (s) -> s.errorPalette,
-        /* tone= */ (s) -> s.isDark ? 80.0 : 40.0,
-        /* isBackground= */ true,
-        /* background= */ this::highestSurface,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(3.0, 4.5, 7.0, 7.0),
-        /* toneDeltaPair= */ (s) ->
-            new ToneDeltaPair(errorContainer(), error(), 10.0, TonePolarity.NEARER, false));
+    return new DynamicColor.Builder()
+        .setName("error")
+        .setPalette((s) -> s.errorPalette)
+        .setTone((s) -> s.isDark ? 80.0 : 40.0)
+        .setIsBackground(true)
+        .setBackground(this::highestSurface)
+        .setContrastCurve((s) -> new ContrastCurve(3.0, 4.5, 7.0, 7.0))
+        .setToneDeltaPair(
+            (s) -> new ToneDeltaPair(errorContainer(), error(), 10.0, TonePolarity.NEARER, false))
+        .build();
   }
 
   @Nullable
@@ -735,49 +692,46 @@ class ColorSpec2021 implements ColorSpec {
   @NonNull
   @Override
   public DynamicColor onError() {
-    return new DynamicColor(
-        /* name= */ "on_error",
-        /* palette= */ (s) -> s.errorPalette,
-        /* tone= */ (s) -> s.isDark ? 20.0 : 100.0,
-        /* isBackground= */ false,
-        /* background= */ (s) -> error(),
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(4.5, 7.0, 11.0, 21.0),
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("on_error")
+        .setPalette((s) -> s.errorPalette)
+        .setTone((s) -> s.isDark ? 20.0 : 100.0)
+        .setBackground((s) -> error())
+        .setContrastCurve((s) -> new ContrastCurve(4.5, 7.0, 11.0, 21.0))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor errorContainer() {
-    return new DynamicColor(
-        /* name= */ "error_container",
-        /* palette= */ (s) -> s.errorPalette,
-        /* tone= */ (s) -> s.isDark ? 30.0 : 90.0,
-        /* isBackground= */ true,
-        /* background= */ this::highestSurface,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(1.0, 1.0, 3.0, 4.5),
-        /* toneDeltaPair= */ (s) ->
-            new ToneDeltaPair(errorContainer(), error(), 10.0, TonePolarity.NEARER, false));
+    return new DynamicColor.Builder()
+        .setName("error_container")
+        .setPalette((s) -> s.errorPalette)
+        .setTone((s) -> s.isDark ? 30.0 : 90.0)
+        .setIsBackground(true)
+        .setBackground(this::highestSurface)
+        .setContrastCurve((s) -> new ContrastCurve(1.0, 1.0, 3.0, 4.5))
+        .setToneDeltaPair(
+            (s) -> new ToneDeltaPair(errorContainer(), error(), 10.0, TonePolarity.NEARER, false))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onErrorContainer() {
-    return new DynamicColor(
-        /* name= */ "on_error_container",
-        /* palette= */ (s) -> s.errorPalette,
-        /* tone= */ (s) -> {
-          if (isMonochrome(s)) {
-            return s.isDark ? 90.0 : 10.0;
-          }
-          return s.isDark ? 90.0 : 30.0;
-        },
-        /* isBackground= */ false,
-        /* background= */ (s) -> errorContainer(),
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(3.0, 4.5, 7.0, 11.0),
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("on_error_container")
+        .setPalette((s) -> s.errorPalette)
+        .setTone(
+            (s) -> {
+              if (isMonochrome(s)) {
+                return s.isDark ? 90.0 : 10.0;
+              }
+              return s.isDark ? 90.0 : 30.0;
+            })
+        .setBackground((s) -> errorContainer())
+        .setContrastCurve((s) -> new ContrastCurve(3.0, 4.5, 7.0, 11.0))
+        .build();
   }
 
   ////////////////////////////////////////////////////////////////
@@ -787,59 +741,61 @@ class ColorSpec2021 implements ColorSpec {
   @NonNull
   @Override
   public DynamicColor primaryFixed() {
-    return new DynamicColor(
-        /* name= */ "primary_fixed",
-        /* palette= */ (s) -> s.primaryPalette,
-        /* tone= */ (s) -> isMonochrome(s) ? 40.0 : 90.0,
-        /* isBackground= */ true,
-        /* background= */ this::highestSurface,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(1.0, 1.0, 3.0, 4.5),
-        /* toneDeltaPair= */ (s) ->
-            new ToneDeltaPair(primaryFixed(), primaryFixedDim(), 10.0, TonePolarity.LIGHTER, true));
+    return new DynamicColor.Builder()
+        .setName("primary_fixed")
+        .setPalette((s) -> s.primaryPalette)
+        .setTone((s) -> isMonochrome(s) ? 40.0 : 90.0)
+        .setIsBackground(true)
+        .setBackground(this::highestSurface)
+        .setContrastCurve((s) -> new ContrastCurve(1.0, 1.0, 3.0, 4.5))
+        .setToneDeltaPair(
+            (s) ->
+                new ToneDeltaPair(
+                    this.primaryFixed(), this.primaryFixedDim(), 10.0, TonePolarity.LIGHTER, true))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor primaryFixedDim() {
-    return new DynamicColor(
-        /* name= */ "primary_fixed_dim",
-        /* palette= */ (s) -> s.primaryPalette,
-        /* tone= */ (s) -> isMonochrome(s) ? 30.0 : 80.0,
-        /* isBackground= */ true,
-        /* background= */ this::highestSurface,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(1.0, 1.0, 3.0, 4.5),
-        /* toneDeltaPair= */ (s) ->
-            new ToneDeltaPair(primaryFixed(), primaryFixedDim(), 10.0, TonePolarity.LIGHTER, true));
+    return new DynamicColor.Builder()
+        .setName("primary_fixed_dim")
+        .setPalette((s) -> s.primaryPalette)
+        .setTone((s) -> isMonochrome(s) ? 30.0 : 80.0)
+        .setIsBackground(true)
+        .setBackground(this::highestSurface)
+        .setContrastCurve((s) -> new ContrastCurve(1.0, 1.0, 3.0, 4.5))
+        .setToneDeltaPair(
+            (s) ->
+                new ToneDeltaPair(
+                    primaryFixed(), primaryFixedDim(), 10.0, TonePolarity.LIGHTER, true))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onPrimaryFixed() {
-    return new DynamicColor(
-        /* name= */ "on_primary_fixed",
-        /* palette= */ (s) -> s.primaryPalette,
-        /* tone= */ (s) -> isMonochrome(s) ? 100.0 : 10.0,
-        /* isBackground= */ false,
-        /* background= */ (s) -> primaryFixedDim(),
-        /* secondBackground= */ (s) -> primaryFixed(),
-        /* contrastCurve= */ new ContrastCurve(4.5, 7.0, 11.0, 21.0),
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("on_primary_fixed")
+        .setPalette((s) -> s.primaryPalette)
+        .setTone((s) -> isMonochrome(s) ? 100.0 : 10.0)
+        .setBackground((s) -> primaryFixedDim())
+        .setSecondBackground((s) -> primaryFixed())
+        .setContrastCurve((s) -> new ContrastCurve(4.5, 7.0, 11.0, 21.0))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onPrimaryFixedVariant() {
-    return new DynamicColor(
-        /* name= */ "on_primary_fixed_variant",
-        /* palette= */ (s) -> s.primaryPalette,
-        /* tone= */ (s) -> isMonochrome(s) ? 90.0 : 30.0,
-        /* isBackground= */ false,
-        /* background= */ (s) -> primaryFixedDim(),
-        /* secondBackground= */ (s) -> primaryFixed(),
-        /* contrastCurve= */ new ContrastCurve(3.0, 4.5, 7.0, 11.0),
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("on_primary_fixed_variant")
+        .setPalette((s) -> s.primaryPalette)
+        .setTone((s) -> isMonochrome(s) ? 90.0 : 30.0)
+        .setBackground((s) -> primaryFixedDim())
+        .setSecondBackground((s) -> primaryFixed())
+        .setContrastCurve((s) -> new ContrastCurve(3.0, 4.5, 7.0, 11.0))
+        .build();
   }
 
   ////////////////////////////////////////////////////////////////
@@ -849,61 +805,61 @@ class ColorSpec2021 implements ColorSpec {
   @NonNull
   @Override
   public DynamicColor secondaryFixed() {
-    return new DynamicColor(
-        /* name= */ "secondary_fixed",
-        /* palette= */ (s) -> s.secondaryPalette,
-        /* tone= */ (s) -> isMonochrome(s) ? 80.0 : 90.0,
-        /* isBackground= */ true,
-        /* background= */ this::highestSurface,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(1.0, 1.0, 3.0, 4.5),
-        /* toneDeltaPair= */ (s) ->
-            new ToneDeltaPair(
-                secondaryFixed(), secondaryFixedDim(), 10.0, TonePolarity.LIGHTER, true));
+    return new DynamicColor.Builder()
+        .setName("secondary_fixed")
+        .setPalette((s) -> s.secondaryPalette)
+        .setTone((s) -> isMonochrome(s) ? 80.0 : 90.0)
+        .setIsBackground(true)
+        .setBackground(this::highestSurface)
+        .setContrastCurve((s) -> new ContrastCurve(1.0, 1.0, 3.0, 4.5))
+        .setToneDeltaPair(
+            (s) ->
+                new ToneDeltaPair(
+                    secondaryFixed(), secondaryFixedDim(), 10.0, TonePolarity.LIGHTER, true))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor secondaryFixedDim() {
-    return new DynamicColor(
-        /* name= */ "secondary_fixed_dim",
-        /* palette= */ (s) -> s.secondaryPalette,
-        /* tone= */ (s) -> isMonochrome(s) ? 70.0 : 80.0,
-        /* isBackground= */ true,
-        /* background= */ this::highestSurface,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(1.0, 1.0, 3.0, 4.5),
-        /* toneDeltaPair= */ (s) ->
-            new ToneDeltaPair(
-                secondaryFixed(), secondaryFixedDim(), 10.0, TonePolarity.LIGHTER, true));
+    return new DynamicColor.Builder()
+        .setName("secondary_fixed_dim")
+        .setPalette((s) -> s.secondaryPalette)
+        .setTone((s) -> isMonochrome(s) ? 70.0 : 80.0)
+        .setIsBackground(true)
+        .setBackground(this::highestSurface)
+        .setContrastCurve((s) -> new ContrastCurve(1.0, 1.0, 3.0, 4.5))
+        .setToneDeltaPair(
+            (s) ->
+                new ToneDeltaPair(
+                    secondaryFixed(), secondaryFixedDim(), 10.0, TonePolarity.LIGHTER, true))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onSecondaryFixed() {
-    return new DynamicColor(
-        /* name= */ "on_secondary_fixed",
-        /* palette= */ (s) -> s.secondaryPalette,
-        /* tone= */ (s) -> 10.0,
-        /* isBackground= */ false,
-        /* background= */ (s) -> secondaryFixedDim(),
-        /* secondBackground= */ (s) -> secondaryFixed(),
-        /* contrastCurve= */ new ContrastCurve(4.5, 7.0, 11.0, 21.0),
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("on_secondary_fixed")
+        .setPalette((s) -> s.secondaryPalette)
+        .setTone((s) -> 10.0)
+        .setBackground((s) -> secondaryFixedDim())
+        .setSecondBackground((s) -> secondaryFixed())
+        .setContrastCurve((s) -> new ContrastCurve(4.5, 7.0, 11.0, 21.0))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onSecondaryFixedVariant() {
-    return new DynamicColor(
-        /* name= */ "on_secondary_fixed_variant",
-        /* palette= */ (s) -> s.secondaryPalette,
-        /* tone= */ (s) -> isMonochrome(s) ? 25.0 : 30.0,
-        /* isBackground= */ false,
-        /* background= */ (s) -> secondaryFixedDim(),
-        /* secondBackground= */ (s) -> secondaryFixed(),
-        /* contrastCurve= */ new ContrastCurve(3.0, 4.5, 7.0, 11.0),
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("on_secondary_fixed_variant")
+        .setPalette((s) -> s.secondaryPalette)
+        .setTone((s) -> isMonochrome(s) ? 25.0 : 30.0)
+        .setBackground((s) -> secondaryFixedDim())
+        .setSecondBackground((s) -> secondaryFixed())
+        .setContrastCurve((s) -> new ContrastCurve(3.0, 4.5, 7.0, 11.0))
+        .build();
   }
 
   ////////////////////////////////////////////////////////////////
@@ -913,61 +869,61 @@ class ColorSpec2021 implements ColorSpec {
   @NonNull
   @Override
   public DynamicColor tertiaryFixed() {
-    return new DynamicColor(
-        /* name= */ "tertiary_fixed",
-        /* palette= */ (s) -> s.tertiaryPalette,
-        /* tone= */ (s) -> isMonochrome(s) ? 40.0 : 90.0,
-        /* isBackground= */ true,
-        /* background= */ this::highestSurface,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(1.0, 1.0, 3.0, 4.5),
-        /* toneDeltaPair= */ (s) ->
-            new ToneDeltaPair(
-                tertiaryFixed(), tertiaryFixedDim(), 10.0, TonePolarity.LIGHTER, true));
+    return new DynamicColor.Builder()
+        .setName("tertiary_fixed")
+        .setPalette((s) -> s.tertiaryPalette)
+        .setTone((s) -> isMonochrome(s) ? 40.0 : 90.0)
+        .setIsBackground(true)
+        .setBackground(this::highestSurface)
+        .setContrastCurve((s) -> new ContrastCurve(1.0, 1.0, 3.0, 4.5))
+        .setToneDeltaPair(
+            (s) ->
+                new ToneDeltaPair(
+                    tertiaryFixed(), tertiaryFixedDim(), 10.0, TonePolarity.LIGHTER, true))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor tertiaryFixedDim() {
-    return new DynamicColor(
-        /* name= */ "tertiary_fixed_dim",
-        /* palette= */ (s) -> s.tertiaryPalette,
-        /* tone= */ (s) -> isMonochrome(s) ? 30.0 : 80.0,
-        /* isBackground= */ true,
-        /* background= */ this::highestSurface,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ new ContrastCurve(1.0, 1.0, 3.0, 4.5),
-        /* toneDeltaPair= */ (s) ->
-            new ToneDeltaPair(
-                tertiaryFixed(), tertiaryFixedDim(), 10.0, TonePolarity.LIGHTER, true));
+    return new DynamicColor.Builder()
+        .setName("tertiary_fixed_dim")
+        .setPalette((s) -> s.tertiaryPalette)
+        .setTone((s) -> isMonochrome(s) ? 30.0 : 80.0)
+        .setIsBackground(true)
+        .setBackground(this::highestSurface)
+        .setContrastCurve((s) -> new ContrastCurve(1.0, 1.0, 3.0, 4.5))
+        .setToneDeltaPair(
+            (s) ->
+                new ToneDeltaPair(
+                    tertiaryFixed(), tertiaryFixedDim(), 10.0, TonePolarity.LIGHTER, true))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onTertiaryFixed() {
-    return new DynamicColor(
-        /* name= */ "on_tertiary_fixed",
-        /* palette= */ (s) -> s.tertiaryPalette,
-        /* tone= */ (s) -> isMonochrome(s) ? 100.0 : 10.0,
-        /* isBackground= */ false,
-        /* background= */ (s) -> tertiaryFixedDim(),
-        /* secondBackground= */ (s) -> tertiaryFixed(),
-        /* contrastCurve= */ new ContrastCurve(4.5, 7.0, 11.0, 21.0),
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("on_tertiary_fixed")
+        .setPalette((s) -> s.tertiaryPalette)
+        .setTone((s) -> isMonochrome(s) ? 100.0 : 10.0)
+        .setBackground((s) -> tertiaryFixedDim())
+        .setSecondBackground((s) -> tertiaryFixed())
+        .setContrastCurve((s) -> new ContrastCurve(4.5, 7.0, 11.0, 21.0))
+        .build();
   }
 
   @NonNull
   @Override
   public DynamicColor onTertiaryFixedVariant() {
-    return new DynamicColor(
-        /* name= */ "on_tertiary_fixed_variant",
-        /* palette= */ (s) -> s.tertiaryPalette,
-        /* tone= */ (s) -> isMonochrome(s) ? 90.0 : 30.0,
-        /* isBackground= */ false,
-        /* background= */ (s) -> tertiaryFixedDim(),
-        /* secondBackground= */ (s) -> tertiaryFixed(),
-        /* contrastCurve= */ new ContrastCurve(3.0, 4.5, 7.0, 11.0),
-        /* toneDeltaPair= */ null);
+    return new DynamicColor.Builder()
+        .setName("on_tertiary_fixed_variant")
+        .setPalette((s) -> s.tertiaryPalette)
+        .setTone((s) -> isMonochrome(s) ? 90.0 : 30.0)
+        .setBackground((s) -> tertiaryFixedDim())
+        .setSecondBackground((s) -> tertiaryFixed())
+        .setContrastCurve((s) -> new ContrastCurve(3.0, 4.5, 7.0, 11.0))
+        .build();
   }
 
   //////////////////////////////////////////////////////////////////
@@ -990,8 +946,11 @@ class ColorSpec2021 implements ColorSpec {
   @NonNull
   @Override
   public DynamicColor controlActivated() {
-    return DynamicColor.fromPalette(
-        "control_activated", (s) -> s.primaryPalette, (s) -> s.isDark ? 30.0 : 90.0);
+    return new DynamicColor.Builder()
+        .setName("control_activated")
+        .setPalette((s) -> s.primaryPalette)
+        .setTone((s) -> s.isDark ? 30.0 : 90.0)
+        .build();
   }
 
   // colorControlNormal documented as textColorSecondary in M3 & GM3.
@@ -1000,8 +959,11 @@ class ColorSpec2021 implements ColorSpec {
   @NonNull
   @Override
   public DynamicColor controlNormal() {
-    return DynamicColor.fromPalette(
-        "control_normal", (s) -> s.neutralVariantPalette, (s) -> s.isDark ? 80.0 : 30.0);
+    return new DynamicColor.Builder()
+        .setName("control_normal")
+        .setPalette((s) -> s.neutralVariantPalette)
+        .setTone((s) -> s.isDark ? 80.0 : 30.0)
+        .build();
   }
 
   // colorControlHighlight documented, in both M3 & GM3:
@@ -1015,24 +977,23 @@ class ColorSpec2021 implements ColorSpec {
   @NonNull
   @Override
   public DynamicColor controlHighlight() {
-    return new DynamicColor(
-        /* name= */ "control_highlight",
-        /* palette= */ (s) -> s.neutralPalette,
-        /* tone= */ (s) -> s.isDark ? 100.0 : 0.0,
-        /* isBackground= */ false,
-        /* background= */ null,
-        /* secondBackground= */ null,
-        /* contrastCurve= */ null,
-        /* toneDeltaPair= */ null,
-        /* opacity= */ s -> s.isDark ? 0.20 : 0.12);
+    return new DynamicColor.Builder()
+        .setName("control_highlight")
+        .setPalette((s) -> s.neutralPalette)
+        .setTone((s) -> s.isDark ? 100.0 : 0.0)
+        .setOpacity((s) -> s.isDark ? 0.20 : 0.12)
+        .build();
   }
 
   // textColorPrimaryInverse documented, in both M3 & GM3, documented as N10/N90.
   @NonNull
   @Override
   public DynamicColor textPrimaryInverse() {
-    return DynamicColor.fromPalette(
-        "text_primary_inverse", (s) -> s.neutralPalette, (s) -> s.isDark ? 10.0 : 90.0);
+    return new DynamicColor.Builder()
+        .setName("text_primary_inverse")
+        .setPalette((s) -> s.neutralPalette)
+        .setTone((s) -> s.isDark ? 10.0 : 90.0)
+        .build();
   }
 
   // textColorSecondaryInverse and textColorTertiaryInverse both documented, in both M3 & GM3, as
@@ -1040,20 +1001,22 @@ class ColorSpec2021 implements ColorSpec {
   @NonNull
   @Override
   public DynamicColor textSecondaryAndTertiaryInverse() {
-    return DynamicColor.fromPalette(
-        "text_secondary_and_tertiary_inverse",
-        (s) -> s.neutralVariantPalette,
-        (s) -> s.isDark ? 30.0 : 80.0);
+    return new DynamicColor.Builder()
+        .setName("text_secondary_and_tertiary_inverse")
+        .setPalette((s) -> s.neutralVariantPalette)
+        .setTone((s) -> s.isDark ? 30.0 : 80.0)
+        .build();
   }
 
   // textColorPrimaryInverseDisableOnly documented, in both M3 & GM3, as N10/N90
   @NonNull
   @Override
   public DynamicColor textPrimaryInverseDisableOnly() {
-    return DynamicColor.fromPalette(
-        "text_primary_inverse_disable_only",
-        (s) -> s.neutralPalette,
-        (s) -> s.isDark ? 10.0 : 90.0);
+    return new DynamicColor.Builder()
+        .setName("text_primary_inverse_disable_only")
+        .setPalette((s) -> s.neutralPalette)
+        .setTone((s) -> s.isDark ? 10.0 : 90.0)
+        .build();
   }
 
   // textColorSecondaryInverse and textColorTertiaryInverse in disabled state both documented,
@@ -1061,18 +1024,22 @@ class ColorSpec2021 implements ColorSpec {
   @NonNull
   @Override
   public DynamicColor textSecondaryAndTertiaryInverseDisabled() {
-    return DynamicColor.fromPalette(
-        "text_secondary_and_tertiary_inverse_disabled",
-        (s) -> s.neutralPalette,
-        (s) -> s.isDark ? 10.0 : 90.0);
+    return new DynamicColor.Builder()
+        .setName("text_secondary_and_tertiary_inverse_disabled")
+        .setPalette((s) -> s.neutralPalette)
+        .setTone((s) -> s.isDark ? 10.0 : 90.0)
+        .build();
   }
 
   // textColorHintInverse documented, in both M3 & GM3, as N10/N90
   @NonNull
   @Override
   public DynamicColor textHintInverse() {
-    return DynamicColor.fromPalette(
-        "text_hint_inverse", (s) -> s.neutralPalette, (s) -> s.isDark ? 10.0 : 90.0);
+    return new DynamicColor.Builder()
+        .setName("text_hint_inverse")
+        .setPalette((s) -> s.neutralPalette)
+        .setTone((s) -> s.isDark ? 10.0 : 90.0)
+        .build();
   }
 
   ////////////////////////////////////////////////////////////////
@@ -1147,10 +1114,11 @@ class ColorSpec2021 implements ColorSpec {
   @Override
   public double getTone(DynamicScheme scheme, DynamicColor color) {
     boolean decreasingContrast = scheme.contrastLevel < 0;
+    ToneDeltaPair toneDeltaPair =
+        color.toneDeltaPair == null ? null : color.toneDeltaPair.apply(scheme);
 
     // Case 1: dual foreground, pair of colors with delta constraint.
-    if (color.toneDeltaPair != null) {
-      ToneDeltaPair toneDeltaPair = color.toneDeltaPair.apply(scheme);
+    if (toneDeltaPair != null) {
       DynamicColor roleA = toneDeltaPair.getRoleA();
       DynamicColor roleB = toneDeltaPair.getRoleB();
       double delta = toneDeltaPair.getDelta();
@@ -1278,7 +1246,7 @@ class ColorSpec2021 implements ColorSpec {
         }
       }
 
-      if (color.secondBackground == null) {
+      if (color.secondBackground == null || color.secondBackground.apply(scheme) == null) {
         return answer;
       }
 

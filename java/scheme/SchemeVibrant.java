@@ -26,8 +26,11 @@ import hct.Hct;
 /** A loud theme, colorfulness is maximum for Primary palette, increased for others. */
 public class SchemeVibrant extends DynamicScheme {
 
+  private static final SpecVersion DEFAULT_SPEC_VERSION = SpecVersion.SPEC_2021;
+  private static final Platform DEFAULT_PLATFORM = PHONE;
+
   public SchemeVibrant(Hct sourceColorHct, boolean isDark, double contrastLevel) {
-    this(sourceColorHct, isDark, contrastLevel, SpecVersion.SPEC_2021, PHONE);
+    this(sourceColorHct, isDark, contrastLevel, DEFAULT_SPEC_VERSION, DEFAULT_PLATFORM);
   }
 
   public SchemeVibrant(
