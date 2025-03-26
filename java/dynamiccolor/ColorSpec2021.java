@@ -321,7 +321,7 @@ class ColorSpec2021 implements ColorSpec {
         /* name= */ "inverse_surface",
         /* palette= */ (s) -> s.neutralPalette,
         /* tone= */ (s) -> s.isDark ? 90.0 : 20.0,
-        /* isBackground= */ false,
+        /* isBackground= */ true,
         /* background= */ null,
         /* secondBackground= */ null,
         /* contrastCurve= */ null,
