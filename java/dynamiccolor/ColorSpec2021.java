@@ -950,6 +950,7 @@ class ColorSpec2021 implements ColorSpec {
         .setName("control_activated")
         .setPalette((s) -> s.primaryPalette)
         .setTone((s) -> s.isDark ? 30.0 : 90.0)
+        .setIsBackground(true)
         .build();
   }
 
