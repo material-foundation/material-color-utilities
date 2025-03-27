@@ -35,20 +35,6 @@ import java.util.Optional;
 /** {@link ColorSpec} implementation for the 2021 spec. */
 class ColorSpec2021 implements ColorSpec {
 
-  /** Optionally use fidelity on most color schemes. */
-  private final boolean isExtendedFidelity;
-
-  public ColorSpec2021() {
-    this.isExtendedFidelity = false;
-  }
-
-  // Temporary constructor to support extended fidelity experiment.
-  // TODO(b/291720794): Once schemes that will permanently use fidelity are identified,
-  // remove this and default to the decided behavior.
-  public ColorSpec2021(boolean isExtendedFidelity) {
-    this.isExtendedFidelity = isExtendedFidelity;
-  }
-
   ////////////////////////////////////////////////////////////////
   // Main Palettes                                              //
   ////////////////////////////////////////////////////////////////
@@ -1054,11 +1040,6 @@ class ColorSpec2021 implements ColorSpec {
   }
 
   private boolean isFidelity(DynamicScheme scheme) {
-    if (this.isExtendedFidelity
-        && scheme.variant != Variant.MONOCHROME
-        && scheme.variant != Variant.NEUTRAL) {
-      return true;
-    }
     return scheme.variant == Variant.FIDELITY || scheme.variant == Variant.CONTENT;
   }
 

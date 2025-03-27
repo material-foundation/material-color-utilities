@@ -31,18 +31,7 @@ import java.util.function.Supplier;
 @SuppressWarnings({"AndroidJdkLibsChecker", "NewApi"})
 public final class MaterialDynamicColors {
 
-  private final ColorSpec colorSpec;
-
-  public MaterialDynamicColors() {
-    this(false);
-  }
-
-  // Temporary constructor to support extended fidelity experiment.
-  // TODO(b/291720794): Once schemes that will permanently use fidelity are identified,
-  // remove this and default to the decided behavior.
-  public MaterialDynamicColors(boolean isExtendedFidelity) {
-    colorSpec = new ColorSpec2025(isExtendedFidelity);
-  }
+  private static final ColorSpec colorSpec = new ColorSpec2025();
 
   @NonNull
   public DynamicColor highestSurface(@NonNull DynamicScheme s) {

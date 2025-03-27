@@ -43,14 +43,6 @@ import java.util.Optional;
 /** {@link ColorSpec} implementation for the 2025 spec. */
 final class ColorSpec2025 extends ColorSpec2021 {
 
-  public ColorSpec2025() {
-    super();
-  }
-
-  public ColorSpec2025(boolean isExtendedFidelity) {
-    super(isExtendedFidelity);
-  }
-
   ////////////////////////////////////////////////////////////////
   // Surfaces [S]                                               //
   ////////////////////////////////////////////////////////////////

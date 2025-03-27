@@ -21,8 +21,6 @@ import dynamiccolor.ColorSpec.SpecVersion;
 /** A utility class to get the correct color spec for a given spec version. */
 public final class ColorSpecs {
 
-  private static final ColorSpec SPEC_2021_EXTENDED_FIDELITY =
-      new ColorSpec2021(/* isExtendedFidelity= */ true);
   private static final ColorSpec SPEC_2021 = new ColorSpec2021();
   private static final ColorSpec SPEC_2025 = new ColorSpec2025();
 
@@ -35,9 +33,7 @@ public final class ColorSpecs {
   }
 
   public static final ColorSpec get(SpecVersion specVersion, boolean isExtendedFidelity) {
-    return specVersion == SpecVersion.SPEC_2025
-        ? SPEC_2025
-        : isExtendedFidelity ? SPEC_2021_EXTENDED_FIDELITY : SPEC_2021;
+    return specVersion == SpecVersion.SPEC_2025 ? SPEC_2025 : SPEC_2021;
   }
 
   private ColorSpecs() {}
