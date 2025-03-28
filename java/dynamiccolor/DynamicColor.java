@@ -592,6 +592,7 @@ public final class DynamicColor {
                 + (this.isBackground ? "background" : "foreground")
                 + " with color "
                 + extendedColor.name
+                + " as a "
                 + (extendedColor.isBackground ? "background" : "foreground")
                 + " for spec version "
                 + specVersion
