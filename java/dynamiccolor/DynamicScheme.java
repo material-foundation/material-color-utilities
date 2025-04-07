@@ -183,9 +183,11 @@ public class DynamicScheme {
    * </pre>
    *
    * @param sourceColorHct The input value.
-   * @param hueBreakpoints The breakpoints, in sorted order.
+   * @param hueBreakpoints The breakpoints, in sorted order. No default lower or upper bounds are
+   *     assumed.
    * @param hues The hues that should be applied when source color's hue is >= the same index in
-   *     hues array, and <= the hue at the next index in hues array.
+   *     hueBreakpoints array, and < the hue at the next index in hueBreakpoints array. Otherwise,
+   *     the source color's hue is returned.
    */
   public static double getPiecewiseValue(
       Hct sourceColorHct, double[] hueBreakpoints, double[] hues) {
@@ -196,7 +198,8 @@ public class DynamicScheme {
         return MathUtils.sanitizeDegreesDouble(hues[i]);
       }
     }
-    throw new IllegalArgumentException("Can't calculate the new hue.");
+    // No condition matched, return the source value.
+    return sourceHue;
   }
 
   /**
@@ -218,14 +221,20 @@ public class DynamicScheme {
    * double result = scheme.getRotatedHue(sourceColor, hueBreakpoints, rotations);
    *
    * @param sourceColorHct the source color of the theme, in HCT.
-   * @param hueBreakpoints The "breakpoints", i.e. the hues at which a rotation should be apply.
+   * @param hueBreakpoints The "breakpoints", i.e. the hues at which a rotation should be apply. No
+   * default lower or upper bounds are assumed.
    * @param rotations The rotation that should be applied when source color's hue is >= the same
-   *     index in hues array, and <= the hue at the next index in hues array.
+   *     index in hues array, and < the hue at the next index in hues array. Otherwise, the source
+   *     color's hue is returned.
    */
   public static double getRotatedHue(
       Hct sourceColorHct, double[] hueBreakpoints, double[] rotations) {
-    return MathUtils.sanitizeDegreesDouble(
-        getPiecewiseValue(sourceColorHct, hueBreakpoints, rotations) + sourceColorHct.getHue());
+    double rotation = getPiecewiseValue(sourceColorHct, hueBreakpoints, rotations);
+    if (min(hueBreakpoints.length - 1, rotations.length) <= 0) {
+      // No condition matched, return the source hue.
+      rotation = 0;
+    }
+    return MathUtils.sanitizeDegreesDouble(sourceColorHct.getHue() + rotation);
   }
 
   public Hct getHct(DynamicColor dynamicColor) {
