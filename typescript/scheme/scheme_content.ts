@@ -32,26 +32,17 @@ import {TemperatureCache} from '../temperature/temperature_cache.js';
  * `TemperatureCache`. It also maintains constant appearance.
  */
 export class SchemeContent extends DynamicScheme {
+  private static readonly DEFAULT_SPEC_VERSION = '2021';
+  private static readonly DEFAULT_PLATFORM = 'phone';
+
   constructor(sourceColorHct: Hct, isDark: boolean, contrastLevel: number) {
     super({
       sourceColorHct,
       variant: Variant.CONTENT,
       contrastLevel,
       isDark,
-      primaryPalette: TonalPalette.fromHueAndChroma(
-          sourceColorHct.hue, sourceColorHct.chroma),
-      secondaryPalette: TonalPalette.fromHueAndChroma(
-          sourceColorHct.hue,
-          Math.max(sourceColorHct.chroma - 32.0, sourceColorHct.chroma * 0.5)),
-      tertiaryPalette: TonalPalette.fromInt(
-          DislikeAnalyzer
-              .fixIfDisliked(
-                  new TemperatureCache(sourceColorHct).analogous(3, 6)[2])
-              .toInt()),
-      neutralPalette: TonalPalette.fromHueAndChroma(
-          sourceColorHct.hue, sourceColorHct.chroma / 8.0),
-      neutralVariantPalette: TonalPalette.fromHueAndChroma(
-          sourceColorHct.hue, sourceColorHct.chroma / 8.0 + 4.0),
+      platform: SchemeContent.DEFAULT_PLATFORM,
+      specVersion: SchemeContent.DEFAULT_SPEC_VERSION,
     });
   }
 }

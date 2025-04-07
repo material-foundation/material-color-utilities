@@ -32,16 +32,15 @@ describe('dynamic scheme test', () => {
   });
 
   it('input length mismatch asserts', () => {
-    expect(() => {
-      DynamicScheme.getRotatedHue(Hct.from(43, 16, 16), [0, 1], [0]);
-    }).toThrow();
+    const hue = DynamicScheme.getRotatedHue(Hct.from(43, 16, 16), [0], [0, 1]);
+    expect(hue).toBeCloseTo(43, 0.4);
   });
 
   it('on boundary rotation correct', () => {
     const hue = DynamicScheme.getRotatedHue(
-      Hct.from(43, 16, 16),
-      [0, 42, 360],
-      [0, 15, 0],
+        Hct.from(43, 16, 16),
+        [0, 42, 360],
+        [0, 15, 0],
     );
     expect(hue).toBeCloseTo(43 + 15, 0.4);
   });

@@ -15,25 +15,28 @@
  * limitations under the License.
  */
 
-import {DynamicScheme} from '../dynamiccolor/dynamic_scheme.js';
+import {SpecVersion} from '../dynamiccolor/color_spec.js';
+import {DynamicScheme, Platform} from '../dynamiccolor/dynamic_scheme';
 import {Variant} from '../dynamiccolor/variant.js';
 import {Hct} from '../hct/hct.js';
 import {TonalPalette} from '../palettes/tonal_palette.js';
 
 /** A Dynamic Color theme that is near grayscale. */
 export class SchemeNeutral extends DynamicScheme {
-  constructor(sourceColorHct: Hct, isDark: boolean, contrastLevel: number) {
+  private static readonly DEFAULT_SPEC_VERSION = '2021';
+  private static readonly DEFAULT_PLATFORM = 'phone';
+
+  constructor(
+      sourceColorHct: Hct, isDark: boolean, contrastLevel: number,
+      specVersion: SpecVersion = SchemeNeutral.DEFAULT_SPEC_VERSION,
+      platform: Platform = SchemeNeutral.DEFAULT_PLATFORM) {
     super({
       sourceColorHct,
       variant: Variant.NEUTRAL,
       contrastLevel,
       isDark,
-      primaryPalette: TonalPalette.fromHueAndChroma(sourceColorHct.hue, 12.0),
-      secondaryPalette: TonalPalette.fromHueAndChroma(sourceColorHct.hue, 8.0),
-      tertiaryPalette: TonalPalette.fromHueAndChroma(sourceColorHct.hue, 16.0),
-      neutralPalette: TonalPalette.fromHueAndChroma(sourceColorHct.hue, 2.0),
-      neutralVariantPalette:
-          TonalPalette.fromHueAndChroma(sourceColorHct.hue, 2.0),
+      platform,
+      specVersion,
     });
   }
 }

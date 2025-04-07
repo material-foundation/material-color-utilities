@@ -25,20 +25,17 @@ import * as math from '../utils/math_utils.js';
  * A playful theme - the source color's hue does not appear in the theme.
  */
 export class SchemeFruitSalad extends DynamicScheme {
+  private static readonly DEFAULT_SPEC_VERSION = '2021';
+  private static readonly DEFAULT_PLATFORM = 'phone';
+
   constructor(sourceColorHct: Hct, isDark: boolean, contrastLevel: number) {
     super({
       sourceColorHct,
       variant: Variant.FRUIT_SALAD,
       contrastLevel,
       isDark,
-      primaryPalette: TonalPalette.fromHueAndChroma(
-          math.sanitizeDegreesDouble(sourceColorHct.hue - 50.0), 48.0),
-      secondaryPalette: TonalPalette.fromHueAndChroma(
-          math.sanitizeDegreesDouble(sourceColorHct.hue - 50.0), 36.0),
-      tertiaryPalette: TonalPalette.fromHueAndChroma(sourceColorHct.hue, 36.0),
-      neutralPalette: TonalPalette.fromHueAndChroma(sourceColorHct.hue, 10.0),
-      neutralVariantPalette:
-          TonalPalette.fromHueAndChroma(sourceColorHct.hue, 16.0),
+      platform: SchemeFruitSalad.DEFAULT_PLATFORM,
+      specVersion: SchemeFruitSalad.DEFAULT_SPEC_VERSION,
     });
   }
 }

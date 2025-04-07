@@ -17,51 +17,15 @@
 
 import {DislikeAnalyzer} from '../dislike/dislike_analyzer.js';
 import {Hct} from '../hct/hct.js';
+import {TonalPalette} from '../palettes/tonal_palette.js';
+import * as math from '../utils/math_utils.js';
 
+import {ColorSpecDelegateImpl2025} from './color_spec_2025.js';
 import {ContrastCurve} from './contrast_curve.js';
 import {DynamicColor} from './dynamic_color.js';
-import {DynamicScheme} from './dynamic_scheme.js';
+import type {DynamicScheme} from './dynamic_scheme';
 import {ToneDeltaPair} from './tone_delta_pair.js';
 import {Variant} from './variant.js';
-
-function isFidelity(scheme: DynamicScheme): boolean {
-  return scheme.variant === Variant.FIDELITY ||
-      scheme.variant === Variant.CONTENT;
-}
-
-function isMonochrome(scheme: DynamicScheme): boolean {
-  return scheme.variant === Variant.MONOCHROME;
-}
-
-function findDesiredChromaByTone(
-    hue: number, chroma: number, tone: number,
-    byDecreasingTone: boolean): number {
-  let answer = tone;
-
-  let closestToChroma = Hct.from(hue, chroma, tone);
-  if (closestToChroma.chroma < chroma) {
-    let chromaPeak = closestToChroma.chroma;
-    while (closestToChroma.chroma < chroma) {
-      answer += byDecreasingTone ? -1.0 : 1.0;
-      const potentialSolution = Hct.from(hue, chroma, answer);
-      if (chromaPeak > potentialSolution.chroma) {
-        break;
-      }
-      if (Math.abs(potentialSolution.chroma - chroma) < 0.4) {
-        break;
-      }
-
-      const potentialDelta = Math.abs(potentialSolution.chroma - chroma);
-      const currentDelta = Math.abs(closestToChroma.chroma - chroma);
-      if (potentialDelta < currentDelta) {
-        closestToChroma = potentialSolution;
-      }
-      chromaPeak = Math.max(chromaPeak, potentialSolution.chroma);
-    }
-  }
-
-  return answer;
-}
 
 /**
  * DynamicColors for the colors in the Material Design system.
@@ -70,584 +34,524 @@ function findDesiredChromaByTone(
 // tslint:disable-next-line:class-as-namespace
 export class MaterialDynamicColors {
   static contentAccentToneDelta = 15.0;
-  static highestSurface(s: DynamicScheme): DynamicColor {
-    return s.isDark ? MaterialDynamicColors.surfaceBright :
-                      MaterialDynamicColors.surfaceDim;
+
+  private static readonly colorSpec = new ColorSpecDelegateImpl2025();
+
+  highestSurface(s: DynamicScheme): DynamicColor {
+    return MaterialDynamicColors.colorSpec.highestSurface(s);
   }
 
-  static primaryPaletteKeyColor = DynamicColor.fromPalette({
-    name: 'primary_palette_key_color',
-    palette: (s) => s.primaryPalette,
-    tone: (s) => s.primaryPalette.keyColor.tone,
-  });
+  ////////////////////////////////////////////////////////////////
+  // Main Palettes                                              //
+  ////////////////////////////////////////////////////////////////
 
-  static secondaryPaletteKeyColor = DynamicColor.fromPalette({
-    name: 'secondary_palette_key_color',
-    palette: (s) => s.secondaryPalette,
-    tone: (s) => s.secondaryPalette.keyColor.tone,
-  });
+  primaryPaletteKeyColor(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.primaryPaletteKeyColor();
+  }
 
-  static tertiaryPaletteKeyColor = DynamicColor.fromPalette({
-    name: 'tertiary_palette_key_color',
-    palette: (s) => s.tertiaryPalette,
-    tone: (s) => s.tertiaryPalette.keyColor.tone,
-  });
+  secondaryPaletteKeyColor(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.secondaryPaletteKeyColor();
+  }
 
-  static neutralPaletteKeyColor = DynamicColor.fromPalette({
-    name: 'neutral_palette_key_color',
-    palette: (s) => s.neutralPalette,
-    tone: (s) => s.neutralPalette.keyColor.tone,
-  });
+  tertiaryPaletteKeyColor(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.tertiaryPaletteKeyColor();
+  }
 
-  static neutralVariantPaletteKeyColor = DynamicColor.fromPalette({
-    name: 'neutral_variant_palette_key_color',
-    palette: (s) => s.neutralVariantPalette,
-    tone: (s) => s.neutralVariantPalette.keyColor.tone,
-  });
+  neutralPaletteKeyColor(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.neutralPaletteKeyColor();
+  }
 
-  static background = DynamicColor.fromPalette({
-    name: 'background',
-    palette: (s) => s.neutralPalette,
-    tone: (s) => s.isDark ? 6 : 98,
-    isBackground: true,
-  });
+  neutralVariantPaletteKeyColor(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.neutralVariantPaletteKeyColor();
+  }
 
-  static onBackground = DynamicColor.fromPalette({
-    name: 'on_background',
-    palette: (s) => s.neutralPalette,
-    tone: (s) => s.isDark ? 90 : 10,
-    background: (s) => MaterialDynamicColors.background,
-    contrastCurve: new ContrastCurve(3, 3, 4.5, 7),
-  });
+  errorPaletteKeyColor(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.errorPaletteKeyColor();
+  }
 
-  static surface = DynamicColor.fromPalette({
-    name: 'surface',
-    palette: (s) => s.neutralPalette,
-    tone: (s) => s.isDark ? 6 : 98,
-    isBackground: true,
-  });
+  ////////////////////////////////////////////////////////////////
+  // Surfaces [S]                                               //
+  ////////////////////////////////////////////////////////////////
 
-  static surfaceDim = DynamicColor.fromPalette({
-    name: 'surface_dim',
-    palette: (s) => s.neutralPalette,
-    tone: (s) =>
-        s.isDark ? 6 : new ContrastCurve(87, 87, 80, 75).get(s.contrastLevel),
-    isBackground: true,
-  });
+  background(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.background();
+  }
 
-  static surfaceBright = DynamicColor.fromPalette({
-    name: 'surface_bright',
-    palette: (s) => s.neutralPalette,
-    tone: (s) =>
-        s.isDark ? new ContrastCurve(24, 24, 29, 34).get(s.contrastLevel) : 98,
-    isBackground: true,
-  });
+  onBackground(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.onBackground();
+  }
 
-  static surfaceContainerLowest = DynamicColor.fromPalette({
-    name: 'surface_container_lowest',
-    palette: (s) => s.neutralPalette,
-    tone: (s) =>
-        s.isDark ? new ContrastCurve(4, 4, 2, 0).get(s.contrastLevel) : 100,
-    isBackground: true,
-  });
+  surface(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.surface();
+  }
 
-  static surfaceContainerLow = DynamicColor.fromPalette({
-    name: 'surface_container_low',
-    palette: (s) => s.neutralPalette,
-    tone: (s) => s.isDark ?
-        new ContrastCurve(10, 10, 11, 12).get(s.contrastLevel) :
-        new ContrastCurve(96, 96, 96, 95).get(s.contrastLevel),
-    isBackground: true,
-  });
+  surfaceDim(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.surfaceDim();
+  }
 
-  static surfaceContainer = DynamicColor.fromPalette({
-    name: 'surface_container',
-    palette: (s) => s.neutralPalette,
-    tone: (s) => s.isDark ?
-        new ContrastCurve(12, 12, 16, 20).get(s.contrastLevel) :
-        new ContrastCurve(94, 94, 92, 90).get(s.contrastLevel),
-    isBackground: true,
-  });
+  surfaceBright(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.surfaceBright();
+  }
 
-  static surfaceContainerHigh = DynamicColor.fromPalette({
-    name: 'surface_container_high',
-    palette: (s) => s.neutralPalette,
-    tone: (s) => s.isDark ?
-        new ContrastCurve(17, 17, 21, 25).get(s.contrastLevel) :
-        new ContrastCurve(92, 92, 88, 85).get(s.contrastLevel),
-    isBackground: true,
-  });
+  surfaceContainerLowest(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.surfaceContainerLowest();
+  }
 
-  static surfaceContainerHighest = DynamicColor.fromPalette({
-    name: 'surface_container_highest',
-    palette: (s) => s.neutralPalette,
-    tone: (s) => s.isDark ?
-        new ContrastCurve(22, 22, 26, 30).get(s.contrastLevel) :
-        new ContrastCurve(90, 90, 84, 80).get(s.contrastLevel),
-    isBackground: true,
-  });
+  surfaceContainerLow(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.surfaceContainerLow();
+  }
 
-  static onSurface = DynamicColor.fromPalette({
-    name: 'on_surface',
-    palette: (s) => s.neutralPalette,
-    tone: (s) => s.isDark ? 90 : 10,
-    background: (s) => MaterialDynamicColors.highestSurface(s),
-    contrastCurve: new ContrastCurve(4.5, 7, 11, 21),
-  });
+  surfaceContainer(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.surfaceContainer();
+  }
 
-  static surfaceVariant = DynamicColor.fromPalette({
-    name: 'surface_variant',
-    palette: (s) => s.neutralVariantPalette,
-    tone: (s) => s.isDark ? 30 : 90,
-    isBackground: true,
-  });
+  surfaceContainerHigh(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.surfaceContainerHigh();
+  }
 
-  static onSurfaceVariant = DynamicColor.fromPalette({
-    name: 'on_surface_variant',
-    palette: (s) => s.neutralVariantPalette,
-    tone: (s) => s.isDark ? 80 : 30,
-    background: (s) => MaterialDynamicColors.highestSurface(s),
-    contrastCurve: new ContrastCurve(3, 4.5, 7, 11),
-  });
+  surfaceContainerHighest(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.surfaceContainerHighest();
+  }
 
-  static inverseSurface = DynamicColor.fromPalette({
-    name: 'inverse_surface',
-    palette: (s) => s.neutralPalette,
-    tone: (s) => s.isDark ? 90 : 20,
-  });
+  onSurface(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.onSurface();
+  }
 
-  static inverseOnSurface = DynamicColor.fromPalette({
-    name: 'inverse_on_surface',
-    palette: (s) => s.neutralPalette,
-    tone: (s) => s.isDark ? 20 : 95,
-    background: (s) => MaterialDynamicColors.inverseSurface,
-    contrastCurve: new ContrastCurve(4.5, 7, 11, 21),
-  });
+  surfaceVariant(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.surfaceVariant();
+  }
 
-  static outline = DynamicColor.fromPalette({
-    name: 'outline',
-    palette: (s) => s.neutralVariantPalette,
-    tone: (s) => s.isDark ? 60 : 50,
-    background: (s) => MaterialDynamicColors.highestSurface(s),
-    contrastCurve: new ContrastCurve(1.5, 3, 4.5, 7),
-  });
+  onSurfaceVariant(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.onSurfaceVariant();
+  }
 
-  static outlineVariant = DynamicColor.fromPalette({
-    name: 'outline_variant',
-    palette: (s) => s.neutralVariantPalette,
-    tone: (s) => s.isDark ? 30 : 80,
-    background: (s) => MaterialDynamicColors.highestSurface(s),
-    contrastCurve: new ContrastCurve(1, 1, 3, 4.5),
-  });
+  outline(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.outline();
+  }
 
-  static shadow = DynamicColor.fromPalette({
-    name: 'shadow',
-    palette: (s) => s.neutralPalette,
-    tone: (s) => 0,
-  });
+  outlineVariant(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.outlineVariant();
+  }
 
-  static scrim = DynamicColor.fromPalette({
-    name: 'scrim',
-    palette: (s) => s.neutralPalette,
-    tone: (s) => 0,
-  });
+  inverseSurface(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.inverseSurface();
+  }
 
-  static surfaceTint = DynamicColor.fromPalette({
-    name: 'surface_tint',
-    palette: (s) => s.primaryPalette,
-    tone: (s) => s.isDark ? 80 : 40,
-    isBackground: true,
-  });
+  inverseOnSurface(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.inverseOnSurface();
+  }
 
-  static primary = DynamicColor.fromPalette({
-    name: 'primary',
-    palette: (s) => s.primaryPalette,
-    tone:
-        (s) => {
-          if (isMonochrome(s)) {
-            return s.isDark ? 100 : 0;
-          }
-          return s.isDark ? 80 : 40;
-        },
-    isBackground: true,
-    background: (s) => MaterialDynamicColors.highestSurface(s),
-    contrastCurve: new ContrastCurve(3, 4.5, 7, 7),
-    toneDeltaPair: (s) => new ToneDeltaPair(
-        MaterialDynamicColors.primaryContainer, MaterialDynamicColors.primary,
-        10, 'nearer', false),
-  });
+  shadow(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.shadow();
+  }
 
-  static onPrimary = DynamicColor.fromPalette({
-    name: 'on_primary',
-    palette: (s) => s.primaryPalette,
-    tone:
-        (s) => {
-          if (isMonochrome(s)) {
-            return s.isDark ? 10 : 90;
-          }
-          return s.isDark ? 20 : 100;
-        },
-    background: (s) => MaterialDynamicColors.primary,
-    contrastCurve: new ContrastCurve(4.5, 7, 11, 21),
-  });
+  scrim(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.scrim();
+  }
 
-  static primaryContainer = DynamicColor.fromPalette({
-    name: 'primary_container',
-    palette: (s) => s.primaryPalette,
-    tone:
-        (s) => {
-          if (isFidelity(s)) {
-            return s.sourceColorHct.tone;
-          }
-          if (isMonochrome(s)) {
-            return s.isDark ? 85 : 25;
-          }
-          return s.isDark ? 30 : 90;
-        },
-    isBackground: true,
-    background: (s) => MaterialDynamicColors.highestSurface(s),
-    contrastCurve: new ContrastCurve(1, 1, 3, 4.5),
-    toneDeltaPair: (s) => new ToneDeltaPair(
-        MaterialDynamicColors.primaryContainer, MaterialDynamicColors.primary,
-        10, 'nearer', false),
-  });
+  surfaceTint(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.surfaceTint();
+  }
 
-  static onPrimaryContainer = DynamicColor.fromPalette({
-    name: 'on_primary_container',
-    palette: (s) => s.primaryPalette,
-    tone:
-        (s) => {
-          if (isFidelity(s)) {
-            return DynamicColor.foregroundTone(
-                MaterialDynamicColors.primaryContainer.tone(s), 4.5);
-          }
-          if (isMonochrome(s)) {
-            return s.isDark ? 0 : 100;
-          }
-          return s.isDark ? 90 : 30;
-        },
-    background: (s) => MaterialDynamicColors.primaryContainer,
-    contrastCurve: new ContrastCurve(3, 4.5, 7, 11),
-  });
+  ////////////////////////////////////////////////////////////////
+  // Primaries [P]                                              //
+  ////////////////////////////////////////////////////////////////
 
-  static inversePrimary = DynamicColor.fromPalette({
-    name: 'inverse_primary',
-    palette: (s) => s.primaryPalette,
-    tone: (s) => s.isDark ? 40 : 80,
-    background: (s) => MaterialDynamicColors.inverseSurface,
-    contrastCurve: new ContrastCurve(3, 4.5, 7, 7),
-  });
+  primary(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.primary();
+  }
 
-  static secondary = DynamicColor.fromPalette({
-    name: 'secondary',
-    palette: (s) => s.secondaryPalette,
-    tone: (s) => s.isDark ? 80 : 40,
-    isBackground: true,
-    background: (s) => MaterialDynamicColors.highestSurface(s),
-    contrastCurve: new ContrastCurve(3, 4.5, 7, 7),
-    toneDeltaPair: (s) => new ToneDeltaPair(
-        MaterialDynamicColors.secondaryContainer,
-        MaterialDynamicColors.secondary, 10, 'nearer', false),
-  });
+  primaryDim(): DynamicColor|undefined {
+    return MaterialDynamicColors.colorSpec.primaryDim();
+  }
 
-  static onSecondary = DynamicColor.fromPalette({
-    name: 'on_secondary',
-    palette: (s) => s.secondaryPalette,
-    tone:
-        (s) => {
-          if (isMonochrome(s)) {
-            return s.isDark ? 10 : 100;
-          } else {
-            return s.isDark ? 20 : 100;
-          }
-        },
-    background: (s) => MaterialDynamicColors.secondary,
-    contrastCurve: new ContrastCurve(4.5, 7, 11, 21),
-  });
+  onPrimary(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.onPrimary();
+  }
 
-  static secondaryContainer = DynamicColor.fromPalette({
-    name: 'secondary_container',
-    palette: (s) => s.secondaryPalette,
-    tone:
-        (s) => {
-          const initialTone = s.isDark ? 30 : 90;
-          if (isMonochrome(s)) {
-            return s.isDark ? 30 : 85;
-          }
-          if (!isFidelity(s)) {
-            return initialTone;
-          }
-          return findDesiredChromaByTone(
-              s.secondaryPalette.hue, s.secondaryPalette.chroma, initialTone,
-              s.isDark ? false : true);
-        },
-    isBackground: true,
-    background: (s) => MaterialDynamicColors.highestSurface(s),
-    contrastCurve: new ContrastCurve(1, 1, 3, 4.5),
-    toneDeltaPair: (s) => new ToneDeltaPair(
-        MaterialDynamicColors.secondaryContainer,
-        MaterialDynamicColors.secondary, 10, 'nearer', false),
-  });
+  primaryContainer(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.primaryContainer();
+  }
 
-  static onSecondaryContainer = DynamicColor.fromPalette({
-    name: 'on_secondary_container',
-    palette: (s) => s.secondaryPalette,
-    tone:
-        (s) => {
-          if (isMonochrome(s)) {
-            return s.isDark ? 90 : 10;
-          }
-          if (!isFidelity(s)) {
-            return s.isDark ? 90 : 30;
-          }
-          return DynamicColor.foregroundTone(
-              MaterialDynamicColors.secondaryContainer.tone(s), 4.5);
-        },
-    background: (s) => MaterialDynamicColors.secondaryContainer,
-    contrastCurve: new ContrastCurve(3, 4.5, 7, 11),
-  });
+  onPrimaryContainer(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.onPrimaryContainer();
+  }
 
-  static tertiary = DynamicColor.fromPalette({
-    name: 'tertiary',
-    palette: (s) => s.tertiaryPalette,
-    tone:
-        (s) => {
-          if (isMonochrome(s)) {
-            return s.isDark ? 90 : 25;
-          }
-          return s.isDark ? 80 : 40;
-        },
-    isBackground: true,
-    background: (s) => MaterialDynamicColors.highestSurface(s),
-    contrastCurve: new ContrastCurve(3, 4.5, 7, 7),
-    toneDeltaPair: (s) => new ToneDeltaPair(
-        MaterialDynamicColors.tertiaryContainer, MaterialDynamicColors.tertiary,
-        10, 'nearer', false),
-  });
+  inversePrimary(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.inversePrimary();
+  }
 
-  static onTertiary = DynamicColor.fromPalette({
-    name: 'on_tertiary',
-    palette: (s) => s.tertiaryPalette,
-    tone:
-        (s) => {
-          if (isMonochrome(s)) {
-            return s.isDark ? 10 : 90;
-          }
-          return s.isDark ? 20 : 100;
-        },
-    background: (s) => MaterialDynamicColors.tertiary,
-    contrastCurve: new ContrastCurve(4.5, 7, 11, 21),
-  });
+  /////////////////////////////////////////////////////////////////
+  // Primary Fixed [PF]                                          //
+  /////////////////////////////////////////////////////////////////
 
-  static tertiaryContainer = DynamicColor.fromPalette({
-    name: 'tertiary_container',
-    palette: (s) => s.tertiaryPalette,
-    tone:
-        (s) => {
-          if (isMonochrome(s)) {
-            return s.isDark ? 60 : 49;
-          }
-          if (!isFidelity(s)) {
-            return s.isDark ? 30 : 90;
-          }
-          const proposedHct = s.tertiaryPalette.getHct(s.sourceColorHct.tone);
-          return DislikeAnalyzer.fixIfDisliked(proposedHct).tone;
-        },
-    isBackground: true,
-    background: (s) => MaterialDynamicColors.highestSurface(s),
-    contrastCurve: new ContrastCurve(1, 1, 3, 4.5),
-    toneDeltaPair: (s) => new ToneDeltaPair(
-        MaterialDynamicColors.tertiaryContainer, MaterialDynamicColors.tertiary,
-        10, 'nearer', false),
-  });
+  primaryFixed(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.primaryFixed();
+  }
 
-  static onTertiaryContainer = DynamicColor.fromPalette({
-    name: 'on_tertiary_container',
-    palette: (s) => s.tertiaryPalette,
-    tone:
-        (s) => {
-          if (isMonochrome(s)) {
-            return s.isDark ? 0 : 100;
-          }
-          if (!isFidelity(s)) {
-            return s.isDark ? 90 : 30;
-          }
-          return DynamicColor.foregroundTone(
-              MaterialDynamicColors.tertiaryContainer.tone(s), 4.5);
-        },
-    background: (s) => MaterialDynamicColors.tertiaryContainer,
-    contrastCurve: new ContrastCurve(3, 4.5, 7, 11),
-  });
+  primaryFixedDim(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.primaryFixedDim();
+  }
 
-  static error = DynamicColor.fromPalette({
-    name: 'error',
-    palette: (s) => s.errorPalette,
-    tone: (s) => s.isDark ? 80 : 40,
-    isBackground: true,
-    background: (s) => MaterialDynamicColors.highestSurface(s),
-    contrastCurve: new ContrastCurve(3, 4.5, 7, 7),
-    toneDeltaPair: (s) => new ToneDeltaPair(
-        MaterialDynamicColors.errorContainer, MaterialDynamicColors.error, 10,
-        'nearer', false),
-  });
+  onPrimaryFixed(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.onPrimaryFixed();
+  }
 
-  static onError = DynamicColor.fromPalette({
-    name: 'on_error',
-    palette: (s) => s.errorPalette,
-    tone: (s) => s.isDark ? 20 : 100,
-    background: (s) => MaterialDynamicColors.error,
-    contrastCurve: new ContrastCurve(4.5, 7, 11, 21),
-  });
+  onPrimaryFixedVariant(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.onPrimaryFixedVariant();
+  }
 
-  static errorContainer = DynamicColor.fromPalette({
-    name: 'error_container',
-    palette: (s) => s.errorPalette,
-    tone: (s) => s.isDark ? 30 : 90,
-    isBackground: true,
-    background: (s) => MaterialDynamicColors.highestSurface(s),
-    contrastCurve: new ContrastCurve(1, 1, 3, 4.5),
-    toneDeltaPair: (s) => new ToneDeltaPair(
-        MaterialDynamicColors.errorContainer, MaterialDynamicColors.error, 10,
-        'nearer', false),
-  });
+  ////////////////////////////////////////////////////////////////
+  // Secondaries [Q]                                            //
+  ////////////////////////////////////////////////////////////////
 
-  static onErrorContainer = DynamicColor.fromPalette({
-    name: 'on_error_container',
-    palette: (s) => s.errorPalette,
-    tone:
-        (s) => {
-          if (isMonochrome(s)) {
-            return s.isDark ? 90 : 10;
-          }
-          return s.isDark ? 90 : 30;
-        },
-    background: (s) => MaterialDynamicColors.errorContainer,
-    contrastCurve: new ContrastCurve(3, 4.5, 7, 11),
-  });
+  secondary(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.secondary();
+  }
 
-  static primaryFixed = DynamicColor.fromPalette({
-    name: 'primary_fixed',
-    palette: (s) => s.primaryPalette,
-    tone: (s) => isMonochrome(s) ? 40.0 : 90.0,
-    isBackground: true,
-    background: (s) => MaterialDynamicColors.highestSurface(s),
-    contrastCurve: new ContrastCurve(1, 1, 3, 4.5),
-    toneDeltaPair: (s) => new ToneDeltaPair(
-        MaterialDynamicColors.primaryFixed,
-        MaterialDynamicColors.primaryFixedDim, 10, 'lighter', true),
-  });
+  secondaryDim(): DynamicColor|undefined {
+    return MaterialDynamicColors.colorSpec.secondaryDim();
+  }
 
-  static primaryFixedDim = DynamicColor.fromPalette({
-    name: 'primary_fixed_dim',
-    palette: (s) => s.primaryPalette,
-    tone: (s) => isMonochrome(s) ? 30.0 : 80.0,
-    isBackground: true,
-    background: (s) => MaterialDynamicColors.highestSurface(s),
-    contrastCurve: new ContrastCurve(1, 1, 3, 4.5),
-    toneDeltaPair: (s) => new ToneDeltaPair(
-        MaterialDynamicColors.primaryFixed,
-        MaterialDynamicColors.primaryFixedDim, 10, 'lighter', true),
-  });
+  onSecondary(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.onSecondary();
+  }
 
-  static onPrimaryFixed = DynamicColor.fromPalette({
-    name: 'on_primary_fixed',
-    palette: (s) => s.primaryPalette,
-    tone: (s) => isMonochrome(s) ? 100.0 : 10.0,
-    background: (s) => MaterialDynamicColors.primaryFixedDim,
-    secondBackground: (s) => MaterialDynamicColors.primaryFixed,
-    contrastCurve: new ContrastCurve(4.5, 7, 11, 21),
-  });
+  secondaryContainer(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.secondaryContainer();
+  }
 
-  static onPrimaryFixedVariant = DynamicColor.fromPalette({
-    name: 'on_primary_fixed_variant',
-    palette: (s) => s.primaryPalette,
-    tone: (s) => isMonochrome(s) ? 90.0 : 30.0,
-    background: (s) => MaterialDynamicColors.primaryFixedDim,
-    secondBackground: (s) => MaterialDynamicColors.primaryFixed,
-    contrastCurve: new ContrastCurve(3, 4.5, 7, 11),
-  });
+  onSecondaryContainer(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.onSecondaryContainer();
+  }
 
-  static secondaryFixed = DynamicColor.fromPalette({
-    name: 'secondary_fixed',
-    palette: (s) => s.secondaryPalette,
-    tone: (s) => isMonochrome(s) ? 80.0 : 90.0,
-    isBackground: true,
-    background: (s) => MaterialDynamicColors.highestSurface(s),
-    contrastCurve: new ContrastCurve(1, 1, 3, 4.5),
-    toneDeltaPair: (s) => new ToneDeltaPair(
-        MaterialDynamicColors.secondaryFixed,
-        MaterialDynamicColors.secondaryFixedDim, 10, 'lighter', true),
-  });
+  /////////////////////////////////////////////////////////////////
+  // Secondary Fixed [QF]                                        //
+  /////////////////////////////////////////////////////////////////
 
-  static secondaryFixedDim = DynamicColor.fromPalette({
-    name: 'secondary_fixed_dim',
-    palette: (s) => s.secondaryPalette,
-    tone: (s) => isMonochrome(s) ? 70.0 : 80.0,
-    isBackground: true,
-    background: (s) => MaterialDynamicColors.highestSurface(s),
-    contrastCurve: new ContrastCurve(1, 1, 3, 4.5),
-    toneDeltaPair: (s) => new ToneDeltaPair(
-        MaterialDynamicColors.secondaryFixed,
-        MaterialDynamicColors.secondaryFixedDim, 10, 'lighter', true),
-  });
+  secondaryFixed(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.secondaryFixed();
+  }
 
-  static onSecondaryFixed = DynamicColor.fromPalette({
-    name: 'on_secondary_fixed',
-    palette: (s) => s.secondaryPalette,
-    tone: (s) => 10.0,
-    background: (s) => MaterialDynamicColors.secondaryFixedDim,
-    secondBackground: (s) => MaterialDynamicColors.secondaryFixed,
-    contrastCurve: new ContrastCurve(4.5, 7, 11, 21),
-  });
+  secondaryFixedDim(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.secondaryFixedDim();
+  }
 
-  static onSecondaryFixedVariant = DynamicColor.fromPalette({
-    name: 'on_secondary_fixed_variant',
-    palette: (s) => s.secondaryPalette,
-    tone: (s) => isMonochrome(s) ? 25.0 : 30.0,
-    background: (s) => MaterialDynamicColors.secondaryFixedDim,
-    secondBackground: (s) => MaterialDynamicColors.secondaryFixed,
-    contrastCurve: new ContrastCurve(3, 4.5, 7, 11),
-  });
+  onSecondaryFixed(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.onSecondaryFixed();
+  }
 
-  static tertiaryFixed = DynamicColor.fromPalette({
-    name: 'tertiary_fixed',
-    palette: (s) => s.tertiaryPalette,
-    tone: (s) => isMonochrome(s) ? 40.0 : 90.0,
-    isBackground: true,
-    background: (s) => MaterialDynamicColors.highestSurface(s),
-    contrastCurve: new ContrastCurve(1, 1, 3, 4.5),
-    toneDeltaPair: (s) => new ToneDeltaPair(
-        MaterialDynamicColors.tertiaryFixed,
-        MaterialDynamicColors.tertiaryFixedDim, 10, 'lighter', true),
-  });
+  onSecondaryFixedVariant(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.onSecondaryFixedVariant();
+  }
 
-  static tertiaryFixedDim = DynamicColor.fromPalette({
-    name: 'tertiary_fixed_dim',
-    palette: (s) => s.tertiaryPalette,
-    tone: (s) => isMonochrome(s) ? 30.0 : 80.0,
-    isBackground: true,
-    background: (s) => MaterialDynamicColors.highestSurface(s),
-    contrastCurve: new ContrastCurve(1, 1, 3, 4.5),
-    toneDeltaPair: (s) => new ToneDeltaPair(
-        MaterialDynamicColors.tertiaryFixed,
-        MaterialDynamicColors.tertiaryFixedDim, 10, 'lighter', true),
-  });
+  ////////////////////////////////////////////////////////////////
+  // Tertiaries [T]                                             //
+  ////////////////////////////////////////////////////////////////
 
-  static onTertiaryFixed = DynamicColor.fromPalette({
-    name: 'on_tertiary_fixed',
-    palette: (s) => s.tertiaryPalette,
-    tone: (s) => isMonochrome(s) ? 100.0 : 10.0,
-    background: (s) => MaterialDynamicColors.tertiaryFixedDim,
-    secondBackground: (s) => MaterialDynamicColors.tertiaryFixed,
-    contrastCurve: new ContrastCurve(4.5, 7, 11, 21),
-  });
+  tertiary(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.tertiary();
+  }
 
-  static onTertiaryFixedVariant = DynamicColor.fromPalette({
-    name: 'on_tertiary_fixed_variant',
-    palette: (s) => s.tertiaryPalette,
-    tone: (s) => isMonochrome(s) ? 90.0 : 30.0,
-    background: (s) => MaterialDynamicColors.tertiaryFixedDim,
-    secondBackground: (s) => MaterialDynamicColors.tertiaryFixed,
-    contrastCurve: new ContrastCurve(3, 4.5, 7, 11),
-  });
+  tertiaryDim(): DynamicColor|undefined {
+    return MaterialDynamicColors.colorSpec.tertiaryDim();
+  }
+
+  onTertiary(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.onTertiary();
+  }
+
+  tertiaryContainer(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.tertiaryContainer();
+  }
+
+  onTertiaryContainer(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.onTertiaryContainer();
+  }
+
+  /////////////////////////////////////////////////////////////////
+  // Tertiary Fixed [TF]                                         //
+  /////////////////////////////////////////////////////////////////
+
+  tertiaryFixed(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.tertiaryFixed();
+  }
+
+  tertiaryFixedDim(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.tertiaryFixedDim();
+  }
+
+  onTertiaryFixed(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.onTertiaryFixed();
+  }
+
+  onTertiaryFixedVariant(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.onTertiaryFixedVariant();
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // Errors [E]                                                 //
+  ////////////////////////////////////////////////////////////////
+
+  error(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.error();
+  }
+
+  errorDim(): DynamicColor|undefined {
+    return MaterialDynamicColors.colorSpec.errorDim();
+  }
+
+  onError(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.onError();
+  }
+
+  errorContainer(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.errorContainer();
+  }
+
+  onErrorContainer(): DynamicColor {
+    return MaterialDynamicColors.colorSpec.onErrorContainer();
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // All Colors                                                 //
+  ////////////////////////////////////////////////////////////////
+
+  allColors: DynamicColor[] = [
+    this.background(),
+    this.onBackground(),
+    this.surface(),
+    this.surfaceDim(),
+    this.surfaceBright(),
+    this.surfaceContainerLowest(),
+    this.surfaceContainerLow(),
+    this.surfaceContainer(),
+    this.surfaceContainerHigh(),
+    this.surfaceContainerHighest(),
+    this.onSurface(),
+    this.onSurfaceVariant(),
+    this.outline(),
+    this.outlineVariant(),
+    this.inverseSurface(),
+    this.inverseOnSurface(),
+    this.primary(),
+    this.primaryDim(),
+    this.onPrimary(),
+    this.primaryContainer(),
+    this.onPrimaryContainer(),
+    this.primaryFixed(),
+    this.primaryFixedDim(),
+    this.onPrimaryFixed(),
+    this.onPrimaryFixedVariant(),
+    this.inversePrimary(),
+    this.secondary(),
+    this.secondaryDim(),
+    this.onSecondary(),
+    this.secondaryContainer(),
+    this.onSecondaryContainer(),
+    this.secondaryFixed(),
+    this.secondaryFixedDim(),
+    this.onSecondaryFixed(),
+    this.onSecondaryFixedVariant(),
+    this.tertiary(),
+    this.tertiaryDim(),
+    this.onTertiary(),
+    this.tertiaryContainer(),
+    this.onTertiaryContainer(),
+    this.tertiaryFixed(),
+    this.tertiaryFixedDim(),
+    this.onTertiaryFixed(),
+    this.onTertiaryFixedVariant(),
+    this.error(),
+    this.errorDim(),
+    this.onError(),
+    this.errorContainer(),
+    this.onErrorContainer(),
+  ].filter((c) => c !== undefined);
+
+  // Static variables are deprecated. Use the instance methods to get correct
+  // specs based on request.
+
+  /** @deprecated Use highestSurface() instead. */
+  static highestSurface(s: DynamicScheme): DynamicColor {
+    return MaterialDynamicColors.colorSpec.highestSurface(s);
+  }
+
+  /** @deprecated Use primaryPaletteKeyColor() instead. */
+  static primaryPaletteKeyColor =
+      MaterialDynamicColors.colorSpec.primaryPaletteKeyColor();
+
+  /** @deprecated Use secondaryPaletteKeyColor() instead. */
+  static secondaryPaletteKeyColor =
+      MaterialDynamicColors.colorSpec.secondaryPaletteKeyColor();
+
+  /** @deprecated Use tertiaryPaletteKeyColor() instead. */
+  static tertiaryPaletteKeyColor =
+      MaterialDynamicColors.colorSpec.tertiaryPaletteKeyColor();
+
+  /** @deprecated Use neutralPaletteKeyColor() instead. */
+  static neutralPaletteKeyColor =
+      MaterialDynamicColors.colorSpec.neutralPaletteKeyColor();
+
+  /** @deprecated Use neutralVariantPaletteKeyColor() instead. */
+  static neutralVariantPaletteKeyColor =
+      MaterialDynamicColors.colorSpec.neutralVariantPaletteKeyColor();
+
+  /** @deprecated Use background() instead. */
+  static background = MaterialDynamicColors.colorSpec.background();
+
+  /** @deprecated Use background() instead. */
+  static onBackground = MaterialDynamicColors.colorSpec.onBackground();
+
+  /** @deprecated Use surface() instead. */
+  static surface = MaterialDynamicColors.colorSpec.surface();
+
+  /** @deprecated Use surfaceDim() instead. */
+  static surfaceDim = MaterialDynamicColors.colorSpec.surfaceDim();
+
+  /** @deprecated Use surfaceBright() instead. */
+  static surfaceBright = MaterialDynamicColors.colorSpec.surfaceBright();
+
+  /** @deprecated Use surfaceContainerLowest() instead. */
+  static surfaceContainerLowest =
+      MaterialDynamicColors.colorSpec.surfaceContainerLowest();
+
+  /** @deprecated Use surfaceContainerLow() instead. */
+  static surfaceContainerLow =
+      MaterialDynamicColors.colorSpec.surfaceContainerLow();
+
+  /** @deprecated Use surfaceContainer() instead. */
+  static surfaceContainer = MaterialDynamicColors.colorSpec.surfaceContainer();
+
+  /** @deprecated Use surfaceContainerHigh() instead. */
+  static surfaceContainerHigh =
+      MaterialDynamicColors.colorSpec.surfaceContainerHigh();
+
+  /** @deprecated Use surfaceContainerHighest() instead. */
+  static surfaceContainerHighest =
+      MaterialDynamicColors.colorSpec.surfaceContainerHighest();
+
+  /** @deprecated Use onSurface() instead. */
+  static onSurface = MaterialDynamicColors.colorSpec.onSurface();
+
+  /** @deprecated Use surfaceVariant() instead. */
+  static surfaceVariant = MaterialDynamicColors.colorSpec.surfaceVariant();
+
+  /** @deprecated Use onSurfaceVariant() instead. */
+  static onSurfaceVariant = MaterialDynamicColors.colorSpec.onSurfaceVariant();
+
+  /** @deprecated Use inverseSurface() instead. */
+  static inverseSurface = MaterialDynamicColors.colorSpec.inverseSurface();
+
+  /** @deprecated Use inverseOnSurface() instead. */
+  static inverseOnSurface = MaterialDynamicColors.colorSpec.inverseOnSurface();
+
+  /** @deprecated Use outline() instead. */
+  static outline = MaterialDynamicColors.colorSpec.outline();
+
+  /** @deprecated Use outlineVariant() instead. */
+  static outlineVariant = MaterialDynamicColors.colorSpec.outlineVariant();
+
+  /** @deprecated Use shadow() instead. */
+  static shadow = MaterialDynamicColors.colorSpec.shadow();
+
+  /** @deprecated Use scrim() instead. */
+  static scrim = MaterialDynamicColors.colorSpec.scrim();
+
+  /** @deprecated Use surfaceTint() instead. */
+  static surfaceTint = MaterialDynamicColors.colorSpec.surfaceTint();
+
+  /** @deprecated Use primary() instead. */
+  static primary = MaterialDynamicColors.colorSpec.primary();
+
+  /** @deprecated Use onPrimary() instead. */
+  static onPrimary = MaterialDynamicColors.colorSpec.onPrimary();
+
+  /** @deprecated Use primaryContainer() instead. */
+  static primaryContainer = MaterialDynamicColors.colorSpec.primaryContainer();
+
+  /** @deprecated Use onPrimaryContainer() instead. */
+  static onPrimaryContainer =
+      MaterialDynamicColors.colorSpec.onPrimaryContainer();
+
+  /** @deprecated Use inversePrimary() instead. */
+  static inversePrimary = MaterialDynamicColors.colorSpec.inversePrimary();
+
+  /** @deprecated Use secondary() instead. */
+  static secondary = MaterialDynamicColors.colorSpec.secondary();
+
+  /** @deprecated Use onSecondary() instead. */
+  static onSecondary = MaterialDynamicColors.colorSpec.onSecondary();
+
+  /** @deprecated Use secondaryContainer() instead. */
+  static secondaryContainer =
+      MaterialDynamicColors.colorSpec.secondaryContainer();
+
+  /** @deprecated Use onSecondaryContainer() instead. */
+  static onSecondaryContainer =
+      MaterialDynamicColors.colorSpec.onSecondaryContainer();
+
+  /** @deprecated Use tertiary() instead. */
+  static tertiary = MaterialDynamicColors.colorSpec.tertiary();
+
+  /** @deprecated Use onTertiary() instead. */
+  static onTertiary = MaterialDynamicColors.colorSpec.onTertiary();
+
+  /** @deprecated Use tertiaryContainer() instead. */
+  static tertiaryContainer = MaterialDynamicColors.colorSpec.tertiaryContainer();
+
+  /** @deprecated Use onTertiaryContainer() instead. */
+  static onTertiaryContainer =
+      MaterialDynamicColors.colorSpec.onTertiaryContainer();
+
+  /** @deprecated Use error() instead. */
+  static error = MaterialDynamicColors.colorSpec.error();
+
+  /** @deprecated Use onError() instead. */
+  static onError = MaterialDynamicColors.colorSpec.onError();
+
+  /** @deprecated Use errorContainer() instead. */
+  static errorContainer = MaterialDynamicColors.colorSpec.errorContainer();
+
+  /** @deprecated Use onErrorContainer() instead. */
+  static onErrorContainer = MaterialDynamicColors.colorSpec.onErrorContainer();
+
+  /** @deprecated Use primaryFixed() instead. */
+  static primaryFixed = MaterialDynamicColors.colorSpec.primaryFixed();
+
+  /** @deprecated Use primaryFixedDim() instead. */
+  static primaryFixedDim = MaterialDynamicColors.colorSpec.primaryFixedDim();
+
+  /** @deprecated Use onPrimaryFixed() instead. */
+  static onPrimaryFixed = MaterialDynamicColors.colorSpec.onPrimaryFixed();
+
+  /** @deprecated Use onPrimaryFixedVariant() instead. */
+  static onPrimaryFixedVariant =
+      MaterialDynamicColors.colorSpec.onPrimaryFixedVariant();
+
+  /** @deprecated Use secondaryFixed() instead. */
+  static secondaryFixed = MaterialDynamicColors.colorSpec.secondaryFixed();
+
+  /** @deprecated Use secondaryFixedDim() instead. */
+  static secondaryFixedDim = MaterialDynamicColors.colorSpec.secondaryFixedDim();
+
+  /** @deprecated Use onSecondaryFixed() instead. */
+  static onSecondaryFixed = MaterialDynamicColors.colorSpec.onSecondaryFixed();
+
+  /** @deprecated Use onSecondaryFixedVariant() instead. */
+  static onSecondaryFixedVariant =
+      MaterialDynamicColors.colorSpec.onSecondaryFixedVariant();
+
+  /** @deprecated Use tertiaryFixed() instead. */
+  static tertiaryFixed = MaterialDynamicColors.colorSpec.tertiaryFixed();
+
+  /** @deprecated Use tertiaryFixedDim() instead. */
+  static tertiaryFixedDim = MaterialDynamicColors.colorSpec.tertiaryFixedDim();
+
+  /** @deprecated Use onTertiaryFixed() instead. */
+  static onTertiaryFixed = MaterialDynamicColors.colorSpec.onTertiaryFixed();
+
+  /** @deprecated Use onTertiaryFixedVariant() instead. */
+  static onTertiaryFixedVariant =
+      MaterialDynamicColors.colorSpec.onTertiaryFixedVariant();
 }

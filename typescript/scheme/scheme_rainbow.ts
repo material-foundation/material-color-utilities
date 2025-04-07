@@ -25,19 +25,17 @@ import * as math from '../utils/math_utils.js';
  * A playful theme - the source color's hue does not appear in the theme.
  */
 export class SchemeRainbow extends DynamicScheme {
+  private static readonly DEFAULT_SPEC_VERSION = '2021';
+  private static readonly DEFAULT_PLATFORM = 'phone';
+
   constructor(sourceColorHct: Hct, isDark: boolean, contrastLevel: number) {
     super({
       sourceColorHct,
       variant: Variant.RAINBOW,
       contrastLevel,
       isDark,
-      primaryPalette: TonalPalette.fromHueAndChroma(sourceColorHct.hue, 48.0),
-      secondaryPalette: TonalPalette.fromHueAndChroma(sourceColorHct.hue, 16.0),
-      tertiaryPalette: TonalPalette.fromHueAndChroma(
-          math.sanitizeDegreesDouble(sourceColorHct.hue + 60.0), 24.0),
-      neutralPalette: TonalPalette.fromHueAndChroma(sourceColorHct.hue, 0.0),
-      neutralVariantPalette:
-          TonalPalette.fromHueAndChroma(sourceColorHct.hue, 0.0),
+      platform: SchemeRainbow.DEFAULT_PLATFORM,
+      specVersion: SchemeRainbow.DEFAULT_SPEC_VERSION,
     });
   }
 }

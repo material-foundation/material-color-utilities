@@ -19,8 +19,16 @@ import {DynamicColor} from './dynamic_color.js';
 
 /**
  * Describes the different in tone between colors.
+ *
+ * nearer and farther are deprecated. Use DeltaConstraint instead.
  */
-export type TonePolarity = 'darker'|'lighter'|'nearer'|'farther';
+export type TonePolarity =
+    'darker'|'lighter'|'nearer'|'farther'|'relative_darker'|'relative_lighter';
+
+/**
+ * Describes how to fulfill a tone delta pair constraint.
+ */
+export type DeltaConstraint = 'exact'|'nearer'|'farther';
 
 /**
  * Documents a constraint between two DynamicColors, in which their tones must
@@ -36,13 +44,14 @@ export class ToneDeltaPair {
    *
    * The polarity is an adjective that describes "A", compared to "B".
    *
-   * For instance, ToneDeltaPair(A, B, 15, 'darker', stayTogether) states that
-   * A's tone should be at least 15 darker than B's.
+   * For instance, ToneDeltaPair(A, B, 15, 'darker', 'exact') states that
+   * A's tone should be exactly 15 darker than B's.
    *
-   * 'nearer' and 'farther' describes closeness to the surface roles. For
-   * instance, ToneDeltaPair(A, B, 10, 'nearer', stayTogether) states that A
-   * should be 10 lighter than B in light mode, and 10 darker than B in dark
-   * mode.
+   * 'relative_darker' and 'relative_lighter' describes the tone adjustment
+   * relative to the surface color trend (white in light mode; black in dark
+   * mode). For instance, ToneDeltaPair(A, B, 10, 'relative_lighter',
+   * 'farther') states that A should be at least 10 lighter than B in light
+   * mode, and at least 10 darker than B in dark mode.
    *
    * @param roleA The first role in a pair.
    * @param roleB The second role in a pair.
@@ -50,8 +59,9 @@ export class ToneDeltaPair {
    * values have undefined behavior.
    * @param polarity The relative relation between tones of roleA and roleB,
    * as described above.
-   * @param stayTogether Whether these two roles should stay on the same side of
-   * the "awkward zone" (T50-59). This is necessary for certain cases where
+   * @param constraint How to fulfill the tone delta pair constraint.
+   * @param stayTogether Whether these two roles should stay on the same side
+   * of the "awkward zone" (T50-59). This is necessary for certain cases where
    * one role has two backgrounds.
    */
   constructor(
@@ -60,5 +70,8 @@ export class ToneDeltaPair {
       readonly delta: number,
       readonly polarity: TonePolarity,
       readonly stayTogether: boolean,
-  ) {}
+      readonly constraint?: DeltaConstraint,
+  ) {
+    this.constraint = constraint ?? 'exact';
+  }
 }

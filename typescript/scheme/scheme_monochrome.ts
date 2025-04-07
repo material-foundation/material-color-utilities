@@ -22,18 +22,17 @@ import {TonalPalette} from '../palettes/tonal_palette.js';
 
 /** A Dynamic Color theme that is grayscale. */
 export class SchemeMonochrome extends DynamicScheme {
+  private static readonly DEFAULT_SPEC_VERSION = '2021';
+  private static readonly DEFAULT_PLATFORM = 'phone';
+
   constructor(sourceColorHct: Hct, isDark: boolean, contrastLevel: number) {
     super({
       sourceColorHct,
       variant: Variant.MONOCHROME,
       contrastLevel,
       isDark,
-      primaryPalette: TonalPalette.fromHueAndChroma(sourceColorHct.hue, 0.0),
-      secondaryPalette: TonalPalette.fromHueAndChroma(sourceColorHct.hue, 0.0),
-      tertiaryPalette: TonalPalette.fromHueAndChroma(sourceColorHct.hue, 0.0),
-      neutralPalette: TonalPalette.fromHueAndChroma(sourceColorHct.hue, 0.0),
-      neutralVariantPalette:
-          TonalPalette.fromHueAndChroma(sourceColorHct.hue, 0.0),
+      platform: SchemeMonochrome.DEFAULT_PLATFORM,
+      specVersion: SchemeMonochrome.DEFAULT_SPEC_VERSION,
     });
   }
 }
