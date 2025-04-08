@@ -115,7 +115,7 @@ public class Hct: Equatable, Hashable {
     return Hct(argb)
   }
 
-  func toInt() -> Int {
+  public func toInt() -> Int {
     return _argb
   }
 
