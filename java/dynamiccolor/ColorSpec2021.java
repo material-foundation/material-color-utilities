@@ -1286,28 +1286,21 @@ class ColorSpec2021 implements ColorSpec {
       boolean isDark,
       Platform platform,
       double contrastLevel) {
-    switch (variant) {
-      case CONTENT:
-      case FIDELITY:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), sourceColorHct.getChroma());
-      case FRUIT_SALAD:
-        return TonalPalette.fromHueAndChroma(
-            MathUtils.sanitizeDegreesDouble(sourceColorHct.getHue() - 50.0), 48.0);
-      case MONOCHROME:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 0.0);
-      case NEUTRAL:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 12.0);
-      case RAINBOW:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 48.0);
-      case TONAL_SPOT:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 36.0);
-      case EXPRESSIVE:
-        return TonalPalette.fromHueAndChroma(
-            MathUtils.sanitizeDegreesDouble(sourceColorHct.getHue() + 240), 40);
-      case VIBRANT:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 200.0);
-    }
-    throw new IllegalArgumentException("Unsupported variant: " + variant);
+    return switch (variant) {
+      case CONTENT, FIDELITY ->
+          TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), sourceColorHct.getChroma());
+      case FRUIT_SALAD ->
+          TonalPalette.fromHueAndChroma(
+              MathUtils.sanitizeDegreesDouble(sourceColorHct.getHue() - 50.0), 48.0);
+      case MONOCHROME -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 0.0);
+      case NEUTRAL -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 12.0);
+      case RAINBOW -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 48.0);
+      case TONAL_SPOT -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 36.0);
+      case EXPRESSIVE ->
+          TonalPalette.fromHueAndChroma(
+              MathUtils.sanitizeDegreesDouble(sourceColorHct.getHue() + 240), 40);
+      case VIBRANT -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 200.0);
+    };
   }
 
   @NonNull
@@ -1318,39 +1311,33 @@ class ColorSpec2021 implements ColorSpec {
       boolean isDark,
       Platform platform,
       double contrastLevel) {
-    switch (variant) {
-      case CONTENT:
-      case FIDELITY:
-        return TonalPalette.fromHueAndChroma(
-            sourceColorHct.getHue(),
-            max(sourceColorHct.getChroma() - 32.0, sourceColorHct.getChroma() * 0.5));
-      case FRUIT_SALAD:
-        return TonalPalette.fromHueAndChroma(
-            MathUtils.sanitizeDegreesDouble(sourceColorHct.getHue() - 50.0), 36.0);
-      case MONOCHROME:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 0.0);
-      case NEUTRAL:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 8.0);
-      case RAINBOW:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 16.0);
-      case TONAL_SPOT:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 16.0);
-      case EXPRESSIVE:
-        return TonalPalette.fromHueAndChroma(
-            DynamicScheme.getRotatedHue(
-                sourceColorHct,
-                new double[] {0, 21, 51, 121, 151, 191, 271, 321, 360},
-                new double[] {45, 95, 45, 20, 45, 90, 45, 45, 45}),
-            24.0);
-      case VIBRANT:
-        return TonalPalette.fromHueAndChroma(
-            DynamicScheme.getRotatedHue(
-                sourceColorHct,
-                new double[] {0, 41, 61, 101, 131, 181, 251, 301, 360},
-                new double[] {18, 15, 10, 12, 15, 18, 15, 12, 12}),
-            24.0);
-    }
-    throw new IllegalArgumentException("Unsupported variant: " + variant);
+    return switch (variant) {
+      case CONTENT, FIDELITY ->
+          TonalPalette.fromHueAndChroma(
+              sourceColorHct.getHue(),
+              max(sourceColorHct.getChroma() - 32.0, sourceColorHct.getChroma() * 0.5));
+      case FRUIT_SALAD ->
+          TonalPalette.fromHueAndChroma(
+              MathUtils.sanitizeDegreesDouble(sourceColorHct.getHue() - 50.0), 36.0);
+      case MONOCHROME -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 0.0);
+      case NEUTRAL -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 8.0);
+      case RAINBOW -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 16.0);
+      case TONAL_SPOT -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 16.0);
+      case EXPRESSIVE ->
+          TonalPalette.fromHueAndChroma(
+              DynamicScheme.getRotatedHue(
+                  sourceColorHct,
+                  new double[] {0, 21, 51, 121, 151, 191, 271, 321, 360},
+                  new double[] {45, 95, 45, 20, 45, 90, 45, 45, 45}),
+              24.0);
+      case VIBRANT ->
+          TonalPalette.fromHueAndChroma(
+              DynamicScheme.getRotatedHue(
+                  sourceColorHct,
+                  new double[] {0, 41, 61, 101, 131, 181, 251, 301, 360},
+                  new double[] {18, 15, 10, 12, 15, 18, 15, 12, 12}),
+              24.0);
+    };
   }
 
   @NonNull
@@ -1361,42 +1348,37 @@ class ColorSpec2021 implements ColorSpec {
       boolean isDark,
       Platform platform,
       double contrastLevel) {
-    switch (variant) {
-      case CONTENT:
-        return TonalPalette.fromHct(
-            DislikeAnalyzer.fixIfDisliked(
-                new TemperatureCache(sourceColorHct)
-                    .getAnalogousColors(/* count= */ 3, /* divisions= */ 6)
-                    .get(2)));
-      case FIDELITY:
-        return TonalPalette.fromHct(
-            DislikeAnalyzer.fixIfDisliked(new TemperatureCache(sourceColorHct).getComplement()));
-      case FRUIT_SALAD:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 36.0);
-      case MONOCHROME:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 0.0);
-      case NEUTRAL:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 16.0);
-      case RAINBOW:
-      case TONAL_SPOT:
-        return TonalPalette.fromHueAndChroma(
-            MathUtils.sanitizeDegreesDouble(sourceColorHct.getHue() + 60.0), 24.0);
-      case EXPRESSIVE:
-        return TonalPalette.fromHueAndChroma(
-            DynamicScheme.getRotatedHue(
-                sourceColorHct,
-                new double[] {0, 21, 51, 121, 151, 191, 271, 321, 360},
-                new double[] {120, 120, 20, 45, 20, 15, 20, 120, 120}),
-            32.0);
-      case VIBRANT:
-        return TonalPalette.fromHueAndChroma(
-            DynamicScheme.getRotatedHue(
-                sourceColorHct,
-                new double[] {0, 41, 61, 101, 131, 181, 251, 301, 360},
-                new double[] {35, 30, 20, 25, 30, 35, 30, 25, 25}),
-            32.0);
-    }
-    throw new IllegalArgumentException("Unsupported variant: " + variant);
+    return switch (variant) {
+      case CONTENT ->
+          TonalPalette.fromHct(
+              DislikeAnalyzer.fixIfDisliked(
+                  new TemperatureCache(sourceColorHct)
+                      .getAnalogousColors(/* count= */ 3, /* divisions= */ 6)
+                      .get(2)));
+      case FIDELITY ->
+          TonalPalette.fromHct(
+              DislikeAnalyzer.fixIfDisliked(new TemperatureCache(sourceColorHct).getComplement()));
+      case FRUIT_SALAD -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 36.0);
+      case MONOCHROME -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 0.0);
+      case NEUTRAL -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 16.0);
+      case RAINBOW, TONAL_SPOT ->
+          TonalPalette.fromHueAndChroma(
+              MathUtils.sanitizeDegreesDouble(sourceColorHct.getHue() + 60.0), 24.0);
+      case EXPRESSIVE ->
+          TonalPalette.fromHueAndChroma(
+              DynamicScheme.getRotatedHue(
+                  sourceColorHct,
+                  new double[] {0, 21, 51, 121, 151, 191, 271, 321, 360},
+                  new double[] {120, 120, 20, 45, 20, 15, 20, 120, 120}),
+              32.0);
+      case VIBRANT ->
+          TonalPalette.fromHueAndChroma(
+              DynamicScheme.getRotatedHue(
+                  sourceColorHct,
+                  new double[] {0, 41, 61, 101, 131, 181, 251, 301, 360},
+                  new double[] {35, 30, 20, 25, 30, 35, 30, 25, 25}),
+              32.0);
+    };
   }
 
   @NonNull
@@ -1407,28 +1389,19 @@ class ColorSpec2021 implements ColorSpec {
       boolean isDark,
       Platform platform,
       double contrastLevel) {
-    switch (variant) {
-      case CONTENT:
-      case FIDELITY:
-        return TonalPalette.fromHueAndChroma(
-            sourceColorHct.getHue(), sourceColorHct.getChroma() / 8.0);
-      case FRUIT_SALAD:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 10.0);
-      case MONOCHROME:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 0.0);
-      case NEUTRAL:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 2.0);
-      case RAINBOW:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 0.0);
-      case TONAL_SPOT:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 6.0);
-      case EXPRESSIVE:
-        return TonalPalette.fromHueAndChroma(
-            MathUtils.sanitizeDegreesDouble(sourceColorHct.getHue() + 15), 8);
-      case VIBRANT:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 10);
-    }
-    throw new IllegalArgumentException("Unsupported variant: " + variant);
+    return switch (variant) {
+      case CONTENT, FIDELITY ->
+          TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), sourceColorHct.getChroma() / 8.0);
+      case FRUIT_SALAD -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 10.0);
+      case MONOCHROME -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 0.0);
+      case NEUTRAL -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 2.0);
+      case RAINBOW -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 0.0);
+      case TONAL_SPOT -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 6.0);
+      case EXPRESSIVE ->
+          TonalPalette.fromHueAndChroma(
+              MathUtils.sanitizeDegreesDouble(sourceColorHct.getHue() + 15), 8);
+      case VIBRANT -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 10);
+    };
   }
 
   @NonNull
@@ -1439,30 +1412,23 @@ class ColorSpec2021 implements ColorSpec {
       boolean isDark,
       Platform platform,
       double contrastLevel) {
-    switch (variant) {
-      case CONTENT:
-        return TonalPalette.fromHueAndChroma(
-            sourceColorHct.getHue(), (sourceColorHct.getChroma() / 8.0) + 4.0);
-      case FIDELITY:
-        return TonalPalette.fromHueAndChroma(
-            sourceColorHct.getHue(), (sourceColorHct.getChroma() / 8.0) + 4.0);
-      case FRUIT_SALAD:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 16.0);
-      case MONOCHROME:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 0.0);
-      case NEUTRAL:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 2.0);
-      case RAINBOW:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 0.0);
-      case TONAL_SPOT:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 8.0);
-      case EXPRESSIVE:
-        return TonalPalette.fromHueAndChroma(
-            MathUtils.sanitizeDegreesDouble(sourceColorHct.getHue() + 15), 12);
-      case VIBRANT:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 12);
-    }
-    throw new IllegalArgumentException("Unsupported variant: " + variant);
+    return switch (variant) {
+      case CONTENT ->
+          TonalPalette.fromHueAndChroma(
+              sourceColorHct.getHue(), (sourceColorHct.getChroma() / 8.0) + 4.0);
+      case FIDELITY ->
+          TonalPalette.fromHueAndChroma(
+              sourceColorHct.getHue(), (sourceColorHct.getChroma() / 8.0) + 4.0);
+      case FRUIT_SALAD -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 16.0);
+      case MONOCHROME -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 0.0);
+      case NEUTRAL -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 2.0);
+      case RAINBOW -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 0.0);
+      case TONAL_SPOT -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 8.0);
+      case EXPRESSIVE ->
+          TonalPalette.fromHueAndChroma(
+              MathUtils.sanitizeDegreesDouble(sourceColorHct.getHue() + 15), 12);
+      case VIBRANT -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 12);
+    };
   }
 
   @NonNull
@@ -1473,18 +1439,17 @@ class ColorSpec2021 implements ColorSpec {
       boolean isDark,
       Platform platform,
       double contrastLevel) {
-    switch (variant) {
-      case CONTENT:
-      case FIDELITY:
-      case FRUIT_SALAD:
-      case MONOCHROME:
-      case NEUTRAL:
-      case RAINBOW:
-      case TONAL_SPOT:
-      case EXPRESSIVE:
-      case VIBRANT:
-        return Optional.empty();
-    }
-    throw new IllegalArgumentException("Unsupported variant: " + variant);
+    return switch (variant) {
+      case CONTENT,
+          FIDELITY,
+          FRUIT_SALAD,
+          MONOCHROME,
+          NEUTRAL,
+          RAINBOW,
+          TONAL_SPOT,
+          EXPRESSIVE,
+          VIBRANT ->
+          Optional.empty();
+    };
   }
 }
