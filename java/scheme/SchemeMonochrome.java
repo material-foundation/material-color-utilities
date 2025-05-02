@@ -16,8 +16,6 @@
 
 package scheme;
 
-import static dynamiccolor.DynamicScheme.Platform.PHONE;
-
 import dynamiccolor.ColorSpec.SpecVersion;
 import dynamiccolor.ColorSpecs;
 import dynamiccolor.DynamicScheme;
@@ -26,24 +24,38 @@ import hct.Hct;
 
 /** A monochrome theme, colors are purely black / white / gray. */
 public class SchemeMonochrome extends DynamicScheme {
+
   public SchemeMonochrome(Hct sourceColorHct, boolean isDark, double contrastLevel) {
+    this(sourceColorHct, isDark, contrastLevel, DEFAULT_SPEC_VERSION, DEFAULT_PLATFORM);
+  }
+
+  public SchemeMonochrome(
+      Hct sourceColorHct,
+      boolean isDark,
+      double contrastLevel,
+      SpecVersion specVersion,
+      Platform platform) {
     super(
         sourceColorHct,
         Variant.MONOCHROME,
         isDark,
         contrastLevel,
-        ColorSpecs.get(SpecVersion.SPEC_2021)
-            .getPrimaryPalette(Variant.MONOCHROME, sourceColorHct, isDark, PHONE, contrastLevel),
-        ColorSpecs.get(SpecVersion.SPEC_2021)
-            .getSecondaryPalette(Variant.MONOCHROME, sourceColorHct, isDark, PHONE, contrastLevel),
-        ColorSpecs.get(SpecVersion.SPEC_2021)
-            .getTertiaryPalette(Variant.MONOCHROME, sourceColorHct, isDark, PHONE, contrastLevel),
-        ColorSpecs.get(SpecVersion.SPEC_2021)
-            .getNeutralPalette(Variant.MONOCHROME, sourceColorHct, isDark, PHONE, contrastLevel),
-        ColorSpecs.get(SpecVersion.SPEC_2021)
+        platform,
+        specVersion,
+        ColorSpecs.get(specVersion)
+            .getPrimaryPalette(Variant.MONOCHROME, sourceColorHct, isDark, platform, contrastLevel),
+        ColorSpecs.get(specVersion)
+            .getSecondaryPalette(
+                Variant.MONOCHROME, sourceColorHct, isDark, platform, contrastLevel),
+        ColorSpecs.get(specVersion)
+            .getTertiaryPalette(
+                Variant.MONOCHROME, sourceColorHct, isDark, platform, contrastLevel),
+        ColorSpecs.get(specVersion)
+            .getNeutralPalette(Variant.MONOCHROME, sourceColorHct, isDark, platform, contrastLevel),
+        ColorSpecs.get(specVersion)
             .getNeutralVariantPalette(
-                Variant.MONOCHROME, sourceColorHct, isDark, PHONE, contrastLevel),
-        ColorSpecs.get(SpecVersion.SPEC_2021)
-            .getErrorPalette(Variant.MONOCHROME, sourceColorHct, isDark, PHONE, contrastLevel));
+                Variant.MONOCHROME, sourceColorHct, isDark, platform, contrastLevel),
+        ColorSpecs.get(specVersion)
+            .getErrorPalette(Variant.MONOCHROME, sourceColorHct, isDark, platform, contrastLevel));
   }
 }

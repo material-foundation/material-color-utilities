@@ -15,8 +15,6 @@
  */
 package scheme;
 
-import static dynamiccolor.DynamicScheme.Platform.PHONE;
-
 import dynamiccolor.ColorSpec.SpecVersion;
 import dynamiccolor.ColorSpecs;
 import dynamiccolor.DynamicScheme;
@@ -25,9 +23,6 @@ import hct.Hct;
 
 /** A theme that's slightly more chromatic than monochrome, which is purely black / white / gray. */
 public class SchemeNeutral extends DynamicScheme {
-
-  private static final SpecVersion DEFAULT_SPEC_VERSION = SpecVersion.SPEC_2021;
-  private static final Platform DEFAULT_PLATFORM = PHONE;
 
   public SchemeNeutral(Hct sourceColorHct, boolean isDark, double contrastLevel) {
     this(sourceColorHct, isDark, contrastLevel, DEFAULT_SPEC_VERSION, DEFAULT_PLATFORM);

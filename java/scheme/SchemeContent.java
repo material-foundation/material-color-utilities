@@ -16,8 +16,6 @@
 
 package scheme;
 
-import static dynamiccolor.DynamicScheme.Platform.PHONE;
-
 import dynamiccolor.ColorSpec.SpecVersion;
 import dynamiccolor.ColorSpecs;
 import dynamiccolor.DynamicScheme;
@@ -37,24 +35,37 @@ import hct.Hct;
  * appearance.
  */
 public class SchemeContent extends DynamicScheme {
+
   public SchemeContent(Hct sourceColorHct, boolean isDark, double contrastLevel) {
+    this(sourceColorHct, isDark, contrastLevel, DEFAULT_SPEC_VERSION, DEFAULT_PLATFORM);
+  }
+
+  public SchemeContent(
+      Hct sourceColorHct,
+      boolean isDark,
+      double contrastLevel,
+      SpecVersion specVersion,
+      Platform platform) {
     super(
         sourceColorHct,
         Variant.CONTENT,
         isDark,
         contrastLevel,
-        ColorSpecs.get(SpecVersion.SPEC_2021)
-            .getPrimaryPalette(Variant.CONTENT, sourceColorHct, isDark, PHONE, contrastLevel),
-        ColorSpecs.get(SpecVersion.SPEC_2021)
-            .getSecondaryPalette(Variant.CONTENT, sourceColorHct, isDark, PHONE, contrastLevel),
-        ColorSpecs.get(SpecVersion.SPEC_2021)
-            .getTertiaryPalette(Variant.CONTENT, sourceColorHct, isDark, PHONE, contrastLevel),
-        ColorSpecs.get(SpecVersion.SPEC_2021)
-            .getNeutralPalette(Variant.CONTENT, sourceColorHct, isDark, PHONE, contrastLevel),
-        ColorSpecs.get(SpecVersion.SPEC_2021)
+        platform,
+        specVersion,
+        ColorSpecs.get(specVersion)
+            .getPrimaryPalette(Variant.CONTENT, sourceColorHct, isDark, platform, contrastLevel),
+        ColorSpecs.get(specVersion)
+            .getSecondaryPalette(Variant.CONTENT, sourceColorHct, isDark, platform, contrastLevel),
+        ColorSpecs.get(specVersion)
+            .getTertiaryPalette(Variant.CONTENT, sourceColorHct, isDark, platform, contrastLevel),
+        ColorSpecs.get(specVersion)
+            .getNeutralPalette(Variant.CONTENT, sourceColorHct, isDark, platform, contrastLevel),
+        ColorSpecs.get(specVersion)
             .getNeutralVariantPalette(
-                Variant.CONTENT, sourceColorHct, isDark, PHONE, contrastLevel),
-        ColorSpecs.get(SpecVersion.SPEC_2021)
-            .getErrorPalette(Variant.CONTENT, sourceColorHct, isDark, PHONE, contrastLevel));
+                Variant.CONTENT, sourceColorHct, isDark, platform, contrastLevel),
+        ColorSpecs.get(specVersion)
+            .getErrorPalette(Variant.CONTENT, sourceColorHct, isDark, platform, contrastLevel));
   }
 }
+

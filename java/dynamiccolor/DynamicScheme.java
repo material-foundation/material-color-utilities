@@ -32,6 +32,10 @@ import java.util.Optional;
  * (-1 to 1, currently contrast ratio 3.0 and 7.0)
  */
 public class DynamicScheme {
+
+  public static final SpecVersion DEFAULT_SPEC_VERSION = SpecVersion.SPEC_2021;
+  public static final Platform DEFAULT_PLATFORM = Platform.PHONE;
+
   /** The platform on which this scheme is intended to be used. */
   public enum Platform {
     PHONE,
