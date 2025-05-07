@@ -1689,24 +1689,23 @@ final class ColorSpec2025 extends ColorSpec2021 {
       boolean isDark,
       Platform platform,
       double contrastLevel) {
-    switch (variant) {
-      case NEUTRAL:
-        return TonalPalette.fromHueAndChroma(
-            sourceColorHct.getHue(),
-            platform == PHONE
-                ? (sourceColorHct.isBlue() ? 12 : 8)
-                : (sourceColorHct.isBlue() ? 16 : 12));
-      case TONAL_SPOT:
-        return TonalPalette.fromHueAndChroma(
-            sourceColorHct.getHue(), platform == PHONE && isDark ? 26 : 32);
-      case EXPRESSIVE:
-        return TonalPalette.fromHueAndChroma(
-            sourceColorHct.getHue(), platform == PHONE ? (isDark ? 36 : 48) : 40);
-      case VIBRANT:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), platform == PHONE ? 74 : 56);
-      default:
-        return super.getPrimaryPalette(variant, sourceColorHct, isDark, platform, contrastLevel);
-    }
+    return switch (variant) {
+      case NEUTRAL ->
+          TonalPalette.fromHueAndChroma(
+              sourceColorHct.getHue(),
+              platform == PHONE
+                  ? (sourceColorHct.isBlue() ? 12 : 8)
+                  : (sourceColorHct.isBlue() ? 16 : 12));
+      case TONAL_SPOT ->
+          TonalPalette.fromHueAndChroma(
+              sourceColorHct.getHue(), platform == PHONE && isDark ? 26 : 32);
+      case EXPRESSIVE ->
+          TonalPalette.fromHueAndChroma(
+              sourceColorHct.getHue(), platform == PHONE ? (isDark ? 36 : 48) : 40);
+      case VIBRANT ->
+          TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), platform == PHONE ? 74 : 56);
+      default -> super.getPrimaryPalette(variant, sourceColorHct, isDark, platform, contrastLevel);
+    };
   }
 
   @NonNull
@@ -1717,32 +1716,31 @@ final class ColorSpec2025 extends ColorSpec2021 {
       boolean isDark,
       Platform platform,
       double contrastLevel) {
-    switch (variant) {
-      case NEUTRAL:
-        return TonalPalette.fromHueAndChroma(
-            sourceColorHct.getHue(),
-            platform == PHONE
-                ? (sourceColorHct.isBlue() ? 6 : 4)
-                : (sourceColorHct.isBlue() ? 10 : 6));
-      case TONAL_SPOT:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 16);
-      case EXPRESSIVE:
-        return TonalPalette.fromHueAndChroma(
-            DynamicScheme.getRotatedHue(
-                sourceColorHct,
-                new double[] {0, 105, 140, 204, 253, 278, 300, 333, 360},
-                new double[] {-160, 155, -100, 96, -96, -156, -165, -160}),
-            platform == PHONE ? (isDark ? 16 : 24) : 24);
-      case VIBRANT:
-        return TonalPalette.fromHueAndChroma(
-            DynamicScheme.getRotatedHue(
-                sourceColorHct,
-                new double[] {0, 38, 105, 140, 333, 360},
-                new double[] {-14, 10, -14, 10, -14}),
-            platform == PHONE ? 56 : 36);
-      default:
-        return super.getSecondaryPalette(variant, sourceColorHct, isDark, platform, contrastLevel);
-    }
+    return switch (variant) {
+      case NEUTRAL ->
+          TonalPalette.fromHueAndChroma(
+              sourceColorHct.getHue(),
+              platform == PHONE
+                  ? (sourceColorHct.isBlue() ? 6 : 4)
+                  : (sourceColorHct.isBlue() ? 10 : 6));
+      case TONAL_SPOT -> TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 16);
+      case EXPRESSIVE ->
+          TonalPalette.fromHueAndChroma(
+              DynamicScheme.getRotatedHue(
+                  sourceColorHct,
+                  new double[] {0, 105, 140, 204, 253, 278, 300, 333, 360},
+                  new double[] {-160, 155, -100, 96, -96, -156, -165, -160}),
+              platform == PHONE ? (isDark ? 16 : 24) : 24);
+      case VIBRANT ->
+          TonalPalette.fromHueAndChroma(
+              DynamicScheme.getRotatedHue(
+                  sourceColorHct,
+                  new double[] {0, 38, 105, 140, 333, 360},
+                  new double[] {-14, 10, -14, 10, -14}),
+              platform == PHONE ? 56 : 36);
+      default ->
+          super.getSecondaryPalette(variant, sourceColorHct, isDark, platform, contrastLevel);
+    };
   }
 
   @NonNull
@@ -1753,38 +1751,37 @@ final class ColorSpec2025 extends ColorSpec2021 {
       boolean isDark,
       Platform platform,
       double contrastLevel) {
-    switch (variant) {
-      case NEUTRAL:
-        return TonalPalette.fromHueAndChroma(
-            DynamicScheme.getRotatedHue(
-                sourceColorHct,
-                new double[] {0, 38, 105, 161, 204, 278, 333, 360},
-                new double[] {-32, 26, 10, -39, 24, -15, -32}),
-            platform == PHONE ? 20 : 36);
-      case TONAL_SPOT:
-        return TonalPalette.fromHueAndChroma(
-            DynamicScheme.getRotatedHue(
-                sourceColorHct,
-                new double[] {0, 20, 71, 161, 333, 360},
-                new double[] {-40, 48, -32, 40, -32}),
-            platform == PHONE ? 28 : 32);
-      case EXPRESSIVE:
-        return TonalPalette.fromHueAndChroma(
-            DynamicScheme.getRotatedHue(
-                sourceColorHct,
-                new double[] {0, 105, 140, 204, 253, 278, 300, 333, 360},
-                new double[] {-165, 160, -105, 101, -101, -160, -170, -165}),
-            48);
-      case VIBRANT:
-        return TonalPalette.fromHueAndChroma(
-            DynamicScheme.getRotatedHue(
-                sourceColorHct,
-                new double[] {0, 38, 71, 105, 140, 161, 253, 333, 360},
-                new double[] {-72, 35, 24, -24, 62, 50, 62, -72}),
-            56);
-      default:
-        return super.getTertiaryPalette(variant, sourceColorHct, isDark, platform, contrastLevel);
-    }
+    return switch (variant) {
+      case NEUTRAL ->
+          TonalPalette.fromHueAndChroma(
+              DynamicScheme.getRotatedHue(
+                  sourceColorHct,
+                  new double[] {0, 38, 105, 161, 204, 278, 333, 360},
+                  new double[] {-32, 26, 10, -39, 24, -15, -32}),
+              platform == PHONE ? 20 : 36);
+      case TONAL_SPOT ->
+          TonalPalette.fromHueAndChroma(
+              DynamicScheme.getRotatedHue(
+                  sourceColorHct,
+                  new double[] {0, 20, 71, 161, 333, 360},
+                  new double[] {-40, 48, -32, 40, -32}),
+              platform == PHONE ? 28 : 32);
+      case EXPRESSIVE ->
+          TonalPalette.fromHueAndChroma(
+              DynamicScheme.getRotatedHue(
+                  sourceColorHct,
+                  new double[] {0, 105, 140, 204, 253, 278, 300, 333, 360},
+                  new double[] {-165, 160, -105, 101, -101, -160, -170, -165}),
+              48);
+      case VIBRANT ->
+          TonalPalette.fromHueAndChroma(
+              DynamicScheme.getRotatedHue(
+                  sourceColorHct,
+                  new double[] {0, 38, 71, 105, 140, 161, 253, 333, 360},
+                  new double[] {-72, 35, 24, -24, 62, 50, 62, -72}),
+              56);
+      default -> super.getTertiaryPalette(variant, sourceColorHct, isDark, platform, contrastLevel);
+    };
   }
 
   @NonNull
@@ -1795,22 +1792,21 @@ final class ColorSpec2025 extends ColorSpec2021 {
       boolean isDark,
       Platform platform,
       double contrastLevel) {
-    switch (variant) {
-      case NEUTRAL:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), platform == PHONE ? 1.4 : 6);
-      case TONAL_SPOT:
-        return TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), platform == PHONE ? 5 : 10);
-      case EXPRESSIVE:
-        return TonalPalette.fromHueAndChroma(
-            getExpressiveNeutralHue(sourceColorHct),
-            getExpressiveNeutralChroma(sourceColorHct, isDark, platform));
-      case VIBRANT:
-        return TonalPalette.fromHueAndChroma(
-            getVibrantNeutralHue(sourceColorHct),
-            getVibrantNeutralChroma(sourceColorHct, platform));
-      default:
-        return super.getNeutralPalette(variant, sourceColorHct, isDark, platform, contrastLevel);
-    }
+    return switch (variant) {
+      case NEUTRAL ->
+          TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), platform == PHONE ? 1.4 : 6);
+      case TONAL_SPOT ->
+          TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), platform == PHONE ? 5 : 10);
+      case EXPRESSIVE ->
+          TonalPalette.fromHueAndChroma(
+              getExpressiveNeutralHue(sourceColorHct),
+              getExpressiveNeutralChroma(sourceColorHct, isDark, platform));
+      case VIBRANT ->
+          TonalPalette.fromHueAndChroma(
+              getVibrantNeutralHue(sourceColorHct),
+              getVibrantNeutralChroma(sourceColorHct, platform));
+      default -> super.getNeutralPalette(variant, sourceColorHct, isDark, platform, contrastLevel);
+    };
   }
 
   @NonNull
@@ -1859,18 +1855,17 @@ final class ColorSpec2025 extends ColorSpec2021 {
             sourceColorHct,
             new double[] {0, 3, 13, 23, 33, 43, 153, 273, 360},
             new double[] {12, 22, 32, 12, 22, 32, 22, 12});
-    switch (variant) {
-      case NEUTRAL:
-        return Optional.of(TonalPalette.fromHueAndChroma(errorHue, platform == PHONE ? 50 : 40));
-      case TONAL_SPOT:
-        return Optional.of(TonalPalette.fromHueAndChroma(errorHue, platform == PHONE ? 60 : 48));
-      case EXPRESSIVE:
-        return Optional.of(TonalPalette.fromHueAndChroma(errorHue, platform == PHONE ? 64 : 48));
-      case VIBRANT:
-        return Optional.of(TonalPalette.fromHueAndChroma(errorHue, platform == PHONE ? 80 : 60));
-      default:
-        return super.getErrorPalette(variant, sourceColorHct, isDark, platform, contrastLevel);
-    }
+    return switch (variant) {
+      case NEUTRAL ->
+          Optional.of(TonalPalette.fromHueAndChroma(errorHue, platform == PHONE ? 50 : 40));
+      case TONAL_SPOT ->
+          Optional.of(TonalPalette.fromHueAndChroma(errorHue, platform == PHONE ? 60 : 48));
+      case EXPRESSIVE ->
+          Optional.of(TonalPalette.fromHueAndChroma(errorHue, platform == PHONE ? 64 : 48));
+      case VIBRANT ->
+          Optional.of(TonalPalette.fromHueAndChroma(errorHue, platform == PHONE ? 80 : 60));
+      default -> super.getErrorPalette(variant, sourceColorHct, isDark, platform, contrastLevel);
+    };
   }
 
   private static double getExpressiveNeutralHue(Hct sourceColorHct) {
