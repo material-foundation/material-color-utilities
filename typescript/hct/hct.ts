@@ -145,16 +145,16 @@ export class Hct {
         this.tone.toFixed(0)})`;
   }
 
-  isBlue(): boolean {
-    return this.hue >= 250 && this.hue < 270;
+  static isBlue(hue: number): boolean {
+    return hue >= 250 && hue < 270;
   }
 
-  isYellow(): boolean {
-    return this.hue >= 105 && this.hue < 125;
+  static isYellow(hue: number): boolean {
+    return hue >= 105 && hue < 125;
   }
 
-  isCyan(): boolean {
-    return this.hue >= 170 && this.hue < 207;
+  static isCyan(hue: number): boolean {
+    return hue >= 170 && hue < 207;
   }
 
   private constructor(private argb: number) {

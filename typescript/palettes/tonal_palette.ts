@@ -51,7 +51,8 @@ export class TonalPalette {
     return new TonalPalette(hue, chroma, keyColor);
   }
 
-  private constructor(readonly hue: number, readonly chroma: number, readonly keyColor: Hct) {}
+  private constructor(
+      readonly hue: number, readonly chroma: number, readonly keyColor: Hct) {}
 
   /**
    * @param tone HCT tone, measured from 0 to 100.

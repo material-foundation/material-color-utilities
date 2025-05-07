@@ -771,8 +771,8 @@ class DynamicSchemePalettesDelegateImpl2025 extends
       case Variant.NEUTRAL:
         return TonalPalette.fromHueAndChroma(
             sourceColorHct.hue,
-            platform === 'phone' ? (sourceColorHct.isBlue() ? 12 : 8) :
-                                   (sourceColorHct.isBlue() ? 16 : 12));
+            platform === 'phone' ? (Hct.isBlue(sourceColorHct.hue) ? 12 : 8) :
+                                   (Hct.isBlue(sourceColorHct.hue) ? 16 : 12));
       case Variant.TONAL_SPOT:
         return TonalPalette.fromHueAndChroma(
             sourceColorHct.hue, platform === 'phone' && isDark ? 26 : 32);
@@ -795,8 +795,8 @@ class DynamicSchemePalettesDelegateImpl2025 extends
       case Variant.NEUTRAL:
         return TonalPalette.fromHueAndChroma(
             sourceColorHct.hue,
-            platform === 'phone' ? (sourceColorHct.isBlue() ? 6 : 4) :
-                                   (sourceColorHct.isBlue() ? 10 : 6));
+            platform === 'phone' ? (Hct.isBlue(sourceColorHct.hue) ? 6 : 4) :
+                                   (Hct.isBlue(sourceColorHct.hue) ? 10 : 6));
       case Variant.TONAL_SPOT:
         return TonalPalette.fromHueAndChroma(sourceColorHct.hue, 16);
       case Variant.EXPRESSIVE:
@@ -852,9 +852,10 @@ class DynamicSchemePalettesDelegateImpl2025 extends
   }
 
   private static getExpressiveNeutralHue(sourceColorHct: Hct): number {
-    return DynamicScheme.getRotatedHue(
+    const hue = DynamicScheme.getRotatedHue(
         sourceColorHct, [0, 71, 124, 253, 278, 300, 360],
         [10, 0, 10, 0, 10, 0]);
+    return hue;
   }
 
   private static getExpressiveNeutralChroma(
@@ -862,9 +863,8 @@ class DynamicSchemePalettesDelegateImpl2025 extends
     const neutralHue =
         DynamicSchemePalettesDelegateImpl2025.getExpressiveNeutralHue(
             sourceColorHct);
-    const neutralHueIsYellow = neutralHue >= 105 && neutralHue < 125;
     return platform === 'phone' ?
-        (isDark ? (neutralHueIsYellow ? 6 : 14) : 18) :
+        (isDark ? (Hct.isYellow(neutralHue) ? 6 : 14) : 18) :
         12;
   }
 
@@ -878,8 +878,7 @@ class DynamicSchemePalettesDelegateImpl2025 extends
     const neutralHue =
         DynamicSchemePalettesDelegateImpl2025.getVibrantNeutralHue(
             sourceColorHct);
-    const neutralHueIsBlue = neutralHue >= 250 && neutralHue < 270;
-    return platform === 'phone' ? 28 : (neutralHueIsBlue ? 28 : 20);
+    return platform === 'phone' ? 28 : (Hct.isBlue(neutralHue) ? 28 : 20);
   }
 
   override getNeutralPalette(

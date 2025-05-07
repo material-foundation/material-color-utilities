@@ -128,15 +128,15 @@ public final class Hct {
         + ")";
   }
 
-  public boolean isBlue() {
+  public static boolean isBlue(double hue) {
     return hue >= 250 && hue < 270;
   }
 
-  public boolean isYellow() {
+  public static boolean isYellow(double hue) {
     return hue >= 105 && hue < 125;
   }
 
-  public boolean isCyan() {
+  public static boolean isCyan(double hue) {
     return hue >= 170 && hue < 207;
   }
 
