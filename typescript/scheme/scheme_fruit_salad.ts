@@ -18,8 +18,6 @@
 import {DynamicScheme} from '../dynamiccolor/dynamic_scheme.js';
 import {Variant} from '../dynamiccolor/variant.js';
 import {Hct} from '../hct/hct.js';
-import {TonalPalette} from '../palettes/tonal_palette.js';
-import * as math from '../utils/math_utils.js';
 
 /**
  * A playful theme - the source color's hue does not appear in the theme.
