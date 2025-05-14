@@ -18,7 +18,6 @@
 import {DynamicScheme} from '../dynamiccolor/dynamic_scheme.js';
 import {Variant} from '../dynamiccolor/variant.js';
 import {Hct} from '../hct/hct.js';
-import {TonalPalette} from '../palettes/tonal_palette.js';
 
 /** A Dynamic Color theme that is grayscale. */
 export class SchemeMonochrome extends DynamicScheme {
