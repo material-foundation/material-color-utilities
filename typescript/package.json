@@ -1,6 +1,6 @@
 {
-  "name": "@material/material-color-utilities",
-  "version": "0.3.1",
+  "name": "@poupe/material-color-utilities",
+  "version": "0.3.2",
   "publishConfig": {
     "access": "public"
   },
@@ -15,7 +15,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/material-foundation/material-color-utilities.git",
+    "url": "https://github.com/poupe-ui/material-color-utilities.git",
     "directory": "typescript"
   },
   "author": "Material Eng",
