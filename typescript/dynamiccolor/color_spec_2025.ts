@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-import {Contrast} from '../contrast/contrast.js';
 import {Hct} from '../hct/hct.js';
 import {TonalPalette} from '../palettes/tonal_palette.js';
 import * as math from '../utils/math_utils.js';

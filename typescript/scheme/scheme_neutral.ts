@@ -19,7 +19,6 @@ import {SpecVersion} from '../dynamiccolor/color_spec.js';
 import {DynamicScheme, Platform} from '../dynamiccolor/dynamic_scheme';
 import {Variant} from '../dynamiccolor/variant.js';
 import {Hct} from '../hct/hct.js';
-import {TonalPalette} from '../palettes/tonal_palette.js';
 
 /** A Dynamic Color theme that is near grayscale. */
 export class SchemeNeutral extends DynamicScheme {

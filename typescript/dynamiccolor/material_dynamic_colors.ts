@@ -15,17 +15,9 @@
  * limitations under the License.
  */
 
-import {DislikeAnalyzer} from '../dislike/dislike_analyzer.js';
-import {Hct} from '../hct/hct.js';
-import {TonalPalette} from '../palettes/tonal_palette.js';
-import * as math from '../utils/math_utils.js';
-
 import {ColorSpecDelegateImpl2025} from './color_spec_2025.js';
-import {ContrastCurve} from './contrast_curve.js';
 import {DynamicColor} from './dynamic_color.js';
 import type {DynamicScheme} from './dynamic_scheme';
-import {ToneDeltaPair} from './tone_delta_pair.js';
-import {Variant} from './variant.js';
 
 /**
  * DynamicColors for the colors in the Material Design system.
