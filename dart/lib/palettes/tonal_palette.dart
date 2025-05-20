@@ -13,7 +13,8 @@
 // limitations under the License.
 
 import 'package:collection/collection.dart' show ListEquality;
-import 'package:material_color_utilities/hct/hct.dart';
+
+import '../hct/hct.dart';
 
 /// A convenience class for retrieving colors that are constant in hue and
 /// chroma, but vary in tone.
@@ -116,7 +117,7 @@ class TonalPalette {
   /// Returns a fixed-size list of ARGB color ints for common tone values.
   ///
   /// Inverse of [fromList].
-  List<int> get asList => commonTones.map((int tone) => get(tone)).toList();
+  List<int> get asList => commonTones.map(get).toList();
 
   /// Returns the ARGB representation of an HCT color at the given [tone].
   ///
@@ -158,7 +159,7 @@ class TonalPalette {
         // Both created with .of or .fromHct
         return hue == other.hue && chroma == other.chroma;
       } else {
-        return ListEquality().equals(asList, other.asList);
+        return const ListEquality<int>().equals(asList, other.asList);
       }
     }
     return false;
@@ -195,7 +196,7 @@ class KeyColor {
 
   KeyColor(this.hue, this.requestedChroma);
 
-  /// Creates a key color from a [hue] and a [chroma].
+  /// Creates a key color from a [hue] and a [requestedChroma].
   /// The key color is the first tone, starting from T50, matching the given hue
   /// and chroma.
   ///
@@ -203,21 +204,20 @@ class KeyColor {
   Hct create() {
     // Pivot around T50 because T50 has the most chroma available, on
     // average. Thus it is most likely to have a direct answer.
-    const int pivotTone = 50;
-    const int toneStepSize = 1;
+    const pivotTone = 50;
+    const toneStepSize = 1;
     // Epsilon to accept values slightly higher than the requested chroma.
-    const double epsilon = 0.01;
+    const epsilon = 0.01;
 
     // Binary search to find the tone that can provide a chroma that is closest
     // to the requested chroma.
-    int lowerTone = 0;
-    int upperTone = 100;
+    var lowerTone = 0;
+    var upperTone = 100;
     while (lowerTone < upperTone) {
-      final int midTone = (lowerTone + upperTone) ~/ 2;
-      final bool isAscending =
+      final midTone = (lowerTone + upperTone) ~/ 2;
+      final isAscending =
           _maxChroma(midTone) < _maxChroma(midTone + toneStepSize);
-      final bool sufficientChroma =
-          _maxChroma(midTone) >= requestedChroma - epsilon;
+      final sufficientChroma = _maxChroma(midTone) >= requestedChroma - epsilon;
 
       if (sufficientChroma) {
         // Either range [lowerTone, midTone] or [midTone, upperTone] has

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:material_color_utilities/utils/math_utils.dart';
+import '../../utils/math_utils.dart';
 
 /// A class containing a value that changes with the contrast level.
 ///

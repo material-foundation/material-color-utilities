@@ -14,8 +14,8 @@
 
 import 'dart:math' as math;
 
-import 'package:material_color_utilities/utils/color_utils.dart';
-import 'package:material_color_utilities/utils/math_utils.dart';
+import '../utils/color_utils.dart';
+import '../utils/math_utils.dart';
 
 /// In traditional color spaces, a color can be identified solely by the
 /// observer's measurement of the color. Color appearance models such as CAM16
@@ -101,8 +101,8 @@ class ViewingConditions {
     final f = 0.8 + (surround / 10.0);
     // "Exponential non-linearity"
     final c = (f >= 0.9)
-        ? MathUtils.lerp(0.59, 0.69, ((f - 0.9) * 10.0))
-        : MathUtils.lerp(0.525, 0.59, ((f - 0.8) * 10.0));
+        ? MathUtils.lerp(0.59, 0.69, (f - 0.9) * 10.0)
+        : MathUtils.lerp(0.525, 0.59, (f - 0.8) * 10.0);
     // Calculate degree of adaptation to illuminant
     var d = discountingIlluminant
         ? 1.0

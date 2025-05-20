@@ -16,10 +16,10 @@
 
 import 'dart:math';
 
-import 'package:material_color_utilities/hct/cam16.dart';
-import 'package:material_color_utilities/hct/viewing_conditions.dart';
-import 'package:material_color_utilities/utils/color_utils.dart';
-import 'package:material_color_utilities/utils/math_utils.dart';
+import '../../utils/color_utils.dart';
+import '../../utils/math_utils.dart';
+import '../cam16.dart';
+import '../viewing_conditions.dart';
 
 /// A class that solves the HCT equation.
 class HctSolver {
@@ -422,7 +422,7 @@ class HctSolver {
     final kG = _yFromLinrgb[1];
     final kB = _yFromLinrgb[2];
     final coordA = n % 4 <= 1 ? 0.0 : 100.0;
-    final coordB = n % 2 == 0 ? 0.0 : 100.0;
+    final coordB = n.isEven ? 0.0 : 100.0;
     if (n < 4) {
       final g = coordA;
       final b = coordB;
@@ -455,7 +455,7 @@ class HctSolver {
 
   /// Finds the segment containing the desired color.
   ///
-  /// Given a plane Y = [y] and a desired [target_hue], returns the
+  /// Given a plane Y = [y] and a desired [targetHue], returns the
   /// segment containing the desired color, represented as an array of
   /// its two endpoints.
   static List<List<double>> _bisectToSegment(double y, double targetHue) {

@@ -30,7 +30,7 @@ void main() {
   test('input length mismatch asserts', () {
     expect(() {
       DynamicScheme.getRotatedHue(Hct.from(43, 16, 16), [0, 1], [0]);
-    }, throwsA(TypeMatcher<AssertionError>()));
+    }, throwsA(const TypeMatcher<AssertionError>()));
   });
 
   test('on boundary rotation correct', () {

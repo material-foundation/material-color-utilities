@@ -15,9 +15,8 @@
 import 'dart:core';
 import 'dart:math' as math;
 
-import 'package:material_color_utilities/utils/color_utils.dart';
-import 'package:material_color_utilities/utils/math_utils.dart';
-
+import '../utils/color_utils.dart';
+import '../utils/math_utils.dart';
 import 'viewing_conditions.dart';
 
 /// CAM16, a color appearance model. Colors are not just defined by their hex
@@ -206,7 +205,7 @@ class Cam16 {
     return fromJchInViewingConditions(j, c, h, ViewingConditions.sRgb);
   }
 
-  /// Create a CAM16 color from lightness [j], chroma [c], and hue [h],
+  /// Create a CAM16 color from lightness [j], chroma [C], and hue [h],
   /// in [viewingConditions].
   static Cam16 fromJchInViewingConditions(
       double J, double C, double h, ViewingConditions viewingConditions) {
@@ -290,7 +289,7 @@ class Cam16 {
     final p1 =
         eHue * (50000.0 / 13.0) * viewingConditions.nC * viewingConditions.ncb;
 
-    final p2 = (ac / viewingConditions.nbb);
+    final p2 = ac / viewingConditions.nbb;
 
     final hSin = math.sin(hRad);
     final hCos = math.cos(hRad);

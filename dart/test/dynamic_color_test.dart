@@ -38,8 +38,6 @@ class _Pair {
   _Pair(this.fgName, this.bgName);
 }
 
-final red = Hct.fromInt(0xFFFF0000);
-
 final _colors = <String, DynamicColor>{
   'background': MaterialDynamicColors.background,
   'on_background': MaterialDynamicColors.onBackground,

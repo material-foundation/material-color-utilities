@@ -18,8 +18,7 @@
 // languages. Including variable types, though sometimes unnecessary, is a
 // powerful help to verification and avoiding hard-to-debug issues.
 
-import 'package:material_color_utilities/utils/color_utils.dart';
-
+import '../utils/color_utils.dart';
 import 'quantizer.dart';
 import 'quantizer_map.dart';
 
@@ -77,11 +76,10 @@ class QuantizerWu implements Quantizer {
       final iB = (blue >> bitsToRemove) + 1;
       final index = getIndex(iR, iG, iB);
       weights[index] += count;
-      momentsR[index] += (red * count);
-      momentsG[index] += (green * count);
-      momentsB[index] += (blue * count);
-      moments[index] +=
-          (count * ((red * red) + (green * green) + (blue * blue)));
+      momentsR[index] += red * count;
+      momentsG[index] += green * count;
+      momentsB[index] += blue * count;
+      moments[index] += count * ((red * red) + (green * green) + (blue * blue));
     }
   }
 
@@ -189,7 +187,7 @@ class QuantizerWu implements Quantizer {
         moments[getIndex(cube.r0, cube.g0, cube.b1)] -
         moments[getIndex(cube.r0, cube.g0, cube.b0)];
 
-    final hypotenuse = (dr * dr + dg * dg + db * db);
+    final hypotenuse = dr * dr + dg * dg + db * db;
     final volume_ = volume(cube, weights);
     return xx - hypotenuse / volume_;
   }
@@ -245,8 +243,6 @@ class QuantizerWu implements Quantizer {
         two.g0 = one.g0;
         two.b0 = one.b1;
         break;
-      default:
-        throw 'unexpected direction $cutDirection';
     }
 
     one.vol = (one.r1 - one.r0) * (one.g1 - one.g0) * (one.b1 - one.b0);
@@ -289,7 +285,7 @@ class QuantizerWu implements Quantizer {
       tempNumerator =
           ((halfR * halfR) + (halfG * halfG) + (halfB * halfB)).toDouble();
       tempDenominator = halfW.toDouble();
-      temp += (tempNumerator / tempDenominator);
+      temp += tempNumerator / tempDenominator;
 
       if (temp > max) {
         max = temp;
@@ -300,14 +296,14 @@ class QuantizerWu implements Quantizer {
   }
 
   static int volume(Box cube, List<int> moment) {
-    return (moment[getIndex(cube.r1, cube.g1, cube.b1)] -
+    return moment[getIndex(cube.r1, cube.g1, cube.b1)] -
         moment[getIndex(cube.r1, cube.g1, cube.b0)] -
         moment[getIndex(cube.r1, cube.g0, cube.b1)] +
         moment[getIndex(cube.r1, cube.g0, cube.b0)] -
         moment[getIndex(cube.r0, cube.g1, cube.b1)] +
         moment[getIndex(cube.r0, cube.g1, cube.b0)] +
         moment[getIndex(cube.r0, cube.g0, cube.b1)] -
-        moment[getIndex(cube.r0, cube.g0, cube.b0)]);
+        moment[getIndex(cube.r0, cube.g0, cube.b0)];
   }
 
   static int bottom(Box cube, Direction direction, List<int> moment) {
@@ -327,8 +323,6 @@ class QuantizerWu implements Quantizer {
             moment[getIndex(cube.r1, cube.g0, cube.b0)] +
             moment[getIndex(cube.r0, cube.g1, cube.b0)] -
             moment[getIndex(cube.r0, cube.g0, cube.b0)];
-      default:
-        throw 'unexpected direction $direction';
     }
   }
 
@@ -336,22 +330,20 @@ class QuantizerWu implements Quantizer {
       Box cube, Direction direction, int position, List<int> moment) {
     switch (direction) {
       case Direction.red:
-        return (moment[getIndex(position, cube.g1, cube.b1)] -
+        return moment[getIndex(position, cube.g1, cube.b1)] -
             moment[getIndex(position, cube.g1, cube.b0)] -
             moment[getIndex(position, cube.g0, cube.b1)] +
-            moment[getIndex(position, cube.g0, cube.b0)]);
+            moment[getIndex(position, cube.g0, cube.b0)];
       case Direction.green:
-        return (moment[getIndex(cube.r1, position, cube.b1)] -
+        return moment[getIndex(cube.r1, position, cube.b1)] -
             moment[getIndex(cube.r1, position, cube.b0)] -
             moment[getIndex(cube.r0, position, cube.b1)] +
-            moment[getIndex(cube.r0, position, cube.b0)]);
+            moment[getIndex(cube.r0, position, cube.b0)];
       case Direction.blue:
-        return (moment[getIndex(cube.r1, cube.g1, position)] -
+        return moment[getIndex(cube.r1, cube.g1, position)] -
             moment[getIndex(cube.r1, cube.g0, position)] -
             moment[getIndex(cube.r0, cube.g1, position)] +
-            moment[getIndex(cube.r0, cube.g0, position)]);
-      default:
-        throw 'unexpected direction $direction';
+            moment[getIndex(cube.r0, cube.g0, position)];
     }
   }
 }

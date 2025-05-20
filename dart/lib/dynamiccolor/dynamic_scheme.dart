@@ -11,9 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import 'package:material_color_utilities/hct/hct.dart';
-import 'package:material_color_utilities/palettes/tonal_palette.dart';
-import 'package:material_color_utilities/utils/math_utils.dart';
+import '../hct/hct.dart';
+import '../palettes/tonal_palette.dart';
+import '../utils/math_utils.dart';
 
 import 'dynamic_color.dart';
 import 'material_dynamic_colors.dart';

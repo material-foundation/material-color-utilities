@@ -14,8 +14,8 @@
 
 import 'dart:math' as math;
 
-import 'package:material_color_utilities/hct/cam16.dart';
-import 'package:material_color_utilities/palettes/tonal_palette.dart';
+import '../hct/cam16.dart';
+import 'tonal_palette.dart';
 
 /// An intermediate concept between the key color for a UI theme, and a full
 /// color scheme. 5 tonal palettes are generated, all except one use the same

@@ -13,12 +13,13 @@
 // limitations under the License.
 import 'dart:math' as math;
 
-import 'package:material_color_utilities/dislike/dislike_analyzer.dart';
-import 'package:material_color_utilities/dynamiccolor/dynamic_scheme.dart';
-import 'package:material_color_utilities/dynamiccolor/variant.dart';
-import 'package:material_color_utilities/hct/hct.dart';
-import 'package:material_color_utilities/palettes/tonal_palette.dart';
-import 'package:material_color_utilities/temperature/temperature_cache.dart';
+import '../dislike/dislike_analyzer.dart';
+import '../dynamiccolor/dynamic_scheme.dart';
+import '../dynamiccolor/variant.dart';
+import '../material_color_utilities.dart' show Scheme;
+import '../palettes/tonal_palette.dart';
+import '../temperature/temperature_cache.dart';
+import 'scheme.dart' show Scheme;
 
 /// A scheme that places the source color in [Scheme.primaryContainer].
 ///
@@ -30,11 +31,10 @@ import 'package:material_color_utilities/temperature/temperature_cache.dart';
 /// [TemperatureCache]. It also maintains constant appearance.
 class SchemeFidelity extends DynamicScheme {
   SchemeFidelity({
-    required Hct sourceColorHct,
+    required super.sourceColorHct,
     required super.isDark,
     required super.contrastLevel,
   }) : super(
-          sourceColorHct: sourceColorHct,
           variant: Variant.fidelity,
           primaryPalette: TonalPalette.of(
             sourceColorHct.hue,

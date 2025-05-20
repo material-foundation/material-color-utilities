@@ -35,10 +35,10 @@ double _rotationDirection(double from, double to) {
 
 void main() {
   test('rotationDirection behaves correctly', () {
-    for (double from = 0.0; from < 360.0; from += 15.0) {
-      for (double to = 7.5; to < 360.0; to += 15.0) {
-        double expectedAnswer = _rotationDirection(from, to);
-        double actualAnswer = MathUtils.rotationDirection(from, to);
+    for (var from = 0.0; from < 360.0; from += 15.0) {
+      for (var to = 7.5; to < 360.0; to += 15.0) {
+        var expectedAnswer = _rotationDirection(from, to);
+        var actualAnswer = MathUtils.rotationDirection(from, to);
         expect(
           actualAnswer,
           expectedAnswer,

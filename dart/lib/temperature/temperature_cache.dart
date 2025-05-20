@@ -14,9 +14,9 @@
 
 import 'dart:math' as math;
 
-import 'package:material_color_utilities/hct/hct.dart';
-import 'package:material_color_utilities/utils/color_utils.dart';
-import 'package:material_color_utilities/utils/math_utils.dart';
+import '../hct/hct.dart';
+import '../utils/color_utils.dart';
+import '../utils/math_utils.dart';
 
 /// Design utilities using color temperature theory.
 ///
@@ -52,10 +52,10 @@ class TemperatureCache {
     final startHue = input.hue.round();
     final startHct = hctsByHue[startHue];
     var lastTemp = relativeTemperature(startHct);
-    List<Hct> allColors = [startHct];
+    var allColors = <Hct>[startHct];
 
     var absoluteTotalTempDelta = 0.0;
-    for (int i = 0; i < 360; i++) {
+    for (var i = 0; i < 360; i++) {
       final hue = MathUtils.sanitizeDegreesInt(startHue + i);
       final hct = hctsByHue[hue];
       final temp = relativeTemperature(hct);
@@ -88,7 +88,7 @@ class TemperatureCache {
       while (indexSatisfied && allColors.length < divisions) {
         allColors.add(hct);
         final desiredTotalTempDeltaForIndex =
-            ((allColors.length + indexAddend) * tempStep);
+            (allColors.length + indexAddend) * tempStep;
         indexSatisfied = totalTempDelta >= desiredTotalTempDeltaForIndex;
         indexAddend++;
       }
@@ -106,7 +106,7 @@ class TemperatureCache {
 
     // First, generate analogues from rotating counter-clockwise.
     final increaseHueCount = ((count - 1) / 2.0).floor();
-    for (int i = 1; i < (increaseHueCount + 1); i++) {
+    for (var i = 1; i < (increaseHueCount + 1); i++) {
       var index = 0 - i;
       while (index < 0) {
         index = allColors.length + index;
@@ -119,7 +119,7 @@ class TemperatureCache {
 
     // Second, generate analogues from rotating clockwise.
     final decreaseHueCount = count - increaseHueCount - 1;
-    for (int i = 1; i < (decreaseHueCount + 1); i++) {
+    for (var i = 1; i < (decreaseHueCount + 1); i++) {
       var index = i;
       while (index < 0) {
         index = allColors.length + index;

@@ -38,6 +38,7 @@ class _ContrastConstraint extends _Constraint {
   final ContrastCurve contrastCurve;
   static const _contrastTolerance = 0.05;
 
+  @override
   void testAgainst(DynamicScheme scheme) {
     final foregroundColor = foreground.getHct(scheme);
     final backgroundColor = background.getHct(scheme);
@@ -49,8 +50,8 @@ class _ContrastConstraint extends _Constraint {
       // A requirement of <= 4.5 must be met (with tolerance)
       if (actualContrast < desiredContrast - _contrastTolerance) {
         fail('Dynamic scheme $scheme fails contrast constraint:\n'
-            '${foreground.name} should have contrast at least ${desiredContrast} '
-            'against ${background.name}, but has ${actualContrast}\n\n'
+            '${foreground.name} should have contrast at least $desiredContrast '
+            'against ${background.name}, but has $actualContrast\n\n'
             'Foreground: ${foreground.name}\n'
             'Background: ${background.name}\n'
             'Scheme parameters:\n'
@@ -65,7 +66,7 @@ class _ContrastConstraint extends _Constraint {
       if (actualContrast < 4.5 - _contrastTolerance) {
         fail('Dynamic scheme $scheme fails contrast constraint:\n'
             '${foreground.name} should have contrast at least 4.5 '
-            'against ${background.name}, but has ${actualContrast}\n\n'
+            'against ${background.name}, but has $actualContrast\n\n'
             'Foreground: ${foreground.name}\n'
             'Background: ${background.name}\n'
             'Scheme parameters:\n'
@@ -79,8 +80,8 @@ class _ContrastConstraint extends _Constraint {
           foregroundColor.tone != 100.0 &&
           foregroundColor.tone != 0.0) {
         fail('Dynamic scheme $scheme fails contrast constraint:\n'
-            '${foreground.name} should have contrast at least ${desiredContrast} '
-            'against ${background.name}, but has ${actualContrast}, and no color '
+            '${foreground.name} should have contrast at least $desiredContrast '
+            'against ${background.name}, but has $actualContrast, and no color '
             'has a tone of 0 or 100\n\n'
             'Foreground: ${foreground.name}\n'
             'Background: ${background.name}\n'
@@ -105,6 +106,7 @@ class _DeltaConstraint extends _Constraint {
   final TonePolarity polarity;
   static const _deltaTolerance = 0.5;
 
+  @override
   void testAgainst(DynamicScheme scheme) {
     final roleAColor = roleA.getHct(scheme);
     final roleBColor = roleB.getHct(scheme);
@@ -137,6 +139,7 @@ class _BackgroundConstraint extends _Constraint {
   _BackgroundConstraint(this.background);
   final DynamicColor background;
 
+  @override
   void testAgainst(DynamicScheme scheme) {
     final color = background.getHct(scheme);
     if (color.tone >= 50.5 && color.tone < 59.5) {
@@ -383,7 +386,7 @@ void main() {
       for (final contrastLevel in [-1.0, 0.0, 0.5, 1.0]) {
         // For each variant-contrast combination, tests across four
         // seed colors as well as two brightnesses.
-        test('${variant.label}, ${contrastLevel}', () {
+        test('${variant.label}, $contrastLevel', () {
           for (final sourceColorArgb in [
             0xFF0000FF,
             0xFF00FF00,
@@ -391,7 +394,7 @@ void main() {
             0xFFFF0000
           ]) {
             for (final isDark in [false, true]) {
-              DynamicScheme s = schemeFromVariant(
+              var s = schemeFromVariant(
                 variant: variant,
                 sourceColorHct: Hct.fromInt(sourceColorArgb),
                 isDark: isDark,

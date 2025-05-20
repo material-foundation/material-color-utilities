@@ -16,7 +16,7 @@ import 'package:material_color_utilities/utils/color_utils.dart';
 import 'package:test/test.dart';
 
 List<double> _range(double start, double stop, int caseCount) {
-  double stepSize = (stop - start) / (caseCount - 1);
+  var stepSize = (stop - start) / (caseCount - 1);
   return List.generate(caseCount, (index) => start + stepSize * index);
 }
 

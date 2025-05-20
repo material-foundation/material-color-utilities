@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import 'package:material_color_utilities/palettes/tonal_palette.dart';
+import '../dynamiccolor/dynamic_scheme.dart' show DynamicScheme;
+import '../material_color_utilities.dart' show DynamicScheme;
+import 'tonal_palette.dart';
 
 /// Comprises foundational palettes to build a color scheme. Generated from a
 /// source color, these palettes will then be part of a [DynamicScheme] together
