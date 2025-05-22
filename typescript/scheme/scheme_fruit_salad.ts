@@ -15,27 +15,26 @@
  * limitations under the License.
  */
 
-import {DynamicScheme} from '../dynamiccolor/dynamic_scheme.js';
+import {SpecVersion} from '../dynamiccolor/color_spec.js';
+import {DynamicScheme, Platform} from '../dynamiccolor/dynamic_scheme';
 import {Variant} from '../dynamiccolor/variant.js';
 import {Hct} from '../hct/hct.js';
-import {TonalPalette} from '../palettes/tonal_palette.js';
-import * as math from '../utils/math_utils.js';
 
 /**
  * A playful theme - the source color's hue does not appear in the theme.
  */
 export class SchemeFruitSalad extends DynamicScheme {
-  private static readonly DEFAULT_SPEC_VERSION = '2021';
-  private static readonly DEFAULT_PLATFORM = 'phone';
-
-  constructor(sourceColorHct: Hct, isDark: boolean, contrastLevel: number) {
+  constructor(
+      sourceColorHct: Hct, isDark: boolean, contrastLevel: number,
+      specVersion: SpecVersion = DynamicScheme.DEFAULT_SPEC_VERSION,
+      platform: Platform = DynamicScheme.DEFAULT_PLATFORM) {
     super({
       sourceColorHct,
       variant: Variant.FRUIT_SALAD,
       contrastLevel,
       isDark,
-      platform: SchemeFruitSalad.DEFAULT_PLATFORM,
-      specVersion: SchemeFruitSalad.DEFAULT_SPEC_VERSION,
+      platform,
+      specVersion,
     });
   }
 }

@@ -19,21 +19,16 @@ import {SpecVersion} from '../dynamiccolor/color_spec.js';
 import {DynamicScheme, Platform} from '../dynamiccolor/dynamic_scheme';
 import {Variant} from '../dynamiccolor/variant.js';
 import {Hct} from '../hct/hct.js';
-import {TonalPalette} from '../palettes/tonal_palette.js';
-import * as math from '../utils/math_utils.js';
 
 /**
  * A Dynamic Color theme that maxes out colorfulness at each position in the
  * Primary Tonal Palette.
  */
 export class SchemeVibrant extends DynamicScheme {
-  private static readonly DEFAULT_SPEC_VERSION = '2021';
-  private static readonly DEFAULT_PLATFORM = 'phone';
-
   constructor(
       sourceColorHct: Hct, isDark: boolean, contrastLevel: number,
-      specVersion: SpecVersion = SchemeVibrant.DEFAULT_SPEC_VERSION,
-      platform: Platform = SchemeVibrant.DEFAULT_PLATFORM) {
+      specVersion: SpecVersion = DynamicScheme.DEFAULT_SPEC_VERSION,
+      platform: Platform = DynamicScheme.DEFAULT_PLATFORM) {
     super({
       sourceColorHct,
       variant: Variant.VIBRANT,

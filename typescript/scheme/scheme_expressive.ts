@@ -19,20 +19,15 @@ import {SpecVersion} from '../dynamiccolor/color_spec.js';
 import {DynamicScheme, Platform} from '../dynamiccolor/dynamic_scheme';
 import {Variant} from '../dynamiccolor/variant.js';
 import {Hct} from '../hct/hct.js';
-import {TonalPalette} from '../palettes/tonal_palette.js';
-import * as math from '../utils/math_utils.js';
 
 /**
  * A Dynamic Color theme that is intentionally detached from the source color.
  */
 export class SchemeExpressive extends DynamicScheme {
-  private static readonly DEFAULT_SPEC_VERSION = '2021';
-  private static readonly DEFAULT_PLATFORM = 'phone';
-
   constructor(
       sourceColorHct: Hct, isDark: boolean, contrastLevel: number,
-      specVersion: SpecVersion = SchemeExpressive.DEFAULT_SPEC_VERSION,
-      platform: Platform = SchemeExpressive.DEFAULT_PLATFORM) {
+      specVersion: SpecVersion = DynamicScheme.DEFAULT_SPEC_VERSION,
+      platform: Platform = DynamicScheme.DEFAULT_PLATFORM) {
     super({
       sourceColorHct,
       variant: Variant.EXPRESSIVE,
