@@ -12,15 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:material_color_utilities/dynamiccolor/dynamic_color.dart';
+import '../dynamic_color.dart';
 
 /// Describes the different in tone between colors.
-enum TonePolarity {
-  darker,
-  lighter,
-  nearer,
-  farther;
-}
+enum TonePolarity { darker, lighter, nearer, farther }
 
 /// Documents a constraint between two DynamicColors, in which their tones must
 /// have a certain distance from each other.

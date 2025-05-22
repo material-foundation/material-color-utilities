@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import 'package:material_color_utilities/palettes/tonal_palette.dart';
+import 'tonal_palette.dart';
 
 /// Comprises foundational palettes to build a color scheme. Generated from a
 /// source color, these palettes will then be part of a [DynamicScheme] together
@@ -25,6 +25,11 @@ class CorePalettes {
   final TonalPalette tertiary;
   final TonalPalette neutral;
   final TonalPalette neutralVariant;
-  CorePalettes(this.primary, this.secondary, this.tertiary, this.neutral,
-      this.neutralVariant);
+  CorePalettes(
+    this.primary,
+    this.secondary,
+    this.tertiary,
+    this.neutral,
+    this.neutralVariant,
+  );
 }

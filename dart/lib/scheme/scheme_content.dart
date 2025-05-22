@@ -11,14 +11,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+/// @docImport 'scheme.dart';
+library;
+
 import 'dart:math' as math;
 
-import 'package:material_color_utilities/dislike/dislike_analyzer.dart';
-import 'package:material_color_utilities/dynamiccolor/dynamic_scheme.dart';
-import 'package:material_color_utilities/dynamiccolor/variant.dart';
-import 'package:material_color_utilities/hct/hct.dart';
-import 'package:material_color_utilities/palettes/tonal_palette.dart';
-import 'package:material_color_utilities/temperature/temperature_cache.dart';
+import '../dislike/dislike_analyzer.dart';
+import '../dynamiccolor/dynamic_scheme.dart';
+import '../dynamiccolor/variant.dart';
+import '../palettes/tonal_palette.dart';
+import '../temperature/temperature_cache.dart';
 
 /// A scheme that places the source color in [Scheme.primaryContainer].
 ///
@@ -31,34 +34,33 @@ import 'package:material_color_utilities/temperature/temperature_cache.dart';
 /// increasing hue. It also maintains constant appearance.
 class SchemeContent extends DynamicScheme {
   SchemeContent({
-    required Hct sourceColorHct,
+    required super.sourceColorHct,
     required super.isDark,
     required super.contrastLevel,
   }) : super(
-          sourceColorHct: sourceColorHct,
-          variant: Variant.content,
-          primaryPalette: TonalPalette.of(
-            sourceColorHct.hue,
-            sourceColorHct.chroma,
-          ),
-          secondaryPalette: TonalPalette.of(
-            sourceColorHct.hue,
-            math.max(sourceColorHct.chroma - 32.0, sourceColorHct.chroma * 0.5),
-          ),
-          tertiaryPalette: TonalPalette.fromHct(
-            DislikeAnalyzer.fixIfDisliked(
-              TemperatureCache(sourceColorHct)
-                  .analogous(count: 3, divisions: 6)
-                  .last,
-            ),
-          ),
-          neutralPalette: TonalPalette.of(
-            sourceColorHct.hue,
-            sourceColorHct.chroma / 8.0,
-          ),
-          neutralVariantPalette: TonalPalette.of(
-            sourceColorHct.hue,
-            (sourceColorHct.chroma / 8.0) + 4.0,
-          ),
-        );
+         variant: Variant.content,
+         primaryPalette: TonalPalette.of(
+           sourceColorHct.hue,
+           sourceColorHct.chroma,
+         ),
+         secondaryPalette: TonalPalette.of(
+           sourceColorHct.hue,
+           math.max(sourceColorHct.chroma - 32.0, sourceColorHct.chroma * 0.5),
+         ),
+         tertiaryPalette: TonalPalette.fromHct(
+           DislikeAnalyzer.fixIfDisliked(
+             TemperatureCache(
+               sourceColorHct,
+             ).analogous(count: 3, divisions: 6).last,
+           ),
+         ),
+         neutralPalette: TonalPalette.of(
+           sourceColorHct.hue,
+           sourceColorHct.chroma / 8.0,
+         ),
+         neutralVariantPalette: TonalPalette.of(
+           sourceColorHct.hue,
+           (sourceColorHct.chroma / 8.0) + 4.0,
+         ),
+       );
 }

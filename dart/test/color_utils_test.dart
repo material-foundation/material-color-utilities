@@ -16,7 +16,7 @@ import 'package:material_color_utilities/utils/color_utils.dart';
 import 'package:test/test.dart';
 
 List<double> _range(double start, double stop, int caseCount) {
-  double stepSize = (stop - start) / (caseCount - 1);
+  var stepSize = (stop - start) / (caseCount - 1);
   return List.generate(caseCount, (index) => start + stepSize * index);
 }
 
@@ -52,10 +52,7 @@ void main() {
 
   test('y_to_lstar_to_y', () {
     for (final y in _range(0, 100, 1001)) {
-      expect(
-        ColorUtils.yFromLstar(ColorUtils.lstarFromY(y)),
-        closeTo(y, 1e-5),
-      );
+      expect(ColorUtils.yFromLstar(ColorUtils.lstarFromY(y)), closeTo(y, 1e-5));
     }
   });
 
@@ -206,8 +203,9 @@ void main() {
 
   test('linearize_delinearize', () {
     for (final rgbComponent in fullRgbRange) {
-      final converted =
-          ColorUtils.delinearized(ColorUtils.linearized(rgbComponent));
+      final converted = ColorUtils.delinearized(
+        ColorUtils.linearized(rgbComponent),
+      );
       expect(converted, rgbComponent);
     }
   });

@@ -20,7 +20,7 @@ import './utils/color_matcher.dart';
 void main() {
   // Estimated test time: 3 ~ 4 minutes.
   test('hct_preserves_original_color', () {
-    for (int argb = 0xFF000000; argb <= 0xFFFFFFFF; argb++) {
+    for (var argb = 0xFF000000; argb <= 0xFFFFFFFF; argb++) {
       final hct = Hct.fromInt(argb);
       final reconstructedArgb = Hct.from(hct.hue, hct.chroma, hct.tone).toInt();
 

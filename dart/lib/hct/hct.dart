@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:material_color_utilities/utils/color_utils.dart';
-
+import '../utils/color_utils.dart';
 import 'cam16.dart';
 import 'src/hct_solver.dart';
 import 'viewing_conditions.dart';
@@ -38,11 +37,11 @@ class Hct {
   }
 
   @override
-  bool operator ==(o) {
-    if (o is! Hct) {
+  bool operator ==(Object other) {
+    if (other is! Hct) {
       return false;
     }
-    return o._argb == _argb;
+    return other._argb == _argb;
   }
 
   @override

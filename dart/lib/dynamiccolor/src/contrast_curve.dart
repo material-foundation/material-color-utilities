@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:material_color_utilities/utils/math_utils.dart';
+import '../../utils/math_utils.dart';
 
 /// A class containing a value that changes with the contrast level.
 ///
@@ -31,12 +31,7 @@ class ContrastCurve {
   /// [normal] Value for contrast level 0.0
   /// [medium] Value for contrast level 0.5
   /// [high] Value for contrast level 1.0
-  ContrastCurve(
-    this.low,
-    this.normal,
-    this.medium,
-    this.high,
-  );
+  ContrastCurve(this.low, this.normal, this.medium, this.high);
 
   /// Returns the value at a given contrast level.
   ///

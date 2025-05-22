@@ -14,8 +14,8 @@
 
 import 'dart:math' as math;
 
-import 'package:material_color_utilities/utils/color_utils.dart';
-import 'package:material_color_utilities/utils/math_utils.dart';
+import '../utils/color_utils.dart';
+import '../utils/math_utils.dart';
 
 /// In traditional color spaces, a color can be identified solely by the
 /// observer's measurement of the color. Color appearance models such as CAM16
@@ -50,23 +50,24 @@ class ViewingConditions {
   final double fLRoot;
   final double z;
 
-  const ViewingConditions(
-      {required this.whitePoint,
-      required this.adaptingLuminance,
-      required this.backgroundLstar,
-      required this.surround,
-      required this.discountingIlluminant,
-      required this.backgroundYTowhitePointY,
-      required this.aw,
-      required this.nbb,
-      required this.ncb,
-      required this.c,
-      required this.nC,
-      required this.drgbInverse,
-      required this.rgbD,
-      required this.fl,
-      required this.fLRoot,
-      required this.z});
+  const ViewingConditions({
+    required this.whitePoint,
+    required this.adaptingLuminance,
+    required this.backgroundLstar,
+    required this.surround,
+    required this.discountingIlluminant,
+    required this.backgroundYTowhitePointY,
+    required this.aw,
+    required this.nbb,
+    required this.ncb,
+    required this.c,
+    required this.nC,
+    required this.drgbInverse,
+    required this.rgbD,
+    required this.fl,
+    required this.fLRoot,
+    required this.z,
+  });
 
   /// Convenience constructor for [ViewingConditions].
   ///
@@ -76,17 +77,19 @@ class ViewingConditions {
   /// [backgroundLstar]: average luminance of 10 degrees around color.
   /// [surround]: brightness of the entire environment.
   /// [discountingIlluminant]: whether eyes have adjusted to lighting.
-  factory ViewingConditions.make(
-      {List<double>? whitePoint,
-      double adaptingLuminance = -1.0,
-      double backgroundLstar = 50.0,
-      double surround = 2.0,
-      bool discountingIlluminant = false}) {
+  factory ViewingConditions.make({
+    List<double>? whitePoint,
+    double adaptingLuminance = -1.0,
+    double backgroundLstar = 50.0,
+    double surround = 2.0,
+    bool discountingIlluminant = false,
+  }) {
     whitePoint ??= ColorUtils.whitePointD65();
 
-    adaptingLuminance = (adaptingLuminance > 0.0)
-        ? adaptingLuminance
-        : (200.0 / math.pi * ColorUtils.yFromLstar(50.0) / 100.0);
+    adaptingLuminance =
+        (adaptingLuminance > 0.0)
+            ? adaptingLuminance
+            : (200.0 / math.pi * ColorUtils.yFromLstar(50.0) / 100.0);
     // A background of pure black is non-physical and leads to infinities that
     // represent the idea that any color viewed in pure black can't be seen.
     backgroundLstar = math.max(0.1, backgroundLstar);
@@ -100,19 +103,23 @@ class ViewingConditions {
     assert(surround >= 0.0 && surround <= 2.0);
     final f = 0.8 + (surround / 10.0);
     // "Exponential non-linearity"
-    final c = (f >= 0.9)
-        ? MathUtils.lerp(0.59, 0.69, ((f - 0.9) * 10.0))
-        : MathUtils.lerp(0.525, 0.59, ((f - 0.8) * 10.0));
+    final c =
+        (f >= 0.9)
+            ? MathUtils.lerp(0.59, 0.69, (f - 0.9) * 10.0)
+            : MathUtils.lerp(0.525, 0.59, (f - 0.8) * 10.0);
     // Calculate degree of adaptation to illuminant
-    var d = discountingIlluminant
-        ? 1.0
-        : f *
-            (1.0 -
-                ((1.0 / 3.6) * math.exp((-adaptingLuminance - 42.0) / 92.0)));
+    var d =
+        discountingIlluminant
+            ? 1.0
+            : f *
+                (1.0 -
+                    ((1.0 / 3.6) *
+                        math.exp((-adaptingLuminance - 42.0) / 92.0)));
     // Per Li et al, if D is greater than 1 or less than 0, set it to 1 or 0.
-    d = (d > 1.0)
-        ? 1.0
-        : (d < 0.0)
+    d =
+        (d > 1.0)
+            ? 1.0
+            : (d < 0.0)
             ? 0.0
             : d;
     // chromatic induction factor
@@ -140,7 +147,8 @@ class ViewingConditions {
     final k4F = 1.0 - k4;
 
     // Luminance-level adaptation factor
-    final fl = (k4 * adaptingLuminance) +
+    final fl =
+        (k4 * adaptingLuminance) +
         (0.1 * k4F * k4F * math.pow(5.0 * adaptingLuminance, 1.0 / 3.0));
     // Intermediate factor, ratio of background relative luminance to white relative luminance
     final n = ColorUtils.yFromLstar(backgroundLstar) / whitePoint[1];
@@ -158,7 +166,7 @@ class ViewingConditions {
     final rgbAFactors = [
       math.pow(fl * rgbD[0] * rW / 100.0, 0.42),
       math.pow(fl * rgbD[1] * gW / 100.0, 0.42),
-      math.pow(fl * rgbD[2] * bW / 100.0, 0.42)
+      math.pow(fl * rgbD[2] * bW / 100.0, 0.42),
     ];
 
     final rgbA = [

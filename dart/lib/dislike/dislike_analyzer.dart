@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:material_color_utilities/hct/hct.dart';
+import '../hct/hct.dart';
 
 /// Check and/or fix universally disliked colors.
 ///
@@ -37,11 +37,7 @@ class DislikeAnalyzer {
   /// If [hct] is disliked, lighten it to make it likable.
   static Hct fixIfDisliked(Hct hct) {
     if (isDisliked(hct)) {
-      return Hct.from(
-        hct.hue,
-        hct.chroma,
-        70.0,
-      );
+      return Hct.from(hct.hue, hct.chroma, 70.0);
     }
 
     return hct;
