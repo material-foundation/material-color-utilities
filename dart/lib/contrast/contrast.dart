@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:material_color_utilities/utils/color_utils.dart';
-import 'package:material_color_utilities/utils/math_utils.dart';
+import '../utils/color_utils.dart';
+import '../utils/math_utils.dart';
 
 /// Utility methods for calculating contrast given two colors, or calculating a
 /// color given one color and a contrast ratio.
@@ -33,7 +33,9 @@ class Contrast {
     toneA = MathUtils.clampDouble(0.0, 100.0, toneA);
     toneB = MathUtils.clampDouble(0.0, 100.0, toneB);
     return _ratioOfYs(
-        ColorUtils.yFromLstar(toneA), ColorUtils.yFromLstar(toneB));
+      ColorUtils.yFromLstar(toneA),
+      ColorUtils.yFromLstar(toneB),
+    );
   }
 
   static double _ratioOfYs(double y1, double y2) {
@@ -116,7 +118,7 @@ class Contrast {
   /// [ratio] Desired contrast ratio of return value and tone parameter.
   /// Range is 1 to 21, invalid values have undefined behavior.
   static double lighterUnsafe({required double tone, required double ratio}) {
-    final lighterSafe = lighter(tone: (tone), ratio: ratio);
+    final lighterSafe = lighter(tone: tone, ratio: ratio);
     return (lighterSafe < 0.0) ? 100.0 : lighterSafe;
   }
 
@@ -133,7 +135,7 @@ class Contrast {
   /// [ratio] Desired contrast ratio of return value and tone parameter.
   /// Range is 1 to 21, invalid values have undefined behavior.
   static double darkerUnsafe({required double tone, required double ratio}) {
-    final darkerSafe = darker(tone: (tone), ratio: ratio);
+    final darkerSafe = darker(tone: tone, ratio: ratio);
     return (darkerSafe < 0.0) ? 0.0 : darkerSafe;
   }
 }

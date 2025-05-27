@@ -13,8 +13,9 @@
 // limitations under the License.
 
 import 'package:collection/collection.dart';
-import 'package:material_color_utilities/hct/hct.dart';
-import 'package:material_color_utilities/utils/math_utils.dart';
+
+import '../hct/hct.dart';
+import '../utils/math_utils.dart';
 
 class _ScoredHCT implements Comparable<_ScoredHCT> {
   Hct hct;
@@ -41,12 +42,12 @@ class _ScoredHCT implements Comparable<_ScoredHCT> {
 /// colors aren't muddied, while curating the high cluster count to a much
 ///  smaller number of appropriate choices.
 class Score {
-  static final _targetChroma = 48.0; // A1 Chroma
-  static final _weightProportion = 0.7;
-  static final _weightChromaAbove = 0.3;
-  static final _weightChromaBelow = 0.1;
-  static final _cutoffChroma = 5.0;
-  static final _cutoffExcitedProportion = 0.01;
+  static const _targetChroma = 48.0; // A1 Chroma
+  static const _weightProportion = 0.7;
+  static const _weightChromaAbove = 0.3;
+  static const _weightChromaBelow = 0.1;
+  static const _cutoffChroma = 5.0;
+  static const _cutoffExcitedProportion = 0.01;
 
   /// Given a map with keys of colors and values of how often the color appears,
   /// rank the colors based on suitability for being used for a UI theme.
@@ -63,10 +64,12 @@ class Score {
   /// a default fallback color will be provided, Google Blue. The default
   /// number of colors returned is 4, simply because thats the # of colors
   /// display in Android 12's wallpaper picker.
-  static List<int> score(Map<int, int> colorsToPopulation,
-      {int desired = 4,
-      int fallbackColorARGB = 0xff4285F4,
-      bool filter = true}) {
+  static List<int> score(
+    Map<int, int> colorsToPopulation, {
+    int desired = 4,
+    int fallbackColorARGB = 0xff4285F4,
+    bool filter = true,
+  }) {
     // Get the HCT color for each Argb value, while finding the per hue count and
     // total count.
     final colorsHct = <Hct>[];
@@ -119,15 +122,19 @@ class Score {
     // 90 degrees(maximum difference for 4 colors) then decreasing down to a
     // 15 degree minimum.
     final chosenColors = <Hct>[];
-    for (var differenceDegrees = 90;
-        differenceDegrees >= 15;
-        differenceDegrees--) {
+    for (
+      var differenceDegrees = 90;
+      differenceDegrees >= 15;
+      differenceDegrees--
+    ) {
       chosenColors.clear();
       for (final entry in scoredHcts) {
         final hct = entry.hct;
-        final duplicateHue = chosenColors.firstWhereOrNull((chosenHct) =>
-            MathUtils.differenceDegrees(hct.hue, chosenHct.hue) <
-            differenceDegrees);
+        final duplicateHue = chosenColors.firstWhereOrNull(
+          (chosenHct) =>
+              MathUtils.differenceDegrees(hct.hue, chosenHct.hue) <
+              differenceDegrees,
+        );
         if (duplicateHue == null) {
           chosenColors.add(hct);
         }

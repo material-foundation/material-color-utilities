@@ -31,60 +31,51 @@ DynamicScheme schemeFromVariant({
   required bool isDark,
   required double contrastLevel,
 }) {
-  switch (variant) {
-    case Variant.content:
-      return SchemeContent(
-        sourceColorHct: sourceColorHct,
-        isDark: isDark,
-        contrastLevel: contrastLevel,
-      );
-    case Variant.expressive:
-      return SchemeExpressive(
-        sourceColorHct: sourceColorHct,
-        isDark: isDark,
-        contrastLevel: contrastLevel,
-      );
-    case Variant.fidelity:
-      return SchemeFidelity(
-        sourceColorHct: sourceColorHct,
-        isDark: isDark,
-        contrastLevel: contrastLevel,
-      );
-    case Variant.fruitSalad:
-      return SchemeFruitSalad(
-        sourceColorHct: sourceColorHct,
-        isDark: isDark,
-        contrastLevel: contrastLevel,
-      );
-    case Variant.monochrome:
-      return SchemeMonochrome(
-        sourceColorHct: sourceColorHct,
-        isDark: isDark,
-        contrastLevel: contrastLevel,
-      );
-    case Variant.neutral:
-      return SchemeNeutral(
-        sourceColorHct: sourceColorHct,
-        isDark: isDark,
-        contrastLevel: contrastLevel,
-      );
-    case Variant.rainbow:
-      return SchemeRainbow(
-        sourceColorHct: sourceColorHct,
-        isDark: isDark,
-        contrastLevel: contrastLevel,
-      );
-    case Variant.tonalSpot:
-      return SchemeTonalSpot(
-        sourceColorHct: sourceColorHct,
-        isDark: isDark,
-        contrastLevel: contrastLevel,
-      );
-    case Variant.vibrant:
-      return SchemeVibrant(
-        sourceColorHct: sourceColorHct,
-        isDark: isDark,
-        contrastLevel: contrastLevel,
-      );
-  }
+  return switch (variant) {
+    Variant.content => SchemeContent(
+      sourceColorHct: sourceColorHct,
+      isDark: isDark,
+      contrastLevel: contrastLevel,
+    ),
+    Variant.expressive => SchemeExpressive(
+      sourceColorHct: sourceColorHct,
+      isDark: isDark,
+      contrastLevel: contrastLevel,
+    ),
+    Variant.fidelity => SchemeFidelity(
+      sourceColorHct: sourceColorHct,
+      isDark: isDark,
+      contrastLevel: contrastLevel,
+    ),
+    Variant.fruitSalad => SchemeFruitSalad(
+      sourceColorHct: sourceColorHct,
+      isDark: isDark,
+      contrastLevel: contrastLevel,
+    ),
+    Variant.monochrome => SchemeMonochrome(
+      sourceColorHct: sourceColorHct,
+      isDark: isDark,
+      contrastLevel: contrastLevel,
+    ),
+    Variant.neutral => SchemeNeutral(
+      sourceColorHct: sourceColorHct,
+      isDark: isDark,
+      contrastLevel: contrastLevel,
+    ),
+    Variant.rainbow => SchemeRainbow(
+      sourceColorHct: sourceColorHct,
+      isDark: isDark,
+      contrastLevel: contrastLevel,
+    ),
+    Variant.tonalSpot => SchemeTonalSpot(
+      sourceColorHct: sourceColorHct,
+      isDark: isDark,
+      contrastLevel: contrastLevel,
+    ),
+    Variant.vibrant => SchemeVibrant(
+      sourceColorHct: sourceColorHct,
+      isDark: isDark,
+      contrastLevel: contrastLevel,
+    ),
+  };
 }

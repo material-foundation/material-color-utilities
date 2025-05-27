@@ -25,13 +25,10 @@ import {Hct} from '../hct/hct.js';
  * Primary Tonal Palette.
  */
 export class SchemeVibrant extends DynamicScheme {
-  private static readonly DEFAULT_SPEC_VERSION = '2021';
-  private static readonly DEFAULT_PLATFORM = 'phone';
-
   constructor(
       sourceColorHct: Hct, isDark: boolean, contrastLevel: number,
-      specVersion: SpecVersion = SchemeVibrant.DEFAULT_SPEC_VERSION,
-      platform: Platform = SchemeVibrant.DEFAULT_PLATFORM) {
+      specVersion: SpecVersion = DynamicScheme.DEFAULT_SPEC_VERSION,
+      platform: Platform = DynamicScheme.DEFAULT_PLATFORM) {
     super({
       sourceColorHct,
       variant: Variant.VIBRANT,

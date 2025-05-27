@@ -14,9 +14,9 @@
 
 import 'dart:math' as math;
 
-import 'package:material_color_utilities/hct/hct.dart';
-import 'package:material_color_utilities/utils/color_utils.dart';
-import 'package:material_color_utilities/utils/math_utils.dart';
+import '../hct/hct.dart';
+import '../utils/color_utils.dart';
+import '../utils/math_utils.dart';
 
 /// Design utilities using color temperature theory.
 ///
@@ -52,10 +52,10 @@ class TemperatureCache {
     final startHue = input.hue.round();
     final startHct = hctsByHue[startHue];
     var lastTemp = relativeTemperature(startHct);
-    List<Hct> allColors = [startHct];
+    var allColors = <Hct>[startHct];
 
     var absoluteTotalTempDelta = 0.0;
-    for (int i = 0; i < 360; i++) {
+    for (var i = 0; i < 360; i++) {
       final hue = MathUtils.sanitizeDegreesInt(startHue + i);
       final hct = hctsByHue[hue];
       final temp = relativeTemperature(hct);
@@ -88,7 +88,7 @@ class TemperatureCache {
       while (indexSatisfied && allColors.length < divisions) {
         allColors.add(hct);
         final desiredTotalTempDeltaForIndex =
-            ((allColors.length + indexAddend) * tempStep);
+            (allColors.length + indexAddend) * tempStep;
         indexSatisfied = totalTempDelta >= desiredTotalTempDeltaForIndex;
         indexAddend++;
       }
@@ -106,7 +106,7 @@ class TemperatureCache {
 
     // First, generate analogues from rotating counter-clockwise.
     final increaseHueCount = ((count - 1) / 2.0).floor();
-    for (int i = 1; i < (increaseHueCount + 1); i++) {
+    for (var i = 1; i < (increaseHueCount + 1); i++) {
       var index = 0 - i;
       while (index < 0) {
         index = allColors.length + index;
@@ -119,7 +119,7 @@ class TemperatureCache {
 
     // Second, generate analogues from rotating clockwise.
     final decreaseHueCount = count - increaseHueCount - 1;
-    for (int i = 1; i < (decreaseHueCount + 1); i++) {
+    for (var i = 1; i < (decreaseHueCount + 1); i++) {
       var index = i;
       while (index < 0) {
         index = allColors.length + index;
@@ -149,8 +149,11 @@ class TemperatureCache {
     final warmestHue = warmest.hue;
     final warmestTemp = tempsByHct[warmest]!;
     final range = warmestTemp - coldestTemp;
-    final startHueIsColdestToWarmest =
-        isBetween(angle: input.hue, a: coldestHue, b: warmestHue);
+    final startHueIsColdestToWarmest = isBetween(
+      angle: input.hue,
+      a: coldestHue,
+      b: warmestHue,
+    );
     final startHue = startHueIsColdestToWarmest ? warmestHue : coldestHue;
     final endHue = startHueIsColdestToWarmest ? coldestHue : warmestHue;
     const directionOfRotation = 1.0;
@@ -162,7 +165,8 @@ class TemperatureCache {
     // of the input color. This is the complement.
     for (var hueAddend = 0.0; hueAddend <= 360.0; hueAddend += 1.0) {
       final hue = MathUtils.sanitizeDegreesDouble(
-          startHue + directionOfRotation * hueAddend);
+        startHue + directionOfRotation * hueAddend,
+      );
       if (!isBetween(angle: hue, a: startHue, b: endHue)) {
         continue;
       }
@@ -250,8 +254,11 @@ class TemperatureCache {
   }
 
   /// Determines if an angle is between two other angles, rotating clockwise.
-  static bool isBetween(
-      {required double angle, required double a, required double b}) {
+  static bool isBetween({
+    required double angle,
+    required double a,
+    required double b,
+  }) {
     if (a < b) {
       return a <= angle && angle <= b;
     }
@@ -278,9 +285,11 @@ class TemperatureCache {
   static double rawTemperature(Hct color) {
     final lab = ColorUtils.labFromArgb(color.toInt());
     final hue = MathUtils.sanitizeDegreesDouble(
-        math.atan2(lab[2], lab[1]) * 180.0 / math.pi);
+      math.atan2(lab[2], lab[1]) * 180.0 / math.pi,
+    );
     final chroma = math.sqrt((lab[1] * lab[1]) + (lab[2] * lab[2]));
-    final temperature = -0.5 +
+    final temperature =
+        -0.5 +
         0.02 *
             math.pow(chroma, 1.07) *
             math.cos(

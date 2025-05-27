@@ -15,9 +15,8 @@
 import 'dart:core';
 import 'dart:math' as math;
 
-import 'package:material_color_utilities/utils/color_utils.dart';
-import 'package:material_color_utilities/utils/math_utils.dart';
-
+import '../utils/color_utils.dart';
+import '../utils/math_utils.dart';
 import 'viewing_conditions.dart';
 
 /// CAM16, a color appearance model. Colors are not just defined by their hex
@@ -86,8 +85,17 @@ class Cam16 {
   /// Prefer using a static method that constructs from 3 of those dimensions.
   /// This constructor is intended for those methods to use to return all
   /// possible dimensions.
-  Cam16(this.hue, this.chroma, this.j, this.q, this.m, this.s, this.jstar,
-      this.astar, this.bstar);
+  Cam16(
+    this.hue,
+    this.chroma,
+    this.j,
+    this.q,
+    this.m,
+    this.s,
+    this.jstar,
+    this.astar,
+    this.bstar,
+  );
 
   /// CAM16 instances also have coordinates in the CAM16-UCS space, called J*,
   /// a*, b*, or jstar, astar, bstar in code. CAM16-UCS is included in the CAM16
@@ -109,7 +117,9 @@ class Cam16 {
 
   /// Given [viewingConditions], convert [argb] to CAM16.
   static Cam16 fromIntInViewingConditions(
-      int argb, ViewingConditions viewingConditions) {
+    int argb,
+    ViewingConditions viewingConditions,
+  ) {
     // Transform ARGB int to XYZ
     final xyz = ColorUtils.xyzFromArgb(argb);
     final x = xyz[0];
@@ -121,7 +131,11 @@ class Cam16 {
   /// Given color expressed in XYZ and viewed in [viewingConditions], convert to
   /// CAM16.
   static Cam16 fromXyzInViewingConditions(
-      double x, double y, double z, ViewingConditions viewingConditions) {
+    double x,
+    double y,
+    double z,
+    ViewingConditions viewingConditions,
+  ) {
     // Transform XYZ to 'cone'/'rgb' responses
 
     final rC = 0.401288 * x + 0.650173 * y - 0.051461 * z;
@@ -156,9 +170,10 @@ class Cam16 {
     // hue
     final atan2 = math.atan2(b, a);
     final atanDegrees = atan2 * 180.0 / math.pi;
-    final hue = atanDegrees < 0
-        ? atanDegrees + 360.0
-        : atanDegrees >= 360
+    final hue =
+        atanDegrees < 0
+            ? atanDegrees + 360.0
+            : atanDegrees >= 360
             ? atanDegrees - 360
             : atanDegrees;
     final hueRadians = hue * math.pi / 180.0;
@@ -168,10 +183,14 @@ class Cam16 {
     final ac = p2 * viewingConditions.nbb;
 
     // CAM16 lightness and brightness
-    final J = 100.0 *
-        math.pow(ac / viewingConditions.aw,
-            viewingConditions.c * viewingConditions.z);
-    final Q = (4.0 / viewingConditions.c) *
+    final J =
+        100.0 *
+        math.pow(
+          ac / viewingConditions.aw,
+          viewingConditions.c * viewingConditions.z,
+        );
+    final Q =
+        (4.0 / viewingConditions.c) *
         math.sqrt(J / 100.0) *
         (viewingConditions.aw + 4.0) *
         (viewingConditions.fLRoot);
@@ -182,14 +201,17 @@ class Cam16 {
     final p1 =
         50000.0 / 13.0 * eHue * viewingConditions.nC * viewingConditions.ncb;
     final t = p1 * math.sqrt(a * a + b * b) / (u + 0.305);
-    final alpha = math.pow(t, 0.9) *
+    final alpha =
+        math.pow(t, 0.9) *
         math.pow(
-            1.64 - math.pow(0.29, viewingConditions.backgroundYTowhitePointY),
-            0.73);
+          1.64 - math.pow(0.29, viewingConditions.backgroundYTowhitePointY),
+          0.73,
+        );
     // CAM16 chroma, colorfulness, chroma
     final C = alpha * math.sqrt(J / 100.0);
     final M = C * viewingConditions.fLRoot;
-    final s = 50.0 *
+    final s =
+        50.0 *
         math.sqrt((alpha * viewingConditions.c) / (viewingConditions.aw + 4.0));
 
     // CAM16-UCS components
@@ -206,17 +228,23 @@ class Cam16 {
     return fromJchInViewingConditions(j, c, h, ViewingConditions.sRgb);
   }
 
-  /// Create a CAM16 color from lightness [j], chroma [c], and hue [h],
+  /// Create a CAM16 color from lightness [j], chroma [C], and hue [h],
   /// in [viewingConditions].
   static Cam16 fromJchInViewingConditions(
-      double J, double C, double h, ViewingConditions viewingConditions) {
-    final Q = (4.0 / viewingConditions.c) *
+    double J,
+    double C,
+    double h,
+    ViewingConditions viewingConditions,
+  ) {
+    final Q =
+        (4.0 / viewingConditions.c) *
         math.sqrt(J / 100.0) *
         (viewingConditions.aw + 4.0) *
         (viewingConditions.fLRoot);
     final M = C * viewingConditions.fLRoot;
     final alpha = C / math.sqrt(J / 100.0);
-    final s = 50.0 *
+    final s =
+        50.0 *
         math.sqrt((alpha * viewingConditions.c) / (viewingConditions.aw + 4.0));
 
     final hueRadians = h * math.pi / 180.0;
@@ -231,13 +259,21 @@ class Cam16 {
   /// assuming the color was viewed in default viewing conditions.
   static Cam16 fromUcs(double jstar, double astar, double bstar) {
     return fromUcsInViewingConditions(
-        jstar, astar, bstar, ViewingConditions.standard);
+      jstar,
+      astar,
+      bstar,
+      ViewingConditions.standard,
+    );
   }
 
   /// Create a CAM16 color from CAM16-UCS coordinates [jstar], [astar], [bstar].
   /// in [viewingConditions].
-  static Cam16 fromUcsInViewingConditions(double jstar, double astar,
-      double bstar, ViewingConditions viewingConditions) {
+  static Cam16 fromUcsInViewingConditions(
+    double jstar,
+    double astar,
+    double bstar,
+    ViewingConditions viewingConditions,
+  ) {
     final a = astar;
     final b = bstar;
     final m = math.sqrt(a * a + b * b);
@@ -270,32 +306,37 @@ class Cam16 {
   }
 
   /// XYZ representation of CAM16 seen in [viewingConditions].
-  List<double> xyzInViewingConditions(ViewingConditions viewingConditions,
-      {List<double>? array}) {
+  List<double> xyzInViewingConditions(
+    ViewingConditions viewingConditions, {
+    List<double>? array,
+  }) {
     final alpha =
         (chroma == 0.0 || j == 0.0) ? 0.0 : chroma / math.sqrt(j / 100.0);
 
     final t = math.pow(
-        alpha /
-            math.pow(
-                1.64 -
-                    math.pow(0.29, viewingConditions.backgroundYTowhitePointY),
-                0.73),
-        1.0 / 0.9);
+      alpha /
+          math.pow(
+            1.64 - math.pow(0.29, viewingConditions.backgroundYTowhitePointY),
+            0.73,
+          ),
+      1.0 / 0.9,
+    );
     final hRad = hue * math.pi / 180.0;
 
     final eHue = 0.25 * (math.cos(hRad + 2.0) + 3.8);
-    final ac = viewingConditions.aw *
+    final ac =
+        viewingConditions.aw *
         math.pow(j / 100.0, 1.0 / viewingConditions.c / viewingConditions.z);
     final p1 =
         eHue * (50000.0 / 13.0) * viewingConditions.nC * viewingConditions.ncb;
 
-    final p2 = (ac / viewingConditions.nbb);
+    final p2 = ac / viewingConditions.nbb;
 
     final hSin = math.sin(hRad);
     final hCos = math.cos(hRad);
 
-    final gamma = 23.0 *
+    final gamma =
+        23.0 *
         (p2 + 0.305) *
         t /
         (23.0 * p1 + 11 * t * hCos + 108.0 * t * hSin);
@@ -306,15 +347,18 @@ class Cam16 {
     final bA = (460.0 * p2 - 220.0 * a - 6300.0 * b) / 1403.0;
 
     final rCBase = math.max(0, (27.13 * rA.abs()) / (400.0 - rA.abs()));
-    final rC = MathUtils.signum(rA) *
+    final rC =
+        MathUtils.signum(rA) *
         (100.0 / viewingConditions.fl) *
         math.pow(rCBase, 1.0 / 0.42);
     final gCBase = math.max(0, (27.13 * gA.abs()) / (400.0 - gA.abs()));
-    final gC = MathUtils.signum(gA) *
+    final gC =
+        MathUtils.signum(gA) *
         (100.0 / viewingConditions.fl) *
         math.pow(gCBase, 1.0 / 0.42);
     final bCBase = math.max(0, (27.13 * bA.abs()) / (400.0 - bA.abs()));
-    final bC = MathUtils.signum(bA) *
+    final bC =
+        MathUtils.signum(bA) *
         (100.0 / viewingConditions.fl) *
         math.pow(bCBase, 1.0 / 0.42);
     final rF = rC / viewingConditions.rgbD[0];

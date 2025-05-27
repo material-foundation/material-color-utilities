@@ -22,13 +22,10 @@ import {Hct} from '../hct/hct.js';
 
 /** A Dynamic Color theme that is near grayscale. */
 export class SchemeNeutral extends DynamicScheme {
-  private static readonly DEFAULT_SPEC_VERSION = '2021';
-  private static readonly DEFAULT_PLATFORM = 'phone';
-
   constructor(
       sourceColorHct: Hct, isDark: boolean, contrastLevel: number,
-      specVersion: SpecVersion = SchemeNeutral.DEFAULT_SPEC_VERSION,
-      platform: Platform = SchemeNeutral.DEFAULT_PLATFORM) {
+      specVersion: SpecVersion = DynamicScheme.DEFAULT_SPEC_VERSION,
+      platform: Platform = DynamicScheme.DEFAULT_PLATFORM) {
     super({
       sourceColorHct,
       variant: Variant.NEUTRAL,

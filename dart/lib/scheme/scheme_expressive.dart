@@ -11,21 +11,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import 'package:material_color_utilities/dynamiccolor/dynamic_scheme.dart';
-import 'package:material_color_utilities/dynamiccolor/variant.dart';
-import 'package:material_color_utilities/hct/hct.dart';
-import 'package:material_color_utilities/palettes/tonal_palette.dart';
-import 'package:material_color_utilities/utils/math_utils.dart';
+import '../dynamiccolor/dynamic_scheme.dart';
+import '../dynamiccolor/variant.dart';
+import '../palettes/tonal_palette.dart';
+import '../utils/math_utils.dart';
 
 /// A Dynamic Color theme that is intentionally detached from the input color.
 class SchemeExpressive extends DynamicScheme {
   /// Hues used at breakpoints such that designers can specify a hue rotation
   /// that occurs at a given break point.
-  static final _hues = <double>[0, 21, 51, 121, 151, 191, 271, 321, 360];
+  static const _hues = <double>[0, 21, 51, 121, 151, 191, 271, 321, 360];
 
   /// Hue rotations of the Secondary [TonalPalette], corresponding to the
   /// breakpoints in [_hues].
-  static final _secondaryRotations = <double>[
+  static const _secondaryRotations = <double>[
     45,
     95,
     45,
@@ -34,12 +33,12 @@ class SchemeExpressive extends DynamicScheme {
     90,
     45,
     45,
-    45
+    45,
   ];
 
   /// Hue rotations of the Tertiary [TonalPalette], corresponding to the
   /// breakpoints in [_hues].
-  static final _tertiaryRotations = <double>[
+  static const _tertiaryRotations = <double>[
     120,
     120,
     20,
@@ -48,32 +47,39 @@ class SchemeExpressive extends DynamicScheme {
     15,
     20,
     120,
-    120
+    120,
   ];
 
   SchemeExpressive({
-    required Hct sourceColorHct,
+    required super.sourceColorHct,
     required super.isDark,
     required super.contrastLevel,
   }) : super(
-          sourceColorHct: sourceColorHct,
-          variant: Variant.expressive,
-          primaryPalette: TonalPalette.of(
-            MathUtils.sanitizeDegreesDouble(sourceColorHct.hue + 240.0),
-            40.0,
-          ),
-          secondaryPalette: TonalPalette.of(
-            DynamicScheme.getRotatedHue(
-                sourceColorHct, _hues, _secondaryRotations),
-            24.0,
-          ),
-          tertiaryPalette: TonalPalette.of(
-            DynamicScheme.getRotatedHue(
-                sourceColorHct, _hues, _tertiaryRotations),
-            32.0,
-          ),
-          neutralPalette: TonalPalette.of(sourceColorHct.hue + 15.0, 8.0),
-          neutralVariantPalette:
-              TonalPalette.of(sourceColorHct.hue + 15.0, 12.0),
-        );
+         variant: Variant.expressive,
+         primaryPalette: TonalPalette.of(
+           MathUtils.sanitizeDegreesDouble(sourceColorHct.hue + 240.0),
+           40.0,
+         ),
+         secondaryPalette: TonalPalette.of(
+           DynamicScheme.getRotatedHue(
+             sourceColorHct,
+             _hues,
+             _secondaryRotations,
+           ),
+           24.0,
+         ),
+         tertiaryPalette: TonalPalette.of(
+           DynamicScheme.getRotatedHue(
+             sourceColorHct,
+             _hues,
+             _tertiaryRotations,
+           ),
+           32.0,
+         ),
+         neutralPalette: TonalPalette.of(sourceColorHct.hue + 15.0, 8.0),
+         neutralVariantPalette: TonalPalette.of(
+           sourceColorHct.hue + 15.0,
+           12.0,
+         ),
+       );
 }
