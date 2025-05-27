@@ -1,0 +1,36 @@
+name: Publish Preview Package
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+      # pnpm cache
+      - name: setup pnpm store cache 1/2
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      - name: setup pnpm store cache 2/2
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      - name: pnpm install
+        run: pnpm i
+        working-directory: typescript
+      - name: build
+        run: pnpm build
+        working-directory: typescript
+      - name: publish preview
+        run: pnpm pkg-pr-new publish --package-manager=pnpm
+        working-directory: typescript
