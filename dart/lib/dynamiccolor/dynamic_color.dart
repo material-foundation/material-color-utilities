@@ -14,12 +14,11 @@
 
 import 'dart:math' as math;
 
-import 'package:material_color_utilities/contrast/contrast.dart';
-import 'package:material_color_utilities/dynamiccolor/dynamic_scheme.dart';
-import 'package:material_color_utilities/hct/hct.dart';
-import 'package:material_color_utilities/palettes/tonal_palette.dart';
-import 'package:material_color_utilities/utils/math_utils.dart';
-
+import '../contrast/contrast.dart';
+import '../hct/hct.dart';
+import '../palettes/tonal_palette.dart';
+import '../utils/math_utils.dart';
+import 'dynamic_scheme.dart';
 import 'src/contrast_curve.dart';
 import 'src/tone_delta_pair.dart';
 
@@ -179,12 +178,13 @@ class DynamicColor {
       final bg = background!(scheme);
       final bgTone = bg.getTone(scheme);
 
-      final aIsNearer = (polarity == TonePolarity.nearer ||
+      final aIsNearer =
+          polarity == TonePolarity.nearer ||
           (polarity == TonePolarity.lighter && !scheme.isDark) ||
-          (polarity == TonePolarity.darker && scheme.isDark));
+          (polarity == TonePolarity.darker && scheme.isDark);
       final nearer = aIsNearer ? roleA : roleB;
       final farther = aIsNearer ? roleB : roleA;
-      final amNearer = this.name == nearer.name;
+      final amNearer = name == nearer.name;
       final expansionDir = scheme.isDark ? 1 : -1;
 
       // 1st round: solve to min, each
@@ -194,14 +194,16 @@ class DynamicColor {
       // If a color is good enough, it is not adjusted.
       // Initial and adjusted tones for `nearer`
       final nInitialTone = nearer.tone(scheme);
-      var nTone = Contrast.ratioOfTones(bgTone, nInitialTone) >= nContrast
-          ? nInitialTone
-          : DynamicColor.foregroundTone(bgTone, nContrast);
+      var nTone =
+          Contrast.ratioOfTones(bgTone, nInitialTone) >= nContrast
+              ? nInitialTone
+              : DynamicColor.foregroundTone(bgTone, nContrast);
       // Initial and adjusted tones for `farther`
       final fInitialTone = farther.tone(scheme);
-      var fTone = Contrast.ratioOfTones(bgTone, fInitialTone) >= fContrast
-          ? fInitialTone
-          : DynamicColor.foregroundTone(bgTone, fContrast);
+      var fTone =
+          Contrast.ratioOfTones(bgTone, fInitialTone) >= fContrast
+              ? fInitialTone
+              : DynamicColor.foregroundTone(bgTone, fContrast);
 
       if (decreasingContrast) {
         // If decreasing contrast, adjust color to the "bare minimum"
@@ -259,15 +261,15 @@ class DynamicColor {
       return amNearer ? nTone : fTone;
     } else {
       // Case 2: No contrast pair; just solve for itself.
-      var answer = this.tone(scheme);
+      var answer = tone(scheme);
 
-      if (this.background == null) {
+      if (background == null) {
         return answer; // No adjustment for colors with no background.
       }
 
-      final bgTone = this.background!(scheme).getTone(scheme);
+      final bgTone = background!(scheme).getTone(scheme);
 
-      final desiredRatio = this.contrastCurve!.get(scheme.contrastLevel);
+      final desiredRatio = contrastCurve!.get(scheme.contrastLevel);
 
       if (Contrast.ratioOfTones(bgTone, answer) >= desiredRatio) {
         // Don't "improve" what's good enough.
@@ -280,7 +282,7 @@ class DynamicColor {
         answer = DynamicColor.foregroundTone(bgTone, desiredRatio);
       }
 
-      if (this.isBackground && 50 <= answer && answer < 60) {
+      if (isBackground && 50 <= answer && answer < 60) {
         // Must adjust
         if (Contrast.ratioOfTones(49, bgTone) >= desiredRatio) {
           answer = 49;
@@ -289,11 +291,11 @@ class DynamicColor {
         }
       }
 
-      if (this.secondBackground != null) {
+      if (secondBackground != null) {
         // Case 3: Adjust for dual backgrounds.
 
-        final bgTone1 = this.background!(scheme).getTone(scheme);
-        final bgTone2 = this.secondBackground!(scheme).getTone(scheme);
+        final bgTone1 = background!(scheme).getTone(scheme);
+        final bgTone2 = secondBackground!(scheme).getTone(scheme);
 
         final upper = math.max(bgTone1, bgTone2);
         final lower = math.min(bgTone1, bgTone2);
@@ -312,11 +314,12 @@ class DynamicColor {
         final darkOption = Contrast.darker(tone: lower, ratio: desiredRatio);
 
         // Tones suitable for the foreground.
-        final availables = [];
+        final availables = <double>[];
         if (lightOption != -1) availables.add(lightOption);
         if (darkOption != -1) availables.add(darkOption);
 
-        final prefersLight = DynamicColor.tonePrefersLightForeground(bgTone1) ||
+        final prefersLight =
+            DynamicColor.tonePrefersLightForeground(bgTone1) ||
             DynamicColor.tonePrefersLightForeground(bgTone2);
         if (prefersLight) {
           return (lightOption < 0) ? 100 : lightOption;
@@ -353,9 +356,10 @@ class DynamicColor {
       // momentarily between high and max contrast in light mode.
       // PC's standard tone was T90, OPC's was T10, it was light mode, and the
       // contrast value was 0.6568521221032331.
-      final negligibleDifference = ((lighterRatio - darkerRatio).abs() < 0.1 &&
+      final negligibleDifference =
+          (lighterRatio - darkerRatio).abs() < 0.1 &&
           lighterRatio < ratio &&
-          darkerRatio < ratio);
+          darkerRatio < ratio;
       return lighterRatio >= ratio ||
               lighterRatio >= darkerRatio ||
               negligibleDifference

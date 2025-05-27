@@ -12,40 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:material_color_utilities/dynamiccolor/dynamic_scheme.dart';
-import 'package:material_color_utilities/dynamiccolor/variant.dart';
-import 'package:material_color_utilities/hct/hct.dart';
-import 'package:material_color_utilities/palettes/tonal_palette.dart';
-import 'package:material_color_utilities/utils/math_utils.dart';
+import '../dynamiccolor/dynamic_scheme.dart';
+import '../dynamiccolor/variant.dart';
+import '../palettes/tonal_palette.dart';
+import '../utils/math_utils.dart';
 
 /// A playful theme - the source color's hue does not appear in the theme.
 class SchemeRainbow extends DynamicScheme {
   SchemeRainbow({
-    required Hct sourceColorHct,
+    required super.sourceColorHct,
     required super.isDark,
     required super.contrastLevel,
   }) : super(
-          sourceColorHct: sourceColorHct,
-          variant: Variant.rainbow,
-          primaryPalette: TonalPalette.of(
-            sourceColorHct.hue,
-            48.0,
-          ),
-          secondaryPalette: TonalPalette.of(
-            sourceColorHct.hue,
-            16.0,
-          ),
-          tertiaryPalette: TonalPalette.of(
-            MathUtils.sanitizeDegreesDouble(sourceColorHct.hue + 60.0),
-            24.0,
-          ),
-          neutralPalette: TonalPalette.of(
-            sourceColorHct.hue,
-            0.0,
-          ),
-          neutralVariantPalette: TonalPalette.of(
-            sourceColorHct.hue,
-            0.0,
-          ),
-        );
+         variant: Variant.rainbow,
+         primaryPalette: TonalPalette.of(sourceColorHct.hue, 48.0),
+         secondaryPalette: TonalPalette.of(sourceColorHct.hue, 16.0),
+         tertiaryPalette: TonalPalette.of(
+           MathUtils.sanitizeDegreesDouble(sourceColorHct.hue + 60.0),
+           24.0,
+         ),
+         neutralPalette: TonalPalette.of(sourceColorHct.hue, 0.0),
+         neutralVariantPalette: TonalPalette.of(sourceColorHct.hue, 0.0),
+       );
 }

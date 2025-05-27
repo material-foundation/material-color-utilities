@@ -61,7 +61,11 @@ export class TonalPalette {
   tone(tone: number): number {
     let argb = this.cache.get(tone);
     if (argb === undefined) {
-      argb = Hct.from(this.hue, this.chroma, tone).toInt();
+      if (tone == 99 && Hct.isYellow(this.hue)) {
+        argb = this.averageArgb(this.tone(98), this.tone(100));
+      } else {
+        argb = Hct.from(this.hue, this.chroma, tone).toInt();
+      }
       this.cache.set(tone, argb);
     }
     return argb;
@@ -73,6 +77,21 @@ export class TonalPalette {
    */
   getHct(tone: number): Hct {
     return Hct.fromInt(this.tone(tone));
+  }
+
+  private averageArgb(argb1: number, argb2: number): number {
+    const red1 = (argb1 >>> 16) & 0xff;
+    const green1 = (argb1 >>> 8) & 0xff;
+    const blue1 = argb1 & 0xff;
+    const red2 = (argb2 >>> 16) & 0xff;
+    const green2 = (argb2 >>> 8) & 0xff;
+    const blue2 = argb2 & 0xff;
+    const red = Math.round((red1 + red2) / 2);
+    const green = Math.round((green1 + green2) / 2);
+    const blue = Math.round((blue1 + blue2) / 2);
+    return (255 << 24 | (red & 255) << 16 | (green & 255) << 8 |
+            (blue & 255)) >>>
+        0;
   }
 }
 

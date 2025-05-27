@@ -24,13 +24,10 @@ import {Hct} from '../hct/hct.js';
  * A Dynamic Color theme that is intentionally detached from the source color.
  */
 export class SchemeExpressive extends DynamicScheme {
-  private static readonly DEFAULT_SPEC_VERSION = '2021';
-  private static readonly DEFAULT_PLATFORM = 'phone';
-
   constructor(
       sourceColorHct: Hct, isDark: boolean, contrastLevel: number,
-      specVersion: SpecVersion = SchemeExpressive.DEFAULT_SPEC_VERSION,
-      platform: Platform = SchemeExpressive.DEFAULT_PLATFORM) {
+      specVersion: SpecVersion = DynamicScheme.DEFAULT_SPEC_VERSION,
+      platform: Platform = DynamicScheme.DEFAULT_PLATFORM) {
     super({
       sourceColorHct,
       variant: Variant.EXPRESSIVE,

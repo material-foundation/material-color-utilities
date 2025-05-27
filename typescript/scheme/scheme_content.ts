@@ -15,7 +15,8 @@
  * limitations under the License.
  */
 
-import {DynamicScheme} from '../dynamiccolor/dynamic_scheme.js';
+import {SpecVersion} from '../dynamiccolor/color_spec.js';
+import {DynamicScheme, Platform} from '../dynamiccolor/dynamic_scheme.js';
 import {Variant} from '../dynamiccolor/variant.js';
 import {Hct} from '../hct/hct.js';
 
@@ -29,17 +30,17 @@ import {Hct} from '../hct/hct.js';
  * `TemperatureCache`. It also maintains constant appearance.
  */
 export class SchemeContent extends DynamicScheme {
-  private static readonly DEFAULT_SPEC_VERSION = '2021';
-  private static readonly DEFAULT_PLATFORM = 'phone';
-
-  constructor(sourceColorHct: Hct, isDark: boolean, contrastLevel: number) {
+  constructor(
+      sourceColorHct: Hct, isDark: boolean, contrastLevel: number,
+      specVersion: SpecVersion = DynamicScheme.DEFAULT_SPEC_VERSION,
+      platform: Platform = DynamicScheme.DEFAULT_PLATFORM) {
     super({
       sourceColorHct,
       variant: Variant.CONTENT,
       contrastLevel,
       isDark,
-      platform: SchemeContent.DEFAULT_PLATFORM,
-      specVersion: SchemeContent.DEFAULT_SPEC_VERSION,
+      platform,
+      specVersion,
     });
   }
 }

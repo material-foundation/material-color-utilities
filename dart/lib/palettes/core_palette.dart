@@ -14,14 +14,16 @@
 
 import 'dart:math' as math;
 
-import 'package:material_color_utilities/hct/cam16.dart';
-import 'package:material_color_utilities/palettes/tonal_palette.dart';
+import '../hct/cam16.dart';
+import 'tonal_palette.dart';
 
 /// An intermediate concept between the key color for a UI theme, and a full
 /// color scheme. 5 tonal palettes are generated, all except one use the same
 /// hue as the key color, and all vary in chroma.
-@Deprecated('Use [DynamicScheme] for color scheme generation.'
-    'Use [CorePalettes] for core palettes container class.')
+@Deprecated(
+  'Use [DynamicScheme] for color scheme generation.'
+  'Use [CorePalettes] for core palettes container class.',
+)
 class CorePalette {
   /// The number of generated tonal palettes.
   static const size = 5;
@@ -34,21 +36,25 @@ class CorePalette {
   final TonalPalette error = TonalPalette.of(25, 84);
 
   /// Create a [CorePalette] from a source ARGB color.
-  @Deprecated('Use [DynamicScheme] for color scheme generation.'
-      'Use [CorePalettes] for core palettes container class.')
+  @Deprecated(
+    'Use [DynamicScheme] for color scheme generation.'
+    'Use [CorePalettes] for core palettes container class.',
+  )
   static CorePalette of(int argb) {
     final cam = Cam16.fromInt(argb);
     return CorePalette._(cam.hue, cam.chroma);
   }
 
-  @Deprecated('Use [DynamicScheme] for color scheme generation.'
-      'Use [CorePalettes] for core palettes container class.')
+  @Deprecated(
+    'Use [DynamicScheme] for color scheme generation.'
+    'Use [CorePalettes] for core palettes container class.',
+  )
   CorePalette._(double hue, double chroma)
-      : primary = TonalPalette.of(hue, math.max(48, chroma)),
-        secondary = TonalPalette.of(hue, 16),
-        tertiary = TonalPalette.of(hue + 60, 24),
-        neutral = TonalPalette.of(hue, 4),
-        neutralVariant = TonalPalette.of(hue, 8);
+    : primary = TonalPalette.of(hue, math.max(48, chroma)),
+      secondary = TonalPalette.of(hue, 16),
+      tertiary = TonalPalette.of(hue + 60, 24),
+      neutral = TonalPalette.of(hue, 4),
+      neutralVariant = TonalPalette.of(hue, 8);
 
   /// Create a content [CorePalette] from a source ARGB color.
   static CorePalette contentOf(int argb) {
@@ -56,46 +62,57 @@ class CorePalette {
     return CorePalette._contentOf(cam.hue, cam.chroma);
   }
 
-  @Deprecated('Use [DynamicScheme] for color scheme generation.'
-      'Use [CorePalettes] for core palettes container class.')
+  @Deprecated(
+    'Use [DynamicScheme] for color scheme generation.'
+    'Use [CorePalettes] for core palettes container class.',
+  )
   CorePalette._contentOf(double hue, double chroma)
-      : primary = TonalPalette.of(hue, chroma),
-        secondary = TonalPalette.of(hue, chroma / 3),
-        tertiary = TonalPalette.of(hue + 60, chroma / 2),
-        neutral = TonalPalette.of(hue, math.min(chroma / 12, 4)),
-        neutralVariant = TonalPalette.of(hue, math.min(chroma / 6, 8));
+    : primary = TonalPalette.of(hue, chroma),
+      secondary = TonalPalette.of(hue, chroma / 3),
+      tertiary = TonalPalette.of(hue + 60, chroma / 2),
+      neutral = TonalPalette.of(hue, math.min(chroma / 12, 4)),
+      neutralVariant = TonalPalette.of(hue, math.min(chroma / 6, 8));
 
   /// Create a [CorePalette] from a fixed-size list of ARGB color ints
   /// representing concatenated tonal palettes.
   ///
   /// Inverse of [asList].
-  @Deprecated('Use [DynamicScheme] for color scheme generation.'
-      'Use [CorePalettes] for core palettes container class.')
+  @Deprecated(
+    'Use [DynamicScheme] for color scheme generation.'
+    'Use [CorePalettes] for core palettes container class.',
+  )
   CorePalette.fromList(List<int> colors)
-      : assert(colors.length == size * TonalPalette.commonSize),
-        primary = TonalPalette.fromList(
-            _getPartition(colors, 0, TonalPalette.commonSize)),
-        secondary = TonalPalette.fromList(
-            _getPartition(colors, 1, TonalPalette.commonSize)),
-        tertiary = TonalPalette.fromList(
-            _getPartition(colors, 2, TonalPalette.commonSize)),
-        neutral = TonalPalette.fromList(
-            _getPartition(colors, 3, TonalPalette.commonSize)),
-        neutralVariant = TonalPalette.fromList(
-            _getPartition(colors, 4, TonalPalette.commonSize));
+    : assert(colors.length == size * TonalPalette.commonSize),
+      primary = TonalPalette.fromList(
+        _getPartition(colors, 0, TonalPalette.commonSize),
+      ),
+      secondary = TonalPalette.fromList(
+        _getPartition(colors, 1, TonalPalette.commonSize),
+      ),
+      tertiary = TonalPalette.fromList(
+        _getPartition(colors, 2, TonalPalette.commonSize),
+      ),
+      neutral = TonalPalette.fromList(
+        _getPartition(colors, 3, TonalPalette.commonSize),
+      ),
+      neutralVariant = TonalPalette.fromList(
+        _getPartition(colors, 4, TonalPalette.commonSize),
+      );
 
   /// Returns a list of ARGB color [int]s from concatenated tonal palettes.
   ///
   /// Inverse of [CorePalette.fromList].
-  @Deprecated('Use [DynamicScheme] for color scheme generation.'
-      'Use [CorePalettes] for core palettes container class.')
+  @Deprecated(
+    'Use [DynamicScheme] for color scheme generation.'
+    'Use [CorePalettes] for core palettes container class.',
+  )
   List<int> asList() => [
-        ...primary.asList,
-        ...secondary.asList,
-        ...tertiary.asList,
-        ...neutral.asList,
-        ...neutralVariant.asList,
-      ];
+    ...primary.asList,
+    ...secondary.asList,
+    ...tertiary.asList,
+    ...neutral.asList,
+    ...neutralVariant.asList,
+  ];
 
   @override
   bool operator ==(Object other) =>
@@ -108,14 +125,8 @@ class CorePalette {
       error == other.error;
 
   @override
-  int get hashCode => Object.hash(
-        primary,
-        secondary,
-        tertiary,
-        neutral,
-        neutralVariant,
-        error,
-      );
+  int get hashCode =>
+      Object.hash(primary, secondary, tertiary, neutral, neutralVariant, error);
 
   @override
   String toString() {
@@ -136,7 +147,10 @@ class CorePalette {
 // range.getPartition(0, 3) // [1, 2, 3]
 // range.getPartition(1, 3) // [4, 5, 6]
 List<int> _getPartition(
-    List<int> list, int partitionNumber, int partitionSize) {
+  List<int> list,
+  int partitionNumber,
+  int partitionSize,
+) {
   return list.sublist(
     partitionNumber * partitionSize,
     (partitionNumber + 1) * partitionSize,

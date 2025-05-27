@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:material_color_utilities/utils/color_utils.dart';
-
+import '../utils/color_utils.dart';
 import 'quantizer.dart';
 
 class QuantizerMap implements Quantizer {

@@ -16,52 +16,28 @@
 
 import 'dart:math';
 
-import 'package:material_color_utilities/hct/cam16.dart';
-import 'package:material_color_utilities/hct/viewing_conditions.dart';
-import 'package:material_color_utilities/utils/color_utils.dart';
-import 'package:material_color_utilities/utils/math_utils.dart';
+import '../../utils/color_utils.dart';
+import '../../utils/math_utils.dart';
+import '../cam16.dart';
+import '../viewing_conditions.dart';
 
 /// A class that solves the HCT equation.
 class HctSolver {
-  static final _scaledDiscountFromLinrgb = [
-    [
-      0.001200833568784504,
-      0.002389694492170889,
-      0.0002795742885861124,
-    ],
-    [
-      0.0005891086651375999,
-      0.0029785502573438758,
-      0.0003270666104008398,
-    ],
-    [
-      0.00010146692491640572,
-      0.0005364214359186694,
-      0.0032979401770712076,
-    ],
+  static const _scaledDiscountFromLinrgb = [
+    [0.001200833568784504, 0.002389694492170889, 0.0002795742885861124],
+    [0.0005891086651375999, 0.0029785502573438758, 0.0003270666104008398],
+    [0.00010146692491640572, 0.0005364214359186694, 0.0032979401770712076],
   ];
 
-  static final _linrgbFromScaledDiscount = [
-    [
-      1373.2198709594231,
-      -1100.4251190754821,
-      -7.278681089101213,
-    ],
-    [
-      -271.815969077903,
-      559.6580465940733,
-      -32.46047482791194,
-    ],
-    [
-      1.9622899599665666,
-      -57.173814538844006,
-      308.7233197812385,
-    ],
+  static const _linrgbFromScaledDiscount = [
+    [1373.2198709594231, -1100.4251190754821, -7.278681089101213],
+    [-271.815969077903, 559.6580465940733, -32.46047482791194],
+    [1.9622899599665666, -57.173814538844006, 308.7233197812385],
   ];
 
-  static final _yFromLinrgb = [0.2126, 0.7152, 0.0722];
+  static const _yFromLinrgb = [0.2126, 0.7152, 0.0722];
 
-  static final _criticalPlanes = [
+  static const _criticalPlanes = [
     0.015176349177441876,
     0.045529047532325624,
     0.07588174588720938,
@@ -352,8 +328,10 @@ class HctSolver {
   /// Returns the hue of [linrgb], a linear RGB color, in CAM16, in
   /// radians.
   static double _hueOf(List<double> linrgb) {
-    final scaledDiscount =
-        MathUtils.matrixMultiply(linrgb, _scaledDiscountFromLinrgb);
+    final scaledDiscount = MathUtils.matrixMultiply(
+      linrgb,
+      _scaledDiscountFromLinrgb,
+    );
     final rA = _chromaticAdaptation(scaledDiscount[0]);
     final gA = _chromaticAdaptation(scaledDiscount[1]);
     final bA = _chromaticAdaptation(scaledDiscount[2]);
@@ -379,7 +357,10 @@ class HctSolver {
   }
 
   static List<double> _lerpPoint(
-      List<double> source, double t, List<double> target) {
+    List<double> source,
+    double t,
+    List<double> target,
+  ) {
     return [
       source[0] + (target[0] - source[0]) * t,
       source[1] + (target[1] - source[1]) * t,
@@ -422,7 +403,7 @@ class HctSolver {
     final kG = _yFromLinrgb[1];
     final kB = _yFromLinrgb[2];
     final coordA = n % 4 <= 1 ? 0.0 : 100.0;
-    final coordB = n % 2 == 0 ? 0.0 : 100.0;
+    final coordB = n.isEven ? 0.0 : 100.0;
     if (n < 4) {
       final g = coordA;
       final b = coordB;
@@ -455,7 +436,7 @@ class HctSolver {
 
   /// Finds the segment containing the desired color.
   ///
-  /// Given a plane Y = [y] and a desired [target_hue], returns the
+  /// Given a plane Y = [y] and a desired [targetHue], returns the
   /// segment containing the desired color, represented as an array of
   /// its two endpoints.
   static List<List<double>> _bisectToSegment(double y, double targetHue) {
@@ -494,11 +475,7 @@ class HctSolver {
   }
 
   static List<double> _midpoint(List<double> a, List<double> b) {
-    return [
-      (a[0] + b[0]) / 2,
-      (a[1] + b[1]) / 2,
-      (a[2] + b[2]) / 2,
-    ];
+    return [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2, (a[2] + b[2]) / 2];
   }
 
   static int _criticalPlaneBelow(double x) {
@@ -570,7 +547,8 @@ class HctSolver {
     // Operations inlined from Cam16 to avoid repeated calculation
     // ===========================================================
     final viewingConditions = ViewingConditions.standard;
-    final tInnerCoeff = 1 /
+    final tInnerCoeff =
+        1 /
         pow(
           1.64 -
               pow(0.29, viewingConditions.backgroundYTowhitePointY).toDouble(),
@@ -589,13 +567,15 @@ class HctSolver {
       final alpha =
           chroma == 0.0 || j == 0.0 ? 0.0 : chroma / sqrt(jNormalized);
       final t = pow(alpha * tInnerCoeff, 1.0 / 0.9).toDouble();
-      final ac = viewingConditions.aw *
+      final ac =
+          viewingConditions.aw *
           pow(
             jNormalized,
             1.0 / viewingConditions.c / viewingConditions.z,
           ).toDouble();
       final p2 = ac / viewingConditions.nbb;
-      final gamma = 23.0 *
+      final gamma =
+          23.0 *
           (p2 + 0.305) *
           t /
           (23.0 * p1 + 11 * t * hCos + 108.0 * t * hSin);
@@ -607,10 +587,11 @@ class HctSolver {
       final rCScaled = _inverseChromaticAdaptation(rA);
       final gCScaled = _inverseChromaticAdaptation(gA);
       final bCScaled = _inverseChromaticAdaptation(bA);
-      final linrgb = MathUtils.matrixMultiply(
-        [rCScaled, gCScaled, bCScaled],
-        _linrgbFromScaledDiscount,
-      );
+      final linrgb = MathUtils.matrixMultiply([
+        rCScaled,
+        gCScaled,
+        bCScaled,
+      ], _linrgbFromScaledDiscount);
       // ===========================================================
       // Operations inlined from Cam16 to avoid repeated calculation
       // ===========================================================

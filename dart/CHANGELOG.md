@@ -1,3 +1,8 @@
+## 0.13.0 - 2025-05-20
+
+- All of the `MaterialDynamicColors` fields are now final.
+- Require Dart 3.5
+
 ## 0.12.0 - 2024-06-06
 ### Changed
 - Updated `MaterialDynamicColors` to use the expressive on-colors spec.
