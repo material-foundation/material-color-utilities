@@ -152,11 +152,15 @@ public class DynamicScheme {
   }
 
   public static DynamicScheme from(DynamicScheme other, boolean isDark) {
+    return from(other, isDark, other.contrastLevel);
+  }
+
+  public static DynamicScheme from(DynamicScheme other, boolean isDark, double contrastLevel) {
     return new DynamicScheme(
         other.sourceColorHct,
         other.variant,
         isDark,
-        other.contrastLevel,
+        contrastLevel,
         other.platform,
         other.specVersion,
         other.primaryPalette,

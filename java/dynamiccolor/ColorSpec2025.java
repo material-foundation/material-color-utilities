@@ -1210,10 +1210,21 @@ final class ColorSpec2025 extends ColorSpec2021 {
             .setPalette((s) -> s.primaryPalette)
             .setTone(
                 (s) -> {
-                  DynamicScheme tempS = DynamicScheme.from(s, /* isDark= */ false);
+                  DynamicScheme tempS =
+                      DynamicScheme.from(s, /* isDark= */ false, /* contrastLevel= */ 0.0);
                   return primaryContainer().getTone(tempS);
                 })
             .setIsBackground(true)
+            .setBackground(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    return s.isDark ? surfaceBright() : surfaceDim();
+                  } else {
+                    return null;
+                  }
+                })
+            .setContrastCurve(
+                (s) -> s.platform == PHONE && s.contrastLevel > 0 ? getContrastCurve(1.5) : null)
             .build();
     return super.primaryFixed().toBuilder()
         .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
@@ -1280,10 +1291,21 @@ final class ColorSpec2025 extends ColorSpec2021 {
             .setPalette((s) -> s.secondaryPalette)
             .setTone(
                 (s) -> {
-                  DynamicScheme tempS = DynamicScheme.from(s, /* isDark= */ false);
+                  DynamicScheme tempS =
+                      DynamicScheme.from(s, /* isDark= */ false, /* contrastLevel= */ 0.0);
                   return secondaryContainer().getTone(tempS);
                 })
             .setIsBackground(true)
+            .setBackground(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    return s.isDark ? surfaceBright() : surfaceDim();
+                  } else {
+                    return null;
+                  }
+                })
+            .setContrastCurve(
+                (s) -> s.platform == PHONE && s.contrastLevel > 0 ? getContrastCurve(1.5) : null)
             .build();
     return super.secondaryFixed().toBuilder()
         .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
@@ -1350,10 +1372,21 @@ final class ColorSpec2025 extends ColorSpec2021 {
             .setPalette((s) -> s.tertiaryPalette)
             .setTone(
                 (s) -> {
-                  DynamicScheme tempS = DynamicScheme.from(s, /* isDark= */ false);
+                  DynamicScheme tempS =
+                      DynamicScheme.from(s, /* isDark= */ false, /* contrastLevel= */ 0.0);
                   return tertiaryContainer().getTone(tempS);
                 })
             .setIsBackground(true)
+            .setBackground(
+                (s) -> {
+                  if (s.platform == PHONE) {
+                    return s.isDark ? surfaceBright() : surfaceDim();
+                  } else {
+                    return null;
+                  }
+                })
+            .setContrastCurve(
+                (s) -> s.platform == PHONE && s.contrastLevel > 0 ? getContrastCurve(1.5) : null)
             .build();
     return super.tertiaryFixed().toBuilder()
         .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
