@@ -1,6 +1,11 @@
 # material-color-utilities
 
-[![npm package](https://badgen.net/npm/v/@material/material-color-utilities)](https://npmjs.com/package/@material/material-color-utilities)
+> [!IMPORTANT]
+> **This is a fork** of the original Material Color Utilities repository.
+> It is only intended for making releases of the TypeScript package and
+> will be kept in sync with the upstream repository.
+
+[![npm package](https://badgen.net/npm/v/@poupe/material-color-utilities)](https://npmjs.com/package/@poupe/material-color-utilities)
 
 Algorithms and utilities that power the Material Design 3 (M3) color system,
 including choosing theme colors from images and creating tones of colors; all in
@@ -12,10 +17,10 @@ for more information.
 
 ## Getting started
 
-`npm i @material/material-color-utilities` or `yarn add @material/material-color-utilities`
+`npm i @poupe/material-color-utilities` or `yarn add @poupe/material-color-utilities`
 
 ```typescript
-import { Hct } from "@material/material-color-utilities";
+import { Hct } from "@poupe/material-color-utilities";
 
 // Simple demonstration of HCT.
 const color = Hct.fromInt(0xff4285f4);
@@ -28,7 +33,7 @@ console.log(`Tone: ${color.tone}`);
 ### Theming
 
 ```typescript
-import { argbFromHex, themeFromSourceColor, applyTheme } from "@material/material-color-utilities";
+import { argbFromHex, themeFromSourceColor, applyTheme } from "@poupe/material-color-utilities";
 
 // Get the theme from a hex color
 const theme = themeFromSourceColor(argbFromHex('#f82506'), [
