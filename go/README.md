@@ -62,6 +62,36 @@ tone50 := palette.Tone(50)
 tone90 := palette.Tone(90)
 ```
 
+### Color Extraction from Images
+
+```go
+import (
+    "image"
+    "image/png"
+    "os"
+    "github.com/material-foundation/material-color-utilities/go/quantize"
+)
+
+// Load an image
+file, _ := os.Open("photo.png")
+defer file.Close()
+img, _ := png.Decode(file)
+
+// Extract pixel data
+pixels := quantize.FromImage(img)
+
+// Or sample every 4th pixel for better performance
+pixels = quantize.FromImageSampled(img, 4)
+
+// Or extract from a specific region
+region := image.Rect(100, 100, 300, 300)
+pixels = quantize.FromImageSubset(img, region)
+
+// Quantize to dominant colors
+quantizer := quantize.NewCelebi()
+colors := quantizer.Quantize(pixels, 16)
+```
+
 ## Features
 
 - **HCT Color Space**: A perceptually accurate color space that enables smooth color transitions
