@@ -29,6 +29,8 @@ type DynamicScheme struct {
 	Variant               Variant
 	ContrastLevel         float64
 	IsDark                bool
+	Platform              Platform
+	SpecVersion           SpecVersion
 	PrimaryPalette        *palettes.Tonal
 	SecondaryPalette      *palettes.Tonal
 	TertiaryPalette       *palettes.Tonal
@@ -107,9 +109,9 @@ func (dc *DynamicColor) WithToneDeltaPair(toneDeltaPair func(*DynamicScheme) *To
 	return dc
 }
 
-// GetArgb returns the ARGB color value for this dynamic color in the given scheme.
-func (dc *DynamicColor) GetArgb(scheme *DynamicScheme) uint32 {
-	argb := dc.GetHct(scheme).ToInt()
+// Argb returns the ARGB color value for this dynamic color in the given scheme.
+func (dc *DynamicColor) Argb(scheme *DynamicScheme) uint32 {
+	argb := dc.Hct(scheme).ToInt()
 
 	// Apply opacity if less than 1.0
 	if dc.Opacity != nil {
@@ -123,8 +125,8 @@ func (dc *DynamicColor) GetArgb(scheme *DynamicScheme) uint32 {
 	return argb
 }
 
-// GetHct returns the HCT color value for this dynamic color in the given scheme.
-func (dc *DynamicColor) GetHct(scheme *DynamicScheme) *cam.HCT {
+// Hct returns the HCT color value for this dynamic color in the given scheme.
+func (dc *DynamicColor) Hct(scheme *DynamicScheme) *cam.HCT {
 	// Check cache first
 	if cached, exists := dc.hctCache[scheme]; exists {
 		return cached

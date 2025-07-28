@@ -24,7 +24,7 @@ import (
 // in hue and chroma, but vary in tone.
 type Tonal struct {
 	cache    map[int]uint32
-	keyColor *cam.HCT
+	KeyColor *cam.HCT
 	Hue      float64
 	Chroma   float64
 }
@@ -40,7 +40,7 @@ func TonalFromHct(hct *cam.HCT) *Tonal {
 		cache:    make(map[int]uint32),
 		Hue:      hct.Hue,
 		Chroma:   hct.Chroma,
-		keyColor: hct,
+		KeyColor: hct,
 	}
 }
 
@@ -51,7 +51,7 @@ func TonalFromHueAndChroma(hue, chroma float64) *Tonal {
 		cache:    make(map[int]uint32),
 		Hue:      hue,
 		Chroma:   chroma,
-		keyColor: keyColor,
+		KeyColor: keyColor,
 	}
 }
 

@@ -16,24 +16,30 @@ package dynamiccolor
 
 import (
 	"github.com/material-foundation/material-color-utilities/go/cam"
-	"github.com/material-foundation/material-color-utilities/go/palettes"
 )
 
-// NewDynamicScheme creates a new DynamicScheme from a source color.
+// NewDynamicScheme creates a new DynamicScheme from a source color using default settings.
 func NewDynamicScheme(sourceColorArgb uint32, variant Variant, isDark bool, contrastLevel float64) *DynamicScheme {
+	return NewDynamicSchemeWithSpec(sourceColorArgb, variant, isDark, contrastLevel, Spec2021, PlatformPhone)
+}
+
+// NewDynamicSchemeWithSpec creates a new DynamicScheme with specific spec version and platform.
+func NewDynamicSchemeWithSpec(sourceColorArgb uint32, variant Variant, isDark bool, contrastLevel float64, specVersion SpecVersion, platform Platform) *DynamicScheme {
 	sourceHct := cam.HctFromInt(sourceColorArgb)
-	
+	colorSpec := ByVersion(specVersion)
+
 	return &DynamicScheme{
 		SourceColorArgb:       sourceColorArgb,
 		Variant:               variant,
 		ContrastLevel:         contrastLevel,
 		IsDark:                isDark,
-		PrimaryPalette:        palettes.TonalFromHueAndChroma(sourceHct.Hue, sourceHct.Chroma),
-		SecondaryPalette:      palettes.TonalFromHueAndChroma(sourceHct.Hue, sourceHct.Chroma/2),
-		TertiaryPalette:       palettes.TonalFromHueAndChroma(sourceHct.Hue+60, sourceHct.Chroma/2),
-		NeutralPalette:        palettes.TonalFromHueAndChroma(sourceHct.Hue, 4),
-		NeutralVariantPalette: palettes.TonalFromHueAndChroma(sourceHct.Hue, 8),
-		ErrorPalette:          palettes.TonalFromHueAndChroma(25, 84),
+		Platform:              platform,
+		SpecVersion:           specVersion,
+		PrimaryPalette:        colorSpec.PrimaryPalette(variant, sourceHct, isDark, platform, contrastLevel),
+		SecondaryPalette:      colorSpec.SecondaryPalette(variant, sourceHct, isDark, platform, contrastLevel),
+		TertiaryPalette:       colorSpec.TertiaryPalette(variant, sourceHct, isDark, platform, contrastLevel),
+		NeutralPalette:        colorSpec.NeutralPalette(variant, sourceHct, isDark, platform, contrastLevel),
+		NeutralVariantPalette: colorSpec.NeutralVariantPalette(variant, sourceHct, isDark, platform, contrastLevel),
+		ErrorPalette:          colorSpec.ErrorPalette(variant, sourceHct, isDark, platform, contrastLevel),
 	}
 }
-
