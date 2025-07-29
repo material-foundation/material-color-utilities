@@ -274,3 +274,216 @@ func TestArgbFromLstar(t *testing.T) {
 		}
 	}
 }
+
+func TestOklabConversions(t *testing.T) {
+	// Test cases with known OKLAB values
+	tests := []struct {
+		name      string
+		argb      uint32
+		expectedL float64
+		expectedA float64
+		expectedB float64
+		tolerance float64
+	}{
+		{"Black", 0xFF000000, 0.0, 0.0, 0.0, 0.001},
+		{"White", 0xFFFFFFFF, 1.0, 0.0, 0.0, 0.001},
+		{"Red", 0xFFFF0000, 0.62796, 0.22486, 0.12585, 0.001},
+		{"Green", 0xFF00FF00, 0.86644, -0.23389, 0.17950, 0.001},
+		{"Blue", 0xFF0000FF, 0.45201, -0.03245, -0.31153, 0.001},
+		{"Cyan", 0xFF00FFFF, 0.90540, -0.14944, -0.03940, 0.001},
+		{"Magenta", 0xFFFF00FF, 0.70167, 0.27458, -0.16916, 0.001},
+		{"Yellow", 0xFFFFFF00, 0.96798, -0.07137, 0.19857, 0.001},
+	}
+
+	for _, test := range tests {
+		oklab := OklabFromArgb(test.argb)
+		if math.Abs(oklab[0]-test.expectedL) > test.tolerance ||
+			math.Abs(oklab[1]-test.expectedA) > test.tolerance ||
+			math.Abs(oklab[2]-test.expectedB) > test.tolerance {
+			t.Errorf("OklabFromArgb(%s/0x%08X) = [%.5f, %.5f, %.5f]; want [%.5f, %.5f, %.5f]",
+				test.name, test.argb, oklab[0], oklab[1], oklab[2],
+				test.expectedL, test.expectedA, test.expectedB)
+		}
+
+		// Test round-trip conversion
+		roundTrip := ArgbFromOklab(oklab[0], oklab[1], oklab[2])
+		if !colorsMatch(roundTrip, test.argb, 2) {
+			t.Errorf("Round-trip failed for %s: ArgbFromOklab(OklabFromArgb(0x%08X)) = 0x%08X",
+				test.name, test.argb, roundTrip)
+		}
+	}
+}
+
+func TestOklchConversions(t *testing.T) {
+	// Test cases
+	tests := []struct {
+		name      string
+		argb      uint32
+		expectedL float64
+		expectedC float64
+		expectedH float64
+		tolerance float64
+	}{
+		{"Black", 0xFF000000, 0.0, 0.0, 0.0, 0.001},
+		{"White", 0xFFFFFFFF, 1.0, 0.0, 0.0, 0.001},
+		{"Red", 0xFFFF0000, 0.62796, 0.25769, 29.158, 0.5},
+		{"Green", 0xFF00FF00, 0.86644, 0.29483, 142.511, 0.5},
+		{"Blue", 0xFF0000FF, 0.45201, 0.31320, 264.074, 0.5},
+		{"Cyan", 0xFF00FFFF, 0.90540, 0.15480, 194.814, 0.5},
+		{"Magenta", 0xFFFF00FF, 0.70167, 0.32250, 328.382, 0.5},
+		{"Yellow", 0xFFFFFF00, 0.96798, 0.21102, 109.782, 0.5},
+	}
+
+	for _, test := range tests {
+		oklch := OklchFromArgb(test.argb)
+		if math.Abs(oklch[0]-test.expectedL) > test.tolerance ||
+			math.Abs(oklch[1]-test.expectedC) > test.tolerance ||
+			(test.expectedC > 0.001 && math.Abs(angleDifference(oklch[2], test.expectedH)) > 1.0) {
+			t.Errorf("OklchFromArgb(%s/0x%08X) = [%.5f, %.5f, %.3f]; want [%.5f, %.5f, %.3f]",
+				test.name, test.argb, oklch[0], oklch[1], oklch[2],
+				test.expectedL, test.expectedC, test.expectedH)
+		}
+
+		// Test round-trip conversion
+		roundTrip := ArgbFromOklch(oklch[0], oklch[1], oklch[2])
+		if !colorsMatch(roundTrip, test.argb, 2) {
+			t.Errorf("Round-trip failed for %s: ArgbFromOklch(OklchFromArgb(0x%08X)) = 0x%08X",
+				test.name, test.argb, roundTrip)
+		}
+	}
+}
+
+func TestOklabAlphaConversions(t *testing.T) {
+	tests := []struct {
+		name  string
+		argb  uint32
+		alpha float64
+	}{
+		{"Opaque Red", 0xFFFF0000, 1.0},
+		{"Semi-transparent Green", 0x8000FF00, 0.5},
+		{"Quarter-transparent Blue", 0x400000FF, 0.25},
+		{"Transparent Black", 0x00000000, 0.0},
+	}
+
+	for _, test := range tests {
+		oklabA := OklabAFromArgb(test.argb)
+		if math.Abs(oklabA[3]-test.alpha) > 0.01 {
+			t.Errorf("OklabAFromArgb(%s/0x%08X) alpha = %.3f; want %.3f",
+				test.name, test.argb, oklabA[3], test.alpha)
+		}
+
+		// Test round-trip with alpha
+		roundTrip := ArgbFromOklabA(oklabA[0], oklabA[1], oklabA[2], oklabA[3])
+		if roundTrip != test.argb {
+			t.Errorf("Round-trip with alpha failed for %s: ArgbFromOklabA(OklabAFromArgb(0x%08X)) = 0x%08X",
+				test.name, test.argb, roundTrip)
+		}
+	}
+}
+
+func TestOklchAlphaConversions(t *testing.T) {
+	tests := []struct {
+		name  string
+		argb  uint32
+		alpha float64
+	}{
+		{"Opaque Yellow", 0xFFFFFF00, 1.0},
+		{"Semi-transparent Cyan", 0x8000FFFF, 0.5},
+		{"Quarter-transparent Magenta", 0x40FF00FF, 0.25},
+		{"Transparent White", 0x00FFFFFF, 0.0},
+	}
+
+	for _, test := range tests {
+		oklchA := OklchAFromArgb(test.argb)
+		if math.Abs(oklchA[3]-test.alpha) > 0.01 {
+			t.Errorf("OklchAFromArgb(%s/0x%08X) alpha = %.3f; want %.3f",
+				test.name, test.argb, oklchA[3], test.alpha)
+		}
+
+		// Test round-trip with alpha
+		roundTrip := ArgbFromOklchA(oklchA[0], oklchA[1], oklchA[2], oklchA[3])
+		if roundTrip != test.argb {
+			t.Errorf("Round-trip with alpha failed for %s: ArgbFromOklchA(OklchAFromArgb(0x%08X)) = 0x%08X",
+				test.name, test.argb, roundTrip)
+		}
+	}
+}
+
+func TestLabAlphaConversions(t *testing.T) {
+	tests := []struct {
+		name  string
+		argb  uint32
+		alpha float64
+	}{
+		{"Opaque Black", 0xFF000000, 1.0},
+		{"Semi-transparent Gray", 0x80808080, 0.5},
+		{"Transparent Red", 0x00FF0000, 0.0},
+	}
+
+	for _, test := range tests {
+		labA := LabAFromArgb(test.argb)
+		if math.Abs(labA[3]-test.alpha) > 0.01 {
+			t.Errorf("LabAFromArgb(%s/0x%08X) alpha = %.3f; want %.3f",
+				test.name, test.argb, labA[3], test.alpha)
+		}
+
+		// Test round-trip with alpha
+		roundTrip := ArgbFromLabA(labA[0], labA[1], labA[2], labA[3])
+		if roundTrip != test.argb {
+			t.Errorf("Round-trip with alpha failed for %s: ArgbFromLabA(LabAFromArgb(0x%08X)) = 0x%08X",
+				test.name, test.argb, roundTrip)
+		}
+	}
+}
+
+func TestXyzAlphaConversions(t *testing.T) {
+	tests := []struct {
+		name  string
+		argb  uint32
+		alpha float64
+	}{
+		{"Opaque White", 0xFFFFFFFF, 1.0},
+		{"Semi-transparent Blue", 0x800000FF, 0.5},
+		{"Transparent Green", 0x0000FF00, 0.0},
+	}
+
+	for _, test := range tests {
+		xyzA := XyzAFromArgb(test.argb)
+		if math.Abs(xyzA[3]-test.alpha) > 0.01 {
+			t.Errorf("XyzAFromArgb(%s/0x%08X) alpha = %.3f; want %.3f",
+				test.name, test.argb, xyzA[3], test.alpha)
+		}
+
+		// Test round-trip with alpha
+		roundTrip := ArgbFromXyzA(xyzA[0], xyzA[1], xyzA[2], xyzA[3])
+		if roundTrip != test.argb {
+			t.Errorf("Round-trip with alpha failed for %s: ArgbFromXyzA(XyzAFromArgb(0x%08X)) = 0x%08X",
+				test.name, test.argb, roundTrip)
+		}
+	}
+}
+
+// Helper function to check if two colors match within a tolerance
+func colorsMatch(c1, c2 uint32, tolerance int) bool {
+	r1, g1, b1 := int(RedFromArgb(c1)), int(GreenFromArgb(c1)), int(BlueFromArgb(c1))
+	r2, g2, b2 := int(RedFromArgb(c2)), int(GreenFromArgb(c2)), int(BlueFromArgb(c2))
+	
+	return abs(r1-r2) <= tolerance && abs(g1-g2) <= tolerance && abs(b1-b2) <= tolerance
+}
+
+// Helper function for absolute value
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
+
+// Helper function to calculate angle difference
+func angleDifference(a1, a2 float64) float64 {
+	diff := math.Abs(a1 - a2)
+	if diff > 180 {
+		diff = 360 - diff
+	}
+	return diff
+}

@@ -31,6 +31,18 @@ var (
 		{0.05562093689691305, -0.20395524564742123, 1.0571799111220335},
 	}
 
+	LinearSrgbToOklab = [][]float64{
+		{0.4122214708, 0.5363325363, 0.0514459929},
+		{0.2119034982, 0.6806995451, 0.1073969566},
+		{0.0883024619, 0.2817188376, 0.6299787005},
+	}
+
+	OklabToLinearSrgb = [][]float64{
+		{4.0767416621, -3.3077115913, 0.2309699292},
+		{-1.2684380046, 2.6097574011, -0.3413193965},
+		{-0.0041960863, -0.7034186147, 1.7076147010},
+	}
+
 	WhitePointD65 = []float64{95.047, 100.0, 108.883}
 )
 
@@ -202,4 +214,132 @@ func clampInt(min, max, value int) int {
 		return max
 	}
 	return value
+}
+
+// OklabFromArgb converts a color from ARGB to OKLAB.
+func OklabFromArgb(argb uint32) []float64 {
+	linearR := Linearized(int(RedFromArgb(argb))) / 100.0
+	linearG := Linearized(int(GreenFromArgb(argb))) / 100.0
+	linearB := Linearized(int(BlueFromArgb(argb))) / 100.0
+	
+	l := 0.4122214708*linearR + 0.5363325363*linearG + 0.0514459929*linearB
+	m := 0.2119034982*linearR + 0.6806995451*linearG + 0.1073969566*linearB
+	s := 0.0883024619*linearR + 0.2817188376*linearG + 0.6299787005*linearB
+	
+	l_ := math.Cbrt(l)
+	m_ := math.Cbrt(m)
+	s_ := math.Cbrt(s)
+	
+	return []float64{
+		0.2104542553*l_ + 0.7936177850*m_ - 0.0040720468*s_,
+		1.9779984951*l_ - 2.4285922050*m_ + 0.4505937099*s_,
+		0.0259040371*l_ + 0.7827717662*m_ - 0.8086757660*s_,
+	}
+}
+
+// ArgbFromOklab converts a color from OKLAB to ARGB.
+func ArgbFromOklab(l, a, b float64) uint32 {
+	l_ := l + 0.3963377774*a + 0.2158037573*b
+	m_ := l - 0.1055613458*a - 0.0638541728*b
+	s_ := l - 0.0894841775*a - 1.2914855480*b
+	
+	l_cubed := l_ * l_ * l_
+	m_cubed := m_ * m_ * m_
+	s_cubed := s_ * s_ * s_
+	
+	linearR := 4.0767416621*l_cubed - 3.3077115913*m_cubed + 0.2309699292*s_cubed
+	linearG := -1.2684380046*l_cubed + 2.6097574011*m_cubed - 0.3413193965*s_cubed
+	linearB := -0.0041960863*l_cubed - 0.7034186147*m_cubed + 1.7076147010*s_cubed
+	
+	r := Delinearized(linearR * 100.0)
+	g := Delinearized(linearG * 100.0)
+	bInt := Delinearized(linearB * 100.0)
+	
+	return ArgbFromRgb(uint8(r), uint8(g), uint8(bInt))
+}
+
+// OklabAFromArgb converts a color from ARGB to OKLAB with alpha.
+func OklabAFromArgb(argb uint32) []float64 {
+	oklab := OklabFromArgb(argb)
+	alpha := float64(AlphaFromArgb(argb)) / 255.0
+	return []float64{oklab[0], oklab[1], oklab[2], alpha}
+}
+
+// ArgbFromOklabA converts a color from OKLAB with alpha to ARGB.
+func ArgbFromOklabA(l, a, b, alpha float64) uint32 {
+	argb := ArgbFromOklab(l, a, b)
+	alphaByte := uint8(alpha * 255.0)
+	return (uint32(alphaByte) << 24) | (argb & 0x00FFFFFF)
+}
+
+// OklchFromArgb converts a color from ARGB to OKLCH.
+func OklchFromArgb(argb uint32) []float64 {
+	oklab := OklabFromArgb(argb)
+	return oklchFromOklab(oklab[0], oklab[1], oklab[2])
+}
+
+// ArgbFromOklch converts a color from OKLCH to ARGB.
+func ArgbFromOklch(l, c, h float64) uint32 {
+	oklab := oklabFromOklch(l, c, h)
+	return ArgbFromOklab(oklab[0], oklab[1], oklab[2])
+}
+
+// OklchAFromArgb converts a color from ARGB to OKLCH with alpha.
+func OklchAFromArgb(argb uint32) []float64 {
+	oklch := OklchFromArgb(argb)
+	alpha := float64(AlphaFromArgb(argb)) / 255.0
+	return []float64{oklch[0], oklch[1], oklch[2], alpha}
+}
+
+// ArgbFromOklchA converts a color from OKLCH with alpha to ARGB.
+func ArgbFromOklchA(l, c, h, alpha float64) uint32 {
+	argb := ArgbFromOklch(l, c, h)
+	alphaByte := uint8(alpha * 255.0)
+	return (uint32(alphaByte) << 24) | (argb & 0x00FFFFFF)
+}
+
+// oklchFromOklab converts OKLAB to OKLCH.
+func oklchFromOklab(l, a, b float64) []float64 {
+	c := math.Sqrt(a*a + b*b)
+	h := math.Atan2(b, a) * 180.0 / math.Pi
+	if h < 0 {
+		h += 360.0
+	}
+	return []float64{l, c, h}
+}
+
+// oklabFromOklch converts OKLCH to OKLAB.
+func oklabFromOklch(l, c, h float64) []float64 {
+	hRad := h * math.Pi / 180.0
+	a := c * math.Cos(hRad)
+	b := c * math.Sin(hRad)
+	return []float64{l, a, b}
+}
+
+// LabAFromArgb converts a color from ARGB to L*a*b* with alpha.
+func LabAFromArgb(argb uint32) []float64 {
+	lab := LabFromArgb(argb)
+	alpha := float64(AlphaFromArgb(argb)) / 255.0
+	return []float64{lab[0], lab[1], lab[2], alpha}
+}
+
+// ArgbFromLabA converts a color from L*a*b* with alpha to ARGB.
+func ArgbFromLabA(l, a, b, alpha float64) uint32 {
+	argb := ArgbFromLab(l, a, b)
+	alphaByte := uint8(alpha * 255.0)
+	return (uint32(alphaByte) << 24) | (argb & 0x00FFFFFF)
+}
+
+// XyzAFromArgb converts a color from ARGB to XYZ with alpha.
+func XyzAFromArgb(argb uint32) []float64 {
+	xyz := XyzFromArgb(argb)
+	alpha := float64(AlphaFromArgb(argb)) / 255.0
+	return []float64{xyz[0], xyz[1], xyz[2], alpha}
+}
+
+// ArgbFromXyzA converts a color from XYZ with alpha to ARGB.
+func ArgbFromXyzA(x, y, z, alpha float64) uint32 {
+	argb := ArgbFromXyz(x, y, z)
+	alphaByte := uint8(alpha * 255.0)
+	return (uint32(alphaByte) << 24) | (argb & 0x00FFFFFF)
 }
