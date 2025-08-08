@@ -19,6 +19,7 @@ export * from './blend/blend.js';
 export * from './contrast/contrast.js';
 export * from './dislike/dislike_analyzer.js';
 export * from './dynamiccolor/dynamic_color.js';
+export * from './dynamiccolor/contrast_curve.js';
 export * from './dynamiccolor/dynamic_scheme.js';
 export * from './dynamiccolor/material_dynamic_colors.js';
 export * from './dynamiccolor/variant.js';
