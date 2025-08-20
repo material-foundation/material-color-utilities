@@ -61,9 +61,13 @@ final class ColorSpec2025 extends ColorSpec2021 {
   @Override
   public DynamicColor onBackground() {
     // Remapped to onSurface for 2025 spec.
-    DynamicColor color2025 = onSurface().toBuilder().setName("on_background").build();
+    DynamicColor.Builder color2025Builder = onSurface().toBuilder().setName("on_background");
+    color2025Builder.setTone(
+        (s) -> {
+          return s.platform == WATCH ? 100.0 : onSurface().getTone(s);
+        });
     return super.onBackground().toBuilder()
-        .extendSpecVersion(SpecVersion.SPEC_2025, color2025)
+        .extendSpecVersion(SpecVersion.SPEC_2025, color2025Builder.build())
         .build();
   }
 

@@ -23,6 +23,7 @@ import * as math from '../utils/math_utils.js';
 import {ColorSpecDelegateImpl2021} from './color_spec_2021.js';
 import {ContrastCurve} from './contrast_curve.js';
 import {DynamicColor, extendSpecVersion} from './dynamic_color';
+import type {DynamicScheme} from './dynamic_scheme';
 import {ToneDeltaPair} from './tone_delta_pair.js';
 import {Variant} from './variant.js';
 
@@ -1151,8 +1152,12 @@ export class ColorSpecDelegateImpl2025 extends ColorSpecDelegateImpl2021 {
   }
 
   override onBackground(): DynamicColor {
-    const color2025: DynamicColor =
-        Object.assign(this.onSurface().clone(), {name: 'on_background'});
+    const color2025: DynamicColor = Object.assign(this.onSurface().clone(), {
+      name: 'on_background',
+      tone: (s: DynamicScheme) => {
+        return s.platform === 'watch' ? 100.0 : this.onSurface().getTone(s);
+      }
+    });
     return extendSpecVersion(super.onBackground(), '2025', color2025);
   }
 }
