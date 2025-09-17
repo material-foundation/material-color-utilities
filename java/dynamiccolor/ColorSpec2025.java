@@ -1599,10 +1599,8 @@ final class ColorSpec2025 extends ColorSpec2021 {
       double relativeDelta = absoluteDelta * (amRoleA ? 1 : -1);
 
       switch (constraint) {
-        case EXACT:
-          selfTone = MathUtils.clampDouble(0, 100, referenceTone + relativeDelta);
-          break;
-        case NEARER:
+        case EXACT -> selfTone = MathUtils.clampDouble(0, 100, referenceTone + relativeDelta);
+        case NEARER -> {
           if (relativeDelta > 0) {
             selfTone =
                 MathUtils.clampDouble(
@@ -1616,14 +1614,14 @@ final class ColorSpec2025 extends ColorSpec2021 {
                     100,
                     MathUtils.clampDouble(referenceTone + relativeDelta, referenceTone, selfTone));
           }
-          break;
-        case FARTHER:
+        }
+        case FARTHER -> {
           if (relativeDelta > 0) {
             selfTone = MathUtils.clampDouble(referenceTone + relativeDelta, 100, selfTone);
           } else {
             selfTone = MathUtils.clampDouble(0, referenceTone + relativeDelta, selfTone);
           }
-          break;
+        }
       }
 
       if (color.background != null && color.contrastCurve != null) {
@@ -1868,13 +1866,15 @@ final class ColorSpec2025 extends ColorSpec2021 {
       Platform platform,
       double contrastLevel) {
     switch (variant) {
-      case NEUTRAL:
+      case NEUTRAL -> {
         return TonalPalette.fromHueAndChroma(
             sourceColorHct.getHue(), (platform == PHONE ? 1.4 : 6) * 2.2);
-      case TONAL_SPOT:
+      }
+      case TONAL_SPOT -> {
         return TonalPalette.fromHueAndChroma(
             sourceColorHct.getHue(), (platform == PHONE ? 5 : 10) * 1.7);
-      case EXPRESSIVE:
+      }
+      case EXPRESSIVE -> {
         double expressiveNeutralHue = getExpressiveNeutralHue(sourceColorHct);
         double expressiveNeutralChroma =
             getExpressiveNeutralChroma(sourceColorHct, isDark, platform);
@@ -1882,13 +1882,16 @@ final class ColorSpec2025 extends ColorSpec2021 {
             expressiveNeutralHue,
             expressiveNeutralChroma
                 * (expressiveNeutralHue >= 105 && expressiveNeutralHue < 125 ? 1.6 : 2.3));
-      case VIBRANT:
+      }
+      case VIBRANT -> {
         double vibrantNeutralHue = getVibrantNeutralHue(sourceColorHct);
         double vibrantNeutralChroma = getVibrantNeutralChroma(sourceColorHct, platform);
         return TonalPalette.fromHueAndChroma(vibrantNeutralHue, vibrantNeutralChroma * 1.29);
-      default:
+      }
+      default -> {
         return super.getNeutralVariantPalette(
             variant, sourceColorHct, isDark, platform, contrastLevel);
+      }
     }
   }
 
