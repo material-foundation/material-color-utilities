@@ -173,25 +173,6 @@ interface ColorSpec {
   fun onTertiaryFixedVariant(): DynamicColor
 
   // ////////////////////////////////////////////////////////////////
-  // Android-only Colors //
-  // ////////////////////////////////////////////////////////////////
-  fun controlActivated(): DynamicColor
-
-  fun controlNormal(): DynamicColor
-
-  fun controlHighlight(): DynamicColor
-
-  fun textPrimaryInverse(): DynamicColor
-
-  fun textSecondaryAndTertiaryInverse(): DynamicColor
-
-  fun textPrimaryInverseDisableOnly(): DynamicColor
-
-  fun textSecondaryAndTertiaryInverseDisabled(): DynamicColor
-
-  fun textHintInverse(): DynamicColor
-
-  // ////////////////////////////////////////////////////////////////
   // Other //
   // ////////////////////////////////////////////////////////////////
   fun highestSurface(s: DynamicScheme): DynamicColor

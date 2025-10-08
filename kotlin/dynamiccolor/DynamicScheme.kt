@@ -237,30 +237,6 @@ open class DynamicScheme(
   val onTertiaryFixedVariant: Int
     get() = getArgb(MaterialDynamicColors().onTertiaryFixedVariant())
 
-  val controlActivated: Int
-    get() = getArgb(MaterialDynamicColors().controlActivated())
-
-  val controlNormal: Int
-    get() = getArgb(MaterialDynamicColors().controlNormal())
-
-  val controlHighlight: Int
-    get() = getArgb(MaterialDynamicColors().controlHighlight())
-
-  val textPrimaryInverse: Int
-    get() = getArgb(MaterialDynamicColors().textPrimaryInverse())
-
-  val textSecondaryAndTertiaryInverse: Int
-    get() = getArgb(MaterialDynamicColors().textSecondaryAndTertiaryInverse())
-
-  val textPrimaryInverseDisableOnly: Int
-    get() = getArgb(MaterialDynamicColors().textPrimaryInverseDisableOnly())
-
-  val textSecondaryAndTertiaryInverseDisabled: Int
-    get() = getArgb(MaterialDynamicColors().textSecondaryAndTertiaryInverseDisabled())
-
-  val textHintInverse: Int
-    get() = getArgb(MaterialDynamicColors().textHintInverse())
-
   companion object {
     val DEFAULT_SPEC_VERSION = SpecVersion.SPEC_2021
     val DEFAULT_PLATFORM = Platform.PHONE

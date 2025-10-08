@@ -1466,36 +1466,6 @@ class ColorSpec2025 : ColorSpec2021() {
   }
 
   // ////////////////////////////////////////////////////////////////
-  // Android-only Colors //
-  // ////////////////////////////////////////////////////////////////
-  override fun controlActivated(): DynamicColor {
-    // Remapped to primaryContainer for 2025 spec.
-    val color2025 = primaryContainer().toBuilder().setName("control_activated").build()
-    return super.controlActivated()
-      .toBuilder()
-      .extendSpecVersion(ColorSpec.SpecVersion.SPEC_2025, color2025)
-      .build()
-  }
-
-  override fun controlNormal(): DynamicColor {
-    // Remapped to onSurfaceVariant for 2025 spec.
-    val color2025 = onSurfaceVariant().toBuilder().setName("control_normal").build()
-    return super.controlNormal()
-      .toBuilder()
-      .extendSpecVersion(ColorSpec.SpecVersion.SPEC_2025, color2025)
-      .build()
-  }
-
-  override fun textPrimaryInverse(): DynamicColor {
-    // Remapped to inverseOnSurface for 2025 spec.
-    val color2025 = inverseOnSurface().toBuilder().setName("text_primary_inverse").build()
-    return super.textPrimaryInverse()
-      .toBuilder()
-      .extendSpecVersion(ColorSpec.SpecVersion.SPEC_2025, color2025)
-      .build()
-  }
-
-  // ////////////////////////////////////////////////////////////////
   // Other //
   // ////////////////////////////////////////////////////////////////
   private fun findBestToneForChroma(
