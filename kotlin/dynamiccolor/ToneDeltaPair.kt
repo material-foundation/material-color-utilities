@@ -19,23 +19,12 @@ package dynamiccolor
  * Documents a constraint between two DynamicColors, in which their tones must have a certain
  * distance from each other.
  *
+ * The polarity is an adjective that describes "A", compared to "B". For instance, ToneDeltaPair(A,
+ * B, 15, 'darker') states that A's tone should be at least 15 darker than B's.
+ *
  * Prefer a DynamicColor with a background, this is for special cases when designers want tonal
  * distance, literally contrast, between two colors that don't have a background / foreground
  * relationship or a contrast guarantee.
- */
-class ToneDeltaPair
-/**
- * Documents a constraint in tone distance between two DynamicColors.
- *
- * The polarity is an adjective that describes "A", compared to "B".
- *
- * For instance, ToneDeltaPair(A, B, 15, 'darker', stayTogether) states that A's tone should be at
- * least 15 darker than B's.
- *
- * 'relative_darker' and 'relative_lighter' describes the tone adjustment relative to the surface
- * color trend (white in light mode; black in dark mode). For instance, ToneDeltaPair(A, B, 10,
- * 'relative_lighter', 'farther') states that A should be at least 10 lighter than B in light mode,
- * and at least 10 darker than B in dark mode.
  *
  * @param roleA The first role in a pair.
  * @param roleB The second role in a pair.
@@ -46,36 +35,46 @@ class ToneDeltaPair
  *   (T50-59). This is necessary for certain cases where one role has two backgrounds.
  * @param constraint How to fulfill the tone delta pair constraint.
  */
-constructor(
+data class ToneDeltaPair(
   val roleA: DynamicColor,
   val roleB: DynamicColor,
   val delta: Double,
   val polarity: TonePolarity,
-  val stayTogether: Boolean,
-  val constraint: DeltaConstraint,
+  val stayTogether: Boolean = true,
+  val constraint: DeltaConstraint = DeltaConstraint.EXACT,
 ) {
-  /** Describes how to fulfill a tone delta pair constraint. */
+  /**
+   * Describes how to fulfill a tone delta pair constraint.
+   *
+   * Determines if the delta is a minimum, maximum, or exact tonal distance that must be maintained.
+   */
   enum class DeltaConstraint {
+    // The tone of roleA must be an exact delta away from the tone of roleB.
     EXACT,
+    // The tonal distance of roleA and roleB must be at most delta.
     NEARER,
+    // The tonal distance of roleA and roleB must be at least delta.
     FARTHER,
   }
 
-  /** @see ToneDeltaPair */
-  constructor(
-    roleA: DynamicColor,
-    roleB: DynamicColor,
-    delta: Double,
-    polarity: TonePolarity,
-    stayTogether: Boolean,
-  ) : this(roleA, roleB, delta, polarity, stayTogether, DeltaConstraint.EXACT)
-
-  /** @see ToneDeltaPair */
-  constructor(
-    roleA: DynamicColor,
-    roleB: DynamicColor,
-    delta: Double,
-    polarity: TonePolarity,
-    constraint: DeltaConstraint,
-  ) : this(roleA, roleB, delta, polarity, true, constraint)
+  /**
+   * Describes the relationship in lightness between two colors.
+   *
+   * 'relative_darker' and 'relative_lighter' describes the tone adjustment relative to the surface
+   * color trend (white in light mode; black in dark mode). For instance, ToneDeltaPair(A, B, 10,
+   * 'relative_lighter', 'farther') states that A should be at least 10 lighter than B in light
+   * mode, and at least 10 darker than B in dark mode.
+   */
+  enum class TonePolarity {
+    // The tone of roleA is always darker than the tone of roleB.
+    DARKER,
+    // The tone of roleA is always lighter than the tone of roleB.
+    LIGHTER,
+    // The tone of roleA is darker than the tone of roleB in light mode, and lighter than the tone
+    // ofroleB in dark mode.
+    RELATIVE_DARKER,
+    // The tone of roleA is lighter than the tone of roleB in light mode, and darker than the tone
+    // ofroleB in dark mode.
+    RELATIVE_LIGHTER,
+  }
 }

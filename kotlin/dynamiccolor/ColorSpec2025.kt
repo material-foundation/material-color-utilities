@@ -18,6 +18,7 @@ package dynamiccolor
 import contrast.Contrast
 import dynamiccolor.DynamicScheme.Platform
 import dynamiccolor.ToneDeltaPair.DeltaConstraint
+import dynamiccolor.ToneDeltaPair.TonePolarity
 import hct.Hct
 import palettes.TonalPalette
 import utils.MathUtils
@@ -607,11 +608,11 @@ class ColorSpec2025 : ColorSpec2021() {
         .setToneDeltaPair { s: DynamicScheme ->
           if (s.platform == Platform.PHONE) {
             ToneDeltaPair(
-              primaryContainer(),
-              primary(),
-              5.0,
-              TonePolarity.RELATIVE_LIGHTER,
-              DeltaConstraint.FARTHER,
+              roleA = primaryContainer(),
+              roleB = primary(),
+              delta = 5.0,
+              polarity = TonePolarity.RELATIVE_LIGHTER,
+              constraint = DeltaConstraint.FARTHER,
             )
           } else {
             null
@@ -641,7 +642,13 @@ class ColorSpec2025 : ColorSpec2021() {
       .setBackground { s: DynamicScheme -> surfaceContainerHigh() }
       .setContrastCurve { s: DynamicScheme -> getContrastCurve(4.5) }
       .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(primaryDim(), primary(), 5.0, TonePolarity.DARKER, DeltaConstraint.FARTHER)
+        ToneDeltaPair(
+          roleA = primaryDim(),
+          roleB = primary(),
+          delta = 5.0,
+          polarity = TonePolarity.DARKER,
+          constraint = DeltaConstraint.FARTHER,
+        )
       }
       .build()
   }
@@ -698,11 +705,11 @@ class ColorSpec2025 : ColorSpec2021() {
         .setToneDeltaPair { s: DynamicScheme ->
           if (s.platform == Platform.WATCH) {
             ToneDeltaPair(
-              primaryContainer(),
-              primaryDim(),
-              10.0,
-              TonePolarity.DARKER,
-              DeltaConstraint.FARTHER,
+              roleA = primaryContainer(),
+              roleB = primaryDim(),
+              delta = 10.0,
+              polarity = TonePolarity.DARKER,
+              constraint = DeltaConstraint.FARTHER,
             )
           } else {
             null
@@ -786,11 +793,11 @@ class ColorSpec2025 : ColorSpec2021() {
         .setToneDeltaPair { s: DynamicScheme ->
           if (s.platform == Platform.PHONE) {
             ToneDeltaPair(
-              secondaryContainer(),
-              secondary(),
-              5.0,
-              TonePolarity.RELATIVE_LIGHTER,
-              DeltaConstraint.FARTHER,
+              roleA = secondaryContainer(),
+              roleB = secondary(),
+              delta = 5.0,
+              polarity = TonePolarity.RELATIVE_LIGHTER,
+              constraint = DeltaConstraint.FARTHER,
             )
           } else {
             null
@@ -819,11 +826,11 @@ class ColorSpec2025 : ColorSpec2021() {
       .setContrastCurve { s: DynamicScheme -> getContrastCurve(4.5) }
       .setToneDeltaPair { s: DynamicScheme ->
         ToneDeltaPair(
-          secondaryDim()!!,
-          secondary(),
-          5.0,
-          TonePolarity.DARKER,
-          DeltaConstraint.FARTHER,
+          roleA = secondaryDim()!!,
+          roleB = secondary(),
+          delta = 5.0,
+          polarity = TonePolarity.DARKER,
+          constraint = DeltaConstraint.FARTHER,
         )
       }
       .build()
@@ -874,11 +881,11 @@ class ColorSpec2025 : ColorSpec2021() {
         .setToneDeltaPair { s: DynamicScheme ->
           if (s.platform == Platform.WATCH) {
             ToneDeltaPair(
-              secondaryContainer(),
-              secondaryDim()!!,
-              10.0,
-              TonePolarity.DARKER,
-              DeltaConstraint.FARTHER,
+              roleA = secondaryContainer(),
+              roleB = secondaryDim()!!,
+              delta = 10.0,
+              polarity = TonePolarity.DARKER,
+              constraint = DeltaConstraint.FARTHER,
             )
           } else {
             null
@@ -949,11 +956,11 @@ class ColorSpec2025 : ColorSpec2021() {
         .setToneDeltaPair { s: DynamicScheme ->
           if (s.platform == Platform.PHONE) {
             ToneDeltaPair(
-              tertiaryContainer(),
-              tertiary(),
-              5.0,
-              TonePolarity.RELATIVE_LIGHTER,
-              DeltaConstraint.FARTHER,
+              roleA = tertiaryContainer(),
+              roleB = tertiary(),
+              delta = 5.0,
+              polarity = TonePolarity.RELATIVE_LIGHTER,
+              constraint = DeltaConstraint.FARTHER,
             )
           } else {
             null
@@ -982,11 +989,11 @@ class ColorSpec2025 : ColorSpec2021() {
       .setContrastCurve { s: DynamicScheme -> getContrastCurve(4.5) }
       .setToneDeltaPair { s: DynamicScheme ->
         ToneDeltaPair(
-          tertiaryDim()!!,
-          tertiary(),
-          5.0,
-          TonePolarity.DARKER,
-          DeltaConstraint.FARTHER,
+          roleA = tertiaryDim()!!,
+          roleB = tertiary(),
+          delta = 5.0,
+          polarity = TonePolarity.DARKER,
+          constraint = DeltaConstraint.FARTHER,
         )
       }
       .build()
@@ -1049,11 +1056,11 @@ class ColorSpec2025 : ColorSpec2021() {
         .setToneDeltaPair { s: DynamicScheme ->
           if (s.platform == Platform.WATCH) {
             ToneDeltaPair(
-              tertiaryContainer(),
-              tertiaryDim()!!,
-              10.0,
-              TonePolarity.DARKER,
-              DeltaConstraint.FARTHER,
+              roleA = tertiaryContainer(),
+              roleB = tertiaryDim()!!,
+              delta = 10.0,
+              polarity = TonePolarity.DARKER,
+              constraint = DeltaConstraint.FARTHER,
             )
           } else {
             null
@@ -1114,11 +1121,11 @@ class ColorSpec2025 : ColorSpec2021() {
         .setToneDeltaPair { s: DynamicScheme ->
           if (s.platform == Platform.PHONE) {
             ToneDeltaPair(
-              errorContainer(),
-              error(),
-              5.0,
-              TonePolarity.RELATIVE_LIGHTER,
-              DeltaConstraint.FARTHER,
+              roleA = errorContainer(),
+              roleB = error(),
+              delta = 5.0,
+              polarity = TonePolarity.RELATIVE_LIGHTER,
+              constraint = DeltaConstraint.FARTHER,
             )
           } else {
             null
@@ -1140,7 +1147,13 @@ class ColorSpec2025 : ColorSpec2021() {
       .setBackground { s: DynamicScheme -> surfaceContainerHigh() }
       .setContrastCurve { s: DynamicScheme -> getContrastCurve(4.5) }
       .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(errorDim()!!, error(), 5.0, TonePolarity.DARKER, DeltaConstraint.FARTHER)
+        ToneDeltaPair(
+          roleA = errorDim()!!,
+          roleB = error(),
+          delta = 5.0,
+          polarity = TonePolarity.DARKER,
+          constraint = DeltaConstraint.FARTHER,
+        )
       }
       .build()
   }
@@ -1186,11 +1199,11 @@ class ColorSpec2025 : ColorSpec2021() {
         .setToneDeltaPair { s: DynamicScheme ->
           if (s.platform == Platform.WATCH) {
             ToneDeltaPair(
-              errorContainer(),
-              errorDim()!!,
-              10.0,
-              TonePolarity.DARKER,
-              DeltaConstraint.FARTHER,
+              roleA = errorContainer(),
+              roleB = errorDim()!!,
+              delta = 10.0,
+              polarity = TonePolarity.DARKER,
+              constraint = DeltaConstraint.FARTHER,
             )
           } else {
             null
@@ -1261,11 +1274,11 @@ class ColorSpec2025 : ColorSpec2021() {
         .setIsBackground(true)
         .setToneDeltaPair { s: DynamicScheme ->
           ToneDeltaPair(
-            primaryFixedDim(),
-            primaryFixed(),
-            5.0,
-            TonePolarity.DARKER,
-            DeltaConstraint.EXACT,
+            roleA = primaryFixedDim(),
+            roleB = primaryFixed(),
+            delta = 5.0,
+            polarity = TonePolarity.DARKER,
+            constraint = DeltaConstraint.EXACT,
           )
         }
         .build()
@@ -1342,11 +1355,11 @@ class ColorSpec2025 : ColorSpec2021() {
         .setIsBackground(true)
         .setToneDeltaPair { s: DynamicScheme ->
           ToneDeltaPair(
-            secondaryFixedDim(),
-            secondaryFixed(),
-            5.0,
-            TonePolarity.DARKER,
-            DeltaConstraint.EXACT,
+            roleA = secondaryFixedDim(),
+            roleB = secondaryFixed(),
+            delta = 5.0,
+            polarity = TonePolarity.DARKER,
+            constraint = DeltaConstraint.EXACT,
           )
         }
         .build()
@@ -1423,11 +1436,11 @@ class ColorSpec2025 : ColorSpec2021() {
         .setIsBackground(true)
         .setToneDeltaPair { s: DynamicScheme ->
           ToneDeltaPair(
-            tertiaryFixedDim(),
-            tertiaryFixed(),
-            5.0,
-            TonePolarity.DARKER,
-            DeltaConstraint.EXACT,
+            roleA = tertiaryFixedDim(),
+            roleB = tertiaryFixed(),
+            delta = 5.0,
+            polarity = TonePolarity.DARKER,
+            constraint = DeltaConstraint.EXACT,
           )
         }
         .build()

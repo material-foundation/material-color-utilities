@@ -18,6 +18,8 @@ package dynamiccolor
 import contrast.Contrast
 import dislike.DislikeAnalyzer
 import dynamiccolor.DynamicScheme.Platform
+import dynamiccolor.ToneDeltaPair.DeltaConstraint
+import dynamiccolor.ToneDeltaPair.TonePolarity
 import hct.Hct
 import palettes.TonalPalette
 import temperature.TemperatureCache
@@ -314,7 +316,14 @@ open class ColorSpec2021 : ColorSpec {
       .setBackground(this::highestSurface)
       .setContrastCurve { s: DynamicScheme -> ContrastCurve(3.0, 4.5, 7.0, 7.0) }
       .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(primaryContainer(), primary(), 10.0, TonePolarity.NEARER, false)
+        ToneDeltaPair(
+          primaryContainer(),
+          primary(),
+          10.0,
+          TonePolarity.RELATIVE_LIGHTER,
+          stayTogether = false,
+          constraint = DeltaConstraint.NEARER,
+        )
       }
       .build()
   }
@@ -356,7 +365,14 @@ open class ColorSpec2021 : ColorSpec {
       .setBackground(this::highestSurface)
       .setContrastCurve { s: DynamicScheme -> ContrastCurve(1.0, 1.0, 3.0, 4.5) }
       .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(primaryContainer(), primary(), 10.0, TonePolarity.NEARER, false)
+        ToneDeltaPair(
+          primaryContainer(),
+          primary(),
+          10.0,
+          TonePolarity.RELATIVE_LIGHTER,
+          stayTogether = false,
+          constraint = DeltaConstraint.NEARER,
+        )
       }
       .build()
   }
@@ -401,7 +417,14 @@ open class ColorSpec2021 : ColorSpec {
       .setBackground(this::highestSurface)
       .setContrastCurve { s: DynamicScheme -> ContrastCurve(3.0, 4.5, 7.0, 7.0) }
       .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(secondaryContainer(), secondary(), 10.0, TonePolarity.NEARER, false)
+        ToneDeltaPair(
+          secondaryContainer(),
+          secondary(),
+          10.0,
+          TonePolarity.RELATIVE_LIGHTER,
+          stayTogether = false,
+          constraint = DeltaConstraint.NEARER,
+        )
       }
       .build()
   }
@@ -449,7 +472,14 @@ open class ColorSpec2021 : ColorSpec {
       .setBackground(this::highestSurface)
       .setContrastCurve { s: DynamicScheme -> ContrastCurve(1.0, 1.0, 3.0, 4.5) }
       .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(secondaryContainer(), secondary(), 10.0, TonePolarity.NEARER, false)
+        ToneDeltaPair(
+          secondaryContainer(),
+          secondary(),
+          10.0,
+          TonePolarity.RELATIVE_LIGHTER,
+          stayTogether = false,
+          constraint = DeltaConstraint.NEARER,
+        )
       }
       .build()
   }
@@ -490,7 +520,14 @@ open class ColorSpec2021 : ColorSpec {
       .setBackground(this::highestSurface)
       .setContrastCurve { s: DynamicScheme -> ContrastCurve(3.0, 4.5, 7.0, 7.0) }
       .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(tertiaryContainer(), tertiary(), 10.0, TonePolarity.NEARER, false)
+        ToneDeltaPair(
+          tertiaryContainer(),
+          tertiary(),
+          10.0,
+          TonePolarity.RELATIVE_LIGHTER,
+          stayTogether = false,
+          constraint = DeltaConstraint.NEARER,
+        )
       }
       .build()
   }
@@ -533,7 +570,14 @@ open class ColorSpec2021 : ColorSpec {
       .setBackground(this::highestSurface)
       .setContrastCurve { s: DynamicScheme -> ContrastCurve(1.0, 1.0, 3.0, 4.5) }
       .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(tertiaryContainer(), tertiary(), 10.0, TonePolarity.NEARER, false)
+        ToneDeltaPair(
+          tertiaryContainer(),
+          tertiary(),
+          10.0,
+          TonePolarity.RELATIVE_LIGHTER,
+          stayTogether = false,
+          constraint = DeltaConstraint.NEARER,
+        )
       }
       .build()
   }
@@ -568,7 +612,14 @@ open class ColorSpec2021 : ColorSpec {
       .setBackground(this::highestSurface)
       .setContrastCurve { s: DynamicScheme -> ContrastCurve(3.0, 4.5, 7.0, 7.0) }
       .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(errorContainer(), error(), 10.0, TonePolarity.NEARER, false)
+        ToneDeltaPair(
+          errorContainer(),
+          error(),
+          10.0,
+          TonePolarity.RELATIVE_LIGHTER,
+          stayTogether = false,
+          constraint = DeltaConstraint.NEARER,
+        )
       }
       .build()
   }
@@ -596,7 +647,14 @@ open class ColorSpec2021 : ColorSpec {
       .setBackground(this::highestSurface)
       .setContrastCurve { s: DynamicScheme -> ContrastCurve(1.0, 1.0, 3.0, 4.5) }
       .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(errorContainer(), error(), 10.0, TonePolarity.NEARER, false)
+        ToneDeltaPair(
+          errorContainer(),
+          error(),
+          10.0,
+          TonePolarity.RELATIVE_LIGHTER,
+          stayTogether = false,
+          constraint = DeltaConstraint.NEARER,
+        )
       }
       .build()
   }
@@ -847,7 +905,7 @@ open class ColorSpec2021 : ColorSpec {
       val polarity = toneDeltaPair.polarity
       val stayTogether = toneDeltaPair.stayTogether
       val aIsNearer =
-        (polarity == TonePolarity.NEARER ||
+        (toneDeltaPair.constraint == DeltaConstraint.NEARER ||
           (polarity == TonePolarity.LIGHTER && !scheme.isDark) ||
           (polarity == TonePolarity.DARKER && !scheme.isDark))
       val nearer = if (aIsNearer) roleA else roleB
