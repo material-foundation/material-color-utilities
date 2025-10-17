@@ -272,13 +272,14 @@ class TemperatureCache(val input: Hct) {
      * warm.
      *
      * Color science has researched emotion and harmony, which art uses to select colors. Warm-cool
-     * is the foundation of analogous and complementary colors. See: - Li-Chen Ou's Chapter 19 in
-     * Handbook of Color Psychology (2015). - Josef Albers' Interaction of Color chapters 19 and 21.
+     * is the foundation of analogous and complementary colors. See:
+     * - Li-Chen Ou's Chapter 19 in Handbook of Color Psychology (2015).
+     * - Josef Albers' Interaction of Color chapters 19 and 21.
      *
      * Implementation of Ou, Woodcock and Wright's algorithm, which uses Lab/LCH color space. Return
-     * value has these properties:<br>
-     * - Values below 0 are cool, above 0 are warm.<br>
-     * - Lower bound: -9.66. Chroma is infinite. Assuming max of Lab chroma 130.<br>
+     * value has these properties:
+     * - Values below 0 are cool, above 0 are warm.
+     * - Lower bound: -9.66. Chroma is infinite. Assuming max of Lab chroma 130.
      * - Upper bound: 8.61. Chroma is infinite. Assuming max of Lab chroma 130.
      */
     fun rawTemperature(color: Hct): Double {

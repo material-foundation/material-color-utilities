@@ -301,10 +301,9 @@ class QuantizerWu : Quantizer {
   }
 
   companion object {
-    // A histogram of all the input colors is constructed. It has the shape of a
-    // cube. The cube would be too large if it contained all 16 million colors:
-    // historical best practice is to use 5 bits of the 8 in each channel,
-    // reducing the histogram to a volume of ~32,000.
+    // A histogram of all the input colors is constructed. It has the shape of a cube. The cube
+    // would be too large if it contained all 16 million colors: historical best practice is to use
+    // 5 bits of the 8 in each channel, reducing the histogram to a volume of ~32,000.
     private const val INDEX_BITS = 5
     private const val INDEX_COUNT = 33 // ((1 << INDEX_BITS) + 1)
     private const val TOTAL_SIZE = 35937 // INDEX_COUNT * INDEX_COUNT * INDEX_COUNT

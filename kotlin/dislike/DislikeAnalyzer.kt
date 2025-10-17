@@ -46,5 +46,7 @@ object DislikeAnalyzer {
   fun fixIfDisliked(hct: Hct): Hct =
     if (isDisliked(hct)) {
       Hct.from(hct.hue, hct.chroma, 70.0)
-    } else hct
+    } else {
+      hct
+    }
 }
