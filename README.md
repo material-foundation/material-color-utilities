@@ -21,13 +21,13 @@ setup steps beyong simply `go get`.
 1. From within your Go project, fetch the module
 
 ```bash
-$ go get github.com/jcc620/hct-converter-go@v0.0.1
+$ go get github.com/jcc620/hct-converter-go@v0.0.2
 ```
 
 2. Go to the installed package's directory
 
 ```bash
-$ cd $GOPATH/pkg/mod/github.com/jcc620/hct-converter-go@v0.0.1/cpp
+$ cd $GOPATH/pkg/mod/github.com/jcc620/hct-converter-go@v0.0.2/cpp
 ```
 
 3. Build the C++ library
