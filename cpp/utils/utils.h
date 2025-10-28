@@ -125,11 +125,6 @@ double RotationDirection(const double from, const double to);
 double LstarFromArgb(const Argb argb);
 
 /**
- * Returns the hexadecimal representation of a color.
- */
-std::string HexFromArgb(Argb argb);
-
-/**
  * Linearizes an RGB component.
  *
  * @param rgb_component 0 <= rgb_component <= 255, represents R/G/B

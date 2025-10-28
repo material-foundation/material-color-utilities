@@ -213,11 +213,6 @@ TEST(UtilsTest, LstarFromArgb) {
   EXPECT_THAT(LstarFromArgb(0xff010204), DoubleNear(0.529651, 1e-4));
 }
 
-TEST(UtilsTest, HexFromArgb) {
-  EXPECT_EQ(HexFromArgb(0xff89bce1), "ff89bce1");
-  EXPECT_EQ(HexFromArgb(0xff010204), "ff010204");
-}
-
 TEST(UtilsTest, IntFromLstar) {
   // Given an L* brightness value in [0, 100], IntFromLstar returns a greyscale
   // color in ARGB format with that brightness.
