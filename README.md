@@ -1,79 +1,65 @@
-# Material Color Utilities
+# HCT Converter
 
-Color is a powerful design tool and part of the Material system along with
-styles like typography and shape. In products, colors and the way they are used
-can be vast and varied. An app’s color scheme can express brand and style.
-Semantic colors can communicate meaning. And color contrast control supports
-visual accessibility.
+## About
 
-In many design systems of the past, designers manually picked app colors to
-support the necessary range of color applications and use cases. Material 3
-introduces a dynamic color system, which does not rely on hand-picked colors.
-Instead, it uses color algorithms to generate beautiful, accessible color
-schemes based on dynamic inputs like a user’s wallpaper. This enables greater
-flexibility, personalization, and expression, all while streamlining work for
-designers and teams.
+This library provides functionality for conversion between the RGB color space
+and Google's [HCT color space](https://m3.material.io/blog/science-of-color-design) 
+because Go support is not included in Google's [`material-color-utilities`](https://github.com/material-foundation/material-color-utilities)
+repository.
 
-Material Color Ultilities (MCU) powers dynamic color with a set of color
-libraries containing algorithms and utilities that make it easier for you to
-develop color themes and schemes in your app.
+## Setup
 
-<video autoplay muted loop src="https://user-images.githubusercontent.com/6655696/146014425-8e8e04bc-e646-4cc2-a3e7-97497a3e1b09.mp4" data-canonical-src="https://user-images.githubusercontent.com/6655696/146014425-8e8e04bc-e646-4cc2-a3e7-97497a3e1b09.mp4" class="d-block rounded-bottom-2 width-fit" style="max-width:640px;"></video>
+Since this library depends on a C++ library via `cgo`, there are some additional
+setup steps beyong simply `go get`.
 
-## Library availability
+### Pre-Requisites
+* This library is designed to work on Linux machines.
+* You must have the `cmake` command available
 
+### Downloading & Building
 
-Language    | Availability  | Location
------------ | ------------- | --------
-C++         | ✅             |
-Dart        | ✅             | [![pub package](https://img.shields.io/pub/v/material_color_utilities.svg)](https://pub.dev/packages/material_color_utilities)
-Java        | ✅             | [MDC-Android](https://github.com/material-components/material-components-android/blob/master/docs/theming/Color.md)
-Swift       | ✅             |
-TypeScript  | ✅             | [![npm package](https://badgen.net/npm/v/@material/material-color-utilities)](https://npmjs.com/package/@material/material-color-utilities)
-Kotlin        | ✅             |
+1. From within your Go project, fetch the module
 
-Need another platform/language? Check the
-[existing issues](https://github.com/material-foundation/material-color-utilities/labels/library%3A%20new)
-or open a new one.
+```bash
+$ go get github.com/jcc620/hct-converter-go@v0.0.1
+```
 
-## Capabilities Overview
+2. Go to the installed package's directory
 
-<a href="https://github.com/material-foundation/material-color-utilities/raw/main/cheat_sheet.png">
-    <img alt="library cheat sheet" src="https://github.com/material-foundation/material-color-utilities/raw/main/cheat_sheet.png" style="max-width:640px;" />
-</a>
+```bash
+$ cd $GOPATH/pkg/mod/github.com/jcc620/hct-converter-go@v0.0.1/cpp
+```
 
-The library consists of various components, each having its own folder and
- tests, designed to be as self-contained as possible. This enables seamless
- integration of subsets into other libraries, like Material Design Components
- and Android System UI. Some consumers do not require all components, for
- example, MDC doesn’t need quantization, scoring, image extraction.
+3. Build the C++ library
 
+```
+$ mkdir build
+$ cmake -S . -B build
+$ cmake --build build
+```
 
-| Components       | Purpose                                                   |
-| ---------------- | --------------------------------------------------------- |
-| **blend**        | Interpolate, harmonize, animate, and gradate colors in HCT |
-| **contrast**     | Measure contrast, obtain contrastful colors               |
-| **dislike**      | Check and fix universally disliked colors                 |
-| **dynamiccolor** | Obtain colors that adjust based on UI state (dark theme, style, preferences, contrast requirements, etc.) |
-| **hct**          | A new color space (hue, chrome, tone) based on CAM16 x L*, that accounts for viewing conditions |
-| **palettes**     | Tonal palette — range of colors that varies only in tone <br>Core palette — set of tonal palettes needed to create Material color schemes |
-| **quantize**     | Turn an image into N colors; composed of Celebi, which runs Wu, then WSMeans |
-| **scheme**       | Create static and dynamic color schemes from a single color or a core palette |
-| **score**        | Rank colors for suitability for theming                   |
-| **temperature**  | Obtain analogous and complementary colors                 |
-| **utilities**    | Color — convert between color spaces needed to implement HCT/CAM16 <br>Math — functions for ex. ensuring hue is between 0 and 360, clamping, etc. <br>String - convert between strings and integers |
+## Usage
 
-## Learn about color science
+This module is used as follows:
 
-[The Science of Color & Design - Material Design](https://material.io/blog/science-of-color-design)
+```go
+package main
 
-## Try it out
+import (
+    "fmt"
 
-### Material Theme Builder
+    hctconv "github.com/jcc620/hct-converter-go"
+)
 
-We recommend incorporating the Material Theme Builder
-[Figma plugin](https://www.figma.com/community/plugin/1034969338659738588/Material-Theme-Builder)
-and [web tool](https://material-foundation.github.io/material-theme-builder/)
-into the design workflow. With them, designers can easily experiment with
-different dynamic color themes and see how they transform their designs with
-just a few clicks.
+func main() {
+    hue, chroma, tone := hctconv.RGBToHCT(200, 35, 160)
+    fmt.Printf("Hue: %d\nChroma: %d\nTone: %d\n", hue, chroma, tone)
+
+    red, green, blue := hctconv.HCTToRGB(hue, chroma, tone)
+    fmt.Printf("Red: %d\nGreen: %d\nBlue: %d\n", red, green, blue)
+}
+```
+
+## Credit
+
+* [`material-color-utilities`](https://github.com/material-foundation/material-color-utilities)
