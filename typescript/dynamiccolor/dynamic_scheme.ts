@@ -186,13 +186,27 @@ export class DynamicScheme {
 
   readonly colors: MaterialDynamicColors;
 
+  private static maybeFallbackSpecVersion(
+      specVersion: SpecVersion, variant: Variant): SpecVersion {
+    switch (variant) {
+      case Variant.EXPRESSIVE:
+      case Variant.VIBRANT:
+      case Variant.TONAL_SPOT:
+      case Variant.NEUTRAL:
+        return specVersion;
+      default:
+        return '2021';
+    }
+  }
+
   constructor(args: DynamicSchemeOptions) {
     this.sourceColorArgb = args.sourceColorHct.toInt();
     this.variant = args.variant;
     this.contrastLevel = args.contrastLevel;
     this.isDark = args.isDark;
     this.platform = args.platform ?? 'phone';
-    this.specVersion = args.specVersion ?? '2021';
+    this.specVersion = DynamicScheme.maybeFallbackSpecVersion(
+        args.specVersion ?? '2021', this.variant);
     this.sourceColorHct = args.sourceColorHct;
     this.primaryPalette = args.primaryPalette ??
         getSpec(this.specVersion)

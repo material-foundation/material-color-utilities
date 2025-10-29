@@ -43,7 +43,7 @@ open class DynamicScheme(
   /** The platform on which this scheme is intended to be used. */
   val platform: Platform = DEFAULT_PLATFORM,
   /** The spec version of the scheme. */
-  val specVersion: SpecVersion = DEFAULT_SPEC_VERSION,
+  specVersion: SpecVersion = DEFAULT_SPEC_VERSION,
   val primaryPalette: TonalPalette,
   val secondaryPalette: TonalPalette,
   val tertiaryPalette: TonalPalette,
@@ -51,6 +51,13 @@ open class DynamicScheme(
   val neutralVariantPalette: TonalPalette,
   val errorPalette: TonalPalette,
 ) {
+
+  /** The spec version of the scheme. */
+  val specVersion: SpecVersion
+
+  init {
+    this.specVersion = maybeFallbackSpecVersion(specVersion, variant)
+  }
 
   /** The source color of the scheme in ARGB format. */
   val sourceColorArgb: Int = sourceColorHct.toInt()
@@ -341,6 +348,24 @@ open class DynamicScheme(
         rotation = 0.0
       }
       return MathUtils.sanitizeDegreesDouble(sourceColorHct.hue + rotation)
+    }
+
+    /**
+     * Returns the spec version to use for the given variant. If the variant is not supported by the
+     * given spec version, the fallback spec version is returned.
+     */
+    private fun maybeFallbackSpecVersion(specVersion: SpecVersion, variant: Variant): SpecVersion {
+      return when (variant) {
+        Variant.EXPRESSIVE,
+        Variant.VIBRANT,
+        Variant.TONAL_SPOT,
+        Variant.NEUTRAL -> specVersion
+        Variant.MONOCHROME,
+        Variant.FIDELITY,
+        Variant.CONTENT,
+        Variant.RAINBOW,
+        Variant.FRUIT_SALAD -> SpecVersion.SPEC_2021
+      }
     }
   }
 }
