@@ -386,7 +386,8 @@ class ColorSpec2025 : ColorSpec2021() {
           }
         }
         .setContrastCurve { s: DynamicScheme ->
-          if (s.isDark) getContrastCurve(11.0) else getContrastCurve(9.0)
+          if (s.isDark && s.platform == Platform.PHONE) getContrastCurve(11.0)
+          else getContrastCurve(9.0)
         }
         .build()
     return super.onSurface()

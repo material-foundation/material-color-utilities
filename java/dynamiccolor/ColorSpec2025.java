@@ -428,7 +428,8 @@ final class ColorSpec2025 extends ColorSpec2021 {
                     return surfaceContainerHigh();
                   }
                 })
-            .setContrastCurve((s) -> s.isDark ? getContrastCurve(11) : getContrastCurve(9))
+            .setContrastCurve(
+                (s) -> s.isDark && s.platform == PHONE ? getContrastCurve(11) : getContrastCurve(9))
             .build();
     return super.onSurface().toBuilder()
         .extendSpecVersion(SpecVersion.SPEC_2025, color2025)

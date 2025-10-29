@@ -416,7 +416,8 @@ export class ColorSpecDelegateImpl2025 extends ColorSpecDelegateImpl2021 {
       },
       background: (s) => s.platform === 'phone' ? this.highestSurface(s) :
                                                   this.surfaceContainerHigh(),
-      contrastCurve: (s) => s.isDark ? getCurve(11) : getCurve(9),
+      contrastCurve: (s) =>
+          s.isDark && s.platform === 'phone' ? getCurve(11) : getCurve(9),
     });
     return extendSpecVersion(super.onSurface(), '2025', color2025);
   }
