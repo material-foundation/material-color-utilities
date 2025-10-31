@@ -583,15 +583,23 @@ class ColorSpec2025 : ColorSpec2021() {
               }
             }
             s.variant == Variant.EXPRESSIVE -> {
-              tMaxC(
-                s.primaryPalette,
-                0.0,
-                if (Hct.isYellow(s.primaryPalette.hue)) 25.0
-                else if (Hct.isCyan(s.primaryPalette.hue)) 88.0 else 98.0,
-              )
+              if (s.platform == Platform.PHONE) {
+                tMaxC(
+                  s.primaryPalette,
+                  0.0,
+                  if (Hct.isYellow(s.primaryPalette.hue)) 25.0
+                  else if (Hct.isCyan(s.primaryPalette.hue)) 88.0 else 98.0,
+                )
+              } else { // WATCH
+                tMaxC(s.primaryPalette)
+              }
             }
             else -> { // VIBRANT
-              tMaxC(s.primaryPalette, 0.0, if (Hct.isCyan(s.primaryPalette.hue)) 88.0 else 98.0)
+              if (s.platform == Platform.PHONE) {
+                tMaxC(s.primaryPalette, 0.0, if (Hct.isCyan(s.primaryPalette.hue)) 88.0 else 98.0)
+              } else { // WATCH
+                tMaxC(s.primaryPalette)
+              }
             }
           }
         }

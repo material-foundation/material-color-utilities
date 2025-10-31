@@ -544,14 +544,23 @@ export class ColorSpecDelegateImpl2025 extends ColorSpecDelegateImpl2021 {
             return tMaxC(s.primaryPalette, 0, 90);
           }
         } else if (s.variant === Variant.EXPRESSIVE) {
-          return tMaxC(
-              s.primaryPalette, 0,
-              Hct.isYellow(s.primaryPalette.hue)   ? 25 :
-                  Hct.isCyan(s.primaryPalette.hue) ? 88 :
-                                                     98);
+          if (s.platform === 'phone') {
+            return tMaxC(
+                s.primaryPalette, 0,
+                Hct.isYellow(s.primaryPalette.hue)   ? 25 :
+                    Hct.isCyan(s.primaryPalette.hue) ? 88 :
+                                                       98);
+          } else {  // WATCH
+            return tMaxC(s.primaryPalette);
+          }
         } else {  // VIBRANT
-          return tMaxC(
-              s.primaryPalette, 0, Hct.isCyan(s.primaryPalette.hue) ? 88 : 98);
+          if (s.platform === 'phone') {
+            return tMaxC(
+                s.primaryPalette, 0,
+                Hct.isCyan(s.primaryPalette.hue) ? 88 : 98);
+          } else {  // WATCH
+            return tMaxC(s.primaryPalette);
+          }
         }
       },
       isBackground: true,
