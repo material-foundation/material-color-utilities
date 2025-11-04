@@ -29,854 +29,848 @@ import kotlin.math.max
 import kotlin.math.min
 
 /** [ColorSpec] implementation for the 2021 spec. */
-open class ColorSpec2021 : ColorSpec {
+class ColorSpec2021 : ColorSpec {
   // ////////////////////////////////////////////////////////////////
   // Main Palettes //
   // ////////////////////////////////////////////////////////////////
-  override fun primaryPaletteKeyColor(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("primary_palette_key_color")
-      .setPalette { s: DynamicScheme -> s.primaryPalette }
-      .setTone { s: DynamicScheme -> s.primaryPalette.keyColor.tone }
-      .build()
-  }
+  override val primaryPaletteKeyColor: DynamicColor
+    get() =
+      DynamicColor(
+        name = "primary_palette_key_color",
+        palette = { scheme -> scheme.primaryPalette },
+        tone = { scheme -> scheme.primaryPalette.keyColor.tone },
+      )
 
-  override fun secondaryPaletteKeyColor(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("secondary_palette_key_color")
-      .setPalette { s: DynamicScheme -> s.secondaryPalette }
-      .setTone { s: DynamicScheme -> s.secondaryPalette.keyColor.tone }
-      .build()
-  }
+  override val secondaryPaletteKeyColor: DynamicColor
+    get() =
+      DynamicColor(
+        name = "secondary_palette_key_color",
+        palette = { scheme -> scheme.secondaryPalette },
+        tone = { scheme -> scheme.secondaryPalette.keyColor.tone },
+      )
 
-  override fun tertiaryPaletteKeyColor(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("tertiary_palette_key_color")
-      .setPalette { s: DynamicScheme -> s.tertiaryPalette }
-      .setTone { s: DynamicScheme -> s.tertiaryPalette.keyColor.tone }
-      .build()
-  }
+  override val tertiaryPaletteKeyColor: DynamicColor
+    get() =
+      DynamicColor(
+        name = "tertiary_palette_key_color",
+        palette = { scheme -> scheme.tertiaryPalette },
+        tone = { scheme -> scheme.tertiaryPalette.keyColor.tone },
+      )
 
-  override fun neutralPaletteKeyColor(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("neutral_palette_key_color")
-      .setPalette { s: DynamicScheme -> s.neutralPalette }
-      .setTone { s: DynamicScheme -> s.neutralPalette.keyColor.tone }
-      .build()
-  }
+  override val neutralPaletteKeyColor: DynamicColor
+    get() =
+      DynamicColor(
+        name = "neutral_palette_key_color",
+        palette = { scheme -> scheme.neutralPalette },
+        tone = { scheme -> scheme.neutralPalette.keyColor.tone },
+      )
 
-  override fun neutralVariantPaletteKeyColor(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("neutral_variant_palette_key_color")
-      .setPalette { s: DynamicScheme -> s.neutralVariantPalette }
-      .setTone { s: DynamicScheme -> s.neutralVariantPalette.keyColor.tone }
-      .build()
-  }
+  override val neutralVariantPaletteKeyColor: DynamicColor
+    get() =
+      DynamicColor(
+        name = "neutral_variant_palette_key_color",
+        palette = { scheme -> scheme.neutralVariantPalette },
+        tone = { scheme -> scheme.neutralVariantPalette.keyColor.tone },
+      )
 
-  override fun errorPaletteKeyColor(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("error_palette_key_color")
-      .setPalette { s: DynamicScheme -> s.errorPalette }
-      .setTone { s: DynamicScheme -> s.errorPalette.keyColor.tone }
-      .build()
-  }
+  override val errorPaletteKeyColor: DynamicColor
+    get() =
+      DynamicColor(
+        name = "error_palette_key_color",
+        palette = { scheme -> scheme.errorPalette },
+        tone = { scheme -> scheme.errorPalette.keyColor.tone },
+      )
 
   // ////////////////////////////////////////////////////////////////
   // Surfaces [S] //
   // ////////////////////////////////////////////////////////////////
-  override fun background(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("background")
-      .setPalette { s: DynamicScheme -> s.neutralPalette }
-      .setTone { s: DynamicScheme -> if (s.isDark) 6.0 else 98.0 }
-      .setIsBackground(true)
-      .build()
-  }
+  override val background: DynamicColor
+    get() =
+      DynamicColor(
+        name = "background",
+        palette = { scheme -> scheme.neutralPalette },
+        tone = { scheme -> if (scheme.isDark) 6.0 else 98.0 },
+        isBackground = true,
+      )
 
-  override fun onBackground(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("on_background")
-      .setPalette { s: DynamicScheme -> s.neutralPalette }
-      .setTone { s: DynamicScheme -> if (s.isDark) 90.0 else 10.0 }
-      .setBackground { s: DynamicScheme -> background() }
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(3.0, 3.0, 4.5, 7.0) }
-      .build()
-  }
+  override val onBackground: DynamicColor
+    get() =
+      DynamicColor(
+        name = "on_background",
+        palette = { scheme -> scheme.neutralPalette },
+        tone = { scheme -> if (scheme.isDark) 90.0 else 10.0 },
+        background = { background },
+        contrastCurve = { ContrastCurve(3.0, 3.0, 4.5, 7.0) },
+      )
 
-  override fun surface(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("surface")
-      .setPalette { s: DynamicScheme -> s.neutralPalette }
-      .setTone { s: DynamicScheme -> if (s.isDark) 6.0 else 98.0 }
-      .setIsBackground(true)
-      .build()
-  }
+  override val surface: DynamicColor
+    get() =
+      DynamicColor(
+        name = "surface",
+        palette = { scheme -> scheme.neutralPalette },
+        tone = { scheme -> if (scheme.isDark) 6.0 else 98.0 },
+        isBackground = true,
+      )
 
-  override fun surfaceDim(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("surface_dim")
-      .setPalette { s: DynamicScheme -> s.neutralPalette }
-      .setTone { s: DynamicScheme ->
-        if (s.isDark) 6.0 else ContrastCurve(87.0, 87.0, 80.0, 75.0).get(s.contrastLevel)
-      }
-      .setIsBackground(true)
-      .build()
-  }
+  override val surfaceDim: DynamicColor
+    get() =
+      DynamicColor(
+        name = "surface_dim",
+        palette = { scheme -> scheme.neutralPalette },
+        tone = { scheme ->
+          if (scheme.isDark) {
+            6.0
+          } else {
+            ContrastCurve(87.0, 87.0, 80.0, 75.0).get(scheme.contrastLevel)
+          }
+        },
+        isBackground = true,
+      )
 
-  override fun surfaceBright(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("surface_bright")
-      .setPalette { s: DynamicScheme -> s.neutralPalette }
-      .setTone { s: DynamicScheme ->
-        if (s.isDark) ContrastCurve(24.0, 24.0, 29.0, 34.0).get(s.contrastLevel) else 98.0
-      }
-      .setIsBackground(true)
-      .build()
-  }
+  override val surfaceBright: DynamicColor
+    get() =
+      DynamicColor(
+        name = "surface_bright",
+        palette = { scheme -> scheme.neutralPalette },
+        tone = { scheme ->
+          if (scheme.isDark) {
+            ContrastCurve(24.0, 24.0, 29.0, 34.0).get(scheme.contrastLevel)
+          } else {
+            98.0
+          }
+        },
+        isBackground = true,
+      )
 
-  override fun surfaceContainerLowest(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("surface_container_lowest")
-      .setPalette { s: DynamicScheme -> s.neutralPalette }
-      .setTone { s: DynamicScheme ->
-        if (s.isDark) ContrastCurve(4.0, 4.0, 2.0, 0.0).get(s.contrastLevel) else 100.0
-      }
-      .setIsBackground(true)
-      .build()
-  }
+  override val surfaceContainerLowest: DynamicColor
+    get() =
+      DynamicColor(
+        name = "surface_container_lowest",
+        palette = { scheme -> scheme.neutralPalette },
+        tone = { scheme ->
+          if (scheme.isDark) ContrastCurve(4.0, 4.0, 2.0, 0.0).get(scheme.contrastLevel) else 100.0
+        },
+        isBackground = true,
+      )
 
-  override fun surfaceContainerLow(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("surface_container_low")
-      .setPalette { s: DynamicScheme -> s.neutralPalette }
-      .setTone { s: DynamicScheme ->
-        if (s.isDark) {
-          ContrastCurve(10.0, 10.0, 11.0, 12.0).get(s.contrastLevel)
-        } else {
-          ContrastCurve(96.0, 96.0, 96.0, 95.0).get(s.contrastLevel)
-        }
-      }
-      .setIsBackground(true)
-      .build()
-  }
+  override val surfaceContainerLow: DynamicColor
+    get() =
+      DynamicColor(
+        name = "surface_container_low",
+        palette = { scheme -> scheme.neutralPalette },
+        tone = { scheme ->
+          if (scheme.isDark) {
+            ContrastCurve(10.0, 10.0, 11.0, 12.0).get(scheme.contrastLevel)
+          } else {
+            ContrastCurve(96.0, 96.0, 96.0, 95.0).get(scheme.contrastLevel)
+          }
+        },
+        isBackground = true,
+      )
 
-  override fun surfaceContainer(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("surface_container")
-      .setPalette { s: DynamicScheme -> s.neutralPalette }
-      .setTone { s: DynamicScheme ->
-        if (s.isDark) {
-          ContrastCurve(12.0, 12.0, 16.0, 20.0).get(s.contrastLevel)
-        } else {
-          ContrastCurve(94.0, 94.0, 92.0, 90.0).get(s.contrastLevel)
-        }
-      }
-      .setIsBackground(true)
-      .build()
-  }
+  override val surfaceContainer: DynamicColor
+    get() =
+      DynamicColor(
+        name = "surface_container",
+        palette = { scheme -> scheme.neutralPalette },
+        tone = { scheme ->
+          if (scheme.isDark) {
+            ContrastCurve(12.0, 12.0, 16.0, 20.0).get(scheme.contrastLevel)
+          } else {
+            ContrastCurve(94.0, 94.0, 92.0, 90.0).get(scheme.contrastLevel)
+          }
+        },
+        isBackground = true,
+      )
 
-  override fun surfaceContainerHigh(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("surface_container_high")
-      .setPalette { s: DynamicScheme -> s.neutralPalette }
-      .setTone { s: DynamicScheme ->
-        if (s.isDark) {
-          ContrastCurve(17.0, 17.0, 21.0, 25.0).get(s.contrastLevel)
-        } else {
-          ContrastCurve(92.0, 92.0, 88.0, 85.0).get(s.contrastLevel)
-        }
-      }
-      .setIsBackground(true)
-      .build()
-  }
+  override val surfaceContainerHigh: DynamicColor
+    get() =
+      DynamicColor(
+        name = "surface_container_high",
+        palette = { scheme -> scheme.neutralPalette },
+        tone = { scheme ->
+          if (scheme.isDark) {
+            ContrastCurve(17.0, 17.0, 21.0, 25.0).get(scheme.contrastLevel)
+          } else {
+            ContrastCurve(92.0, 92.0, 88.0, 85.0).get(scheme.contrastLevel)
+          }
+        },
+        isBackground = true,
+      )
 
-  override fun surfaceContainerHighest(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("surface_container_highest")
-      .setPalette { s: DynamicScheme -> s.neutralPalette }
-      .setTone { s: DynamicScheme ->
-        if (s.isDark) {
-          ContrastCurve(22.0, 22.0, 26.0, 30.0).get(s.contrastLevel)
-        } else {
-          ContrastCurve(90.0, 90.0, 84.0, 80.0).get(s.contrastLevel)
-        }
-      }
-      .setIsBackground(true)
-      .build()
-  }
+  override val surfaceContainerHighest: DynamicColor
+    get() =
+      DynamicColor(
+        name = "surface_container_highest",
+        palette = { scheme -> scheme.neutralPalette },
+        tone = { scheme ->
+          if (scheme.isDark) {
+            ContrastCurve(22.0, 22.0, 26.0, 30.0).get(scheme.contrastLevel)
+          } else {
+            ContrastCurve(90.0, 90.0, 84.0, 80.0).get(scheme.contrastLevel)
+          }
+        },
+        isBackground = true,
+      )
 
-  override fun onSurface(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("on_surface")
-      .setPalette { s: DynamicScheme -> s.neutralPalette }
-      .setTone { s: DynamicScheme -> if (s.isDark) 90.0 else 10.0 }
-      .setBackground(this::highestSurface)
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(4.5, 7.0, 11.0, 21.0) }
-      .build()
-  }
+  override val onSurface: DynamicColor
+    get() =
+      DynamicColor(
+        name = "on_surface",
+        palette = { scheme -> scheme.neutralPalette },
+        tone = { scheme -> if (scheme.isDark) 90.0 else 10.0 },
+        background = this::highestSurface,
+        contrastCurve = { ContrastCurve(4.5, 7.0, 11.0, 21.0) },
+      )
 
-  override fun surfaceVariant(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("surface_variant")
-      .setPalette { s: DynamicScheme -> s.neutralVariantPalette }
-      .setTone { s: DynamicScheme -> if (s.isDark) 30.0 else 90.0 }
-      .setIsBackground(true)
-      .build()
-  }
+  override val surfaceVariant: DynamicColor
+    get() =
+      DynamicColor(
+        name = "surface_variant",
+        palette = { scheme -> scheme.neutralVariantPalette },
+        tone = { scheme -> if (scheme.isDark) 30.0 else 90.0 },
+        isBackground = true,
+      )
 
-  override fun onSurfaceVariant(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("on_surface_variant")
-      .setPalette { s: DynamicScheme -> s.neutralVariantPalette }
-      .setTone { s: DynamicScheme -> if (s.isDark) 80.0 else 30.0 }
-      .setBackground(this::highestSurface)
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(3.0, 4.5, 7.0, 11.0) }
-      .build()
-  }
+  override val onSurfaceVariant: DynamicColor
+    get() =
+      DynamicColor(
+        name = "on_surface_variant",
+        palette = { scheme -> scheme.neutralVariantPalette },
+        tone = { scheme -> if (scheme.isDark) 80.0 else 30.0 },
+        background = this::highestSurface,
+        contrastCurve = { ContrastCurve(3.0, 4.5, 7.0, 11.0) },
+      )
 
-  override fun inverseSurface(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("inverse_surface")
-      .setPalette { s: DynamicScheme -> s.neutralPalette }
-      .setTone { s: DynamicScheme -> if (s.isDark) 90.0 else 20.0 }
-      .setIsBackground(true)
-      .build()
-  }
+  override val inverseSurface: DynamicColor
+    get() =
+      DynamicColor(
+        name = "inverse_surface",
+        palette = { scheme -> scheme.neutralPalette },
+        tone = { scheme -> if (scheme.isDark) 90.0 else 20.0 },
+        isBackground = true,
+      )
 
-  override fun inverseOnSurface(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("inverse_on_surface")
-      .setPalette { s: DynamicScheme -> s.neutralPalette }
-      .setTone { s: DynamicScheme -> if (s.isDark) 20.0 else 95.0 }
-      .setBackground { s: DynamicScheme -> inverseSurface() }
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(4.5, 7.0, 11.0, 21.0) }
-      .build()
-  }
+  override val inverseOnSurface: DynamicColor
+    get() =
+      DynamicColor(
+        name = "inverse_on_surface",
+        palette = { scheme -> scheme.neutralPalette },
+        tone = { scheme -> if (scheme.isDark) 20.0 else 95.0 },
+        background = { inverseSurface },
+        contrastCurve = { ContrastCurve(4.5, 7.0, 11.0, 21.0) },
+      )
 
-  override fun outline(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("outline")
-      .setPalette { s: DynamicScheme -> s.neutralVariantPalette }
-      .setTone { s: DynamicScheme -> if (s.isDark) 60.0 else 50.0 }
-      .setBackground(this::highestSurface)
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(1.5, 3.0, 4.5, 7.0) }
-      .build()
-  }
+  override val outline: DynamicColor
+    get() =
+      DynamicColor(
+        name = "outline",
+        palette = { scheme -> scheme.neutralVariantPalette },
+        tone = { scheme -> if (scheme.isDark) 60.0 else 50.0 },
+        background = this::highestSurface,
+        contrastCurve = { ContrastCurve(1.5, 3.0, 4.5, 7.0) },
+      )
 
-  override fun outlineVariant(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("outline_variant")
-      .setPalette { s: DynamicScheme -> s.neutralVariantPalette }
-      .setTone { s: DynamicScheme -> if (s.isDark) 30.0 else 80.0 }
-      .setBackground(this::highestSurface)
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(1.0, 1.0, 3.0, 4.5) }
-      .build()
-  }
+  override val outlineVariant: DynamicColor
+    get() =
+      DynamicColor(
+        name = "outline_variant",
+        palette = { scheme -> scheme.neutralVariantPalette },
+        tone = { scheme -> if (scheme.isDark) 30.0 else 80.0 },
+        background = this::highestSurface,
+        contrastCurve = { ContrastCurve(1.0, 1.0, 3.0, 4.5) },
+      )
 
-  override fun shadow(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("shadow")
-      .setPalette { s: DynamicScheme -> s.neutralPalette }
-      .setTone { s: DynamicScheme -> 0.0 }
-      .build()
-  }
+  override val shadow: DynamicColor
+    get() =
+      DynamicColor(name = "shadow", palette = { scheme -> scheme.neutralPalette }, tone = { 0.0 })
 
-  override fun scrim(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("scrim")
-      .setPalette { s: DynamicScheme -> s.neutralPalette }
-      .setTone { s: DynamicScheme -> 0.0 }
-      .build()
-  }
+  override val scrim: DynamicColor
+    get() =
+      DynamicColor(name = "scrim", palette = { scheme -> scheme.neutralPalette }, tone = { 0.0 })
 
-  override fun surfaceTint(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("surface_tint")
-      .setPalette { s: DynamicScheme -> s.primaryPalette }
-      .setTone { s: DynamicScheme -> if (s.isDark) 80.0 else 40.0 }
-      .setIsBackground(true)
-      .build()
-  }
+  override val surfaceTint: DynamicColor
+    get() =
+      DynamicColor(
+        name = "surface_tint",
+        palette = { scheme -> scheme.primaryPalette },
+        tone = { scheme -> if (scheme.isDark) 80.0 else 40.0 },
+        isBackground = true,
+      )
 
   // ////////////////////////////////////////////////////////////////
   // Primaries [P] //
   // ////////////////////////////////////////////////////////////////
-  override fun primary(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("primary")
-      .setPalette { s: DynamicScheme -> s.primaryPalette }
-      .setTone { s: DynamicScheme ->
-        if (isMonochrome(s)) {
-          if (s.isDark) 100.0 else 0.0
-        } else {
-          if (s.isDark) 80.0 else 40.0
-        }
-      }
-      .setIsBackground(true)
-      .setBackground(this::highestSurface)
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(3.0, 4.5, 7.0, 7.0) }
-      .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(
-          primaryContainer(),
-          primary(),
-          10.0,
-          TonePolarity.RELATIVE_LIGHTER,
-          stayTogether = false,
-          constraint = DeltaConstraint.NEARER,
-        )
-      }
-      .build()
-  }
+  override val primary: DynamicColor
+    get() =
+      DynamicColor(
+        name = "primary",
+        palette = { scheme -> scheme.primaryPalette },
+        tone = { scheme ->
+          if (isMonochrome(scheme)) {
+            if (scheme.isDark) 100.0 else 0.0
+          } else {
+            if (scheme.isDark) 80.0 else 40.0
+          }
+        },
+        isBackground = true,
+        background = this::highestSurface,
+        contrastCurve = { ContrastCurve(3.0, 4.5, 7.0, 7.0) },
+        toneDeltaPair = {
+          ToneDeltaPair(
+            roleA = primaryContainer,
+            roleB = primary,
+            delta = 10.0,
+            polarity = TonePolarity.RELATIVE_LIGHTER,
+            stayTogether = false,
+            constraint = DeltaConstraint.NEARER,
+          )
+        },
+      )
 
-  override fun primaryDim(): DynamicColor? {
-    return null
-  }
+  override val primaryDim: DynamicColor?
+    get() = null
 
-  override fun onPrimary(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("on_primary")
-      .setPalette { s: DynamicScheme -> s.primaryPalette }
-      .setTone { s: DynamicScheme ->
-        if (isMonochrome(s)) {
-          if (s.isDark) 10.0 else 90.0
-        } else {
-          if (s.isDark) 20.0 else 100.0
-        }
-      }
-      .setBackground { s: DynamicScheme -> primary() }
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(4.5, 7.0, 11.0, 21.0) }
-      .build()
-  }
+  override val onPrimary: DynamicColor
+    get() =
+      DynamicColor(
+        name = "on_primary",
+        palette = { scheme -> scheme.primaryPalette },
+        tone = { scheme ->
+          if (isMonochrome(scheme)) {
+            if (scheme.isDark) 10.0 else 90.0
+          } else {
+            if (scheme.isDark) 20.0 else 100.0
+          }
+        },
+        background = { primary },
+        contrastCurve = { ContrastCurve(4.5, 7.0, 11.0, 21.0) },
+      )
 
-  override fun primaryContainer(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("primary_container")
-      .setPalette { s: DynamicScheme -> s.primaryPalette }
-      .setTone { s: DynamicScheme ->
-        if (isFidelity(s)) {
-          s.sourceColorHct.tone
-        } else if (isMonochrome(s)) {
-          if (s.isDark) 85.0 else 25.0
-        } else {
-          if (s.isDark) 30.0 else 90.0
-        }
-      }
-      .setIsBackground(true)
-      .setBackground(this::highestSurface)
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(1.0, 1.0, 3.0, 4.5) }
-      .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(
-          primaryContainer(),
-          primary(),
-          10.0,
-          TonePolarity.RELATIVE_LIGHTER,
-          stayTogether = false,
-          constraint = DeltaConstraint.NEARER,
-        )
-      }
-      .build()
-  }
+  override val primaryContainer: DynamicColor
+    get() =
+      DynamicColor(
+        name = "primary_container",
+        palette = { scheme -> scheme.primaryPalette },
+        tone = { scheme ->
+          if (isFidelity(scheme)) {
+            scheme.sourceColorHct.tone
+          } else if (isMonochrome(scheme)) {
+            if (scheme.isDark) 85.0 else 25.0
+          } else {
+            if (scheme.isDark) 30.0 else 90.0
+          }
+        },
+        isBackground = true,
+        background = this::highestSurface,
+        contrastCurve = { ContrastCurve(1.0, 1.0, 3.0, 4.5) },
+        toneDeltaPair = {
+          ToneDeltaPair(
+            roleA = primaryContainer,
+            roleB = primary,
+            delta = 10.0,
+            polarity = TonePolarity.RELATIVE_LIGHTER,
+            stayTogether = false,
+            constraint = DeltaConstraint.NEARER,
+          )
+        },
+      )
 
-  override fun onPrimaryContainer(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("on_primary_container")
-      .setPalette { s: DynamicScheme -> s.primaryPalette }
-      .setTone { s: DynamicScheme ->
-        if (isFidelity(s)) {
-          DynamicColor.foregroundTone(primaryContainer().tone.invoke(s), 4.5)
-        } else if (isMonochrome(s)) {
-          if (s.isDark) 0.0 else 100.0
-        } else {
-          if (s.isDark) 90.0 else 30.0
-        }
-      }
-      .setBackground { s: DynamicScheme -> primaryContainer() }
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(3.0, 4.5, 7.0, 11.0) }
-      .build()
-  }
+  override val onPrimaryContainer: DynamicColor
+    get() =
+      DynamicColor(
+        name = "on_primary_container",
+        palette = { scheme -> scheme.primaryPalette },
+        tone = { scheme ->
+          if (isFidelity(scheme)) {
+            DynamicColor.foregroundTone(primaryContainer.tone.invoke(scheme), 4.5)
+          } else if (isMonochrome(scheme)) {
+            if (scheme.isDark) 0.0 else 100.0
+          } else {
+            if (scheme.isDark) 90.0 else 30.0
+          }
+        },
+        background = { primaryContainer },
+        contrastCurve = { ContrastCurve(3.0, 4.5, 7.0, 11.0) },
+      )
 
-  override fun inversePrimary(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("inverse_primary")
-      .setPalette { s: DynamicScheme -> s.primaryPalette }
-      .setTone { s: DynamicScheme -> if (s.isDark) 40.0 else 80.0 }
-      .setBackground { s: DynamicScheme -> inverseSurface() }
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(3.0, 4.5, 7.0, 7.0) }
-      .build()
-  }
+  override val inversePrimary: DynamicColor
+    get() =
+      DynamicColor(
+        name = "inverse_primary",
+        palette = { scheme -> scheme.primaryPalette },
+        tone = { scheme -> if (scheme.isDark) 40.0 else 80.0 },
+        background = { inverseSurface },
+        contrastCurve = { ContrastCurve(3.0, 4.5, 7.0, 7.0) },
+      )
 
   // ////////////////////////////////////////////////////////////////
   // Secondaries [Q] //
   // ////////////////////////////////////////////////////////////////
-  override fun secondary(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("secondary")
-      .setPalette { s: DynamicScheme -> s.secondaryPalette }
-      .setTone { s: DynamicScheme -> if (s.isDark) 80.0 else 40.0 }
-      .setIsBackground(true)
-      .setBackground(this::highestSurface)
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(3.0, 4.5, 7.0, 7.0) }
-      .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(
-          secondaryContainer(),
-          secondary(),
-          10.0,
-          TonePolarity.RELATIVE_LIGHTER,
-          stayTogether = false,
-          constraint = DeltaConstraint.NEARER,
-        )
-      }
-      .build()
-  }
-
-  override fun secondaryDim(): DynamicColor? {
-    return null
-  }
-
-  override fun onSecondary(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("on_secondary")
-      .setPalette { s: DynamicScheme -> s.secondaryPalette }
-      .setTone { s: DynamicScheme ->
-        if (isMonochrome(s)) {
-          if (s.isDark) 10.0 else 100.0
-        } else {
-          if (s.isDark) 20.0 else 100.0
-        }
-      }
-      .setBackground { s: DynamicScheme -> secondary() }
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(4.5, 7.0, 11.0, 21.0) }
-      .build()
-  }
-
-  override fun secondaryContainer(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("secondary_container")
-      .setPalette { s: DynamicScheme -> s.secondaryPalette }
-      .setTone { s: DynamicScheme ->
-        val initialTone = if (s.isDark) 30.0 else 90.0
-        if (isMonochrome(s)) {
-          if (s.isDark) 30.0 else 85.0
-        } else if (!isFidelity(s)) {
-          initialTone
-        } else {
-          findDesiredChromaByTone(
-            s.secondaryPalette.hue,
-            s.secondaryPalette.chroma,
-            initialTone,
-            !s.isDark,
+  override val secondary: DynamicColor
+    get() =
+      DynamicColor(
+        name = "secondary",
+        palette = { scheme -> scheme.secondaryPalette },
+        tone = { scheme -> if (scheme.isDark) 80.0 else 40.0 },
+        isBackground = true,
+        background = this::highestSurface,
+        contrastCurve = { ContrastCurve(3.0, 4.5, 7.0, 7.0) },
+        toneDeltaPair = {
+          ToneDeltaPair(
+            roleA = secondaryContainer,
+            roleB = secondary,
+            delta = 10.0,
+            polarity = TonePolarity.RELATIVE_LIGHTER,
+            stayTogether = false,
+            constraint = DeltaConstraint.NEARER,
           )
-        }
-      }
-      .setIsBackground(true)
-      .setBackground(this::highestSurface)
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(1.0, 1.0, 3.0, 4.5) }
-      .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(
-          secondaryContainer(),
-          secondary(),
-          10.0,
-          TonePolarity.RELATIVE_LIGHTER,
-          stayTogether = false,
-          constraint = DeltaConstraint.NEARER,
-        )
-      }
-      .build()
-  }
+        },
+      )
 
-  override fun onSecondaryContainer(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("on_secondary_container")
-      .setPalette { s: DynamicScheme -> s.secondaryPalette }
-      .setTone { s: DynamicScheme ->
-        if (isMonochrome(s)) {
-          if (s.isDark) 90.0 else 10.0
-        } else if (!isFidelity(s)) {
-          if (s.isDark) 90.0 else 30.0
-        } else {
-          DynamicColor.foregroundTone(secondaryContainer().tone.invoke(s), 4.5)
-        }
-      }
-      .setBackground { s: DynamicScheme -> secondaryContainer() }
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(3.0, 4.5, 7.0, 11.0) }
-      .build()
-  }
+  override val secondaryDim: DynamicColor?
+    get() = null
+
+  override val onSecondary: DynamicColor
+    get() =
+      DynamicColor(
+        name = "on_secondary",
+        palette = { scheme -> scheme.secondaryPalette },
+        tone = { scheme ->
+          if (isMonochrome(scheme)) {
+            if (scheme.isDark) 10.0 else 100.0
+          } else {
+            if (scheme.isDark) 20.0 else 100.0
+          }
+        },
+        background = { secondary },
+        contrastCurve = { ContrastCurve(4.5, 7.0, 11.0, 21.0) },
+      )
+
+  override val secondaryContainer: DynamicColor
+    get() =
+      DynamicColor(
+        name = "secondary_container",
+        palette = { scheme -> scheme.secondaryPalette },
+        tone = { scheme ->
+          val initialTone = if (scheme.isDark) 30.0 else 90.0
+          if (isMonochrome(scheme)) {
+            if (scheme.isDark) 30.0 else 85.0
+          } else if (!isFidelity(scheme)) {
+            initialTone
+          } else {
+            findDesiredChromaByTone(
+              scheme.secondaryPalette.hue,
+              scheme.secondaryPalette.chroma,
+              initialTone,
+              !scheme.isDark,
+            )
+          }
+        },
+        isBackground = true,
+        background = this::highestSurface,
+        contrastCurve = { ContrastCurve(1.0, 1.0, 3.0, 4.5) },
+        toneDeltaPair = {
+          ToneDeltaPair(
+            roleA = secondaryContainer,
+            roleB = secondary,
+            delta = 10.0,
+            polarity = TonePolarity.RELATIVE_LIGHTER,
+            stayTogether = false,
+            constraint = DeltaConstraint.NEARER,
+          )
+        },
+      )
+
+  override val onSecondaryContainer: DynamicColor
+    get() =
+      DynamicColor(
+        name = "on_secondary_container",
+        palette = { scheme -> scheme.secondaryPalette },
+        tone = { scheme ->
+          if (isMonochrome(scheme)) {
+            if (scheme.isDark) 90.0 else 10.0
+          } else if (!isFidelity(scheme)) {
+            if (scheme.isDark) 90.0 else 30.0
+          } else {
+            DynamicColor.foregroundTone(secondaryContainer.tone.invoke(scheme), 4.5)
+          }
+        },
+        background = { secondaryContainer },
+        contrastCurve = { ContrastCurve(3.0, 4.5, 7.0, 11.0) },
+      )
 
   // ////////////////////////////////////////////////////////////////
   // Tertiaries [T] //
   // ////////////////////////////////////////////////////////////////
-  override fun tertiary(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("tertiary")
-      .setPalette { s: DynamicScheme -> s.tertiaryPalette }
-      .setTone { s: DynamicScheme ->
-        if (isMonochrome(s)) {
-          if (s.isDark) 90.0 else 25.0
-        } else {
-          if (s.isDark) 80.0 else 40.0
-        }
-      }
-      .setIsBackground(true)
-      .setBackground(this::highestSurface)
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(3.0, 4.5, 7.0, 7.0) }
-      .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(
-          tertiaryContainer(),
-          tertiary(),
-          10.0,
-          TonePolarity.RELATIVE_LIGHTER,
-          stayTogether = false,
-          constraint = DeltaConstraint.NEARER,
-        )
-      }
-      .build()
-  }
+  override val tertiary: DynamicColor
+    get() =
+      DynamicColor(
+        name = "tertiary",
+        palette = { scheme -> scheme.tertiaryPalette },
+        tone = { scheme ->
+          if (isMonochrome(scheme)) {
+            if (scheme.isDark) 90.0 else 25.0
+          } else {
+            if (scheme.isDark) 80.0 else 40.0
+          }
+        },
+        isBackground = true,
+        background = this::highestSurface,
+        contrastCurve = { ContrastCurve(3.0, 4.5, 7.0, 7.0) },
+        toneDeltaPair = {
+          ToneDeltaPair(
+            roleA = tertiaryContainer,
+            roleB = tertiary,
+            delta = 10.0,
+            polarity = TonePolarity.RELATIVE_LIGHTER,
+            stayTogether = false,
+            constraint = DeltaConstraint.NEARER,
+          )
+        },
+      )
 
-  override fun tertiaryDim(): DynamicColor? {
-    return null
-  }
+  override val tertiaryDim: DynamicColor?
+    get() = null
 
-  override fun onTertiary(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("on_tertiary")
-      .setPalette { s: DynamicScheme -> s.tertiaryPalette }
-      .setTone { s: DynamicScheme ->
-        if (isMonochrome(s)) {
-          if (s.isDark) 10.0 else 90.0
-        } else {
-          if (s.isDark) 20.0 else 100.0
-        }
-      }
-      .setBackground { s: DynamicScheme -> tertiary() }
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(4.5, 7.0, 11.0, 21.0) }
-      .build()
-  }
+  override val onTertiary: DynamicColor
+    get() =
+      DynamicColor(
+        name = "on_tertiary",
+        palette = { scheme -> scheme.tertiaryPalette },
+        tone = { scheme ->
+          if (isMonochrome(scheme)) {
+            if (scheme.isDark) 10.0 else 90.0
+          } else {
+            if (scheme.isDark) 20.0 else 100.0
+          }
+        },
+        background = { tertiary },
+        contrastCurve = { ContrastCurve(4.5, 7.0, 11.0, 21.0) },
+      )
 
-  override fun tertiaryContainer(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("tertiary_container")
-      .setPalette { s: DynamicScheme -> s.tertiaryPalette }
-      .setTone { s: DynamicScheme ->
-        if (isMonochrome(s)) {
-          if (s.isDark) 60.0 else 49.0
-        } else if (!isFidelity(s)) {
-          if (s.isDark) 30.0 else 90.0
-        } else {
-          val proposedHct = s.tertiaryPalette.getHct(s.sourceColorHct.tone)
-          DislikeAnalyzer.fixIfDisliked(proposedHct).tone
-        }
-      }
-      .setIsBackground(true)
-      .setBackground(this::highestSurface)
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(1.0, 1.0, 3.0, 4.5) }
-      .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(
-          tertiaryContainer(),
-          tertiary(),
-          10.0,
-          TonePolarity.RELATIVE_LIGHTER,
-          stayTogether = false,
-          constraint = DeltaConstraint.NEARER,
-        )
-      }
-      .build()
-  }
+  override val tertiaryContainer: DynamicColor
+    get() =
+      DynamicColor(
+        name = "tertiary_container",
+        palette = { scheme -> scheme.tertiaryPalette },
+        tone = { scheme ->
+          if (isMonochrome(scheme)) {
+            if (scheme.isDark) 60.0 else 49.0
+          } else if (!isFidelity(scheme)) {
+            if (scheme.isDark) 30.0 else 90.0
+          } else {
+            val proposedHct = scheme.tertiaryPalette.getHct(scheme.sourceColorHct.tone)
+            DislikeAnalyzer.fixIfDisliked(proposedHct).tone
+          }
+        },
+        isBackground = true,
+        background = this::highestSurface,
+        contrastCurve = { ContrastCurve(1.0, 1.0, 3.0, 4.5) },
+        toneDeltaPair = {
+          ToneDeltaPair(
+            roleA = tertiaryContainer,
+            roleB = tertiary,
+            delta = 10.0,
+            polarity = TonePolarity.RELATIVE_LIGHTER,
+            stayTogether = false,
+            constraint = DeltaConstraint.NEARER,
+          )
+        },
+      )
 
-  override fun onTertiaryContainer(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("on_tertiary_container")
-      .setPalette { s: DynamicScheme -> s.tertiaryPalette }
-      .setTone { s: DynamicScheme ->
-        if (isMonochrome(s)) {
-          if (s.isDark) 0.0 else 100.0
-        } else if (!isFidelity(s)) {
-          if (s.isDark) 90.0 else 30.0
-        } else {
-          DynamicColor.foregroundTone(tertiaryContainer().tone.invoke(s), 4.5)
-        }
-      }
-      .setBackground { s: DynamicScheme -> tertiaryContainer() }
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(3.0, 4.5, 7.0, 11.0) }
-      .build()
-  }
+  override val onTertiaryContainer: DynamicColor
+    get() =
+      DynamicColor(
+        name = "on_tertiary_container",
+        palette = { scheme -> scheme.tertiaryPalette },
+        tone = { scheme ->
+          if (isMonochrome(scheme)) {
+            if (scheme.isDark) 0.0 else 100.0
+          } else if (!isFidelity(scheme)) {
+            if (scheme.isDark) 90.0 else 30.0
+          } else {
+            DynamicColor.foregroundTone(tertiaryContainer.tone.invoke(scheme), 4.5)
+          }
+        },
+        background = { tertiaryContainer },
+        contrastCurve = { ContrastCurve(3.0, 4.5, 7.0, 11.0) },
+      )
 
   // ////////////////////////////////////////////////////////////////
   // Errors [E] //
   // ////////////////////////////////////////////////////////////////
-  override fun error(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("error")
-      .setPalette { s: DynamicScheme -> s.errorPalette }
-      .setTone { s: DynamicScheme -> if (s.isDark) 80.0 else 40.0 }
-      .setIsBackground(true)
-      .setBackground(this::highestSurface)
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(3.0, 4.5, 7.0, 7.0) }
-      .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(
-          errorContainer(),
-          error(),
-          10.0,
-          TonePolarity.RELATIVE_LIGHTER,
-          stayTogether = false,
-          constraint = DeltaConstraint.NEARER,
-        )
-      }
-      .build()
-  }
+  override val error: DynamicColor
+    get() =
+      DynamicColor(
+        name = "error",
+        palette = { scheme -> scheme.errorPalette },
+        tone = { scheme -> if (scheme.isDark) 80.0 else 40.0 },
+        isBackground = true,
+        background = this::highestSurface,
+        contrastCurve = { ContrastCurve(3.0, 4.5, 7.0, 7.0) },
+        toneDeltaPair = {
+          ToneDeltaPair(
+            roleA = errorContainer,
+            roleB = error,
+            delta = 10.0,
+            polarity = TonePolarity.RELATIVE_LIGHTER,
+            stayTogether = false,
+            constraint = DeltaConstraint.NEARER,
+          )
+        },
+      )
 
-  override fun errorDim(): DynamicColor? {
-    return null
-  }
+  override val errorDim: DynamicColor?
+    get() = null
 
-  override fun onError(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("on_error")
-      .setPalette { s: DynamicScheme -> s.errorPalette }
-      .setTone { s: DynamicScheme -> if (s.isDark) 20.0 else 100.0 }
-      .setBackground { s: DynamicScheme -> error() }
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(4.5, 7.0, 11.0, 21.0) }
-      .build()
-  }
+  override val onError: DynamicColor
+    get() =
+      DynamicColor(
+        name = "on_error",
+        palette = { scheme -> scheme.errorPalette },
+        tone = { scheme -> if (scheme.isDark) 20.0 else 100.0 },
+        background = { error },
+        contrastCurve = { ContrastCurve(4.5, 7.0, 11.0, 21.0) },
+      )
 
-  override fun errorContainer(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("error_container")
-      .setPalette { s: DynamicScheme -> s.errorPalette }
-      .setTone { s: DynamicScheme -> if (s.isDark) 30.0 else 90.0 }
-      .setIsBackground(true)
-      .setBackground(this::highestSurface)
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(1.0, 1.0, 3.0, 4.5) }
-      .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(
-          errorContainer(),
-          error(),
-          10.0,
-          TonePolarity.RELATIVE_LIGHTER,
-          stayTogether = false,
-          constraint = DeltaConstraint.NEARER,
-        )
-      }
-      .build()
-  }
+  override val errorContainer: DynamicColor
+    get() =
+      DynamicColor(
+        name = "error_container",
+        palette = { scheme -> scheme.errorPalette },
+        tone = { scheme -> if (scheme.isDark) 30.0 else 90.0 },
+        isBackground = true,
+        background = this::highestSurface,
+        contrastCurve = { ContrastCurve(1.0, 1.0, 3.0, 4.5) },
+        toneDeltaPair = {
+          ToneDeltaPair(
+            roleA = errorContainer,
+            roleB = error,
+            delta = 10.0,
+            polarity = TonePolarity.RELATIVE_LIGHTER,
+            stayTogether = false,
+            constraint = DeltaConstraint.NEARER,
+          )
+        },
+      )
 
-  override fun onErrorContainer(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("on_error_container")
-      .setPalette { s: DynamicScheme -> s.errorPalette }
-      .setTone { s: DynamicScheme ->
-        if (isMonochrome(s)) {
-          if (s.isDark) 90.0 else 10.0
-        } else {
-          if (s.isDark) 90.0 else 30.0
-        }
-      }
-      .setBackground { s: DynamicScheme -> errorContainer() }
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(3.0, 4.5, 7.0, 11.0) }
-      .build()
-  }
+  override val onErrorContainer: DynamicColor
+    get() =
+      DynamicColor(
+        name = "on_error_container",
+        palette = { scheme -> scheme.errorPalette },
+        tone = { scheme ->
+          if (isMonochrome(scheme)) {
+            if (scheme.isDark) 90.0 else 10.0
+          } else {
+            if (scheme.isDark) 90.0 else 30.0
+          }
+        },
+        background = { errorContainer },
+        contrastCurve = { ContrastCurve(3.0, 4.5, 7.0, 11.0) },
+      )
 
   // ////////////////////////////////////////////////////////////////
   // Primary Fixed Colors [PF] //
   // ////////////////////////////////////////////////////////////////
-  override fun primaryFixed(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("primary_fixed")
-      .setPalette { s: DynamicScheme -> s.primaryPalette }
-      .setTone { s: DynamicScheme -> if (isMonochrome(s)) 40.0 else 90.0 }
-      .setIsBackground(true)
-      .setBackground(this::highestSurface)
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(1.0, 1.0, 3.0, 4.5) }
-      .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(primaryFixed(), primaryFixedDim(), 10.0, TonePolarity.LIGHTER, true)
-      }
-      .build()
-  }
+  override val primaryFixed: DynamicColor
+    get() =
+      DynamicColor(
+        name = "primary_fixed",
+        palette = { scheme -> scheme.primaryPalette },
+        tone = { scheme -> if (isMonochrome(scheme)) 40.0 else 90.0 },
+        isBackground = true,
+        background = this::highestSurface,
+        contrastCurve = { ContrastCurve(1.0, 1.0, 3.0, 4.5) },
+        toneDeltaPair = {
+          ToneDeltaPair(
+            roleA = primaryFixed,
+            roleB = primaryFixedDim,
+            delta = 10.0,
+            polarity = TonePolarity.LIGHTER,
+            stayTogether = true,
+          )
+        },
+      )
 
-  override fun primaryFixedDim(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("primary_fixed_dim")
-      .setPalette { s: DynamicScheme -> s.primaryPalette }
-      .setTone { s: DynamicScheme -> if (isMonochrome(s)) 30.0 else 80.0 }
-      .setIsBackground(true)
-      .setBackground(this::highestSurface)
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(1.0, 1.0, 3.0, 4.5) }
-      .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(primaryFixed(), primaryFixedDim(), 10.0, TonePolarity.LIGHTER, true)
-      }
-      .build()
-  }
+  override val primaryFixedDim: DynamicColor
+    get() =
+      DynamicColor(
+        name = "primary_fixed_dim",
+        palette = { scheme -> scheme.primaryPalette },
+        tone = { scheme -> if (isMonochrome(scheme)) 30.0 else 80.0 },
+        isBackground = true,
+        background = this::highestSurface,
+        contrastCurve = { ContrastCurve(1.0, 1.0, 3.0, 4.5) },
+        toneDeltaPair = {
+          ToneDeltaPair(
+            roleA = primaryFixed,
+            roleB = primaryFixedDim,
+            delta = 10.0,
+            polarity = TonePolarity.LIGHTER,
+            stayTogether = true,
+          )
+        },
+      )
 
-  override fun onPrimaryFixed(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("on_primary_fixed")
-      .setPalette { s: DynamicScheme -> s.primaryPalette }
-      .setTone { s: DynamicScheme -> if (isMonochrome(s)) 100.0 else 10.0 }
-      .setBackground { s: DynamicScheme -> primaryFixedDim() }
-      .setSecondBackground { s: DynamicScheme -> primaryFixed() }
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(4.5, 7.0, 11.0, 21.0) }
-      .build()
-  }
+  override val onPrimaryFixed: DynamicColor
+    get() =
+      DynamicColor(
+        name = "on_primary_fixed",
+        palette = { scheme -> scheme.primaryPalette },
+        tone = { scheme -> if (isMonochrome(scheme)) 100.0 else 10.0 },
+        background = { primaryFixedDim },
+        secondBackground = { primaryFixed },
+        contrastCurve = { ContrastCurve(4.5, 7.0, 11.0, 21.0) },
+      )
 
-  override fun onPrimaryFixedVariant(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("on_primary_fixed_variant")
-      .setPalette { s: DynamicScheme -> s.primaryPalette }
-      .setTone { s: DynamicScheme -> if (isMonochrome(s)) 90.0 else 30.0 }
-      .setBackground { s: DynamicScheme -> primaryFixedDim() }
-      .setSecondBackground { s: DynamicScheme -> primaryFixed() }
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(3.0, 4.5, 7.0, 11.0) }
-      .build()
-  }
+  override val onPrimaryFixedVariant: DynamicColor
+    get() =
+      DynamicColor(
+        name = "on_primary_fixed_variant",
+        palette = { scheme -> scheme.primaryPalette },
+        tone = { scheme -> if (isMonochrome(scheme)) 90.0 else 30.0 },
+        background = { primaryFixedDim },
+        secondBackground = { primaryFixed },
+        contrastCurve = { ContrastCurve(3.0, 4.5, 7.0, 11.0) },
+      )
 
   // ////////////////////////////////////////////////////////////////
   // Secondary Fixed Colors [QF] //
   // ////////////////////////////////////////////////////////////////
-  override fun secondaryFixed(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("secondary_fixed")
-      .setPalette { s: DynamicScheme -> s.secondaryPalette }
-      .setTone { s: DynamicScheme -> if (isMonochrome(s)) 80.0 else 90.0 }
-      .setIsBackground(true)
-      .setBackground(this::highestSurface)
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(1.0, 1.0, 3.0, 4.5) }
-      .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(secondaryFixed(), secondaryFixedDim(), 10.0, TonePolarity.LIGHTER, true)
-      }
-      .build()
-  }
+  override val secondaryFixed: DynamicColor
+    get() =
+      DynamicColor(
+        name = "secondary_fixed",
+        palette = { scheme -> scheme.secondaryPalette },
+        tone = { scheme -> if (isMonochrome(scheme)) 80.0 else 90.0 },
+        isBackground = true,
+        background = this::highestSurface,
+        contrastCurve = { ContrastCurve(1.0, 1.0, 3.0, 4.5) },
+        toneDeltaPair = {
+          ToneDeltaPair(
+            roleA = secondaryFixed,
+            roleB = secondaryFixedDim,
+            delta = 10.0,
+            polarity = TonePolarity.LIGHTER,
+            stayTogether = true,
+          )
+        },
+      )
 
-  override fun secondaryFixedDim(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("secondary_fixed_dim")
-      .setPalette { s: DynamicScheme -> s.secondaryPalette }
-      .setTone { s: DynamicScheme -> if (isMonochrome(s)) 70.0 else 80.0 }
-      .setIsBackground(true)
-      .setBackground(this::highestSurface)
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(1.0, 1.0, 3.0, 4.5) }
-      .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(secondaryFixed(), secondaryFixedDim(), 10.0, TonePolarity.LIGHTER, true)
-      }
-      .build()
-  }
+  override val secondaryFixedDim: DynamicColor
+    get() =
+      DynamicColor(
+        name = "secondary_fixed_dim",
+        palette = { scheme -> scheme.secondaryPalette },
+        tone = { scheme -> if (isMonochrome(scheme)) 70.0 else 80.0 },
+        isBackground = true,
+        background = this::highestSurface,
+        contrastCurve = { ContrastCurve(1.0, 1.0, 3.0, 4.5) },
+        toneDeltaPair = {
+          ToneDeltaPair(
+            roleA = secondaryFixed,
+            roleB = secondaryFixedDim,
+            delta = 10.0,
+            polarity = TonePolarity.LIGHTER,
+            stayTogether = true,
+          )
+        },
+      )
 
-  override fun onSecondaryFixed(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("on_secondary_fixed")
-      .setPalette { s: DynamicScheme -> s.secondaryPalette }
-      .setTone { s: DynamicScheme -> 10.0 }
-      .setBackground { s: DynamicScheme -> secondaryFixedDim() }
-      .setSecondBackground { s: DynamicScheme -> secondaryFixed() }
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(4.5, 7.0, 11.0, 21.0) }
-      .build()
-  }
+  override val onSecondaryFixed: DynamicColor
+    get() =
+      DynamicColor(
+        name = "on_secondary_fixed",
+        palette = { scheme -> scheme.secondaryPalette },
+        tone = { 10.0 },
+        background = { secondaryFixedDim },
+        secondBackground = { secondaryFixed },
+        contrastCurve = { ContrastCurve(4.5, 7.0, 11.0, 21.0) },
+      )
 
-  override fun onSecondaryFixedVariant(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("on_secondary_fixed_variant")
-      .setPalette { s: DynamicScheme -> s.secondaryPalette }
-      .setTone { s: DynamicScheme -> if (isMonochrome(s)) 25.0 else 30.0 }
-      .setBackground { s: DynamicScheme -> secondaryFixedDim() }
-      .setSecondBackground { s: DynamicScheme -> secondaryFixed() }
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(3.0, 4.5, 7.0, 11.0) }
-      .build()
-  }
+  override val onSecondaryFixedVariant: DynamicColor
+    get() =
+      DynamicColor(
+        name = "on_secondary_fixed_variant",
+        palette = { scheme -> scheme.secondaryPalette },
+        tone = { scheme -> if (isMonochrome(scheme)) 25.0 else 30.0 },
+        background = { secondaryFixedDim },
+        secondBackground = { secondaryFixed },
+        contrastCurve = { ContrastCurve(3.0, 4.5, 7.0, 11.0) },
+      )
 
   // ////////////////////////////////////////////////////////////////
   // Tertiary Fixed Colors [TF] //
   // ////////////////////////////////////////////////////////////////
-  override fun tertiaryFixed(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("tertiary_fixed")
-      .setPalette { s: DynamicScheme -> s.tertiaryPalette }
-      .setTone { s: DynamicScheme -> if (isMonochrome(s)) 40.0 else 90.0 }
-      .setIsBackground(true)
-      .setBackground(this::highestSurface)
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(1.0, 1.0, 3.0, 4.5) }
-      .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(tertiaryFixed(), tertiaryFixedDim(), 10.0, TonePolarity.LIGHTER, true)
-      }
-      .build()
-  }
+  override val tertiaryFixed: DynamicColor
+    get() =
+      DynamicColor(
+        name = "tertiary_fixed",
+        palette = { scheme -> scheme.tertiaryPalette },
+        tone = { scheme -> if (isMonochrome(scheme)) 40.0 else 90.0 },
+        isBackground = true,
+        background = this::highestSurface,
+        contrastCurve = { ContrastCurve(1.0, 1.0, 3.0, 4.5) },
+        toneDeltaPair = {
+          ToneDeltaPair(
+            roleA = tertiaryFixed,
+            roleB = tertiaryFixedDim,
+            delta = 10.0,
+            polarity = TonePolarity.LIGHTER,
+            stayTogether = true,
+          )
+        },
+      )
 
-  override fun tertiaryFixedDim(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("tertiary_fixed_dim")
-      .setPalette { s: DynamicScheme -> s.tertiaryPalette }
-      .setTone { s: DynamicScheme -> if (isMonochrome(s)) 30.0 else 80.0 }
-      .setIsBackground(true)
-      .setBackground(this::highestSurface)
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(1.0, 1.0, 3.0, 4.5) }
-      .setToneDeltaPair { s: DynamicScheme ->
-        ToneDeltaPair(tertiaryFixed(), tertiaryFixedDim(), 10.0, TonePolarity.LIGHTER, true)
-      }
-      .build()
-  }
+  override val tertiaryFixedDim: DynamicColor
+    get() =
+      DynamicColor(
+        name = "tertiary_fixed_dim",
+        palette = { scheme -> scheme.tertiaryPalette },
+        tone = { scheme -> if (isMonochrome(scheme)) 30.0 else 80.0 },
+        isBackground = true,
+        background = this::highestSurface,
+        contrastCurve = { ContrastCurve(1.0, 1.0, 3.0, 4.5) },
+        toneDeltaPair = {
+          ToneDeltaPair(
+            roleA = tertiaryFixed,
+            roleB = tertiaryFixedDim,
+            delta = 10.0,
+            polarity = TonePolarity.LIGHTER,
+            stayTogether = true,
+          )
+        },
+      )
 
-  override fun onTertiaryFixed(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("on_tertiary_fixed")
-      .setPalette { s: DynamicScheme -> s.tertiaryPalette }
-      .setTone { s: DynamicScheme -> if (isMonochrome(s)) 100.0 else 10.0 }
-      .setBackground { s: DynamicScheme -> tertiaryFixedDim() }
-      .setSecondBackground { s: DynamicScheme -> tertiaryFixed() }
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(4.5, 7.0, 11.0, 21.0) }
-      .build()
-  }
+  override val onTertiaryFixed: DynamicColor
+    get() =
+      DynamicColor(
+        name = "on_tertiary_fixed",
+        palette = { scheme -> scheme.tertiaryPalette },
+        tone = { scheme -> if (isMonochrome(scheme)) 100.0 else 10.0 },
+        background = { tertiaryFixedDim },
+        secondBackground = { tertiaryFixed },
+        contrastCurve = { ContrastCurve(4.5, 7.0, 11.0, 21.0) },
+      )
 
-  override fun onTertiaryFixedVariant(): DynamicColor {
-    return DynamicColor.Builder()
-      .setName("on_tertiary_fixed_variant")
-      .setPalette { s: DynamicScheme -> s.tertiaryPalette }
-      .setTone { s: DynamicScheme -> if (isMonochrome(s)) 90.0 else 30.0 }
-      .setBackground { s: DynamicScheme -> tertiaryFixedDim() }
-      .setSecondBackground { s: DynamicScheme -> tertiaryFixed() }
-      .setContrastCurve { s: DynamicScheme -> ContrastCurve(3.0, 4.5, 7.0, 11.0) }
-      .build()
-  }
+  override val onTertiaryFixedVariant: DynamicColor
+    get() =
+      DynamicColor(
+        name = "on_tertiary_fixed_variant",
+        palette = { scheme -> scheme.tertiaryPalette },
+        tone = { scheme -> if (isMonochrome(scheme)) 90.0 else 30.0 },
+        background = { tertiaryFixedDim },
+        secondBackground = { tertiaryFixed },
+        contrastCurve = { ContrastCurve(3.0, 4.5, 7.0, 11.0) },
+      )
 
   // ////////////////////////////////////////////////////////////////
   // Other //
   // ////////////////////////////////////////////////////////////////
-  override fun highestSurface(s: DynamicScheme): DynamicColor {
-    return if (s.isDark) surfaceBright() else surfaceDim()
-  }
-
-  private fun isFidelity(scheme: DynamicScheme): Boolean {
-    return scheme.variant == Variant.FIDELITY || scheme.variant == Variant.CONTENT
-  }
-
-  private fun isMonochrome(scheme: DynamicScheme): Boolean {
-    return scheme.variant == Variant.MONOCHROME
-  }
-
-  private fun findDesiredChromaByTone(
-    hue: Double,
-    chroma: Double,
-    tone: Double,
-    byDecreasingTone: Boolean,
-  ): Double {
-    var answer = tone
-    var closestToChroma = Hct.from(hue, chroma, tone)
-    if (closestToChroma.chroma < chroma) {
-      var chromaPeak = closestToChroma.chroma
-      while (closestToChroma.chroma < chroma) {
-        answer += if (byDecreasingTone) -1.0 else 1.0
-        val potentialSolution = Hct.from(hue, chroma, answer)
-        if (chromaPeak > potentialSolution.chroma) {
-          break
-        }
-        if (abs(potentialSolution.chroma - chroma) < 0.4) {
-          break
-        }
-        val potentialDelta = abs(potentialSolution.chroma - chroma)
-        val currentDelta = abs(closestToChroma.chroma - chroma)
-        if (potentialDelta < currentDelta) {
-          closestToChroma = potentialSolution
-        }
-        chromaPeak = max(chromaPeak, potentialSolution.chroma)
-      }
-    }
-    return answer
+  override fun highestSurface(scheme: DynamicScheme): DynamicColor {
+    return if (scheme.isDark) surfaceBright else surfaceDim
   }
 
   // ///////////////////////////////////////////////////////////////
@@ -1250,5 +1244,43 @@ open class ColorSpec2021 : ColorSpec {
     contrastLevel: Double,
   ): TonalPalette {
     return TonalPalette.fromHueAndChroma(25.0, 84.0)
+  }
+
+  private fun isFidelity(scheme: DynamicScheme): Boolean {
+    return scheme.variant == Variant.FIDELITY || scheme.variant == Variant.CONTENT
+  }
+
+  private fun isMonochrome(scheme: DynamicScheme): Boolean {
+    return scheme.variant == Variant.MONOCHROME
+  }
+
+  private fun findDesiredChromaByTone(
+    hue: Double,
+    chroma: Double,
+    tone: Double,
+    byDecreasingTone: Boolean,
+  ): Double {
+    var answer = tone
+    var closestToChroma = Hct.from(hue, chroma, tone)
+    if (closestToChroma.chroma < chroma) {
+      var chromaPeak = closestToChroma.chroma
+      while (closestToChroma.chroma < chroma) {
+        answer += if (byDecreasingTone) -1.0 else 1.0
+        val potentialSolution = Hct.from(hue, chroma, answer)
+        if (chromaPeak > potentialSolution.chroma) {
+          break
+        }
+        if (abs(potentialSolution.chroma - chroma) < 0.4) {
+          break
+        }
+        val potentialDelta = abs(potentialSolution.chroma - chroma)
+        val currentDelta = abs(closestToChroma.chroma - chroma)
+        if (potentialDelta < currentDelta) {
+          closestToChroma = potentialSolution
+        }
+        chromaPeak = max(chromaPeak, potentialSolution.chroma)
+      }
+    }
+    return answer
   }
 }

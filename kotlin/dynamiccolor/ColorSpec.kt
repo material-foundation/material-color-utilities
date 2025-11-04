@@ -30,156 +30,106 @@ interface ColorSpec {
   // ////////////////////////////////////////////////////////////////
   // Main Palettes //
   // ////////////////////////////////////////////////////////////////
-  fun primaryPaletteKeyColor(): DynamicColor
-
-  fun secondaryPaletteKeyColor(): DynamicColor
-
-  fun tertiaryPaletteKeyColor(): DynamicColor
-
-  fun neutralPaletteKeyColor(): DynamicColor
-
-  fun neutralVariantPaletteKeyColor(): DynamicColor
-
-  fun errorPaletteKeyColor(): DynamicColor
+  val primaryPaletteKeyColor: DynamicColor
+  val secondaryPaletteKeyColor: DynamicColor
+  val tertiaryPaletteKeyColor: DynamicColor
+  val neutralPaletteKeyColor: DynamicColor
+  val neutralVariantPaletteKeyColor: DynamicColor
+  val errorPaletteKeyColor: DynamicColor
 
   // ////////////////////////////////////////////////////////////////
   // Surfaces [S] //
   // ////////////////////////////////////////////////////////////////
-  fun background(): DynamicColor
-
-  fun onBackground(): DynamicColor
-
-  fun surface(): DynamicColor
-
-  fun surfaceDim(): DynamicColor
-
-  fun surfaceBright(): DynamicColor
-
-  fun surfaceContainerLowest(): DynamicColor
-
-  fun surfaceContainerLow(): DynamicColor
-
-  fun surfaceContainer(): DynamicColor
-
-  fun surfaceContainerHigh(): DynamicColor
-
-  fun surfaceContainerHighest(): DynamicColor
-
-  fun onSurface(): DynamicColor
-
-  fun surfaceVariant(): DynamicColor
-
-  fun onSurfaceVariant(): DynamicColor
-
-  fun inverseSurface(): DynamicColor
-
-  fun inverseOnSurface(): DynamicColor
-
-  fun outline(): DynamicColor
-
-  fun outlineVariant(): DynamicColor
-
-  fun shadow(): DynamicColor
-
-  fun scrim(): DynamicColor
-
-  fun surfaceTint(): DynamicColor
+  val background: DynamicColor
+  val onBackground: DynamicColor
+  val surface: DynamicColor
+  val surfaceDim: DynamicColor
+  val surfaceBright: DynamicColor
+  val surfaceContainerLowest: DynamicColor
+  val surfaceContainerLow: DynamicColor
+  val surfaceContainer: DynamicColor
+  val surfaceContainerHigh: DynamicColor
+  val surfaceContainerHighest: DynamicColor
+  val onSurface: DynamicColor
+  val surfaceVariant: DynamicColor
+  val onSurfaceVariant: DynamicColor
+  val inverseSurface: DynamicColor
+  val inverseOnSurface: DynamicColor
+  val outline: DynamicColor
+  val outlineVariant: DynamicColor
+  val shadow: DynamicColor
+  val scrim: DynamicColor
+  val surfaceTint: DynamicColor
 
   // ////////////////////////////////////////////////////////////////
   // Primaries [P] //
   // ////////////////////////////////////////////////////////////////
-  fun primary(): DynamicColor
-
-  fun primaryDim(): DynamicColor?
-
-  fun onPrimary(): DynamicColor
-
-  fun primaryContainer(): DynamicColor
-
-  fun onPrimaryContainer(): DynamicColor
-
-  fun inversePrimary(): DynamicColor
+  val primary: DynamicColor
+  val primaryDim: DynamicColor?
+  val onPrimary: DynamicColor
+  val primaryContainer: DynamicColor
+  val onPrimaryContainer: DynamicColor
+  val inversePrimary: DynamicColor
 
   // ////////////////////////////////////////////////////////////////
   // Secondaries [Q] //
   // ////////////////////////////////////////////////////////////////
-  fun secondary(): DynamicColor
-
-  fun secondaryDim(): DynamicColor?
-
-  fun onSecondary(): DynamicColor
-
-  fun secondaryContainer(): DynamicColor
-
-  fun onSecondaryContainer(): DynamicColor
+  val secondary: DynamicColor
+  val secondaryDim: DynamicColor?
+  val onSecondary: DynamicColor
+  val secondaryContainer: DynamicColor
+  val onSecondaryContainer: DynamicColor
 
   // ////////////////////////////////////////////////////////////////
   // Tertiaries [T] //
   // ////////////////////////////////////////////////////////////////
-  fun tertiary(): DynamicColor
-
-  fun tertiaryDim(): DynamicColor?
-
-  fun onTertiary(): DynamicColor
-
-  fun tertiaryContainer(): DynamicColor
-
-  fun onTertiaryContainer(): DynamicColor
+  val tertiary: DynamicColor
+  val tertiaryDim: DynamicColor?
+  val onTertiary: DynamicColor
+  val tertiaryContainer: DynamicColor
+  val onTertiaryContainer: DynamicColor
 
   // ////////////////////////////////////////////////////////////////
   // Errors [E] //
   // ////////////////////////////////////////////////////////////////
-  fun error(): DynamicColor
-
-  fun errorDim(): DynamicColor?
-
-  fun onError(): DynamicColor
-
-  fun errorContainer(): DynamicColor
-
-  fun onErrorContainer(): DynamicColor
+  val error: DynamicColor
+  val errorDim: DynamicColor?
+  val onError: DynamicColor
+  val errorContainer: DynamicColor
+  val onErrorContainer: DynamicColor
 
   // ////////////////////////////////////////////////////////////////
   // Primary Fixed Colors [PF] //
   // ////////////////////////////////////////////////////////////////
-  fun primaryFixed(): DynamicColor
-
-  fun primaryFixedDim(): DynamicColor
-
-  fun onPrimaryFixed(): DynamicColor
-
-  fun onPrimaryFixedVariant(): DynamicColor
+  val primaryFixed: DynamicColor
+  val primaryFixedDim: DynamicColor
+  val onPrimaryFixed: DynamicColor
+  val onPrimaryFixedVariant: DynamicColor
 
   // ////////////////////////////////////////////////////////////////
   // Secondary Fixed Colors [QF] //
   // ////////////////////////////////////////////////////////////////
-  fun secondaryFixed(): DynamicColor
-
-  fun secondaryFixedDim(): DynamicColor
-
-  fun onSecondaryFixed(): DynamicColor
-
-  fun onSecondaryFixedVariant(): DynamicColor
+  val secondaryFixed: DynamicColor
+  val secondaryFixedDim: DynamicColor
+  val onSecondaryFixed: DynamicColor
+  val onSecondaryFixedVariant: DynamicColor
 
   // ////////////////////////////////////////////////////////////////
   // Tertiary Fixed Colors [TF] //
   // ////////////////////////////////////////////////////////////////
-  fun tertiaryFixed(): DynamicColor
-
-  fun tertiaryFixedDim(): DynamicColor
-
-  fun onTertiaryFixed(): DynamicColor
-
-  fun onTertiaryFixedVariant(): DynamicColor
+  val tertiaryFixed: DynamicColor
+  val tertiaryFixedDim: DynamicColor
+  val onTertiaryFixed: DynamicColor
+  val onTertiaryFixedVariant: DynamicColor
 
   // ////////////////////////////////////////////////////////////////
   // Other //
   // ////////////////////////////////////////////////////////////////
-  fun highestSurface(s: DynamicScheme): DynamicColor
+  fun highestSurface(scheme: DynamicScheme): DynamicColor
 
-  // ///////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////
   // Color value calculations //
-  // ///////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////
   fun getHct(scheme: DynamicScheme, color: DynamicColor): Hct
 
   fun getTone(scheme: DynamicScheme, color: DynamicColor): Double
