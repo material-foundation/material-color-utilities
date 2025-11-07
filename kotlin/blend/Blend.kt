@@ -78,15 +78,9 @@ object Blend {
   fun cam16Ucs(from: Int, to: Int, amount: Double): Int {
     val fromCam = Cam16.fromInt(from)
     val toCam = Cam16.fromInt(to)
-    val fromJ = fromCam.jstar
-    val fromA = fromCam.astar
-    val fromB = fromCam.bstar
-    val toJ = toCam.jstar
-    val toA = toCam.astar
-    val toB = toCam.bstar
-    val jstar = fromJ + (toJ - fromJ) * amount
-    val astar = fromA + (toA - fromA) * amount
-    val bstar = fromB + (toB - fromB) * amount
+    val jstar = MathUtils.lerp(fromCam.jstar, toCam.jstar, amount)
+    val astar = MathUtils.lerp(fromCam.astar, toCam.astar, amount)
+    val bstar = MathUtils.lerp(fromCam.bstar, toCam.bstar, amount)
     return Cam16.fromUcs(jstar, astar, bstar).toInt()
   }
 }
