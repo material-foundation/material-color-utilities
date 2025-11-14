@@ -409,9 +409,9 @@ object HctSolver {
    * @param n The zero-based index of the point. 0 <= n <= 11.
    * @return The nth possible vertex of the polygonal intersection of the y plane and the RGB cube,
    *   in linear RGB coordinates, if it exists. If this possible vertex lies outside of the cube,
-   *   [-1.0, -1.0, -1.0] is returned.
+   *   null is returned.
    */
-  internal fun nthVertex(y: Double, n: Int): DoubleArray {
+  internal fun nthVertex(y: Double, n: Int): DoubleArray? {
     val kR = Y_FROM_LINRGB[0]
     val kG = Y_FROM_LINRGB[1]
     val kB = Y_FROM_LINRGB[2]
@@ -424,7 +424,7 @@ object HctSolver {
       return if (isBounded(r)) {
         doubleArrayOf(r, g, b)
       } else {
-        doubleArrayOf(-1.0, -1.0, -1.0)
+        null
       }
     } else if (n < 8) {
       val b = coordA
@@ -433,7 +433,7 @@ object HctSolver {
       return if (isBounded(g)) {
         doubleArrayOf(r, g, b)
       } else {
-        doubleArrayOf(-1.0, -1.0, -1.0)
+        null
       }
     } else {
       val r = coordA
@@ -442,7 +442,7 @@ object HctSolver {
       return if (isBounded(b)) {
         doubleArrayOf(r, g, b)
       } else {
-        doubleArrayOf(-1.0, -1.0, -1.0)
+        null
       }
     }
   }
@@ -456,38 +456,35 @@ object HctSolver {
    *   segment containing the desired color.
    */
   internal fun bisectToSegment(y: Double, targetHue: Double): Array<DoubleArray> {
-    var left = doubleArrayOf(-1.0, -1.0, -1.0)
-    var right = left
+    var left: DoubleArray? = null
+    var right: DoubleArray? = null
     var leftHue = 0.0
     var rightHue = 0.0
     var initialized = false
     var uncut = true
     for (n in 0..11) {
       val mid = nthVertex(y, n)
-      if (mid[0] < 0) {
-        continue
-      }
-      val midHue = hueOf(mid)
-      if (!initialized) {
-        left = mid
-        right = mid
-        leftHue = midHue
-        rightHue = midHue
-        initialized = true
-        continue
-      }
-      if (uncut || areInCyclicOrder(leftHue, midHue, rightHue)) {
-        uncut = false
-        if (areInCyclicOrder(leftHue, targetHue, midHue)) {
-          right = mid
-          rightHue = midHue
-        } else {
+      if (mid != null) {
+        val midHue = hueOf(mid)
+        if (!initialized) {
           left = mid
+          right = mid
           leftHue = midHue
+          rightHue = midHue
+          initialized = true
+        } else if (uncut || areInCyclicOrder(leftHue, midHue, rightHue)) {
+          uncut = false
+          if (areInCyclicOrder(leftHue, targetHue, midHue)) {
+            right = mid
+            rightHue = midHue
+          } else {
+            left = mid
+            leftHue = midHue
+          }
         }
       }
     }
-    return arrayOf(left, right)
+    return arrayOf(left!!, right!!)
   }
 
   internal fun midpoint(a: DoubleArray, b: DoubleArray): DoubleArray {

@@ -19,7 +19,7 @@ package dynamiccolor
 class MaterialDynamicColors {
   private val colorSpec: ColorSpec = ColorSpec2025()
 
-  fun highestSurface(s: DynamicScheme): DynamicColor = colorSpec.highestSurface(s)
+  fun highestSurface(scheme: DynamicScheme): DynamicColor = colorSpec.highestSurface(scheme)
 
   // ////////////////////////////////////////////////////////////////
   // Main Palettes //

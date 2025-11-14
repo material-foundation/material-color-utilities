@@ -1044,21 +1044,21 @@ class ColorSpec2021 : ColorSpec {
 
       // Tones suitable for the foreground.
       val availables = mutableListOf<Double>()
-      if (lightOption != -1.0) {
+      if (lightOption != null) {
         availables.add(lightOption)
       }
-      if (darkOption != -1.0) {
+      if (darkOption != null) {
         availables.add(darkOption)
       }
       val prefersLight =
         DynamicColor.tonePrefersLightForeground(bgTone1) ||
           DynamicColor.tonePrefersLightForeground(bgTone2)
       if (prefersLight) {
-        return if (lightOption == -1.0) 100.0 else lightOption
+        return lightOption ?: 100.0
       }
       return if (availables.size == 1) {
         availables[0]
-      } else if (darkOption == -1.0) {
+      } else if (darkOption == null) {
         0.0
       } else {
         darkOption

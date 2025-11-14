@@ -29,13 +29,16 @@ import kotlin.math.max
  * HCT's tone and L*a*b*'s' L*.
  */
 object Contrast {
-  // The minimum contrast ratio of two colors.
-  // Contrast ratio equation = lighter + 5 / darker + 5, if lighter == darker, ratio == 1.
+  /**
+   * The minimum contrast ratio of two colors. Contrast ratio equation = (lighter + 5) / (darker +
+   * 5). If lighter == darker, ratio == 1.
+   */
   const val RATIO_MIN = 1.0
 
-  // The maximum contrast ratio of two colors.
-  // Contrast ratio equation = lighter + 5 / darker + 5. Lighter and darker scale from 0 to 100.
-  // If lighter == 100, darker = 0, ratio == 21.
+  /**
+   * The maximum contrast ratio of two colors. Contrast ratio equation = (lighter + 5) / (darker +
+   * 5). If lighter == 100 and darker = 0, ratio == 21.
+   */
   const val RATIO_MAX = 21.0
   const val RATIO_30 = 3.0
   const val RATIO_45 = 4.5
@@ -115,35 +118,36 @@ object Contrast {
   }
 
   /**
-   * Returns T in HCT, L* in L*a*b* >= tone parameter that ensures ratio with input T/L*. Returns -1
-   * if ratio cannot be achieved.
+   * Returns T in HCT, L* in L*a*b* >= tone parameter that ensures ratio with input T/L*. Returns
+   * null if ratio cannot be achieved.
    *
    * @param tone Tone return value must contrast with.
    * @param ratio Desired contrast ratio of return value and tone parameter.
    */
   @JvmStatic
-  fun lighter(tone: Double, ratio: Double): Double {
+  fun lighter(tone: Double, ratio: Double): Double? {
     if (tone < 0.0 || tone > 100.0) {
-      return -1.0
+      return null
     }
     // Invert the contrast ratio equation to determine lighter Y given a ratio and darker Y.
     val darkY = ColorUtils.yFromLstar(tone)
     val lightY = ratio * (darkY + 5.0) - 5.0
     if (lightY < 0.0 || lightY > 100.0) {
-      return -1.0
+      return null
     }
     val realContrast = ratioOfYs(lightY, darkY)
     val delta = abs(realContrast - ratio)
     if (realContrast < ratio && delta > CONTRAST_RATIO_EPSILON) {
-      return -1.0
+      return null
     }
 
     val returnValue = ColorUtils.lstarFromY(lightY) + LUMINANCE_GAMUT_MAP_TOLERANCE
     // NOMUTANTS--important validation step; functions it is calling may change implementation.
-    if (returnValue < 0 || returnValue > 100) {
-      return -1.0
+    return if (returnValue < 0.0 || returnValue > 100.0) {
+      null
+    } else {
+      returnValue
     }
-    return returnValue
   }
 
   /**
@@ -157,41 +161,41 @@ object Contrast {
    */
   @JvmStatic
   fun lighterUnsafe(tone: Double, ratio: Double): Double {
-    val lighterSafe = lighter(tone, ratio)
-    return if (lighterSafe < 0.0) 100.0 else lighterSafe
+    return lighter(tone, ratio) ?: 100.0
   }
 
   /**
-   * Returns T in HCT, L* in L*a*b* <= tone parameter that ensures ratio with input T/L*. Returns -1
-   * if ratio cannot be achieved.
+   * Returns T in HCT, L* in L*a*b* <= tone parameter that ensures ratio with input T/L*. Returns
+   * null if ratio cannot be achieved.
    *
    * @param tone Tone return value must contrast with.
    * @param ratio Desired contrast ratio of return value and tone parameter.
    */
   @JvmStatic
-  fun darker(tone: Double, ratio: Double): Double {
+  fun darker(tone: Double, ratio: Double): Double? {
     if (tone < 0.0 || tone > 100.0) {
-      return -1.0
+      return null
     }
     // Invert the contrast ratio equation to determine darker Y given a ratio and lighter Y.
     val lightY = ColorUtils.yFromLstar(tone)
     val darkY = (lightY + 5.0) / ratio - 5.0
     if (darkY < 0.0 || darkY > 100.0) {
-      return -1.0
+      return null
     }
     val realContrast = ratioOfYs(lightY, darkY)
     val delta = abs(realContrast - ratio)
     if (realContrast < ratio && delta > CONTRAST_RATIO_EPSILON) {
-      return -1.0
+      return null
     }
 
     // For information on 0.4 constant, see comment in lighter(tone, ratio).
     val returnValue = ColorUtils.lstarFromY(darkY) - LUMINANCE_GAMUT_MAP_TOLERANCE
     // NOMUTANTS--important validation step; functions it is calling may change implementation.
-    if (returnValue < 0 || returnValue > 100) {
-      return -1.0
+    return if (returnValue < 0.0 || returnValue > 100.0) {
+      null
+    } else {
+      returnValue
     }
-    return returnValue
   }
 
   /**
@@ -205,7 +209,6 @@ object Contrast {
    */
   @JvmStatic
   fun darkerUnsafe(tone: Double, ratio: Double): Double {
-    val darkerSafe = darker(tone, ratio)
-    return max(0.0, darkerSafe)
+    return darker(tone, ratio) ?: 0.0
   }
 }
