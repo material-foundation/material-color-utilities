@@ -1538,7 +1538,7 @@ final class ColorSpec2025 extends ColorSpec2021 {
 
   private static ContrastCurve getContrastCurve(double defaultContrast) {
     if (defaultContrast == 1.5) {
-      return new ContrastCurve(1.5, 1.5, 3, 4.5);
+      return new ContrastCurve(1.5, 1.5, 3, 5.5);
     } else if (defaultContrast == 3) {
       return new ContrastCurve(3, 3, 4.5, 7);
     } else if (defaultContrast == 4.5) {
