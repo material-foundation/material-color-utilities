@@ -16,6 +16,7 @@
 package hct
 
 import utils.ColorUtils
+import utils.MathUtils
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.atan2
@@ -250,14 +251,7 @@ private constructor(
       // hue
       val atan2 = atan2(b, a)
       val atanDegrees = Math.toDegrees(atan2)
-      val hue =
-        if (atanDegrees < 0) {
-          atanDegrees + 360.0
-        } else if (atanDegrees >= 360) {
-          atanDegrees - 360.0
-        } else {
-          atanDegrees
-        }
+      val hue = MathUtils.sanitizeDegreesDouble(atanDegrees)
       val hueRadians = Math.toRadians(hue)
 
       // achromatic response to color

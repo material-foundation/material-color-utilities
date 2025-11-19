@@ -126,9 +126,7 @@ export class Cam16 {
     const p2 = (40.0 * rA + 20.0 * gA + bA) / 20.0;
     const atan2 = Math.atan2(b, a);
     const atanDegrees = (atan2 * 180.0) / Math.PI;
-    const hue = atanDegrees < 0 ? atanDegrees + 360.0 :
-        atanDegrees >= 360      ? atanDegrees - 360.0 :
-                                  atanDegrees;
+    const hue = math.sanitizeDegreesDouble(atanDegrees);
     const hueRadians = (hue * Math.PI) / 180.0;
 
     const ac = p2 * viewingConditions.nbb;

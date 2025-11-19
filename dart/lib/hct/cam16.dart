@@ -148,12 +148,15 @@ class Cam16 {
     final bD = viewingConditions.rgbD[2] * bC;
 
     // chromatic adaptation
-    final rAF =
-        math.pow(viewingConditions.fl * rD.abs() / 100.0, 0.42).toDouble();
-    final gAF =
-        math.pow(viewingConditions.fl * gD.abs() / 100.0, 0.42).toDouble();
-    final bAF =
-        math.pow(viewingConditions.fl * bD.abs() / 100.0, 0.42).toDouble();
+    final rAF = math
+        .pow(viewingConditions.fl * rD.abs() / 100.0, 0.42)
+        .toDouble();
+    final gAF = math
+        .pow(viewingConditions.fl * gD.abs() / 100.0, 0.42)
+        .toDouble();
+    final bAF = math
+        .pow(viewingConditions.fl * bD.abs() / 100.0, 0.42)
+        .toDouble();
     final rA = MathUtils.signum(rD) * 400.0 * rAF / (rAF + 27.13);
     final gA = MathUtils.signum(gD) * 400.0 * gAF / (gAF + 27.13);
     final bA = MathUtils.signum(bD) * 400.0 * bAF / (bAF + 27.13);
@@ -170,12 +173,7 @@ class Cam16 {
     // hue
     final atan2 = math.atan2(b, a);
     final atanDegrees = atan2 * 180.0 / math.pi;
-    final hue =
-        atanDegrees < 0
-            ? atanDegrees + 360.0
-            : atanDegrees >= 360
-            ? atanDegrees - 360
-            : atanDegrees;
+    final hue = MathUtils.sanitizeDegreesDouble(atanDegrees);
     final hueRadians = hue * math.pi / 180.0;
     assert(hue >= 0 && hue < 360, 'hue was really $hue');
 
@@ -310,8 +308,9 @@ class Cam16 {
     ViewingConditions viewingConditions, {
     List<double>? array,
   }) {
-    final alpha =
-        (chroma == 0.0 || j == 0.0) ? 0.0 : chroma / math.sqrt(j / 100.0);
+    final alpha = (chroma == 0.0 || j == 0.0)
+        ? 0.0
+        : chroma / math.sqrt(j / 100.0);
 
     final t = math.pow(
       alpha /
