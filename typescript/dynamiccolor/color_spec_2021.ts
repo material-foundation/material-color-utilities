@@ -15,24 +15,23 @@
  * limitations under the License.
  */
 
-import {DislikeAnalyzer} from '../dislike/dislike_analyzer.js';
-import {Hct} from '../hct/hct.js';
-import {TonalPalette} from '../palettes/tonal_palette.js';
-import * as math from '../utils/math_utils.js';
+import { DislikeAnalyzer } from "../dislike/dislike_analyzer.js";
+import { Hct } from "../hct/hct.js";
 
-import {ColorSpecDelegate} from './color_spec.js';
-import {ContrastCurve} from './contrast_curve.js';
-import {DynamicColor} from './dynamic_color.js';
-import type {DynamicScheme} from './dynamic_scheme';
-import {ToneDeltaPair} from './tone_delta_pair.js';
-import {Variant} from './variant.js';
+import { ColorSpecDelegate } from "./color_spec.js";
+import { ContrastCurve } from "./contrast_curve.js";
+import { DynamicColor } from "./dynamic_color.js";
+import type { DynamicScheme } from "./dynamic_scheme.js";
+import { ToneDeltaPair } from "./tone_delta_pair.js";
+import { Variant } from "./variant.js";
 
 /**
  * Returns true if the scheme is Fidelity or Content.
  */
 function isFidelity(scheme: DynamicScheme): boolean {
-  return scheme.variant === Variant.FIDELITY ||
-      scheme.variant === Variant.CONTENT;
+  return (
+    scheme.variant === Variant.FIDELITY || scheme.variant === Variant.CONTENT
+  );
 }
 
 /**
@@ -51,8 +50,11 @@ function isMonochrome(scheme: DynamicScheme): boolean {
  * @param byDecreasingTone Whether to search for lower tones.
  */
 function findDesiredChromaByTone(
-    hue: number, chroma: number, tone: number,
-    byDecreasingTone: boolean): number {
+  hue: number,
+  chroma: number,
+  tone: number,
+  byDecreasingTone: boolean
+): number {
   let answer = tone;
 
   let closestToChroma = Hct.from(hue, chroma, tone);
@@ -90,7 +92,7 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   primaryPaletteKeyColor(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'primary_palette_key_color',
+      name: "primary_palette_key_color",
       palette: (s) => s.primaryPalette,
       tone: (s) => s.primaryPalette.keyColor.tone,
     });
@@ -98,7 +100,7 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   secondaryPaletteKeyColor(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'secondary_palette_key_color',
+      name: "secondary_palette_key_color",
       palette: (s) => s.secondaryPalette,
       tone: (s) => s.secondaryPalette.keyColor.tone,
     });
@@ -106,7 +108,7 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   tertiaryPaletteKeyColor(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'tertiary_palette_key_color',
+      name: "tertiary_palette_key_color",
       palette: (s) => s.tertiaryPalette,
       tone: (s) => s.tertiaryPalette.keyColor.tone,
     });
@@ -114,7 +116,7 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   neutralPaletteKeyColor(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'neutral_palette_key_color',
+      name: "neutral_palette_key_color",
       palette: (s) => s.neutralPalette,
       tone: (s) => s.neutralPalette.keyColor.tone,
     });
@@ -122,7 +124,7 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   neutralVariantPaletteKeyColor(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'neutral_variant_palette_key_color',
+      name: "neutral_variant_palette_key_color",
       palette: (s) => s.neutralVariantPalette,
       tone: (s) => s.neutralVariantPalette.keyColor.tone,
     });
@@ -130,7 +132,7 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   errorPaletteKeyColor(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'error_palette_key_color',
+      name: "error_palette_key_color",
       palette: (s) => s.errorPalette,
       tone: (s) => s.errorPalette.keyColor.tone,
     });
@@ -142,18 +144,18 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   background(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'background',
+      name: "background",
       palette: (s) => s.neutralPalette,
-      tone: (s) => s.isDark ? 6 : 98,
+      tone: (s) => (s.isDark ? 6 : 98),
       isBackground: true,
     });
   }
 
   onBackground(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'on_background',
+      name: "on_background",
       palette: (s) => s.neutralPalette,
-      tone: (s) => s.isDark ? 90 : 10,
+      tone: (s) => (s.isDark ? 90 : 10),
       background: (s) => this.background(),
       contrastCurve: (s) => new ContrastCurve(3, 3, 4.5, 7),
     });
@@ -161,93 +163,96 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   surface(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'surface',
+      name: "surface",
       palette: (s) => s.neutralPalette,
-      tone: (s) => s.isDark ? 6 : 98,
+      tone: (s) => (s.isDark ? 6 : 98),
       isBackground: true,
     });
   }
 
   surfaceDim(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'surface_dim',
+      name: "surface_dim",
       palette: (s) => s.neutralPalette,
       tone: (s) =>
-          s.isDark ? 6 : new ContrastCurve(87, 87, 80, 75).get(s.contrastLevel),
+        s.isDark ? 6 : new ContrastCurve(87, 87, 80, 75).get(s.contrastLevel),
       isBackground: true,
     });
   }
 
   surfaceBright(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'surface_bright',
+      name: "surface_bright",
       palette: (s) => s.neutralPalette,
-      tone: (s) => s.isDark ?
-          new ContrastCurve(24, 24, 29, 34).get(s.contrastLevel) :
-          98,
+      tone: (s) =>
+        s.isDark ? new ContrastCurve(24, 24, 29, 34).get(s.contrastLevel) : 98,
       isBackground: true,
     });
   }
 
   surfaceContainerLowest(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'surface_container_lowest',
+      name: "surface_container_lowest",
       palette: (s) => s.neutralPalette,
       tone: (s) =>
-          s.isDark ? new ContrastCurve(4, 4, 2, 0).get(s.contrastLevel) : 100,
+        s.isDark ? new ContrastCurve(4, 4, 2, 0).get(s.contrastLevel) : 100,
       isBackground: true,
     });
   }
 
   surfaceContainerLow(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'surface_container_low',
+      name: "surface_container_low",
       palette: (s) => s.neutralPalette,
-      tone: (s) => s.isDark ?
-          new ContrastCurve(10, 10, 11, 12).get(s.contrastLevel) :
-          new ContrastCurve(96, 96, 96, 95).get(s.contrastLevel),
+      tone: (s) =>
+        s.isDark
+          ? new ContrastCurve(10, 10, 11, 12).get(s.contrastLevel)
+          : new ContrastCurve(96, 96, 96, 95).get(s.contrastLevel),
       isBackground: true,
     });
   }
 
   surfaceContainer(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'surface_container',
+      name: "surface_container",
       palette: (s) => s.neutralPalette,
-      tone: (s) => s.isDark ?
-          new ContrastCurve(12, 12, 16, 20).get(s.contrastLevel) :
-          new ContrastCurve(94, 94, 92, 90).get(s.contrastLevel),
+      tone: (s) =>
+        s.isDark
+          ? new ContrastCurve(12, 12, 16, 20).get(s.contrastLevel)
+          : new ContrastCurve(94, 94, 92, 90).get(s.contrastLevel),
       isBackground: true,
     });
   }
 
   surfaceContainerHigh(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'surface_container_high',
+      name: "surface_container_high",
       palette: (s) => s.neutralPalette,
-      tone: (s) => s.isDark ?
-          new ContrastCurve(17, 17, 21, 25).get(s.contrastLevel) :
-          new ContrastCurve(92, 92, 88, 85).get(s.contrastLevel),
+      tone: (s) =>
+        s.isDark
+          ? new ContrastCurve(17, 17, 21, 25).get(s.contrastLevel)
+          : new ContrastCurve(92, 92, 88, 85).get(s.contrastLevel),
       isBackground: true,
     });
   }
 
   surfaceContainerHighest(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'surface_container_highest',
+      name: "surface_container_highest",
       palette: (s) => s.neutralPalette,
-      tone: (s) => s.isDark ?
-          new ContrastCurve(22, 22, 26, 30).get(s.contrastLevel) :
-          new ContrastCurve(90, 90, 84, 80).get(s.contrastLevel),
+      tone: (s) =>
+        s.isDark
+          ? new ContrastCurve(22, 22, 26, 30).get(s.contrastLevel)
+          : new ContrastCurve(90, 90, 84, 80).get(s.contrastLevel),
       isBackground: true,
     });
   }
 
   onSurface(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'on_surface',
+      name: "on_surface",
       palette: (s) => s.neutralPalette,
-      tone: (s) => s.isDark ? 90 : 10,
+      tone: (s) => (s.isDark ? 90 : 10),
       background: (s) => this.highestSurface(s),
       contrastCurve: (s) => new ContrastCurve(4.5, 7, 11, 21),
     });
@@ -255,18 +260,18 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   surfaceVariant(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'surface_variant',
+      name: "surface_variant",
       palette: (s) => s.neutralVariantPalette,
-      tone: (s) => s.isDark ? 30 : 90,
+      tone: (s) => (s.isDark ? 30 : 90),
       isBackground: true,
     });
   }
 
   onSurfaceVariant(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'on_surface_variant',
+      name: "on_surface_variant",
       palette: (s) => s.neutralVariantPalette,
-      tone: (s) => s.isDark ? 80 : 30,
+      tone: (s) => (s.isDark ? 80 : 30),
       background: (s) => this.highestSurface(s),
       contrastCurve: (s) => new ContrastCurve(3, 4.5, 7, 11),
     });
@@ -274,18 +279,18 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   inverseSurface(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'inverse_surface',
+      name: "inverse_surface",
       palette: (s) => s.neutralPalette,
-      tone: (s) => s.isDark ? 90 : 20,
+      tone: (s) => (s.isDark ? 90 : 20),
       isBackground: true,
     });
   }
 
   inverseOnSurface(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'inverse_on_surface',
+      name: "inverse_on_surface",
       palette: (s) => s.neutralPalette,
-      tone: (s) => s.isDark ? 20 : 95,
+      tone: (s) => (s.isDark ? 20 : 95),
       background: (s) => this.inverseSurface(),
       contrastCurve: (s) => new ContrastCurve(4.5, 7, 11, 21),
     });
@@ -293,9 +298,9 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   outline(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'outline',
+      name: "outline",
       palette: (s) => s.neutralVariantPalette,
-      tone: (s) => s.isDark ? 60 : 50,
+      tone: (s) => (s.isDark ? 60 : 50),
       background: (s) => this.highestSurface(s),
       contrastCurve: (s) => new ContrastCurve(1.5, 3, 4.5, 7),
     });
@@ -303,9 +308,9 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   outlineVariant(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'outline_variant',
+      name: "outline_variant",
       palette: (s) => s.neutralVariantPalette,
-      tone: (s) => s.isDark ? 30 : 80,
+      tone: (s) => (s.isDark ? 30 : 80),
       background: (s) => this.highestSurface(s),
       contrastCurve: (s) => new ContrastCurve(1, 1, 3, 4.5),
     });
@@ -313,7 +318,7 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   shadow(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'shadow',
+      name: "shadow",
       palette: (s) => s.neutralPalette,
       tone: (s) => 0,
     });
@@ -321,7 +326,7 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   scrim(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'scrim',
+      name: "scrim",
       palette: (s) => s.neutralPalette,
       tone: (s) => 0,
     });
@@ -329,9 +334,9 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   surfaceTint(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'surface_tint',
+      name: "surface_tint",
       palette: (s) => s.primaryPalette,
-      tone: (s) => s.isDark ? 80 : 40,
+      tone: (s) => (s.isDark ? 80 : 40),
       isBackground: true,
     });
   }
@@ -342,7 +347,7 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   primary(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'primary',
+      name: "primary",
       palette: (s) => s.primaryPalette,
       tone: (s) => {
         if (isMonochrome(s)) {
@@ -353,18 +358,24 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
       isBackground: true,
       background: (s) => this.highestSurface(s),
       contrastCurve: (s) => new ContrastCurve(3, 4.5, 7, 7),
-      toneDeltaPair: (s) => new ToneDeltaPair(
-          this.primaryContainer(), this.primary(), 10, 'nearer', false),
+      toneDeltaPair: (s) =>
+        new ToneDeltaPair(
+          this.primaryContainer(),
+          this.primary(),
+          10,
+          "nearer",
+          false
+        ),
     });
   }
 
-  primaryDim(): DynamicColor|undefined {
+  primaryDim(): DynamicColor | undefined {
     return undefined;
   }
 
   onPrimary(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'on_primary',
+      name: "on_primary",
       palette: (s) => s.primaryPalette,
       tone: (s) => {
         if (isMonochrome(s)) {
@@ -379,7 +390,7 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   primaryContainer(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'primary_container',
+      name: "primary_container",
       palette: (s) => s.primaryPalette,
       tone: (s) => {
         if (isFidelity(s)) {
@@ -393,19 +404,27 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
       isBackground: true,
       background: (s) => this.highestSurface(s),
       contrastCurve: (s) => new ContrastCurve(1, 1, 3, 4.5),
-      toneDeltaPair: (s) => new ToneDeltaPair(
-          this.primaryContainer(), this.primary(), 10, 'nearer', false),
+      toneDeltaPair: (s) =>
+        new ToneDeltaPair(
+          this.primaryContainer(),
+          this.primary(),
+          10,
+          "nearer",
+          false
+        ),
     });
   }
 
   onPrimaryContainer(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'on_primary_container',
+      name: "on_primary_container",
       palette: (s) => s.primaryPalette,
       tone: (s) => {
         if (isFidelity(s)) {
           return DynamicColor.foregroundTone(
-              this.primaryContainer().tone(s), 4.5);
+            this.primaryContainer().tone(s),
+            4.5
+          );
         }
         if (isMonochrome(s)) {
           return s.isDark ? 0 : 100;
@@ -419,9 +438,9 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   inversePrimary(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'inverse_primary',
+      name: "inverse_primary",
       palette: (s) => s.primaryPalette,
-      tone: (s) => s.isDark ? 40 : 80,
+      tone: (s) => (s.isDark ? 40 : 80),
       background: (s) => this.inverseSurface(),
       contrastCurve: (s) => new ContrastCurve(3, 4.5, 7, 7),
     });
@@ -433,24 +452,30 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   secondary(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'secondary',
+      name: "secondary",
       palette: (s) => s.secondaryPalette,
-      tone: (s) => s.isDark ? 80 : 40,
+      tone: (s) => (s.isDark ? 80 : 40),
       isBackground: true,
       background: (s) => this.highestSurface(s),
       contrastCurve: (s) => new ContrastCurve(3, 4.5, 7, 7),
-      toneDeltaPair: (s) => new ToneDeltaPair(
-          this.secondaryContainer(), this.secondary(), 10, 'nearer', false),
+      toneDeltaPair: (s) =>
+        new ToneDeltaPair(
+          this.secondaryContainer(),
+          this.secondary(),
+          10,
+          "nearer",
+          false
+        ),
     });
   }
 
-  secondaryDim(): DynamicColor|undefined {
+  secondaryDim(): DynamicColor | undefined {
     return undefined;
   }
 
   onSecondary(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'on_secondary',
+      name: "on_secondary",
       palette: (s) => s.secondaryPalette,
       tone: (s) => {
         if (isMonochrome(s)) {
@@ -466,7 +491,7 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   secondaryContainer(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'secondary_container',
+      name: "secondary_container",
       palette: (s) => s.secondaryPalette,
       tone: (s) => {
         const initialTone = s.isDark ? 30 : 90;
@@ -477,20 +502,29 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
           return initialTone;
         }
         return findDesiredChromaByTone(
-            s.secondaryPalette.hue, s.secondaryPalette.chroma, initialTone,
-            s.isDark ? false : true);
+          s.secondaryPalette.hue,
+          s.secondaryPalette.chroma,
+          initialTone,
+          s.isDark ? false : true
+        );
       },
       isBackground: true,
       background: (s) => this.highestSurface(s),
       contrastCurve: (s) => new ContrastCurve(1, 1, 3, 4.5),
-      toneDeltaPair: (s) => new ToneDeltaPair(
-          this.secondaryContainer(), this.secondary(), 10, 'nearer', false),
+      toneDeltaPair: (s) =>
+        new ToneDeltaPair(
+          this.secondaryContainer(),
+          this.secondary(),
+          10,
+          "nearer",
+          false
+        ),
     });
   }
 
   onSecondaryContainer(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'on_secondary_container',
+      name: "on_secondary_container",
       palette: (s) => s.secondaryPalette,
       tone: (s) => {
         if (isMonochrome(s)) {
@@ -500,7 +534,9 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
           return s.isDark ? 90 : 30;
         }
         return DynamicColor.foregroundTone(
-            this.secondaryContainer().tone(s), 4.5);
+          this.secondaryContainer().tone(s),
+          4.5
+        );
       },
       background: (s) => this.secondaryContainer(),
       contrastCurve: (s) => new ContrastCurve(3, 4.5, 7, 11),
@@ -513,7 +549,7 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   tertiary(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'tertiary',
+      name: "tertiary",
       palette: (s) => s.tertiaryPalette,
       tone: (s) => {
         if (isMonochrome(s)) {
@@ -524,18 +560,24 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
       isBackground: true,
       background: (s) => this.highestSurface(s),
       contrastCurve: (s) => new ContrastCurve(3, 4.5, 7, 7),
-      toneDeltaPair: (s) => new ToneDeltaPair(
-          this.tertiaryContainer(), this.tertiary(), 10, 'nearer', false),
+      toneDeltaPair: (s) =>
+        new ToneDeltaPair(
+          this.tertiaryContainer(),
+          this.tertiary(),
+          10,
+          "nearer",
+          false
+        ),
     });
   }
 
-  tertiaryDim(): DynamicColor|undefined {
+  tertiaryDim(): DynamicColor | undefined {
     return undefined;
   }
 
   onTertiary(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'on_tertiary',
+      name: "on_tertiary",
       palette: (s) => s.tertiaryPalette,
       tone: (s) => {
         if (isMonochrome(s)) {
@@ -550,7 +592,7 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   tertiaryContainer(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'tertiary_container',
+      name: "tertiary_container",
       palette: (s) => s.tertiaryPalette,
       tone: (s) => {
         if (isMonochrome(s)) {
@@ -565,14 +607,20 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
       isBackground: true,
       background: (s) => this.highestSurface(s),
       contrastCurve: (s) => new ContrastCurve(1, 1, 3, 4.5),
-      toneDeltaPair: (s) => new ToneDeltaPair(
-          this.tertiaryContainer(), this.tertiary(), 10, 'nearer', false),
+      toneDeltaPair: (s) =>
+        new ToneDeltaPair(
+          this.tertiaryContainer(),
+          this.tertiary(),
+          10,
+          "nearer",
+          false
+        ),
     });
   }
 
   onTertiaryContainer(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'on_tertiary_container',
+      name: "on_tertiary_container",
       palette: (s) => s.tertiaryPalette,
       tone: (s) => {
         if (isMonochrome(s)) {
@@ -582,7 +630,9 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
           return s.isDark ? 90 : 30;
         }
         return DynamicColor.foregroundTone(
-            this.tertiaryContainer().tone(s), 4.5);
+          this.tertiaryContainer().tone(s),
+          4.5
+        );
       },
       background: (s) => this.tertiaryContainer(),
       contrastCurve: (s) => new ContrastCurve(3, 4.5, 7, 11),
@@ -595,26 +645,32 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   error(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'error',
+      name: "error",
       palette: (s) => s.errorPalette,
-      tone: (s) => s.isDark ? 80 : 40,
+      tone: (s) => (s.isDark ? 80 : 40),
       isBackground: true,
       background: (s) => this.highestSurface(s),
       contrastCurve: (s) => new ContrastCurve(3, 4.5, 7, 7),
-      toneDeltaPair: (s) => new ToneDeltaPair(
-          this.errorContainer(), this.error(), 10, 'nearer', false),
+      toneDeltaPair: (s) =>
+        new ToneDeltaPair(
+          this.errorContainer(),
+          this.error(),
+          10,
+          "nearer",
+          false
+        ),
     });
   }
 
-  errorDim(): DynamicColor|undefined {
+  errorDim(): DynamicColor | undefined {
     return undefined;
   }
 
   onError(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'on_error',
+      name: "on_error",
       palette: (s) => s.errorPalette,
-      tone: (s) => s.isDark ? 20 : 100,
+      tone: (s) => (s.isDark ? 20 : 100),
       background: (s) => this.error(),
       contrastCurve: (s) => new ContrastCurve(4.5, 7, 11, 21),
     });
@@ -622,20 +678,26 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   errorContainer(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'error_container',
+      name: "error_container",
       palette: (s) => s.errorPalette,
-      tone: (s) => s.isDark ? 30 : 90,
+      tone: (s) => (s.isDark ? 30 : 90),
       isBackground: true,
       background: (s) => this.highestSurface(s),
       contrastCurve: (s) => new ContrastCurve(1, 1, 3, 4.5),
-      toneDeltaPair: (s) => new ToneDeltaPair(
-          this.errorContainer(), this.error(), 10, 'nearer', false),
+      toneDeltaPair: (s) =>
+        new ToneDeltaPair(
+          this.errorContainer(),
+          this.error(),
+          10,
+          "nearer",
+          false
+        ),
     });
   }
 
   onErrorContainer(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'on_error_container',
+      name: "on_error_container",
       palette: (s) => s.errorPalette,
       tone: (s) => {
         if (isMonochrome(s)) {
@@ -654,35 +716,47 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   primaryFixed(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'primary_fixed',
+      name: "primary_fixed",
       palette: (s) => s.primaryPalette,
-      tone: (s) => isMonochrome(s) ? 40.0 : 90.0,
+      tone: (s) => (isMonochrome(s) ? 40.0 : 90.0),
       isBackground: true,
       background: (s) => this.highestSurface(s),
       contrastCurve: (s) => new ContrastCurve(1, 1, 3, 4.5),
-      toneDeltaPair: (s) => new ToneDeltaPair(
-          this.primaryFixed(), this.primaryFixedDim(), 10, 'lighter', true),
+      toneDeltaPair: (s) =>
+        new ToneDeltaPair(
+          this.primaryFixed(),
+          this.primaryFixedDim(),
+          10,
+          "lighter",
+          true
+        ),
     });
   }
 
   primaryFixedDim(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'primary_fixed_dim',
+      name: "primary_fixed_dim",
       palette: (s) => s.primaryPalette,
-      tone: (s) => isMonochrome(s) ? 30.0 : 80.0,
+      tone: (s) => (isMonochrome(s) ? 30.0 : 80.0),
       isBackground: true,
       background: (s) => this.highestSurface(s),
       contrastCurve: (s) => new ContrastCurve(1, 1, 3, 4.5),
-      toneDeltaPair: (s) => new ToneDeltaPair(
-          this.primaryFixed(), this.primaryFixedDim(), 10, 'lighter', true),
+      toneDeltaPair: (s) =>
+        new ToneDeltaPair(
+          this.primaryFixed(),
+          this.primaryFixedDim(),
+          10,
+          "lighter",
+          true
+        ),
     });
   }
 
   onPrimaryFixed(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'on_primary_fixed',
+      name: "on_primary_fixed",
       palette: (s) => s.primaryPalette,
-      tone: (s) => isMonochrome(s) ? 100.0 : 10.0,
+      tone: (s) => (isMonochrome(s) ? 100.0 : 10.0),
       background: (s) => this.primaryFixedDim(),
       secondBackground: (s) => this.primaryFixed(),
       contrastCurve: (s) => new ContrastCurve(4.5, 7, 11, 21),
@@ -691,9 +765,9 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   onPrimaryFixedVariant(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'on_primary_fixed_variant',
+      name: "on_primary_fixed_variant",
       palette: (s) => s.primaryPalette,
-      tone: (s) => isMonochrome(s) ? 90.0 : 30.0,
+      tone: (s) => (isMonochrome(s) ? 90.0 : 30.0),
       background: (s) => this.primaryFixedDim(),
       secondBackground: (s) => this.primaryFixed(),
       contrastCurve: (s) => new ContrastCurve(3, 4.5, 7, 11),
@@ -706,33 +780,45 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   secondaryFixed(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'secondary_fixed',
+      name: "secondary_fixed",
       palette: (s) => s.secondaryPalette,
-      tone: (s) => isMonochrome(s) ? 80.0 : 90.0,
+      tone: (s) => (isMonochrome(s) ? 80.0 : 90.0),
       isBackground: true,
       background: (s) => this.highestSurface(s),
       contrastCurve: (s) => new ContrastCurve(1, 1, 3, 4.5),
-      toneDeltaPair: (s) => new ToneDeltaPair(
-          this.secondaryFixed(), this.secondaryFixedDim(), 10, 'lighter', true),
+      toneDeltaPair: (s) =>
+        new ToneDeltaPair(
+          this.secondaryFixed(),
+          this.secondaryFixedDim(),
+          10,
+          "lighter",
+          true
+        ),
     });
   }
 
   secondaryFixedDim(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'secondary_fixed_dim',
+      name: "secondary_fixed_dim",
       palette: (s) => s.secondaryPalette,
-      tone: (s) => isMonochrome(s) ? 70.0 : 80.0,
+      tone: (s) => (isMonochrome(s) ? 70.0 : 80.0),
       isBackground: true,
       background: (s) => this.highestSurface(s),
       contrastCurve: (s) => new ContrastCurve(1, 1, 3, 4.5),
-      toneDeltaPair: (s) => new ToneDeltaPair(
-          this.secondaryFixed(), this.secondaryFixedDim(), 10, 'lighter', true),
+      toneDeltaPair: (s) =>
+        new ToneDeltaPair(
+          this.secondaryFixed(),
+          this.secondaryFixedDim(),
+          10,
+          "lighter",
+          true
+        ),
     });
   }
 
   onSecondaryFixed(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'on_secondary_fixed',
+      name: "on_secondary_fixed",
       palette: (s) => s.secondaryPalette,
       tone: (s) => 10.0,
       background: (s) => this.secondaryFixedDim(),
@@ -743,9 +829,9 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   onSecondaryFixedVariant(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'on_secondary_fixed_variant',
+      name: "on_secondary_fixed_variant",
       palette: (s) => s.secondaryPalette,
-      tone: (s) => isMonochrome(s) ? 25.0 : 30.0,
+      tone: (s) => (isMonochrome(s) ? 25.0 : 30.0),
       background: (s) => this.secondaryFixedDim(),
       secondBackground: (s) => this.secondaryFixed(),
       contrastCurve: (s) => new ContrastCurve(3, 4.5, 7, 11),
@@ -758,35 +844,47 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   tertiaryFixed(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'tertiary_fixed',
+      name: "tertiary_fixed",
       palette: (s) => s.tertiaryPalette,
-      tone: (s) => isMonochrome(s) ? 40.0 : 90.0,
+      tone: (s) => (isMonochrome(s) ? 40.0 : 90.0),
       isBackground: true,
       background: (s) => this.highestSurface(s),
       contrastCurve: (s) => new ContrastCurve(1, 1, 3, 4.5),
-      toneDeltaPair: (s) => new ToneDeltaPair(
-          this.tertiaryFixed(), this.tertiaryFixedDim(), 10, 'lighter', true),
+      toneDeltaPair: (s) =>
+        new ToneDeltaPair(
+          this.tertiaryFixed(),
+          this.tertiaryFixedDim(),
+          10,
+          "lighter",
+          true
+        ),
     });
   }
 
   tertiaryFixedDim(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'tertiary_fixed_dim',
+      name: "tertiary_fixed_dim",
       palette: (s) => s.tertiaryPalette,
-      tone: (s) => isMonochrome(s) ? 30.0 : 80.0,
+      tone: (s) => (isMonochrome(s) ? 30.0 : 80.0),
       isBackground: true,
       background: (s) => this.highestSurface(s),
       contrastCurve: (s) => new ContrastCurve(1, 1, 3, 4.5),
-      toneDeltaPair: (s) => new ToneDeltaPair(
-          this.tertiaryFixed(), this.tertiaryFixedDim(), 10, 'lighter', true),
+      toneDeltaPair: (s) =>
+        new ToneDeltaPair(
+          this.tertiaryFixed(),
+          this.tertiaryFixedDim(),
+          10,
+          "lighter",
+          true
+        ),
     });
   }
 
   onTertiaryFixed(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'on_tertiary_fixed',
+      name: "on_tertiary_fixed",
       palette: (s) => s.tertiaryPalette,
-      tone: (s) => isMonochrome(s) ? 100.0 : 10.0,
+      tone: (s) => (isMonochrome(s) ? 100.0 : 10.0),
       background: (s) => this.tertiaryFixedDim(),
       secondBackground: (s) => this.tertiaryFixed(),
       contrastCurve: (s) => new ContrastCurve(4.5, 7, 11, 21),
@@ -795,9 +893,9 @@ export class ColorSpecDelegateImpl2021 implements ColorSpecDelegate {
 
   onTertiaryFixedVariant(): DynamicColor {
     return DynamicColor.fromPalette({
-      name: 'on_tertiary_fixed_variant',
+      name: "on_tertiary_fixed_variant",
       palette: (s) => s.tertiaryPalette,
-      tone: (s) => isMonochrome(s) ? 90.0 : 30.0,
+      tone: (s) => (isMonochrome(s) ? 90.0 : 30.0),
       background: (s) => this.tertiaryFixedDim(),
       secondBackground: (s) => this.tertiaryFixed(),
       contrastCurve: (s) => new ContrastCurve(3, 4.5, 7, 11),

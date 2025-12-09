@@ -15,16 +15,12 @@
  * limitations under the License.
  */
 
-import {Hct} from '../hct/hct.js';
-import {TonalPalette} from '../palettes/tonal_palette.js';
+import { ColorSpecDelegateImpl2021 } from "./color_spec_2021.js";
+import { ColorSpecDelegateImpl2025 } from "./color_spec_2025.js";
+import type { DynamicColor } from "./dynamic_color.js";
+import { DynamicScheme } from "./dynamic_scheme.js";
 
-import {ColorSpecDelegateImpl2021} from './color_spec_2021.js';
-import {ColorSpecDelegateImpl2025} from './color_spec_2025.js';
-import type {DynamicColor} from './dynamic_color';
-import {DynamicScheme, Platform} from './dynamic_scheme';
-import {Variant} from './variant.js';
-
-export type SpecVersion = '2021'|'2025';
+export type SpecVersion = "2021" | "2025";
 
 /**
  * A delegate that provides the dynamic color constraints for
@@ -100,7 +96,7 @@ export interface ColorSpecDelegate {
 
   primary(): DynamicColor;
 
-  primaryDim(): DynamicColor|undefined;
+  primaryDim(): DynamicColor | undefined;
 
   onPrimary(): DynamicColor;
 
@@ -116,7 +112,7 @@ export interface ColorSpecDelegate {
 
   secondary(): DynamicColor;
 
-  secondaryDim(): DynamicColor|undefined;
+  secondaryDim(): DynamicColor | undefined;
 
   onSecondary(): DynamicColor;
 
@@ -130,7 +126,7 @@ export interface ColorSpecDelegate {
 
   tertiary(): DynamicColor;
 
-  tertiaryDim(): DynamicColor|undefined;
+  tertiaryDim(): DynamicColor | undefined;
 
   onTertiary(): DynamicColor;
 
@@ -144,7 +140,7 @@ export interface ColorSpecDelegate {
 
   error(): DynamicColor;
 
-  errorDim(): DynamicColor|undefined;
+  errorDim(): DynamicColor | undefined;
 
   onError(): DynamicColor;
 
@@ -203,9 +199,9 @@ export const spec_2025 = new ColorSpecDelegateImpl2025();
  */
 export function getSpec(specVersion: SpecVersion): ColorSpecDelegate {
   switch (specVersion) {
-    case '2021':
+    case "2021":
       return spec_2021;
-    case '2025':
+    case "2025":
       return spec_2025;
     default:
       throw new Error(`Unsupported spec version: ${specVersion}`);
