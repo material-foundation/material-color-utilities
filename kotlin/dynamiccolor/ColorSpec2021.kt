@@ -947,11 +947,11 @@ class ColorSpec2021 : ColorSpec {
       // If constraint is not satisfied, try another round.
       if ((fTone - nTone) * expansionDir < delta) {
         // 2nd round: expand farther to match delta.
-        fTone = MathUtils.clampDouble(0.0, 100.0, nTone + delta * expansionDir)
+        fTone = (nTone + delta * expansionDir).coerceIn(0.0, 100.0)
         // If constraint is not satisfied, try another round.
         if ((fTone - nTone) * expansionDir < delta) {
           // 3rd round: contract nearer to match delta.
-          nTone = MathUtils.clampDouble(0.0, 100.0, fTone - delta * expansionDir)
+          nTone = (fTone - delta * expansionDir).coerceIn(0.0, 100.0)
         }
       }
 

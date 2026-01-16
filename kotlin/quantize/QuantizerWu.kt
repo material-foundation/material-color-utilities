@@ -184,20 +184,19 @@ class QuantizerWu : Quantizer {
       maximize(one, Direction.GREEN, one.g0 + 1, one.g1, wholeR, wholeG, wholeB, wholeW)
     val maxBResult =
       maximize(one, Direction.BLUE, one.b0 + 1, one.b1, wholeR, wholeG, wholeB, wholeW)
-    val cutDirection: Direction
     val maxR = maxRResult.maximum
     val maxG = maxGResult.maximum
     val maxB = maxBResult.maximum
-    cutDirection =
-      if (maxR >= maxG && maxR >= maxB) {
-        if (maxRResult.cutLocation < 0) {
-          return false
+    val cutDirection =
+      when {
+        maxR >= maxG && maxR >= maxB -> {
+          if (maxRResult.cutLocation < 0) {
+            return false
+          }
+          Direction.RED
         }
-        Direction.RED
-      } else if (maxG >= maxR && maxG >= maxB) {
-        Direction.GREEN
-      } else {
-        Direction.BLUE
+        maxG >= maxR && maxG >= maxB -> Direction.GREEN
+        else -> Direction.BLUE
       }
     two.r1 = one.r1
     two.g1 = one.g1

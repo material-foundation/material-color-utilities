@@ -21,7 +21,6 @@ import dynamiccolor.ToneDeltaPair.DeltaConstraint
 import dynamiccolor.ToneDeltaPair.TonePolarity
 import hct.Hct
 import palettes.TonalPalette
-import utils.MathUtils
 import kotlin.math.max
 import kotlin.math.min
 
@@ -1587,29 +1586,20 @@ class ColorSpec2025(private val baseSpec: ColorSpec2021 = ColorSpec2021()) : Col
       val referenceTone = referenceRole.getTone(scheme)
       val relativeDelta = absoluteDelta * (if (amRoleA) 1 else -1)
       when (constraint) {
-        DeltaConstraint.EXACT ->
-          selfTone = MathUtils.clampDouble(0.0, 100.0, referenceTone + relativeDelta)
+        DeltaConstraint.EXACT -> selfTone = (referenceTone + relativeDelta).coerceIn(0.0, 100.0)
         DeltaConstraint.NEARER ->
           if (relativeDelta > 0) {
             selfTone =
-              MathUtils.clampDouble(
-                0.0,
-                100.0,
-                MathUtils.clampDouble(referenceTone, referenceTone + relativeDelta, selfTone),
-              )
+              selfTone.coerceIn(referenceTone, referenceTone + relativeDelta).coerceIn(0.0, 100.0)
           } else {
             selfTone =
-              MathUtils.clampDouble(
-                0.0,
-                100.0,
-                MathUtils.clampDouble(referenceTone + relativeDelta, referenceTone, selfTone),
-              )
+              selfTone.coerceIn(referenceTone + relativeDelta, referenceTone).coerceIn(0.0, 100.0)
           }
         DeltaConstraint.FARTHER ->
           if (relativeDelta > 0) {
-            selfTone = MathUtils.clampDouble(referenceTone + relativeDelta, 100.0, selfTone)
+            selfTone = selfTone.coerceIn(referenceTone + relativeDelta, 100.0)
           } else {
-            selfTone = MathUtils.clampDouble(0.0, referenceTone + relativeDelta, selfTone)
+            selfTone = selfTone.coerceIn(0.0, referenceTone + relativeDelta)
           }
       }
       val background = color.background?.invoke(scheme)
@@ -1632,9 +1622,9 @@ class ColorSpec2025(private val baseSpec: ColorSpec2021 = ColorSpec2021()) : Col
       if (color.isBackground && !color.name.endsWith("_fixed_dim")) {
         selfTone =
           if (selfTone >= 57) {
-            MathUtils.clampDouble(65.0, 100.0, selfTone)
+            selfTone.coerceIn(65.0, 100.0)
           } else {
-            MathUtils.clampDouble(0.0, 49.0, selfTone)
+            selfTone.coerceIn(0.0, 49.0)
           }
       }
       return selfTone
@@ -1664,9 +1654,9 @@ class ColorSpec2025(private val baseSpec: ColorSpec2021 = ColorSpec2021()) : Col
       if (color.isBackground && !color.name.endsWith("_fixed_dim")) {
         answer =
           if (answer >= 57) {
-            MathUtils.clampDouble(65.0, 100.0, answer)
+            answer.coerceIn(65.0, 100.0)
           } else {
-            MathUtils.clampDouble(0.0, 49.0, answer)
+            answer.coerceIn(0.0, 49.0)
           }
       }
       val secondBackground = color.secondBackground?.invoke(scheme)
@@ -2003,7 +1993,7 @@ class ColorSpec2025(private val baseSpec: ColorSpec2021 = ColorSpec2021()) : Col
     chromaMultiplier: Double = 1.0,
   ): Double {
     val answer = findBestToneForChroma(palette.hue, palette.chroma * chromaMultiplier, 100.0, true)
-    return MathUtils.clampDouble(lowerBound, upperBound, answer)
+    return answer.coerceIn(lowerBound, upperBound)
   }
 
   private fun tMinC(
@@ -2012,7 +2002,7 @@ class ColorSpec2025(private val baseSpec: ColorSpec2021 = ColorSpec2021()) : Col
     upperBound: Double = 100.0,
   ): Double {
     val answer = findBestToneForChroma(palette.hue, palette.chroma, 0.0, false)
-    return MathUtils.clampDouble(lowerBound, upperBound, answer)
+    return answer.coerceIn(lowerBound, upperBound)
   }
 
   private fun findBestToneForChroma(

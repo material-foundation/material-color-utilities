@@ -19,7 +19,6 @@ import contrast.Contrast
 import dynamiccolor.ColorSpec.SpecVersion
 import hct.Hct
 import palettes.TonalPalette
-import utils.MathUtils
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -100,7 +99,7 @@ data class DynamicColor(
     return if (opacityPercentage == null) {
       argb
     } else {
-      val alpha = MathUtils.clampInt(0, 255, (opacityPercentage * 255).roundToInt())
+      val alpha = (opacityPercentage * 255).roundToInt().coerceIn(0, 255)
       (argb and 0x00ffffff) or (alpha shl 24)
     }
   }
