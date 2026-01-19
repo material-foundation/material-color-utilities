@@ -104,14 +104,6 @@ export class QuantizerWsmeans {
       clusterIndices.push(Math.floor(Math.random() * clusterCount));
     }
 
-    const indexMatrix = new Array<number[]>();
-    for (let i = 0; i < clusterCount; i++) {
-      indexMatrix.push(new Array<number>());
-      for (let j = 0; j < clusterCount; j++) {
-        indexMatrix[i].push(0);
-      }
-    }
-
     const distanceToIndexMatrix = new Array<DistanceAndIndex[]>();
     for (let i = 0; i < clusterCount; i++) {
       distanceToIndexMatrix.push(new Array<DistanceAndIndex>());
@@ -133,10 +125,6 @@ export class QuantizerWsmeans {
           distanceToIndexMatrix[j][i].index = i;
           distanceToIndexMatrix[i][j].distance = distance;
           distanceToIndexMatrix[i][j].index = j;
-        }
-        distanceToIndexMatrix[i].sort();
-        for (let j = 0; j < clusterCount; j++) {
-          indexMatrix[i][j] = distanceToIndexMatrix[i][j].index;
         }
       }
 
