@@ -15,14 +15,10 @@
  * limitations under the License.
  */
 
-import {Hct} from '../hct/hct.js';
-import {TonalPalette} from '../palettes/tonal_palette.js';
-
 import {ColorSpecDelegateImpl2021} from './color_spec_2021.js';
 import {ColorSpecDelegateImpl2025} from './color_spec_2025.js';
 import type {DynamicColor} from './dynamic_color';
-import {DynamicScheme, Platform} from './dynamic_scheme';
-import {Variant} from './variant.js';
+import {DynamicScheme} from './dynamic_scheme.js';
 
 export type SpecVersion = '2021'|'2025';
 
