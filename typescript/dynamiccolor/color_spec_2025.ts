@@ -22,7 +22,7 @@ import * as math from '../utils/math_utils.js';
 import {ColorSpecDelegateImpl2021} from './color_spec_2021.js';
 import {ContrastCurve} from './contrast_curve.js';
 import {DynamicColor, extendSpecVersion} from './dynamic_color';
-import type {DynamicScheme} from './dynamic_scheme';
+import type {DynamicScheme} from './dynamic_scheme.js';
 import {ToneDeltaPair} from './tone_delta_pair.js';
 import {Variant} from './variant.js';
 
