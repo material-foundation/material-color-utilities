@@ -826,7 +826,7 @@ open class ColorSpec2025 : ColorSpec2021() {
       return super.secondary.extendSpecVersion(ColorSpec.SpecVersion.SPEC_2025, color2025)
     }
 
-  override val secondaryDim: DynamicColor?
+  override val secondaryDim: DynamicColor
     get() {
       return DynamicColor(
         name = "secondary_dim",
@@ -843,7 +843,7 @@ open class ColorSpec2025 : ColorSpec2021() {
         contrastCurve = { getContrastCurve(4.5) },
         toneDeltaPair = {
           ToneDeltaPair(
-            roleA = secondaryDim!!,
+            roleA = secondaryDim,
             roleB = secondary,
             delta = 5.0,
             polarity = TonePolarity.DARKER,
@@ -1005,7 +1005,7 @@ open class ColorSpec2025 : ColorSpec2021() {
       return super.tertiary.extendSpecVersion(ColorSpec.SpecVersion.SPEC_2025, color2025)
     }
 
-  override val tertiaryDim: DynamicColor?
+  override val tertiaryDim: DynamicColor
     get() {
       return DynamicColor(
         name = "tertiary_dim",
@@ -1022,7 +1022,7 @@ open class ColorSpec2025 : ColorSpec2021() {
         contrastCurve = { getContrastCurve(4.5) },
         toneDeltaPair = {
           ToneDeltaPair(
-            roleA = tertiaryDim!!,
+            roleA = tertiaryDim,
             roleB = tertiary,
             delta = 5.0,
             polarity = TonePolarity.DARKER,
@@ -1186,7 +1186,7 @@ open class ColorSpec2025 : ColorSpec2021() {
       return super.error.extendSpecVersion(ColorSpec.SpecVersion.SPEC_2025, color2025)
     }
 
-  override val errorDim: DynamicColor?
+  override val errorDim: DynamicColor
     get() {
       return DynamicColor(
         name = "error_dim",
@@ -1197,7 +1197,7 @@ open class ColorSpec2025 : ColorSpec2021() {
         contrastCurve = { getContrastCurve(4.5) },
         toneDeltaPair = {
           ToneDeltaPair(
-            roleA = errorDim!!,
+            roleA = errorDim,
             roleB = error,
             delta = 5.0,
             polarity = TonePolarity.DARKER,

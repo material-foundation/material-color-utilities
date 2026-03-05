@@ -458,8 +458,24 @@ final class ColorSpec2026 extends ColorSpec2025 {
             .setIsBackground(true)
             .setBackground(s -> highestSurface(s))
             .setContrastCurve(s -> getContrastCurve(4.5))
+            .setToneDeltaPair(
+                s ->
+                    s.platform == DynamicScheme.Platform.PHONE
+                        ? new ToneDeltaPair(
+                            primaryContainer(), primary(), 5, RELATIVE_LIGHTER, FARTHER)
+                        : null)
             .build();
     return super.primary().toBuilder().extendSpecVersion(SpecVersion.SPEC_2026, color2026).build();
+  }
+
+  @NonNull
+  @Override
+  public DynamicColor primaryDim() {
+    // Remapped to primary in 2026 spec.
+    DynamicColor color2026 = primary().toBuilder().setName("primary_dim").build();
+    return super.primaryDim().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2026, color2026)
+        .build();
   }
 
   @NonNull
@@ -495,8 +511,6 @@ final class ColorSpec2026 extends ColorSpec2025 {
                 })
             .setIsBackground(true)
             .setBackground(s -> highestSurface(s))
-            .setToneDeltaPair(
-                s -> new ToneDeltaPair(primaryContainer(), primary(), 5, RELATIVE_LIGHTER, FARTHER))
             .setContrastCurve(s -> s.contrastLevel > 0 ? getContrastCurve(1.5) : null)
             .build();
     return super.primaryContainer().toBuilder()
@@ -567,7 +581,7 @@ final class ColorSpec2026 extends ColorSpec2025 {
         new DynamicColor.Builder()
             .setName("on_primary_fixed")
             .setPalette(s -> s.primaryPalette)
-            .setBackground(s -> primaryFixedDim())
+            .setBackground(s -> primaryFixed().getTone(s) > 57 ? primaryFixedDim() : primaryFixed())
             .setContrastCurve(s -> getContrastCurve(7))
             .build();
     return super.onPrimaryFixed().toBuilder()
@@ -582,7 +596,7 @@ final class ColorSpec2026 extends ColorSpec2025 {
         new DynamicColor.Builder()
             .setName("on_primary_fixed_variant")
             .setPalette(s -> s.primaryPalette)
-            .setBackground(s -> primaryFixedDim())
+            .setBackground(s -> primaryFixed().getTone(s) > 57 ? primaryFixedDim() : primaryFixed())
             .setContrastCurve(s -> getContrastCurve(4.5))
             .build();
     return super.onPrimaryFixedVariant().toBuilder()
@@ -601,8 +615,24 @@ final class ColorSpec2026 extends ColorSpec2025 {
             .setIsBackground(true)
             .setBackground(s -> highestSurface(s))
             .setContrastCurve(s -> getContrastCurve(4.5))
+            .setToneDeltaPair(
+                s ->
+                    s.platform == DynamicScheme.Platform.PHONE
+                        ? new ToneDeltaPair(
+                            secondaryContainer(), secondary(), 5, RELATIVE_LIGHTER, FARTHER)
+                        : null)
             .build();
     return super.secondary().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2026, color2026)
+        .build();
+  }
+
+  @NonNull
+  @Override
+  public DynamicColor secondaryDim() {
+    // Remapped to secondary in 2025 spec.
+    DynamicColor color2026 = secondary().toBuilder().setName("secondary_dim").build();
+    return super.secondaryDim().toBuilder()
         .extendSpecVersion(SpecVersion.SPEC_2026, color2026)
         .build();
   }
@@ -636,10 +666,6 @@ final class ColorSpec2026 extends ColorSpec2025 {
                         : tMaxC(s.secondaryPalette, 61, 90))
             .setIsBackground(true)
             .setBackground(s -> highestSurface(s))
-            .setToneDeltaPair(
-                s ->
-                    new ToneDeltaPair(
-                        secondaryContainer(), secondary(), 5, RELATIVE_LIGHTER, FARTHER))
             .setContrastCurve(s -> s.contrastLevel > 0 ? getContrastCurve(1.5) : null)
             .build();
     return super.secondaryContainer().toBuilder()
@@ -710,7 +736,8 @@ final class ColorSpec2026 extends ColorSpec2025 {
         new DynamicColor.Builder()
             .setName("on_secondary_fixed")
             .setPalette(s -> s.secondaryPalette)
-            .setBackground(s -> secondaryFixedDim())
+            .setBackground(
+                s -> secondaryFixed().getTone(s) > 57 ? secondaryFixedDim() : secondaryFixed())
             .setContrastCurve(s -> getContrastCurve(7))
             .build();
     return super.onSecondaryFixed().toBuilder()
@@ -725,7 +752,8 @@ final class ColorSpec2026 extends ColorSpec2025 {
         new DynamicColor.Builder()
             .setName("on_secondary_fixed_variant")
             .setPalette(s -> s.secondaryPalette)
-            .setBackground(s -> secondaryFixedDim())
+            .setBackground(
+                s -> secondaryFixed().getTone(s) > 57 ? secondaryFixedDim() : secondaryFixed())
             .setContrastCurve(s -> getContrastCurve(4.5))
             .build();
     return super.onSecondaryFixedVariant().toBuilder()
@@ -748,8 +776,23 @@ final class ColorSpec2026 extends ColorSpec2025 {
             .setIsBackground(true)
             .setBackground(s -> highestSurface(s))
             .setContrastCurve(s -> getContrastCurve(4.5))
+            .setToneDeltaPair(
+                s ->
+                    s.platform == DynamicScheme.Platform.PHONE
+                        ? new ToneDeltaPair(
+                            tertiaryContainer(), tertiary(), 5, RELATIVE_LIGHTER, FARTHER)
+                        : null)
             .build();
     return super.tertiary().toBuilder().extendSpecVersion(SpecVersion.SPEC_2026, color2026).build();
+  }
+
+  @Override
+  public DynamicColor tertiaryDim() {
+    // Remapped to tertiary in 2025 spec.
+    DynamicColor color2026 = tertiary().toBuilder().setName("tertiary_dim").build();
+    return super.tertiaryDim().toBuilder()
+        .extendSpecVersion(SpecVersion.SPEC_2026, color2026)
+        .build();
   }
 
   @NonNull
@@ -786,10 +829,6 @@ final class ColorSpec2026 extends ColorSpec2025 {
                 })
             .setIsBackground(true)
             .setBackground(s -> highestSurface(s))
-            .setToneDeltaPair(
-                s ->
-                    new ToneDeltaPair(
-                        tertiaryContainer(), tertiary(), 5, RELATIVE_LIGHTER, FARTHER))
             .setContrastCurve(s -> s.contrastLevel > 0 ? getContrastCurve(1.5) : null)
             .build();
     return super.tertiaryContainer().toBuilder()
@@ -860,7 +899,8 @@ final class ColorSpec2026 extends ColorSpec2025 {
         new DynamicColor.Builder()
             .setName("on_tertiary_fixed")
             .setPalette(s -> s.tertiaryPalette)
-            .setBackground(s -> tertiaryFixedDim())
+            .setBackground(
+                s -> tertiaryFixed().getTone(s) > 57 ? tertiaryFixedDim() : tertiaryFixed())
             .setContrastCurve(s -> getContrastCurve(7))
             .build();
     return super.onTertiaryFixed().toBuilder()
@@ -875,7 +915,8 @@ final class ColorSpec2026 extends ColorSpec2025 {
         new DynamicColor.Builder()
             .setName("on_tertiary_fixed_variant")
             .setPalette(s -> s.tertiaryPalette)
-            .setBackground(s -> tertiaryFixedDim())
+            .setBackground(
+                s -> tertiaryFixed().getTone(s) > 57 ? tertiaryFixedDim() : tertiaryFixed())
             .setContrastCurve(s -> getContrastCurve(4.5))
             .build();
     return super.onTertiaryFixedVariant().toBuilder()
@@ -894,8 +935,21 @@ final class ColorSpec2026 extends ColorSpec2025 {
             .setIsBackground(true)
             .setBackground(s -> highestSurface(s))
             .setContrastCurve(s -> getContrastCurve(4.5))
+            .setToneDeltaPair(
+                s ->
+                    s.platform == DynamicScheme.Platform.PHONE
+                        ? new ToneDeltaPair(errorContainer(), error(), 5, RELATIVE_LIGHTER, FARTHER)
+                        : null)
             .build();
     return super.error().toBuilder().extendSpecVersion(SpecVersion.SPEC_2026, color2026).build();
+  }
+
+  @NonNull
+  @Override
+  public DynamicColor errorDim() {
+    // Remapped to error in 2026 spec.
+    DynamicColor color2026 = error().toBuilder().setName("error_dim").build();
+    return super.errorDim().toBuilder().extendSpecVersion(SpecVersion.SPEC_2026, color2026).build();
   }
 
   @NonNull
@@ -921,8 +975,6 @@ final class ColorSpec2026 extends ColorSpec2025 {
             .setTone(s -> s.isDark ? tMinC(s.errorPalette) : tMaxC(s.errorPalette))
             .setIsBackground(true)
             .setBackground(s -> highestSurface(s))
-            .setToneDeltaPair(
-                s -> new ToneDeltaPair(errorContainer(), error(), 5, RELATIVE_LIGHTER, FARTHER))
             .setContrastCurve(s -> s.contrastLevel > 0 ? getContrastCurve(1.5) : null)
             .build();
     return super.errorContainer().toBuilder()

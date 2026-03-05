@@ -284,8 +284,28 @@ open class ColorSpec2026 : ColorSpec2025() {
           isBackground = true,
           background = { highestSurface(it) },
           contrastCurve = { getContrastCurve(4.5) },
+          toneDeltaPair = {
+            if (it.platform == DynamicScheme.Platform.PHONE) {
+              ToneDeltaPair(
+                primaryContainer,
+                primary,
+                5.0,
+                ToneDeltaPair.TonePolarity.RELATIVE_LIGHTER,
+                constraint = ToneDeltaPair.DeltaConstraint.FARTHER,
+              )
+            } else {
+              null
+            }
+          },
         )
       return super.primary.extendSpecVersion(ColorSpec.SpecVersion.SPEC_2026, color2026)
+    }
+
+  override val primaryDim: DynamicColor
+    get() {
+      // Remapped to primary in 2026 spec.
+      val color2026 = primary.copy(name = "primary_dim")
+      return super.primaryDim.extendSpecVersion(ColorSpec.SpecVersion.SPEC_2026, color2026)
     }
 
   override val onPrimary: DynamicColor
@@ -317,15 +337,6 @@ open class ColorSpec2026 : ColorSpec2025() {
           },
           isBackground = true,
           background = { highestSurface(it) },
-          toneDeltaPair = {
-            ToneDeltaPair(
-              primaryContainer,
-              primary,
-              5.0,
-              ToneDeltaPair.TonePolarity.RELATIVE_LIGHTER,
-              constraint = ToneDeltaPair.DeltaConstraint.FARTHER,
-            )
-          },
           contrastCurve = { if (it.contrastLevel > 0) getContrastCurve(1.5) else null },
         )
       return super.primaryContainer.extendSpecVersion(ColorSpec.SpecVersion.SPEC_2026, color2026)
@@ -389,7 +400,7 @@ open class ColorSpec2026 : ColorSpec2025() {
         DynamicColor(
           name = "on_primary_fixed",
           palette = { it.primaryPalette },
-          background = { primaryFixedDim },
+          background = { if (primaryFixed.getTone(it) > 57) primaryFixedDim else primaryFixed },
           contrastCurve = { getContrastCurve(7.0) },
         )
       return super.onPrimaryFixed.extendSpecVersion(ColorSpec.SpecVersion.SPEC_2026, color2026)
@@ -401,7 +412,7 @@ open class ColorSpec2026 : ColorSpec2025() {
         DynamicColor(
           name = "on_primary_fixed_variant",
           palette = { it.primaryPalette },
-          background = { primaryFixedDim },
+          background = { if (primaryFixed.getTone(it) > 57) primaryFixedDim else primaryFixed },
           contrastCurve = { getContrastCurve(4.5) },
         )
       return super.onPrimaryFixedVariant.extendSpecVersion(
@@ -420,8 +431,28 @@ open class ColorSpec2026 : ColorSpec2025() {
           isBackground = true,
           background = { highestSurface(it) },
           contrastCurve = { getContrastCurve(4.5) },
+          toneDeltaPair = {
+            if (it.platform == DynamicScheme.Platform.PHONE) {
+              ToneDeltaPair(
+                secondaryContainer,
+                secondary,
+                5.0,
+                ToneDeltaPair.TonePolarity.RELATIVE_LIGHTER,
+                constraint = ToneDeltaPair.DeltaConstraint.FARTHER,
+              )
+            } else {
+              null
+            }
+          },
         )
       return super.secondary.extendSpecVersion(ColorSpec.SpecVersion.SPEC_2026, color2026)
+    }
+
+  override val secondaryDim: DynamicColor
+    get() {
+      // Remapped to secondary in 2026 spec.
+      val color2026 = secondary.copy(name = "secondary_dim")
+      return super.secondaryDim.extendSpecVersion(ColorSpec.SpecVersion.SPEC_2026, color2026)
     }
 
   override val onSecondary: DynamicColor
@@ -451,15 +482,6 @@ open class ColorSpec2026 : ColorSpec2025() {
           },
           isBackground = true,
           background = { highestSurface(it) },
-          toneDeltaPair = {
-            ToneDeltaPair(
-              secondaryContainer,
-              secondary,
-              5.0,
-              ToneDeltaPair.TonePolarity.RELATIVE_LIGHTER,
-              constraint = ToneDeltaPair.DeltaConstraint.FARTHER,
-            )
-          },
           contrastCurve = { if (it.contrastLevel > 0) getContrastCurve(1.5) else null },
         )
       return super.secondaryContainer.extendSpecVersion(ColorSpec.SpecVersion.SPEC_2026, color2026)
@@ -526,7 +548,9 @@ open class ColorSpec2026 : ColorSpec2025() {
         DynamicColor(
           name = "on_secondary_fixed",
           palette = { it.secondaryPalette },
-          background = { secondaryFixedDim },
+          background = {
+            if (secondaryFixed.getTone(it) > 57) secondaryFixedDim else secondaryFixed
+          },
           contrastCurve = { getContrastCurve(7.0) },
         )
       return super.onSecondaryFixed.extendSpecVersion(ColorSpec.SpecVersion.SPEC_2026, color2026)
@@ -538,7 +562,9 @@ open class ColorSpec2026 : ColorSpec2025() {
         DynamicColor(
           name = "on_secondary_fixed_variant",
           palette = { it.secondaryPalette },
-          background = { secondaryFixedDim },
+          background = {
+            if (secondaryFixed.getTone(it) > 57) secondaryFixedDim else secondaryFixed
+          },
           contrastCurve = { getContrastCurve(4.5) },
         )
       return super.onSecondaryFixedVariant.extendSpecVersion(
@@ -557,8 +583,28 @@ open class ColorSpec2026 : ColorSpec2025() {
           isBackground = true,
           background = { highestSurface(it) },
           contrastCurve = { getContrastCurve(4.5) },
+          toneDeltaPair = {
+            if (it.platform == DynamicScheme.Platform.PHONE) {
+              ToneDeltaPair(
+                tertiaryContainer,
+                tertiary,
+                5.0,
+                ToneDeltaPair.TonePolarity.RELATIVE_LIGHTER,
+                constraint = ToneDeltaPair.DeltaConstraint.FARTHER,
+              )
+            } else {
+              null
+            }
+          },
         )
       return super.tertiary.extendSpecVersion(ColorSpec.SpecVersion.SPEC_2026, color2026)
+    }
+
+  override val tertiaryDim: DynamicColor
+    get() {
+      // Remapped to tertiary in 2026 spec.
+      val color2026 = tertiary.copy(name = "tertiary_dim")
+      return super.tertiaryDim.extendSpecVersion(ColorSpec.SpecVersion.SPEC_2026, color2026)
     }
 
   override val onTertiary: DynamicColor
@@ -589,15 +635,6 @@ open class ColorSpec2026 : ColorSpec2025() {
           },
           isBackground = true,
           background = { highestSurface(it) },
-          toneDeltaPair = {
-            ToneDeltaPair(
-              tertiaryContainer,
-              tertiary,
-              5.0,
-              ToneDeltaPair.TonePolarity.RELATIVE_LIGHTER,
-              constraint = ToneDeltaPair.DeltaConstraint.FARTHER,
-            )
-          },
           contrastCurve = { if (it.contrastLevel > 0) getContrastCurve(1.5) else null },
         )
       return super.tertiaryContainer.extendSpecVersion(ColorSpec.SpecVersion.SPEC_2026, color2026)
@@ -661,7 +698,7 @@ open class ColorSpec2026 : ColorSpec2025() {
         DynamicColor(
           name = "on_tertiary_fixed",
           palette = { it.tertiaryPalette },
-          background = { tertiaryFixedDim },
+          background = { if (tertiaryFixed.getTone(it) > 57) tertiaryFixedDim else tertiaryFixed },
           contrastCurve = { getContrastCurve(7.0) },
         )
       return super.onTertiaryFixed.extendSpecVersion(ColorSpec.SpecVersion.SPEC_2026, color2026)
@@ -673,7 +710,7 @@ open class ColorSpec2026 : ColorSpec2025() {
         DynamicColor(
           name = "on_tertiary_fixed_variant",
           palette = { it.tertiaryPalette },
-          background = { tertiaryFixedDim },
+          background = { if (tertiaryFixed.getTone(it) > 57) tertiaryFixedDim else tertiaryFixed },
           contrastCurve = { getContrastCurve(4.5) },
         )
       return super.onTertiaryFixedVariant.extendSpecVersion(
@@ -692,8 +729,28 @@ open class ColorSpec2026 : ColorSpec2025() {
           isBackground = true,
           background = { highestSurface(it) },
           contrastCurve = { getContrastCurve(4.5) },
+          toneDeltaPair = {
+            if (it.platform == DynamicScheme.Platform.PHONE) {
+              ToneDeltaPair(
+                errorContainer,
+                error,
+                5.0,
+                ToneDeltaPair.TonePolarity.RELATIVE_LIGHTER,
+                constraint = ToneDeltaPair.DeltaConstraint.FARTHER,
+              )
+            } else {
+              null
+            }
+          },
         )
       return super.error.extendSpecVersion(ColorSpec.SpecVersion.SPEC_2026, color2026)
+    }
+
+  override val errorDim: DynamicColor
+    get() {
+      // Remapped to error in 2026 spec.
+      val color2026 = error.copy(name = "error_dim")
+      return super.errorDim.extendSpecVersion(ColorSpec.SpecVersion.SPEC_2026, color2026)
     }
 
   override val onError: DynamicColor
@@ -717,15 +774,6 @@ open class ColorSpec2026 : ColorSpec2025() {
           tone = { if (it.isDark) tMinC(it.errorPalette) else tMaxC(it.errorPalette) },
           isBackground = true,
           background = { highestSurface(it) },
-          toneDeltaPair = {
-            ToneDeltaPair(
-              errorContainer,
-              error,
-              5.0,
-              ToneDeltaPair.TonePolarity.RELATIVE_LIGHTER,
-              constraint = ToneDeltaPair.DeltaConstraint.FARTHER,
-            )
-          },
           contrastCurve = { if (it.contrastLevel > 0) getContrastCurve(1.5) else null },
         )
       return super.errorContainer.extendSpecVersion(ColorSpec.SpecVersion.SPEC_2026, color2026)

@@ -58,7 +58,10 @@ class SchemeCmf(
         sourceColorHctList.first().chroma * 0.2,
       ),
     errorPalette =
-      TonalPalette.fromHueAndChroma(23.0, sourceColorHctList.first().chroma.coerceAtLeast(50.0)),
+      TonalPalette.fromHueAndChroma(
+        getErrorHue(sourceColorHctList.first().hue, tertiaryPalette(sourceColorHctList).hue),
+        sourceColorHctList.first().chroma.coerceAtLeast(50.0),
+      ),
   ) {
   init {
     require(specVersion == ColorSpec.SpecVersion.SPEC_2026) {
@@ -73,6 +76,28 @@ class SchemeCmf(
     specVersion: ColorSpec.SpecVersion = ColorSpec.SpecVersion.SPEC_2026,
     platform: Platform = DEFAULT_PLATFORM,
   ) : this(listOf(sourceColorHct), isDark, contrastLevel, specVersion, platform)
+}
+
+private fun getErrorHue(primaryHue: Double, tertiaryHue: Double): Double {
+  if (primaryHue <= 8) {
+    return if (tertiaryHue <= 24) 28.0 else if (tertiaryHue <= 32) 16.0 else 20.0
+  } else if (primaryHue <= 16) {
+    return if (tertiaryHue <= 24) 32.0 else if (tertiaryHue <= 32) 20.0 else 24.0
+  } else if (primaryHue <= 20) {
+    return if (tertiaryHue <= 28) 32.0 else if (tertiaryHue <= 32) 24.0 else 28.0
+  } else if (primaryHue <= 28) {
+    return if (tertiaryHue <= 24) 32.0 else 16.0
+  } else if (primaryHue <= 32) {
+    return if (tertiaryHue <= 20) 24.0 else if (tertiaryHue <= 28) 16.0 else 20.0
+  } else if (primaryHue <= 40) {
+    return if (tertiaryHue > 20 && tertiaryHue <= 28) 16.0 else 24.0
+  } else if (primaryHue <= 152) {
+    return if (tertiaryHue > 24 && tertiaryHue <= 36) 20.0 else 32.0
+  } else if (primaryHue <= 272) {
+    return if (tertiaryHue > 20 && tertiaryHue <= 28) 16.0 else 24.0
+  } else {
+    return if (tertiaryHue > 12 && tertiaryHue <= 28) 32.0 else 16.0
+  }
 }
 
 private fun tertiaryPalette(sourceColorHctList: List<Hct>): TonalPalette {

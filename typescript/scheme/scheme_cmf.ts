@@ -59,7 +59,8 @@ export class SchemeCmf extends DynamicScheme {
     const neutralVariantPalette = TonalPalette.fromHueAndChroma(
         sourceColorHct.hue, sourceColorHct.chroma * 0.2);
     const errorPalette = TonalPalette.fromHueAndChroma(
-        23.0, Math.max(sourceColorHct.chroma, 50.0));
+        SchemeCmf.getErrorHue(sourceColorHct.hue, secondarySourceColorHct.hue),
+        Math.max(sourceColorHct.chroma, 50.0));
     super({
       sourceColorHcts: isArray ? sourceColorOrList : [sourceColorOrList],
       variant: Variant.CMF,
@@ -74,5 +75,27 @@ export class SchemeCmf extends DynamicScheme {
       neutralVariantPalette,
       errorPalette,
     });
+  }
+
+  static getErrorHue(primaryHue: number, tertiaryHue: number): number {
+    if (primaryHue <= 8) {
+      return tertiaryHue <= 24 ? 28 : (tertiaryHue <= 32 ? 16 : 20);
+    } else if (primaryHue <= 16) {
+      return tertiaryHue <= 24 ? 32 : (tertiaryHue <= 32 ? 20 : 24);
+    } else if (primaryHue <= 20) {
+      return tertiaryHue <= 28 ? 32 : (tertiaryHue <= 32 ? 24 : 28);
+    } else if (primaryHue <= 28) {
+      return tertiaryHue <= 24 ? 32 : 16;
+    } else if (primaryHue <= 32) {
+      return tertiaryHue <= 20 ? 24 : (tertiaryHue <= 28 ? 16 : 20);
+    } else if (primaryHue <= 40) {
+      return (tertiaryHue > 20 && tertiaryHue <= 28) ? 16 : 24;
+    } else if (primaryHue <= 152) {
+      return (tertiaryHue > 24 && tertiaryHue <= 36) ? 20 : 32;
+    } else if (primaryHue <= 272) {
+      return (tertiaryHue > 20 && tertiaryHue <= 28) ? 16 : 24;
+    } else {
+      return (tertiaryHue > 12 && tertiaryHue <= 28) ? 32 : 16;
+    }
   }
 }

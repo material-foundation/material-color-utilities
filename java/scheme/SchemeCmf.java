@@ -69,7 +69,10 @@ public class SchemeCmf extends DynamicScheme {
             sourceColorHctList.get(0).getHue(), sourceColorHctList.get(0).getChroma() * 0.2),
         Optional.of(
             TonalPalette.fromHueAndChroma(
-                23.0, Math.max(sourceColorHctList.get(0).getChroma(), 50.0))));
+                getErrorHue(
+                    sourceColorHctList.get(0).getHue(),
+                    tertiaryPalette(sourceColorHctList).getHue()),
+                Math.max(sourceColorHctList.get(0).getChroma(), 50.0))));
     if (specVersion != SpecVersion.SPEC_2026) {
       throw new IllegalArgumentException("SchemeCmf can only be used with spec version 2026.");
     }
@@ -85,6 +88,28 @@ public class SchemeCmf extends DynamicScheme {
     } else {
       return TonalPalette.fromHueAndChroma(
           secondarySourceColorHct.getHue(), secondarySourceColorHct.getChroma());
+    }
+  }
+
+  private static double getErrorHue(double primaryHue, double tertiaryHue) {
+    if (primaryHue <= 8) {
+      return tertiaryHue <= 24 ? 28 : (tertiaryHue <= 32 ? 16 : 20);
+    } else if (primaryHue <= 16) {
+      return tertiaryHue <= 24 ? 32 : (tertiaryHue <= 32 ? 20 : 24);
+    } else if (primaryHue <= 20) {
+      return tertiaryHue <= 28 ? 32 : (tertiaryHue <= 32 ? 24 : 28);
+    } else if (primaryHue <= 28) {
+      return tertiaryHue <= 24 ? 32 : 16;
+    } else if (primaryHue <= 32) {
+      return tertiaryHue <= 20 ? 24 : (tertiaryHue <= 28 ? 16 : 20);
+    } else if (primaryHue <= 40) {
+      return (tertiaryHue > 20 && tertiaryHue <= 28) ? 16 : 24;
+    } else if (primaryHue <= 152) {
+      return (tertiaryHue > 24 && tertiaryHue <= 36) ? 20 : 32;
+    } else if (primaryHue <= 272) {
+      return (tertiaryHue > 20 && tertiaryHue <= 28) ? 16 : 24;
+    } else {
+      return (tertiaryHue > 12 && tertiaryHue <= 28) ? 32 : 16;
     }
   }
 }
