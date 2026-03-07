@@ -4,6 +4,7 @@
 > **This is a fork** of the original Material Color Utilities repository.
 > It is only intended for making releases of the TypeScript package and
 > will be kept in sync with the upstream repository.
+> See [POUPE.md](POUPE.md) for details.
 
 Color is a powerful design tool and part of the Material system along with
 styles like typography and shape. In products, colors and the way they are used
