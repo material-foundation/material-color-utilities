@@ -29,5 +29,7 @@ export enum Variant {
   FIDELITY,
   CONTENT,
   RAINBOW,
-  FRUIT_SALAD
+  FRUIT_SALAD,
+  CMF
+
 }

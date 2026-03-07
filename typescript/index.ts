@@ -33,6 +33,7 @@ export * from './quantize/quantizer_wsmeans.js';
 export * from './quantize/quantizer_wu.js';
 export * from './scheme/scheme.js';
 export * from './scheme/scheme_android.js';
+export * from './scheme/scheme_cmf.js';
 export * from './scheme/scheme_content.js';
 export * from './scheme/scheme_expressive.js';
 export * from './scheme/scheme_fidelity.js';

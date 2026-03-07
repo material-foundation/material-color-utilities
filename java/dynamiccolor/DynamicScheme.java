@@ -17,12 +17,15 @@
 package dynamiccolor;
 
 import static java.lang.Math.min;
+import static java.util.stream.Collectors.joining;
 
 import dynamiccolor.ColorSpec.SpecVersion;
 import hct.Hct;
 import palettes.TonalPalette;
 import utils.MathUtils;
 import java.text.DecimalFormat;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -47,6 +50,9 @@ public class DynamicScheme {
 
   /** The source color of the scheme in HCT format. */
   public final Hct sourceColorHct;
+
+  /** The extra source colors of the theme as HCT colors. */
+  public final List<Hct> sourceColorHctList;
 
   /** The variant of the scheme. */
   public final Variant variant;
@@ -135,13 +141,45 @@ public class DynamicScheme {
       TonalPalette neutralPalette,
       TonalPalette neutralVariantPalette,
       Optional<TonalPalette> errorPalette) {
-    this.sourceColorArgb = sourceColorHct.toInt();
-    this.sourceColorHct = sourceColorHct;
+    this(
+        Collections.singletonList(sourceColorHct),
+        variant,
+        isDark,
+        contrastLevel,
+        platform,
+        specVersion,
+        primaryPalette,
+        secondaryPalette,
+        tertiaryPalette,
+        neutralPalette,
+        neutralVariantPalette,
+        errorPalette);
+  }
+
+  public DynamicScheme(
+      List<Hct> sourceColorHctList,
+      Variant variant,
+      boolean isDark,
+      double contrastLevel,
+      Platform platform,
+      SpecVersion specVersion,
+      TonalPalette primaryPalette,
+      TonalPalette secondaryPalette,
+      TonalPalette tertiaryPalette,
+      TonalPalette neutralPalette,
+      TonalPalette neutralVariantPalette,
+      Optional<TonalPalette> errorPalette) {
+    if (sourceColorHctList == null || sourceColorHctList.isEmpty()) {
+      throw new IllegalArgumentException("sourceColorHctList cannot be empty");
+    }
+    this.sourceColorHct = sourceColorHctList.get(0);
+    this.sourceColorArgb = this.sourceColorHct.toInt();
     this.variant = variant;
     this.isDark = isDark;
     this.contrastLevel = contrastLevel;
     this.platform = platform;
-    this.specVersion = specVersion;
+    this.specVersion = maybeFallbackSpecVersion(specVersion, variant);
+    this.sourceColorHctList = sourceColorHctList;
 
     this.primaryPalette = primaryPalette;
     this.secondaryPalette = secondaryPalette;
@@ -157,7 +195,7 @@ public class DynamicScheme {
 
   public static DynamicScheme from(DynamicScheme other, boolean isDark, double contrastLevel) {
     return new DynamicScheme(
-        other.sourceColorHct,
+        other.sourceColorHctList,
         other.variant,
         isDark,
         contrastLevel,
@@ -169,6 +207,23 @@ public class DynamicScheme {
         other.neutralPalette,
         other.neutralVariantPalette,
         Optional.of(other.errorPalette));
+  }
+
+  /**
+   * Returns the spec version to use for the given variant. If the variant is not supported by the
+   * given spec version, the fallback spec version is returned.
+   */
+  private static SpecVersion maybeFallbackSpecVersion(SpecVersion specVersion, Variant variant) {
+    if (variant == Variant.CMF) {
+      return specVersion;
+    }
+    if (variant == Variant.EXPRESSIVE
+        || variant == Variant.VIBRANT
+        || variant == Variant.TONAL_SPOT
+        || variant == Variant.NEUTRAL) {
+      return specVersion == SpecVersion.SPEC_2026 ? SpecVersion.SPEC_2025 : specVersion;
+    }
+    return SpecVersion.SPEC_2021;
   }
 
   /**
@@ -256,12 +311,17 @@ public class DynamicScheme {
   @Override
   public String toString() {
     return String.format(
-        "Scheme: variant=%s, mode=%s, platform=%s, contrastLevel=%s, seed=%s, specVersion=%s",
+        "Scheme: variant=%s, mode=%s, platform=%s, contrastLevel=%s, seed=%s, %sspecVersion=%s",
         variant.name(),
         isDark ? "dark" : "light",
         platform.name().toLowerCase(Locale.ENGLISH),
         new DecimalFormat("0.0").format(contrastLevel),
         sourceColorHct,
+        sourceColorHctList.size() <= 1
+            ? ""
+            : "sourceColorHctList=["
+                + sourceColorHctList.stream().map(Hct::toString).collect(joining(", "))
+                + "], ",
         specVersion);
   }
 

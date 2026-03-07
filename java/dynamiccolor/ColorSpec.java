@@ -30,6 +30,7 @@ public interface ColorSpec {
   public enum SpecVersion {
     SPEC_2021,
     SPEC_2025,
+    SPEC_2026,
   }
 
   ////////////////////////////////////////////////////////////////

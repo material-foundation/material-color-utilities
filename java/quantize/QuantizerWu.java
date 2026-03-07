@@ -234,24 +234,24 @@ public final class QuantizerWu implements Quantizer {
     two.b1 = one.b1;
 
     switch (cutDirection) {
-      case RED:
+      case RED -> {
         one.r1 = maxRResult.cutLocation;
         two.r0 = one.r1;
         two.g0 = one.g0;
         two.b0 = one.b0;
-        break;
-      case GREEN:
+      }
+      case GREEN -> {
         one.g1 = maxGResult.cutLocation;
         two.r0 = one.r0;
         two.g0 = one.g1;
         two.b0 = one.b0;
-        break;
-      case BLUE:
+      }
+      case BLUE -> {
         one.b1 = maxBResult.cutLocation;
         two.r0 = one.r0;
         two.g0 = one.g0;
         two.b0 = one.b1;
-        break;
+      }
     }
 
     one.vol = (one.r1 - one.r0) * (one.g1 - one.g0) * (one.b1 - one.b0);

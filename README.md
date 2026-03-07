@@ -35,6 +35,7 @@ Dart        | ✅             | [![pub package](https://img.shields.io/pub/v/mat
 Java        | ✅             | [MDC-Android](https://github.com/material-components/material-components-android/blob/master/docs/theming/Color.md)
 Swift       | ✅             |
 TypeScript  | ✅             | [![npm package](https://badgen.net/npm/v/@poupe/material-color-utilities)](https://npmjs.com/package/@poupe/material-color-utilities)
+Kotlin        | ✅             |
 
 Need another platform/language? Check the
 [existing issues](https://github.com/material-foundation/material-color-utilities/labels/library%3A%20new)

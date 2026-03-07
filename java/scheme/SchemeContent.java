@@ -21,6 +21,8 @@ import dynamiccolor.ColorSpecs;
 import dynamiccolor.DynamicScheme;
 import dynamiccolor.Variant;
 import hct.Hct;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A scheme that places the source color in Scheme.primaryContainer.
@@ -46,26 +48,45 @@ public class SchemeContent extends DynamicScheme {
       double contrastLevel,
       SpecVersion specVersion,
       Platform platform) {
+    this(Collections.singletonList(sourceColorHct), isDark, contrastLevel, specVersion, platform);
+  }
+
+  public SchemeContent(List<Hct> sourceColorHctList, boolean isDark, double contrastLevel) {
+    this(sourceColorHctList, isDark, contrastLevel, DEFAULT_SPEC_VERSION, DEFAULT_PLATFORM);
+  }
+
+  public SchemeContent(
+      List<Hct> sourceColorHctList,
+      boolean isDark,
+      double contrastLevel,
+      SpecVersion specVersion,
+      Platform platform) {
     super(
-        sourceColorHct,
+        sourceColorHctList,
         Variant.CONTENT,
         isDark,
         contrastLevel,
         platform,
         specVersion,
         ColorSpecs.get(specVersion)
-            .getPrimaryPalette(Variant.CONTENT, sourceColorHct, isDark, platform, contrastLevel),
+            .getPrimaryPalette(
+                Variant.CONTENT, sourceColorHctList.get(0), isDark, platform, contrastLevel),
         ColorSpecs.get(specVersion)
-            .getSecondaryPalette(Variant.CONTENT, sourceColorHct, isDark, platform, contrastLevel),
+            .getSecondaryPalette(
+                Variant.CONTENT, sourceColorHctList.get(0), isDark, platform, contrastLevel),
         ColorSpecs.get(specVersion)
-            .getTertiaryPalette(Variant.CONTENT, sourceColorHct, isDark, platform, contrastLevel),
+            .getTertiaryPalette(
+                Variant.CONTENT, sourceColorHctList.get(0), isDark, platform, contrastLevel),
         ColorSpecs.get(specVersion)
-            .getNeutralPalette(Variant.CONTENT, sourceColorHct, isDark, platform, contrastLevel),
+            .getNeutralPalette(
+                Variant.CONTENT, sourceColorHctList.get(0), isDark, platform, contrastLevel),
         ColorSpecs.get(specVersion)
             .getNeutralVariantPalette(
-                Variant.CONTENT, sourceColorHct, isDark, platform, contrastLevel),
+                Variant.CONTENT, sourceColorHctList.get(0), isDark, platform, contrastLevel),
         ColorSpecs.get(specVersion)
-            .getErrorPalette(Variant.CONTENT, sourceColorHct, isDark, platform, contrastLevel));
+            .getErrorPalette(
+                Variant.CONTENT, sourceColorHctList.get(0), isDark, platform, contrastLevel));
   }
 }
+
 

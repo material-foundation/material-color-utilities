@@ -33,8 +33,8 @@ import {Variant} from './variant.js';
 export type Platform = 'phone'|'watch';
 
 /**
- * @param sourceColorArgb The source color of the theme as an ARGB 32-bit
- *     integer.
+ * @param sourceColorHct The primary source color of the theme as an HCT color.
+ * @param sourceColorHcts The source colors of the theme as HCT colors.
  * @param variant The variant, or style, of the theme.
  * @param contrastLevel Value from -1 to 1. -1 represents minimum contrast, 0
  *     represents standard (i.e. the design as spec'd), and 1 represents maximum
@@ -59,9 +59,11 @@ export type Platform = 'phone'|'watch';
  *     of the color are specified in the design specification of the variant.
  *     Usually not colorful, but slightly more colorful than Neutral. Intended
  *     for backgrounds & surfaces.
+ * @param errorPalette Given a tone, produces a reddish, colorful, color.
  */
 interface DynamicSchemeOptions {
-  sourceColorHct: Hct;
+  sourceColorHct?: Hct;
+  sourceColorHcts?: Hct[];
   variant: Variant;
   contrastLevel: number;
   isDark: boolean;
@@ -73,6 +75,7 @@ interface DynamicSchemeOptions {
   neutralPalette?: TonalPalette;
   neutralVariantPalette?: TonalPalette;
   errorPalette?: TonalPalette;
+  
 }
 
 /**
@@ -121,6 +124,18 @@ export class DynamicScheme {
    * The source color of the theme as an HCT color.
    */
   sourceColorHct: Hct;
+
+  /**
+   * The source colors of the theme as HCT colors.
+   *
+   * If provided, `sourceColorHct` will be the first color in this list. Any
+   * other colors will be used to generate multicolored palettes.
+   *
+   * If not provided, `sourceColorHcts` will be a list containing only
+   * `sourceColorHct`.
+   */
+  sourceColorHcts: Hct[];
+
 
   /** The source color of the theme as an ARGB 32-bit integer. */
   readonly sourceColorArgb: number;
@@ -186,43 +201,69 @@ export class DynamicScheme {
 
   readonly colors: MaterialDynamicColors;
 
+  private static maybeFallbackSpecVersion(
+      specVersion: SpecVersion, variant: Variant): SpecVersion {
+    if (variant === Variant.CMF) {
+      return specVersion;
+    }
+    if (variant === Variant.EXPRESSIVE || variant === Variant.VIBRANT ||
+        variant === Variant.TONAL_SPOT || variant === Variant.NEUTRAL) {
+      return specVersion === '2026' ? '2025' : specVersion;
+    }
+    return '2021';
+  }
+
   constructor(args: DynamicSchemeOptions) {
-    this.sourceColorArgb = args.sourceColorHct.toInt();
+    if (args.sourceColorHcts) {
+      if (args.sourceColorHcts.length === 0) {
+        throw new Error('sourceColorHcts cannot be empty');
+      }
+      this.sourceColorHct = args.sourceColorHcts[0];
+
+      this.sourceColorHcts = args.sourceColorHcts;
+    } else if (args.sourceColorHct) {
+      this.sourceColorHct = args.sourceColorHct;
+
+      this.sourceColorHcts = [args.sourceColorHct];
+    } else {
+      throw new Error('sourceColorHct or sourceColorHcts required');
+    }
+    this.sourceColorArgb = this.sourceColorHct.toInt();
     this.variant = args.variant;
     this.contrastLevel = args.contrastLevel;
     this.isDark = args.isDark;
     this.platform = args.platform ?? 'phone';
-    this.specVersion = args.specVersion ?? '2021';
-    this.sourceColorHct = args.sourceColorHct;
+    this.specVersion = DynamicScheme.maybeFallbackSpecVersion(
+        args.specVersion ?? '2021', this.variant);
     this.primaryPalette = args.primaryPalette ??
         getSpec(this.specVersion)
             .getPrimaryPalette(
-                this.variant, args.sourceColorHct, this.isDark, this.platform,
+                this.variant, this.sourceColorHct, this.isDark, this.platform,
                 this.contrastLevel);
     this.secondaryPalette = args.secondaryPalette ??
         getSpec(this.specVersion)
             .getSecondaryPalette(
-                this.variant, args.sourceColorHct, this.isDark, this.platform,
+                this.variant, this.sourceColorHct, this.isDark, this.platform,
                 this.contrastLevel);
     this.tertiaryPalette = args.tertiaryPalette ??
         getSpec(this.specVersion)
             .getTertiaryPalette(
-                this.variant, args.sourceColorHct, this.isDark, this.platform,
+                this.variant, this.sourceColorHct, this.isDark, this.platform,
                 this.contrastLevel);
     this.neutralPalette = args.neutralPalette ??
         getSpec(this.specVersion)
             .getNeutralPalette(
-                this.variant, args.sourceColorHct, this.isDark, this.platform,
+                this.variant, this.sourceColorHct, this.isDark, this.platform,
                 this.contrastLevel);
     this.neutralVariantPalette = args.neutralVariantPalette ??
         getSpec(this.specVersion)
             .getNeutralVariantPalette(
-                this.variant, args.sourceColorHct, this.isDark, this.platform,
+                this.variant, this.sourceColorHct, this.isDark, this.platform,
                 this.contrastLevel);
     this.errorPalette = args.errorPalette ??
         getSpec(this.specVersion)
             .getErrorPalette(
-                this.variant, args.sourceColorHct, this.isDark, this.platform,
+                this.variant, this.sourceColorHct, this.isDark, this.platform,
                 this.contrastLevel) ??
         TonalPalette.fromHueAndChroma(25.0, 84.0);
 
@@ -230,13 +271,17 @@ export class DynamicScheme {
   }
 
   toString(): string {
+    const extraColors = this.sourceColorHcts.length <= 1 ?
+        '' :
+        `sourceColorHctList=[${
+            this.sourceColorHcts.map((hct) => hct.toString()).join(', ')}], `;
     return `Scheme: ` +
         `variant=${Variant[this.variant]}, ` +
         `mode=${this.isDark ? 'dark' : 'light'}, ` +
         `platform=${this.platform}, ` +
         `contrastLevel=${this.contrastLevel.toFixed(1)}, ` +
-        `seed=${this.sourceColorHct.toString()}, ` +
-        `specVersion=${this.specVersion}`
+        `seed=${this.sourceColorHct.toString()}, ` + extraColors +
+        `specVersion=${this.specVersion}`;
   }
 
   /**

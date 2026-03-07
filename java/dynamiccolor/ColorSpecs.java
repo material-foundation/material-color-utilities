@@ -23,6 +23,7 @@ public final class ColorSpecs {
 
   private static final ColorSpec SPEC_2021 = new ColorSpec2021();
   private static final ColorSpec SPEC_2025 = new ColorSpec2025();
+  private static final ColorSpec SPEC_2026 = new ColorSpec2026();
 
   public static final ColorSpec get() {
     return get(SpecVersion.SPEC_2021);
@@ -33,7 +34,11 @@ public final class ColorSpecs {
   }
 
   public static final ColorSpec get(SpecVersion specVersion, boolean isExtendedFidelity) {
-    return specVersion == SpecVersion.SPEC_2025 ? SPEC_2025 : SPEC_2021;
+    return switch (specVersion) {
+      case SPEC_2025 -> SPEC_2025;
+      case SPEC_2026 -> SPEC_2026;
+      default -> SPEC_2021;
+    };
   }
 
   private ColorSpecs() {}

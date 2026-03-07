@@ -46,12 +46,6 @@ import java.util.function.Function;
  * flexibility, any desired behavior of a color for any design system, but it usually unnecessary.
  * See the default constructor for more information.
  */
-// Prevent lint for Function.apply not being available on Android before API level 14 (4.0.1).
-// "AndroidJdkLibsChecker" for Function, "NewApi" for Function.apply().
-// A java_library Bazel rule with an Android constraint cannot skip these warnings without this
-// annotation; another solution would be to create an android_library rule and supply
-// AndroidManifest with an SDK set higher than 14.
-@SuppressWarnings({"AndroidJdkLibsChecker", "NewApi"})
 public final class DynamicColor {
   public final String name;
   public final Function<DynamicScheme, TonalPalette> palette;
@@ -496,19 +490,21 @@ public final class DynamicColor {
           .setPalette(
               (s) -> {
                 Function<DynamicScheme, TonalPalette> palette =
-                    s.specVersion == specVersion ? extendedColor.palette : this.palette;
+                    s.specVersion.compareTo(specVersion) >= 0
+                        ? extendedColor.palette
+                        : this.palette;
                 return palette != null ? palette.apply(s) : null;
               })
           .setTone(
               (s) -> {
                 Function<DynamicScheme, Double> tone =
-                    s.specVersion == specVersion ? extendedColor.tone : this.tone;
+                    s.specVersion.compareTo(specVersion) >= 0 ? extendedColor.tone : this.tone;
                 return tone != null ? tone.apply(s) : null;
               })
           .setChromaMultiplier(
               (s) -> {
                 Function<DynamicScheme, Double> chromaMultiplier =
-                    s.specVersion == specVersion
+                    s.specVersion.compareTo(specVersion) >= 0
                         ? extendedColor.chromaMultiplier
                         : this.chromaMultiplier;
                 return chromaMultiplier != null ? chromaMultiplier.apply(s) : 1.0;
@@ -516,13 +512,15 @@ public final class DynamicColor {
           .setBackground(
               (s) -> {
                 Function<DynamicScheme, DynamicColor> background =
-                    s.specVersion == specVersion ? extendedColor.background : this.background;
+                    s.specVersion.compareTo(specVersion) >= 0
+                        ? extendedColor.background
+                        : this.background;
                 return background != null ? background.apply(s) : null;
               })
           .setSecondBackground(
               (s) -> {
                 Function<DynamicScheme, DynamicColor> secondBackground =
-                    s.specVersion == specVersion
+                    s.specVersion.compareTo(specVersion) >= 0
                         ? extendedColor.secondBackground
                         : this.secondBackground;
                 return secondBackground != null ? secondBackground.apply(s) : null;
@@ -530,19 +528,25 @@ public final class DynamicColor {
           .setContrastCurve(
               (s) -> {
                 Function<DynamicScheme, ContrastCurve> contrastCurve =
-                    s.specVersion == specVersion ? extendedColor.contrastCurve : this.contrastCurve;
+                    s.specVersion.compareTo(specVersion) >= 0
+                        ? extendedColor.contrastCurve
+                        : this.contrastCurve;
                 return contrastCurve != null ? contrastCurve.apply(s) : null;
               })
           .setToneDeltaPair(
               (s) -> {
                 Function<DynamicScheme, ToneDeltaPair> toneDeltaPair =
-                    s.specVersion == specVersion ? extendedColor.toneDeltaPair : this.toneDeltaPair;
+                    s.specVersion.compareTo(specVersion) >= 0
+                        ? extendedColor.toneDeltaPair
+                        : this.toneDeltaPair;
                 return toneDeltaPair != null ? toneDeltaPair.apply(s) : null;
               })
           .setOpacity(
               (s) -> {
                 Function<DynamicScheme, Double> opacity =
-                    s.specVersion == specVersion ? extendedColor.opacity : this.opacity;
+                    s.specVersion.compareTo(specVersion) >= 0
+                        ? extendedColor.opacity
+                        : this.opacity;
                 return opacity != null ? opacity.apply(s) : null;
               });
     }

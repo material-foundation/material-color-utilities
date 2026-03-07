@@ -167,12 +167,7 @@ public class Cam16 {
     // hue
     let atan2 = atan2(b, a)
     let atanDegrees = atan2 * 180 / Double.pi
-    let hue =
-      atanDegrees < 0
-      ? atanDegrees + 360.0
-      : atanDegrees >= 360
-        ? atanDegrees - 360
-        : atanDegrees
+    let hue = MathUtils.sanitizeDegreesDouble(atanDegrees)
     let hueRadians = hue * Double.pi / 180.0
     assert(hue >= 0 && hue < 360, "hue was really \(hue)")
 

@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-import {ColorSpecDelegateImpl2025} from './color_spec_2025.js';
+import {ColorSpecDelegateImpl2026} from './color_spec_2026.js';
 import {DynamicColor} from './dynamic_color.js';
-import type {DynamicScheme} from './dynamic_scheme';
+import type {DynamicScheme} from './dynamic_scheme.js';
 
 /**
  * DynamicColors for the colors in the Material Design system.
@@ -27,7 +27,7 @@ import type {DynamicScheme} from './dynamic_scheme';
 export class MaterialDynamicColors {
   static contentAccentToneDelta = 15.0;
 
-  private static readonly colorSpec = new ColorSpecDelegateImpl2025();
+  private static readonly colorSpec = new ColorSpecDelegateImpl2026();
 
   highestSurface(s: DynamicScheme): DynamicColor {
     return MaterialDynamicColors.colorSpec.highestSurface(s);

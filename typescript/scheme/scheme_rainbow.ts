@@ -26,10 +26,16 @@ import {Hct} from '../hct/hct.js';
 export class SchemeRainbow extends DynamicScheme {
   constructor(
       sourceColorHct: Hct, isDark: boolean, contrastLevel: number,
+      specVersion?: SpecVersion, platform?: Platform);
+  constructor(
+      sourceColorHcts: Hct[], isDark: boolean, contrastLevel: number,
+      specVersion?: SpecVersion, platform?: Platform);
+  constructor(
+      sourceColorOrList: Hct|Hct[], isDark: boolean, contrastLevel: number,
       specVersion: SpecVersion = DynamicScheme.DEFAULT_SPEC_VERSION,
       platform: Platform = DynamicScheme.DEFAULT_PLATFORM) {
     super({
-      sourceColorHct,
+      sourceColorHcts: Array.isArray(sourceColorOrList) ? sourceColorOrList : [sourceColorOrList],
       variant: Variant.RAINBOW,
       contrastLevel,
       isDark,
