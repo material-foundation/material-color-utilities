@@ -30,8 +30,8 @@ categories: packaging, import fixes, and CI.
 - Switched the package manager from npm to pnpm, with
   `packageManager` fields and lock files at both the root and
   `typescript/` levels.
-- Added `pkg-pr-new` as a dev dependency for PR preview
-  builds.
+- Added `pkg-pr-new` as a dev dependency (`~` range) for
+  PR preview builds.
 - Added fork disclaimer banners to `README.md` and
   `typescript/README.md`.
 - Fixed a typo in the upstream `README.md`

@@ -9,10 +9,22 @@ importers:
   .:
     devDependencies:
       pkg-pr-new:
-        specifier: ^0.0.50
-        version: 0.0.50
+        specifier: ~0.0.65
+        version: 0.0.65
 
 packages:
+
+  '@actions/core@3.0.0':
+    resolution: {integrity: sha512-zYt6cz+ivnTmiT/ksRVriMBOiuoUpDCJJlZ5KPl2/FRdvwU3f7MPh9qftvbkXJThragzUZieit2nyHUyw53Seg==}
+
+  '@actions/exec@3.0.0':
+    resolution: {integrity: sha512-6xH/puSoNBXb72VPlZVm7vQ+svQpFyA96qdDBvhB8eNZOE8LtPf9L4oAsfzK/crCL8YZ+19fKYVnM63Sl+Xzlw==}
+
+  '@actions/http-client@4.0.0':
+    resolution: {integrity: sha512-QuwPsgVMsD6qaPD57GLZi9sqzAZCtiJT8kVBCDpLtxhL5MydQ4gS+DrejtZZPdIYyB1e95uCK9Luyds7ybHI3g==}
+
+  '@actions/io@3.0.2':
+    resolution: {integrity: sha512-nRBchcMM+QK1pdjO7/idu86rbJI5YHUKCvKs0KxnSYbVe3F51UfGxuZX4Qy/fWlp6l7gWFwIkrOzN+oUK03kfw==}
 
   '@jsdevtools/ez-spawn@3.0.4':
     resolution: {integrity: sha512-f5DRIOZf7wxogefH03RjMPMdBF7ADTWUMoOs9kaJo06EfwF+aFhMZMDZxHg/Xe12hptN9xoZjGso2fdjapBRIA==}
@@ -139,8 +151,8 @@ packages:
     resolution: {integrity: sha512-M7BAV6Rlcy5u+m6oPhAPFgJTzAioX/6B0DxyvDlo9l8+T3nLKbrczg2WLUyzd45L8RqfUMyGPzekbMvX2Ldkwg==}
     engines: {node: '>=12'}
 
-  pkg-pr-new@0.0.50:
-    resolution: {integrity: sha512-wwIE4s+M39AcAnls7N1xxJyw7uYw15pzF94i54byvfSL6OOQjhyo9MAsSCUfcZZXplNKpYy70qW7rDXtOW35zw==}
+  pkg-pr-new@0.0.65:
+    resolution: {integrity: sha512-yZGN17qf6SX/go2rlLL3OWtwO0ppKZBxAfG5M3a9N44WMDrhqkuyfQOpKdvRE9plFsCzF7L/Xtp/1hQQHqhhCQ==}
     hasBin: true
 
   pkg-types@1.3.1:
@@ -178,6 +190,10 @@ packages:
     resolution: {integrity: sha512-tX5e7OM1HnYr2+a2C/4V0htOcSQcoSTH9KgJnVvNm5zm/cyEWKJ7j7YutsH9CxMdtOkkLFy2AHrMci9IM8IPZQ==}
     engines: {node: '>=12.0.0'}
 
+  tunnel@0.0.6:
+    resolution: {integrity: sha512-1h/Lnq9yajKY2PEbBadPXj3VxsDDu844OnaAo52UVmIzIvwwtBPIuNvkjuzBlTWpfJyUbG3ez0KSBibQkj4ojg==}
+    engines: {node: '>=0.6.11 <=0.7.0 || >=0.7.3'}
+
   type-detect@4.1.0:
     resolution: {integrity: sha512-Acylog8/luQ8L7il+geoSxhEkazvkslg7PSNKOX59mbB9cOveP5aq9h74Y7YU8yDpJwetzQQrfIwtf4Wp4LKcw==}
     engines: {node: '>=4'}
@@ -185,8 +201,8 @@ packages:
   ufo@1.6.1:
     resolution: {integrity: sha512-9a4/uxlTWJ4+a5i0ooc1rU7C7YOw3wT+UGqdeNNHWnOF9qcMBgLRS+4IYUqbczewFx4mLEig6gawh7X6mFlEkA==}
 
-  undici@6.21.3:
-    resolution: {integrity: sha512-gBLkYIlEnSp8pFbT64yFgGE6UIB9tAkhukC23PmMDCe5Nd+cRqKxSjw5y54MK2AZMgZfJWMaNE4nYUHgi1XEOw==}
+  undici@6.23.0:
+    resolution: {integrity: sha512-VfQPToRA5FZs/qJxLIinmU59u0r7LXqoJkCzinq3ckNJp3vKEh7jTWN589YQ5+aoAC/TGRLyJLCPKcLQbM8r9g==}
     engines: {node: '>=18.17'}
 
   universal-user-agent@6.0.1:
@@ -217,6 +233,22 @@ packages:
 
 snapshots:
 
+  '@actions/core@3.0.0':
+    dependencies:
+      '@actions/exec': 3.0.0
+      '@actions/http-client': 4.0.0
+
+  '@actions/exec@3.0.0':
+    dependencies:
+      '@actions/io': 3.0.2
+
+  '@actions/http-client@4.0.0':
+    dependencies:
+      tunnel: 0.0.6
+      undici: 6.23.0
+
+  '@actions/io@3.0.2': {}
+
   '@jsdevtools/ez-spawn@3.0.4':
     dependencies:
       call-me-maybe: 1.0.2
@@ -231,7 +263,7 @@ snapshots:
       '@octokit/plugin-paginate-rest': 9.2.2(@octokit/core@5.2.1)
       '@octokit/plugin-rest-endpoint-methods': 10.4.1(@octokit/core@5.2.1)
       '@octokit/types': 12.6.0
-      undici: 6.21.3
+      undici: 6.23.0
 
   '@octokit/auth-action@4.1.0':
     dependencies:
@@ -343,8 +375,9 @@ snapshots:
 
   picomatch@4.0.2: {}
 
-  pkg-pr-new@0.0.50:
+  pkg-pr-new@0.0.65:
     dependencies:
+      '@actions/core': 3.0.0
       '@jsdevtools/ez-spawn': 3.0.4
       '@octokit/action': 6.1.0
       ignore: 5.3.2
@@ -391,11 +424,13 @@ snapshots:
       fdir: 6.4.4(picomatch@4.0.2)
       picomatch: 4.0.2
 
+  tunnel@0.0.6: {}
+
   type-detect@4.1.0: {}
 
   ufo@1.6.1: {}
 
-  undici@6.21.3: {}
+  undici@6.23.0: {}
 
   universal-user-agent@6.0.1: {}
 
