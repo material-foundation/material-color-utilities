@@ -91,6 +91,9 @@ public final class TonalPalette {
 
   /** Given a tone, use hue and chroma of palette to create a color, and return it as HCT. */
   public Hct getHct(double tone) {
+    if (tone == 99.0 && Hct.isYellow(hue)) {
+      return Hct.fromInt(tone(99));
+    }
     return Hct.from(this.hue, this.chroma, tone);
   }
 

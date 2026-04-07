@@ -1574,12 +1574,17 @@ class ColorSpec2025 extends ColorSpec2021 {
     // "recover" intended chroma as contrast increases.
     TonalPalette palette = color.palette.apply(scheme);
     double tone = getTone(scheme, color);
-    double hue = palette.getHue();
     double chromaMultiplier =
-        color.chromaMultiplier == null ? 1 : color.chromaMultiplier.apply(scheme);
-    double chroma = palette.getChroma() * chromaMultiplier;
+        color.chromaMultiplier == null ? 1.0 : color.chromaMultiplier.apply(scheme);
+    if (chromaMultiplier == 1.0) {
+      return palette.getHct(tone);
+    }
 
-    return Hct.from(hue, chroma, tone);
+    double chroma = palette.getChroma() * chromaMultiplier;
+    if (tone == 99.0 && Hct.isYellow(palette.getHue())) {
+      return TonalPalette.fromHueAndChroma(palette.getHue(), chroma).getHct(tone);
+    }
+    return Hct.from(palette.getHue(), chroma, tone);
   }
 
   @Override

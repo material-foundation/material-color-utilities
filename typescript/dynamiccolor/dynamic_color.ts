@@ -17,7 +17,7 @@
 
 import {Contrast} from '../contrast/contrast.js';
 import {Hct} from '../hct/hct.js';
-import type {TonalPalette} from '../palettes/tonal_palette';
+import {TonalPalette} from '../palettes/tonal_palette.js';
 import * as math from '../utils/math_utils.js';
 
 import type {SpecVersion} from './color_spec';
@@ -589,11 +589,17 @@ class ColorCalculationDelegateImpl2025 implements ColorCalculationDelegate {
   getHct(scheme: DynamicScheme, color: DynamicColor): Hct {
     const palette = color.palette(scheme);
     const tone = color.getTone(scheme);
-    const hue = palette.hue;
-    const chroma = palette.chroma *
-        (color.chromaMultiplier ? color.chromaMultiplier(scheme) : 1);
+    const multiplier =
+        color.chromaMultiplier ? color.chromaMultiplier(scheme) : 1;
+    if (multiplier === 1) {
+      return palette.getHct(tone);
+    }
 
-    return Hct.from(hue, chroma, tone);
+    const chroma = palette.chroma * multiplier;
+    if (tone === 99 && Hct.isYellow(palette.hue)) {
+      return TonalPalette.fromHueAndChroma(palette.hue, chroma).getHct(tone);
+    }
+    return Hct.from(palette.hue, chroma, tone);
   }
 
   getTone(scheme: DynamicScheme, color: DynamicColor): number {
