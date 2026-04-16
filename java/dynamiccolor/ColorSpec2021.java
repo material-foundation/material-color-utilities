@@ -1083,7 +1083,7 @@ class ColorSpec2021 implements ColorSpec {
   @NonNull
   @Override
   public Hct getHct(DynamicScheme scheme, DynamicColor color) {
-    // This is crucial for aesthetics: we aren't simply the taking the standard color
+    // This is crucial for aesthetics: we aren't simply taking the standard color
     // and changing its tone for contrast. Rather, we find the tone for contrast, then
     // use the specified chroma from the palette to construct a new color.
     //
