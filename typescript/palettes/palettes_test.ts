@@ -17,8 +17,6 @@
 
 import 'jasmine';
 
-import {Hct} from '../hct/hct.js';
-
 import {CorePalette} from './core_palette.js';
 import {TonalPalette} from './tonal_palette.js';
 
