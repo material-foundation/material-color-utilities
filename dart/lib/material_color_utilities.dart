@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 export 'blend/blend.dart';
 export 'contrast/contrast.dart';
 export 'dislike/dislike_analyzer.dart';
