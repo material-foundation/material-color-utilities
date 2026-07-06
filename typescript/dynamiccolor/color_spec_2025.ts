@@ -546,9 +546,8 @@ export class ColorSpecDelegateImpl2025 extends ColorSpecDelegateImpl2021 {
           if (s.platform === 'phone') {
             return tMaxC(
                 s.primaryPalette, 0,
-                Hct.isYellow(s.primaryPalette.hue)   ? 25 :
-                    Hct.isCyan(s.primaryPalette.hue) ? 88 :
-                                                       98);
+                s.isDark ? (Hct.isCyan(s.primaryPalette.hue) ? 88 : 98) :
+                           (Hct.isYellow(s.primaryPalette.hue) ? 25 : 98));
           } else {  // WATCH
             return tMaxC(s.primaryPalette);
           }
@@ -621,7 +620,7 @@ export class ColorSpecDelegateImpl2025 extends ColorSpecDelegateImpl2021 {
           return s.isDark ? tMinC(s.primaryPalette, 35, 93) :
                             tMaxC(s.primaryPalette, 0, 90);
         } else if (s.variant === Variant.EXPRESSIVE) {
-          return s.isDark ? tMaxC(s.primaryPalette, 30, 93) :
+          return s.isDark ? tMinC(s.primaryPalette, 30, 93) :
                             tMaxC(
                                 s.primaryPalette, 78,
                                 Hct.isCyan(s.primaryPalette.hue) ? 88 : 90);

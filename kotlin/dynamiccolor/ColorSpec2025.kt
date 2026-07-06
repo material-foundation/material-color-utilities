@@ -574,12 +574,10 @@ open class ColorSpec2025 : ColorSpec2021() {
                   tMaxC(
                     scheme.primaryPalette,
                     0.0,
-                    if (Hct.isYellow(scheme.primaryPalette.hue)) {
-                      25.0
-                    } else if (Hct.isCyan(scheme.primaryPalette.hue)) {
-                      88.0
+                    if (scheme.isDark) {
+                      if (Hct.isCyan(scheme.primaryPalette.hue)) 88.0 else 98.0
                     } else {
-                      98.0
+                      if (Hct.isYellow(scheme.primaryPalette.hue)) 25.0 else 98.0
                     },
                   )
                 } else { // WATCH
@@ -686,7 +684,7 @@ open class ColorSpec2025 : ColorSpec2021() {
                 }
               scheme.variant == Variant.EXPRESSIVE ->
                 if (scheme.isDark) {
-                  tMaxC(scheme.primaryPalette, 30.0, 93.0)
+                  tMinC(scheme.primaryPalette, 30.0, 93.0)
                 } else {
                   tMaxC(
                     scheme.primaryPalette,
