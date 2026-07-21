@@ -1,26 +1,27 @@
 # Material Color Utilities
 
-Color is a foundational part of the [Material Design system](https://m3.material.io/),
-alongside typography and shape. In products, color can communicate brand,
-reinforce meaning through semantic roles, and improve usability through
-[accessible contrast](https://m3.material.io/styles/color/accessibility).
+Color is a powerful design tool and part of the Material system along with
+styles like typography and shape. In products, colors and the way they are used
+can be vast and varied. An app’s color scheme can express brand and style.
+Semantic colors can communicate meaning. And color contrast control supports
+visual accessibility.
 
-Historically, teams hand-picked many colors to cover all UI use cases. In
-[Material 3](https://m3.material.io/styles/color/overview),
-[dynamic color](https://m3.material.io/styles/color/dynamic-color/overview) shifts
-that effort to algorithms: color schemes are generated from inputs such as a
-user’s wallpaper, then mapped to consistent, accessible roles across the UI.
-This approach enables greater flexibility, personalization, and expression,
-while reducing design and implementation overhead.
+In many design systems of the past, designers manually picked app colors to
+support the necessary range of color applications and use cases. Material 3
+introduces a dynamic color system, which does not rely on hand-picked colors.
+Instead, it uses color algorithms to generate beautiful, accessible color
+schemes based on dynamic inputs like a user’s wallpaper. This enables greater
+flexibility, personalization, and expression, all while streamlining work for
+designers and teams.
 
-Material Color Utilities (MCU) powers
-[dynamic color](https://m3.material.io/styles/color/dynamic-color/overview)
-through a set of libraries that provide the underlying color science,
-algorithms, and utilities needed to build themes and schemes in your app.
+Material Color Ultilities (MCU) powers dynamic color with a set of color
+libraries containing algorithms and utilities that make it easier for you to
+develop color themes and schemes in your app.
 
 <video autoplay muted loop src="https://user-images.githubusercontent.com/6655696/146014425-8e8e04bc-e646-4cc2-a3e7-97497a3e1b09.mp4" data-canonical-src="https://user-images.githubusercontent.com/6655696/146014425-8e8e04bc-e646-4cc2-a3e7-97497a3e1b09.mp4" class="d-block rounded-bottom-2 width-fit" style="max-width:640px;"></video>
 
 ## Library availability
+
 
 Language    | Availability  | Location
 ----------- | ------------- | --------
@@ -47,6 +48,7 @@ The library consists of various components, each having its own folder and
  and Android System UI. Some consumers do not require all components, for
  example, MDC doesn’t need quantization, scoring, image extraction.
 
+
 | Components       | Purpose                                                   |
 | ---------------- | --------------------------------------------------------- |
 | **blend**        | Interpolate, harmonize, animate, and gradate colors in HCT |
@@ -63,14 +65,14 @@ The library consists of various components, each having its own folder and
 
 ## Learn about color science
 
-[The Science of Color & Design - Material Design](https://m3.material.io/blog/science-of-color-design)
+[The Science of Color & Design - Material Design](https://material.io/blog/science-of-color-design)
 
 ## Try it out
 
 ### Material Theme Builder
 
 We recommend incorporating the Material Theme Builder
-[Figma plugin](https://www.figma.com/community/plugin/1034969338659738588/material-theme-builder)
+[Figma plugin](https://www.figma.com/community/plugin/1034969338659738588/Material-Theme-Builder)
 and [web tool](https://material-foundation.github.io/material-theme-builder/)
 into the design workflow. With them, designers can easily experiment with
 different dynamic color themes and see how they transform their designs with
