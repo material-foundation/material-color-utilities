@@ -16,7 +16,7 @@
  */
 
 import {SpecVersion} from '../dynamiccolor/color_spec.js';
-import {DynamicScheme, Platform} from '../dynamiccolor/dynamic_scheme';
+import {DynamicScheme, Platform} from '../dynamiccolor/dynamic_scheme.js';
 import {Variant} from '../dynamiccolor/variant.js';
 import {Hct} from '../hct/hct.js';
 
