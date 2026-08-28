@@ -17,7 +17,7 @@
 
 import {ColorSpecDelegateImpl2026} from './color_spec_2026.js';
 import {DynamicColor} from './dynamic_color.js';
-import type {DynamicScheme} from './dynamic_scheme';
+import type {DynamicScheme} from './dynamic_scheme.js';
 
 /**
  * DynamicColors for the colors in the Material Design system.
