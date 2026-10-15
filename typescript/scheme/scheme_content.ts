@@ -19,6 +19,7 @@ import {SpecVersion} from '../dynamiccolor/color_spec.js';
 import {DynamicScheme, Platform} from '../dynamiccolor/dynamic_scheme';
 import {Variant} from '../dynamiccolor/variant.js';
 import {Hct} from '../hct/hct.js';
+import {TonalPalette} from '../palettes/tonal_palette.js';
 
 /**
  * A scheme that places the source color in `Scheme.primaryContainer`.
@@ -40,13 +41,21 @@ export class SchemeContent extends DynamicScheme {
       sourceColorOrList: Hct|Hct[], isDark: boolean, contrastLevel: number,
       specVersion: SpecVersion = DynamicScheme.DEFAULT_SPEC_VERSION,
       platform: Platform = DynamicScheme.DEFAULT_PLATFORM) {
+    const sourceColorHcts = Array.isArray(sourceColorOrList) ?
+        sourceColorOrList :
+        [sourceColorOrList];
     super({
-      sourceColorHcts: Array.isArray(sourceColorOrList) ? sourceColorOrList : [sourceColorOrList],
+      sourceColorHcts,
       variant: Variant.CONTENT,
       contrastLevel,
       isDark,
       platform,
       specVersion,
+      tertiaryPalette: sourceColorHcts.length > 1 && platform === 'watch' &&
+              sourceColorHcts[0].toInt() !== sourceColorHcts[1].toInt() ?
+          TonalPalette.fromHueAndChroma(
+              sourceColorHcts[1].hue, sourceColorHcts[1].chroma) :
+          undefined,
     });
   }
 }

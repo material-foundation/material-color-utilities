@@ -202,12 +202,14 @@ export class DynamicScheme {
   readonly colors: MaterialDynamicColors;
 
   private static maybeFallbackSpecVersion(
-      specVersion: SpecVersion, variant: Variant): SpecVersion {
+      specVersion: SpecVersion, variant: Variant,
+      platform: Platform): SpecVersion {
     if (variant === Variant.CMF) {
       return specVersion;
     }
     if (variant === Variant.EXPRESSIVE || variant === Variant.VIBRANT ||
-        variant === Variant.TONAL_SPOT || variant === Variant.NEUTRAL) {
+        variant === Variant.TONAL_SPOT || variant === Variant.NEUTRAL ||
+        (platform === 'watch' && variant === Variant.CONTENT)) {
       return specVersion === '2026' ? '2025' : specVersion;
     }
     return '2021';
@@ -234,7 +236,7 @@ export class DynamicScheme {
     this.isDark = args.isDark;
     this.platform = args.platform ?? 'phone';
     this.specVersion = DynamicScheme.maybeFallbackSpecVersion(
-        args.specVersion ?? '2021', this.variant);
+        args.specVersion ?? '2021', this.variant, this.platform);
     this.primaryPalette = args.primaryPalette ??
         getSpec(this.specVersion)
             .getPrimaryPalette(
@@ -819,8 +821,12 @@ class DynamicSchemePalettesDelegateImpl2025 extends
       case Variant.NEUTRAL:
         return TonalPalette.fromHueAndChroma(
             sourceColorHct.hue,
-            platform === 'phone' ? (Hct.isBlue(sourceColorHct.hue) ? 12 : 8) :
-                                   (Hct.isBlue(sourceColorHct.hue) ? 16 : 12));
+            platform === 'phone' ?
+                (Hct.isBlue(sourceColorHct.hue) ? 12 : 8) :
+                (DynamicSchemePalettesDelegateImpl2025.isWatchBlueHue(
+                     sourceColorHct) ?
+                     16 :
+                     12));
       case Variant.TONAL_SPOT:
         return TonalPalette.fromHueAndChroma(
             sourceColorHct.hue, platform === 'phone' && isDark ? 26 : 32);
@@ -829,7 +835,13 @@ class DynamicSchemePalettesDelegateImpl2025 extends
             sourceColorHct.hue, platform === 'phone' ? (isDark ? 36 : 48) : 40);
       case Variant.VIBRANT:
         return TonalPalette.fromHueAndChroma(
-            sourceColorHct.hue, platform === 'phone' ? 74 : 56);
+            sourceColorHct.hue, platform === 'phone' ? 74 : 48);
+      case Variant.CONTENT:
+        return platform === 'watch' ?
+            TonalPalette.fromHueAndChroma(
+                sourceColorHct.hue, sourceColorHct.chroma) :
+            super.getPrimaryPalette(
+                variant, sourceColorHct, isDark, platform, contrastLevel);
       default:
         return super.getPrimaryPalette(
             variant, sourceColorHct, isDark, platform, contrastLevel);
@@ -843,22 +855,41 @@ class DynamicSchemePalettesDelegateImpl2025 extends
       case Variant.NEUTRAL:
         return TonalPalette.fromHueAndChroma(
             sourceColorHct.hue,
-            platform === 'phone' ? (Hct.isBlue(sourceColorHct.hue) ? 6 : 4) :
-                                   (Hct.isBlue(sourceColorHct.hue) ? 10 : 6));
+            platform === 'phone' ?
+                (Hct.isBlue(sourceColorHct.hue) ? 6 : 4) :
+                (DynamicSchemePalettesDelegateImpl2025.isWatchBlueHue(
+                     sourceColorHct) ?
+                     10 :
+                     6));
       case Variant.TONAL_SPOT:
         return TonalPalette.fromHueAndChroma(sourceColorHct.hue, 16);
       case Variant.EXPRESSIVE:
         return TonalPalette.fromHueAndChroma(
-            DynamicScheme.getRotatedHue(
-                sourceColorHct, [0, 105, 140, 204, 253, 278, 300, 333, 360],
-                [-160, 155, -100, 96, -96, -156, -165, -160]),
+            platform === 'watch' ?
+                DynamicScheme.getRotatedHue(
+                    sourceColorHct, [0, 21, 51, 121, 151, 191, 271, 321, 360],
+                    [204, 175, 155, 150, 204, 260, 204, 204, 204]) :
+                DynamicScheme.getRotatedHue(
+                    sourceColorHct, [0, 105, 140, 204, 253, 278, 300, 333, 360],
+                    [-160, 155, -100, 96, -96, -156, -165, -160]),
             platform === 'phone' ? (isDark ? 16 : 24) : 24);
       case Variant.VIBRANT:
         return TonalPalette.fromHueAndChroma(
-            DynamicScheme.getRotatedHue(
-                sourceColorHct, [0, 38, 105, 140, 333, 360],
-                [-14, 10, -14, 10, -14]),
+            platform === 'watch' ?
+                DynamicScheme.getRotatedHue(
+                    sourceColorHct, [0, 41, 61, 101, 131, 181, 251, 301, 360],
+                    [-14, 0, 355, 357, 0, 3, 10, 331, 331]) :
+                DynamicScheme.getRotatedHue(
+                    sourceColorHct, [0, 38, 105, 140, 333, 360],
+                    [-14, 10, -14, 10, -14]),
             platform === 'phone' ? 56 : 36);
+      case Variant.CONTENT:
+        return platform === 'watch' ?
+            TonalPalette.fromHueAndChroma(
+                sourceColorHct.hue,
+                math.clampDouble(16.0, 36.0, sourceColorHct.chroma * 0.5)) :
+            super.getSecondaryPalette(
+                variant, sourceColorHct, isDark, platform, contrastLevel);
       default:
         return super.getSecondaryPalette(
             variant, sourceColorHct, isDark, platform, contrastLevel);
@@ -871,35 +902,70 @@ class DynamicSchemePalettesDelegateImpl2025 extends
     switch (variant) {
       case Variant.NEUTRAL:
         return TonalPalette.fromHueAndChroma(
-            DynamicScheme.getRotatedHue(
-                sourceColorHct, [0, 38, 105, 161, 204, 278, 333, 360],
-                [-32, 26, 10, -39, 24, -15, -32]),
+            platform === 'watch' ?
+                DynamicScheme.getRotatedHue(
+                    sourceColorHct, [0, 41, 61, 101, 131, 181, 250, 270, 360],
+                    [25, 25, 26, 25, -39, 25, 28, 25, 25]) :
+                DynamicScheme.getRotatedHue(
+                    sourceColorHct, [0, 38, 105, 161, 204, 278, 333, 360],
+                    [-32, 26, 10, -39, 24, -15, -32]),
             platform === 'phone' ? 20 : 36);
       case Variant.TONAL_SPOT:
         return TonalPalette.fromHueAndChroma(
-            DynamicScheme.getRotatedHue(
-                sourceColorHct, [0, 20, 71, 161, 333, 360],
-                [-40, 48, -32, 40, -32]),
+            platform === 'watch' ?
+                DynamicScheme.getRotatedHue(
+                    sourceColorHct, [0, 40, 101, 210, 301, 360],
+                    [-32, 32, -32, 32, -32, -32]) :
+                DynamicScheme.getRotatedHue(
+                    sourceColorHct, [0, 20, 71, 161, 333, 360],
+                    [-40, 48, -32, 40, -32]),
             platform === 'phone' ? 28 : 32);
       case Variant.EXPRESSIVE:
         return TonalPalette.fromHueAndChroma(
-            DynamicScheme.getRotatedHue(
-                sourceColorHct, [0, 105, 140, 204, 253, 278, 300, 333, 360],
-                [-165, 160, -105, 101, -101, -160, -170, -165]),
+            platform === 'watch' ?
+                DynamicScheme.getRotatedHue(
+                    sourceColorHct, [0, 21, 51, 121, 151, 191, 271, 321, 360],
+                    [200, 200, 160, 169, 200, 220, 200, 200, 200]) :
+                DynamicScheme.getRotatedHue(
+                    sourceColorHct, [0, 105, 140, 204, 253, 278, 300, 333, 360],
+                    [-165, 160, -105, 101, -101, -160, -170, -165]),
             48);
       case Variant.VIBRANT:
         return TonalPalette.fromHueAndChroma(
-            DynamicScheme.getRotatedHue(
-                sourceColorHct, [0, 38, 71, 105, 140, 161, 253, 333, 360],
-                [-72, 35, 24, -24, 62, 50, 62, -72]),
-            56);
+            platform === 'watch' ?
+                DynamicScheme.getRotatedHue(
+                    sourceColorHct, [0, 41, 61, 101, 131, 181, 251, 301, 360],
+                    [-72, 55, 45, 50, 55, 50, 62, 303, 303]) :
+                DynamicScheme.getRotatedHue(
+                    sourceColorHct, [0, 38, 71, 105, 140, 161, 253, 333, 360],
+                    [-72, 35, 24, -24, 62, 50, 62, -72]),
+            platform === 'phone' ? 56 : 48);
+      case Variant.CONTENT:
+        return platform === 'watch' ?
+            TonalPalette.fromHueAndChroma(
+                DynamicScheme.getRotatedHue(
+                    sourceColorHct, [0, 40, 101, 210, 301, 360],
+                    [-32, 32, -32, 32, -32, -32]),
+                sourceColorHct.chroma) :
+            super.getTertiaryPalette(
+                variant, sourceColorHct, isDark, platform, contrastLevel);
       default:
         return super.getTertiaryPalette(
             variant, sourceColorHct, isDark, platform, contrastLevel);
     }
   }
 
-  private static getExpressiveNeutralHue(sourceColorHct: Hct): number {
+  private static isWatchBlueHue(sourceColorHct: Hct): boolean {
+    return 250 <= sourceColorHct.hue && sourceColorHct.hue <= 270;
+  }
+
+  private static getExpressiveNeutralHue(
+      sourceColorHct: Hct, platform: Platform): number {
+    if (platform === 'watch') {
+      return DynamicScheme.getRotatedHue(
+          sourceColorHct, [0, 21, 51, 121, 151, 191, 271, 321, 360],
+          [0, 0, 0, 0, 0, 0, 10, 0, 0]);
+    }
     const hue = DynamicScheme.getRotatedHue(
         sourceColorHct, [0, 71, 124, 253, 278, 300, 360],
         [10, 0, 10, 0, 10, 0]);
@@ -910,23 +976,30 @@ class DynamicSchemePalettesDelegateImpl2025 extends
       sourceColorHct: Hct, isDark: boolean, platform: Platform): number {
     const neutralHue =
         DynamicSchemePalettesDelegateImpl2025.getExpressiveNeutralHue(
-            sourceColorHct);
+            sourceColorHct, platform);
     return platform === 'phone' ?
         (isDark ? (Hct.isYellow(neutralHue) ? 6 : 14) : 18) :
         12;
   }
 
-  private static getVibrantNeutralHue(sourceColorHct: Hct): number {
+  private static getVibrantNeutralHue(
+      sourceColorHct: Hct, platform: Platform): number {
+    if (platform === 'watch') {
+      return DynamicScheme.getRotatedHue(
+          sourceColorHct, [0, 41, 61, 101, 131, 181, 251, 301, 360],
+          [-14, 0, 355, 357, 0, 3, 10, 331, 331]);
+    }
     return DynamicScheme.getRotatedHue(
         sourceColorHct, [0, 38, 105, 140, 333, 360], [-14, 10, -14, 10, -14]);
   }
 
   private static getVibrantNeutralChroma(
       sourceColorHct: Hct, platform: Platform): number {
-    const neutralHue =
-        DynamicSchemePalettesDelegateImpl2025.getVibrantNeutralHue(
-            sourceColorHct);
-    return platform === 'phone' ? 28 : (Hct.isBlue(neutralHue) ? 28 : 20);
+    return platform === 'phone' ||
+            DynamicSchemePalettesDelegateImpl2025.isWatchBlueHue(
+                sourceColorHct) ?
+        28 :
+        20;
   }
 
   override getNeutralPalette(
@@ -942,15 +1015,22 @@ class DynamicSchemePalettesDelegateImpl2025 extends
       case Variant.EXPRESSIVE:
         return TonalPalette.fromHueAndChroma(
             DynamicSchemePalettesDelegateImpl2025.getExpressiveNeutralHue(
-                sourceColorHct),
+                sourceColorHct, platform),
             DynamicSchemePalettesDelegateImpl2025.getExpressiveNeutralChroma(
                 sourceColorHct, isDark, platform));
       case Variant.VIBRANT:
         return TonalPalette.fromHueAndChroma(
             DynamicSchemePalettesDelegateImpl2025.getVibrantNeutralHue(
-                sourceColorHct),
+                sourceColorHct, platform),
             DynamicSchemePalettesDelegateImpl2025.getVibrantNeutralChroma(
                 sourceColorHct, platform));
+      case Variant.CONTENT:
+        return platform === 'watch' ?
+            TonalPalette.fromHueAndChroma(
+                sourceColorHct.hue,
+                math.clampDouble(6.0, 20.0, sourceColorHct.chroma * 0.333)) :
+            super.getNeutralPalette(
+                variant, sourceColorHct, isDark, platform, contrastLevel);
       default:
         return super.getNeutralPalette(
             variant, sourceColorHct, isDark, platform, contrastLevel);
@@ -960,6 +1040,20 @@ class DynamicSchemePalettesDelegateImpl2025 extends
   override getNeutralVariantPalette(
       variant: Variant, sourceColorHct: Hct, isDark: boolean,
       platform: Platform, contrastLevel: number): TonalPalette {
+    if (platform === 'watch') {
+      switch (variant) {
+        case Variant.NEUTRAL:
+        case Variant.TONAL_SPOT:
+        case Variant.EXPRESSIVE:
+        case Variant.VIBRANT:
+        case Variant.CONTENT:
+          return this.getNeutralPalette(
+              variant, sourceColorHct, isDark, platform, contrastLevel);
+        default:
+          return super.getNeutralVariantPalette(
+              variant, sourceColorHct, isDark, platform, contrastLevel);
+      }
+    }
     switch (variant) {
       case Variant.NEUTRAL:
         return TonalPalette.fromHueAndChroma(
@@ -970,7 +1064,7 @@ class DynamicSchemePalettesDelegateImpl2025 extends
       case Variant.EXPRESSIVE:
         const expressiveNeutralHue =
             DynamicSchemePalettesDelegateImpl2025.getExpressiveNeutralHue(
-                sourceColorHct);
+                sourceColorHct, platform);
         const expressiveNeutralChroma =
             DynamicSchemePalettesDelegateImpl2025.getExpressiveNeutralChroma(
                 sourceColorHct, isDark, platform);
@@ -984,7 +1078,7 @@ class DynamicSchemePalettesDelegateImpl2025 extends
       case Variant.VIBRANT:
         const vibrantNeutralHue =
             DynamicSchemePalettesDelegateImpl2025.getVibrantNeutralHue(
-                sourceColorHct);
+                sourceColorHct, platform);
         const vibrantNeutralChroma =
             DynamicSchemePalettesDelegateImpl2025.getVibrantNeutralChroma(
                 sourceColorHct, platform);
@@ -1014,7 +1108,13 @@ class DynamicSchemePalettesDelegateImpl2025 extends
             errorHue, platform === 'phone' ? 64 : 48);
       case Variant.VIBRANT:
         return TonalPalette.fromHueAndChroma(
-            errorHue, platform === 'phone' ? 80 : 60);
+            errorHue, platform === 'phone' ? 80 : 48);
+      case Variant.CONTENT:
+        return platform === 'watch' ?
+            TonalPalette.fromHueAndChroma(
+                errorHue, Math.max(40.0, sourceColorHct.chroma)) :
+            super.getErrorPalette(
+                variant, sourceColorHct, isDark, platform, contrastLevel);
       default:
         return super.getErrorPalette(
             variant, sourceColorHct, isDark, platform, contrastLevel);

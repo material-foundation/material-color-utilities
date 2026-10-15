@@ -85,7 +85,7 @@ open class DynamicScheme(
 
   init {
     require(sourceColorHctList.isNotEmpty()) { "sourceColorHctList cannot be empty" }
-    this.specVersion = maybeFallbackSpecVersion(specVersion, variant)
+    this.specVersion = maybeFallbackSpecVersion(specVersion, variant, platform)
   }
 
   /** The source color of the scheme in HCT format. */
@@ -396,7 +396,11 @@ open class DynamicScheme(
      * Returns the spec version to use for the given variant. If the variant is not supported by the
      * given spec version, the fallback spec version is returned.
      */
-    private fun maybeFallbackSpecVersion(specVersion: SpecVersion, variant: Variant): SpecVersion {
+    private fun maybeFallbackSpecVersion(
+      specVersion: SpecVersion,
+      variant: Variant,
+      platform: Platform,
+    ): SpecVersion {
       if (variant == Variant.CMF) {
         return specVersion
       }
@@ -404,7 +408,8 @@ open class DynamicScheme(
         variant == Variant.EXPRESSIVE ||
           variant == Variant.VIBRANT ||
           variant == Variant.TONAL_SPOT ||
-          variant == Variant.NEUTRAL
+          variant == Variant.NEUTRAL ||
+          (platform == Platform.WATCH && variant == Variant.CONTENT)
       ) {
         return if (specVersion == SpecVersion.SPEC_2026) SpecVersion.SPEC_2025 else specVersion
       }

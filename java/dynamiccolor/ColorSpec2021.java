@@ -967,8 +967,8 @@ class ColorSpec2021 implements ColorSpec {
     return new DynamicColor.Builder()
         .setName("control_highlight")
         .setPalette((s) -> s.neutralPalette)
-        .setTone((s) -> s.isDark ? 100.0 : 0.0)
-        .setOpacity((s) -> s.isDark ? 0.20 : 0.12)
+        .setTone((s) -> (s.isDark || s.platform == Platform.WATCH) ? 100.0 : 0.0)
+        .setOpacity((s) -> (s.isDark || s.platform == Platform.WATCH) ? 0.20 : 0.12)
         .build();
   }
 
@@ -991,7 +991,7 @@ class ColorSpec2021 implements ColorSpec {
     return new DynamicColor.Builder()
         .setName("text_secondary_and_tertiary_inverse")
         .setPalette((s) -> s.neutralVariantPalette)
-        .setTone((s) -> s.isDark ? 30.0 : 80.0)
+        .setTone((s) -> (s.isDark || s.platform == Platform.WATCH) ? 30.0 : 80.0)
         .build();
   }
 
@@ -1002,7 +1002,7 @@ class ColorSpec2021 implements ColorSpec {
     return new DynamicColor.Builder()
         .setName("text_primary_inverse_disable_only")
         .setPalette((s) -> s.neutralPalette)
-        .setTone((s) -> s.isDark ? 10.0 : 90.0)
+        .setTone((s) -> (s.isDark || s.platform == Platform.WATCH) ? 10.0 : 90.0)
         .build();
   }
 
@@ -1014,7 +1014,7 @@ class ColorSpec2021 implements ColorSpec {
     return new DynamicColor.Builder()
         .setName("text_secondary_and_tertiary_inverse_disabled")
         .setPalette((s) -> s.neutralPalette)
-        .setTone((s) -> s.isDark ? 10.0 : 90.0)
+        .setTone((s) -> (s.isDark || s.platform == Platform.WATCH) ? 10.0 : 90.0)
         .build();
   }
 
@@ -1025,7 +1025,7 @@ class ColorSpec2021 implements ColorSpec {
     return new DynamicColor.Builder()
         .setName("text_hint_inverse")
         .setPalette((s) -> s.neutralPalette)
-        .setTone((s) -> s.isDark ? 10.0 : 90.0)
+        .setTone((s) -> (s.isDark || s.platform == Platform.WATCH) ? 10.0 : 90.0)
         .build();
   }
 

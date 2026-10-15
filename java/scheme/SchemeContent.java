@@ -21,6 +21,7 @@ import dynamiccolor.ColorSpecs;
 import dynamiccolor.DynamicScheme;
 import dynamiccolor.Variant;
 import hct.Hct;
+import palettes.TonalPalette;
 import java.util.Collections;
 import java.util.List;
 
@@ -74,9 +75,14 @@ public class SchemeContent extends DynamicScheme {
         ColorSpecs.get(specVersion)
             .getSecondaryPalette(
                 Variant.CONTENT, sourceColorHctList.get(0), isDark, platform, contrastLevel),
-        ColorSpecs.get(specVersion)
-            .getTertiaryPalette(
-                Variant.CONTENT, sourceColorHctList.get(0), isDark, platform, contrastLevel),
+        sourceColorHctList.size() > 1
+                && platform == Platform.WATCH
+                && sourceColorHctList.get(0).toInt() != sourceColorHctList.get(1).toInt()
+            ? TonalPalette.fromHueAndChroma(
+                sourceColorHctList.get(1).getHue(), sourceColorHctList.get(1).getChroma())
+            : ColorSpecs.get(specVersion)
+                .getTertiaryPalette(
+                    Variant.CONTENT, sourceColorHctList.get(0), isDark, platform, contrastLevel),
         ColorSpecs.get(specVersion)
             .getNeutralPalette(
                 Variant.CONTENT, sourceColorHctList.get(0), isDark, platform, contrastLevel),
@@ -88,5 +94,3 @@ public class SchemeContent extends DynamicScheme {
                 Variant.CONTENT, sourceColorHctList.get(0), isDark, platform, contrastLevel));
   }
 }
-
-
