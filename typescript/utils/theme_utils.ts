@@ -170,7 +170,7 @@ export function applyTheme(theme: Theme, options?: {
     for (const [key, palette] of Object.entries(theme.palettes)) {
       const paletteKey = key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
       for (const tone of tones) {
-        const token = `--md-ref-palette-${paletteKey}-${paletteKey}${tone}`;
+        const token = `--md-ref-palette-${paletteKey}${tone}`;
         const color = hexFromArgb(palette.tone(tone));
         target.style.setProperty(token, color);
       }
