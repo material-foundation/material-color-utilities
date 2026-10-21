@@ -19,7 +19,7 @@ import {LabPointProvider} from './lab_point_provider.js';
 
 const MAX_ITERATIONS = 10;
 const MIN_MOVEMENT_DISTANCE = 3.0;
-
+const INCREASE_ORDER_SORTER = (a:number, b:number) => a - b
 /**
  * An image quantizer that improves on the speed of a standard K-Means algorithm
  * by implementing several optimizations, including deduping identical pixels
@@ -134,7 +134,7 @@ export class QuantizerWsmeans {
           distanceToIndexMatrix[i][j].distance = distance;
           distanceToIndexMatrix[i][j].index = j;
         }
-        distanceToIndexMatrix[i].sort();
+        distanceToIndexMatrix[i].sort(INCREASE_ORDER_SORTER);
         for (let j = 0; j < clusterCount; j++) {
           indexMatrix[i][j] = distanceToIndexMatrix[i][j].index;
         }
