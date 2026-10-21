@@ -297,3 +297,26 @@ function labInvf(ft: number): number {
     return (116 * ft - 16) / kappa;
   }
 }
+
+export function floatArrayToHex(colors: Float32Array): string[] {
+  const hexColors: string[] = [];
+  for (let i = 0; i < colors.length; i += 3) {
+      const r = Math.round(colors[i] * 255).toString(16).padStart(2, '0');
+      const g = Math.round(colors[i + 1] * 255).toString(16).padStart(2, '0');
+      const b = Math.round(colors[i + 2] * 255).toString(16).padStart(2, '0');
+      hexColors.push(`#${r}${g}${b}`);
+  }
+  return hexColors;
+}
+
+export function pixelsToTextureData(pixels: number[]): Uint8Array {
+  const textureData = new Uint8Array(pixels.length * 4);
+  for (let i = 0; i < pixels.length; i++) {
+      const pixel = pixels[i];
+      textureData[i * 4] = redFromArgb(pixel);
+      textureData[i * 4 + 1] = greenFromArgb(pixel);
+      textureData[i * 4 + 2] = blueFromArgb(pixel);
+      textureData[i * 4 + 3] = alphaFromArgb(pixel);
+  }
+  return textureData;
+}
