@@ -901,7 +901,7 @@ open class ColorSpec2025 : ColorSpec2021() {
             if (scheme.platform == Platform.WATCH) {
               ToneDeltaPair(
                 roleA = secondaryContainer,
-                roleB = secondaryDim!!,
+                roleB = secondaryDim,
                 delta = 10.0,
                 polarity = TonePolarity.DARKER,
                 constraint = DeltaConstraint.FARTHER,
@@ -1104,7 +1104,7 @@ open class ColorSpec2025 : ColorSpec2021() {
             if (scheme.platform == Platform.WATCH) {
               ToneDeltaPair(
                 roleA = tertiaryContainer,
-                roleB = tertiaryDim!!,
+                roleB = tertiaryDim,
                 delta = 10.0,
                 polarity = TonePolarity.DARKER,
                 constraint = DeltaConstraint.FARTHER,
@@ -1250,7 +1250,7 @@ open class ColorSpec2025 : ColorSpec2021() {
             if (scheme.platform == Platform.WATCH) {
               ToneDeltaPair(
                 roleA = errorContainer,
-                roleB = errorDim!!,
+                roleB = errorDim,
                 delta = 10.0,
                 polarity = TonePolarity.DARKER,
                 constraint = DeltaConstraint.FARTHER,
