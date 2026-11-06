@@ -52,6 +52,10 @@ export class QuantizerWsmeans {
   static quantize(
       inputPixels: number[], startingClusters: number[],
       maxColors: number): Map<number, number> {
+    // Uses a seeded random number generator to ensure consistent results,
+    // matching java.util.Random(0x42688) in the Java/Kotlin ports.
+    const random = new SeededRandom(0x42688);
+
     const pixelToCount = new Map<number, number>();
     const points = new Array<number[]>();
     const pixels = new Array<number>();
@@ -91,9 +95,9 @@ export class QuantizerWsmeans {
     const additionalClustersNeeded = clusterCount - clusters.length;
     if (startingClusters.length === 0 && additionalClustersNeeded > 0) {
       for (let i = 0; i < additionalClustersNeeded; i++) {
-        const l = Math.random() * 100.0;
-        const a = Math.random() * (100.0 - (-100.0) + 1) + -100;
-        const b = Math.random() * (100.0 - (-100.0) + 1) + -100;
+        const l = random.nextDouble() * 100.0;
+        const a = random.nextDouble() * (100.0 - (-100.0) + 1) + -100;
+        const b = random.nextDouble() * (100.0 - (-100.0) + 1) + -100;
 
         clusters.push(new Array(l, a, b));
       }
@@ -101,7 +105,7 @@ export class QuantizerWsmeans {
 
     const clusterIndices = new Array<number>();
     for (let i = 0; i < pointCount; i++) {
-      clusterIndices.push(Math.floor(Math.random() * clusterCount));
+      clusterIndices.push(random.nextInt(clusterCount));
     }
 
     const indexMatrix = new Array<number[]>();
@@ -227,4 +231,51 @@ export class QuantizerWsmeans {
 class DistanceAndIndex {
   distance: number = -1;
   index: number = -1;
+}
+
+/**
+ * Deterministic 48-bit LCG matching `java.util.Random` using two 24-bit words
+ * so all intermediate products stay exact in IEEE-754 numbers (< 2^53).
+ */
+class SeededRandom {
+  private lo: number;
+  private hi: number;
+
+  constructor(seed: number) {
+    this.lo = (seed & 0xffffff) ^ 0xece66d;
+    this.hi = ((seed >>> 24) & 0xffffff) ^ 0x5de;
+  }
+
+  private nextBits(bits: number): number {
+    const loProduct = this.lo * 0xece66d + 0xb;
+    const carry = Math.floor(loProduct / 0x1000000);
+    const nextLo = loProduct % 0x1000000;
+    const hiProduct = this.hi * 0xece66d + this.lo * 0x5de + carry;
+    this.lo = nextLo;
+    this.hi = hiProduct & 0xffffff;
+    const shift = 48 - bits;
+    return (this.hi << (24 - shift)) | (this.lo >>> shift);
+  }
+
+  nextInt(bound: number): number {
+    if (bound <= 0) {
+      return 0;
+    }
+    if ((bound & -bound) === bound) {
+      return Math.floor((bound * this.nextBits(31)) / 0x80000000);
+    }
+    let bits: number;
+    let val: number;
+    do {
+      bits = this.nextBits(31);
+      val = bits % bound;
+    } while (bits - val + (bound - 1) >= 0x80000000);
+    return val;
+  }
+
+  nextDouble(): number {
+    return (
+      (this.nextBits(26) * 0x8000000 + this.nextBits(27)) / 0x20000000000000
+    );
+  }
 }
