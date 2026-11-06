@@ -20,7 +20,6 @@ import hct.Cam16
 import hct.Hct
 import utils.ColorUtils
 import utils.MathUtils
-import kotlin.math.min
 
 /** Functions for blending in HCT and CAM16. */
 object Blend {
@@ -37,7 +36,7 @@ object Blend {
     val fromHct = Hct.fromInt(designColor)
     val toHct = Hct.fromInt(sourceColor)
     val differenceDegrees = MathUtils.differenceDegrees(fromHct.hue, toHct.hue)
-    val rotationDegrees = min(differenceDegrees * 0.5, 15.0)
+    val rotationDegrees = minOf(differenceDegrees * 0.5, 15.0)
     val outputHue =
       MathUtils.sanitizeDegreesDouble(
         fromHct.hue + rotationDegrees * MathUtils.rotationDirection(fromHct.hue, toHct.hue)

@@ -25,8 +25,6 @@ import palettes.TonalPalette
 import temperature.TemperatureCache
 import utils.MathUtils
 import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
 
 /** [ColorSpec] implementation for the 2021 spec. */
 open class ColorSpec2021 : ColorSpec {
@@ -961,10 +959,10 @@ open class ColorSpec2021 : ColorSpec {
         // `farther`.
         if (expansionDir > 0) {
           nTone = 60.0
-          fTone = max(fTone, nTone + delta * expansionDir)
+          fTone = maxOf(fTone, nTone + delta * expansionDir)
         } else {
           nTone = 49.0
-          fTone = min(fTone, nTone + delta * expansionDir)
+          fTone = minOf(fTone, nTone + delta * expansionDir)
         }
       } else if (50 <= fTone && fTone < 60) {
         if (stayTogether) {
@@ -972,10 +970,10 @@ open class ColorSpec2021 : ColorSpec {
           // zone".
           if (expansionDir > 0) {
             nTone = 60.0
-            fTone = max(fTone, nTone + delta * expansionDir)
+            fTone = maxOf(fTone, nTone + delta * expansionDir)
           } else {
             nTone = 49.0
-            fTone = min(fTone, nTone + delta * expansionDir)
+            fTone = minOf(fTone, nTone + delta * expansionDir)
           }
         } else {
           // Not required to stay together; fixes just one.
@@ -1025,8 +1023,8 @@ open class ColorSpec2021 : ColorSpec {
       // Case 3: Adjust for dual backgrounds.
       val bgTone1 = background.getTone(scheme)
       val bgTone2 = secondBackground.getTone(scheme)
-      val upper = max(bgTone1, bgTone2)
-      val lower = min(bgTone1, bgTone2)
+      val upper = maxOf(bgTone1, bgTone2)
+      val lower = minOf(bgTone1, bgTone2)
       if (
         Contrast.ratioOfTones(upper, answer) >= desiredRatio &&
           Contrast.ratioOfTones(lower, answer) >= desiredRatio
@@ -1110,7 +1108,7 @@ open class ColorSpec2021 : ColorSpec {
       Variant.FIDELITY ->
         TonalPalette.fromHueAndChroma(
           sourceColorHct.hue,
-          max(sourceColorHct.chroma - 32.0, sourceColorHct.chroma * 0.5),
+          maxOf(sourceColorHct.chroma - 32.0, sourceColorHct.chroma * 0.5),
         )
       Variant.FRUIT_SALAD ->
         TonalPalette.fromHueAndChroma(
@@ -1283,7 +1281,7 @@ open class ColorSpec2021 : ColorSpec {
         if (potentialDelta < currentDelta) {
           closestToChroma = potentialSolution
         }
-        chromaPeak = max(chromaPeak, potentialSolution.chroma)
+        chromaPeak = maxOf(chromaPeak, potentialSolution.chroma)
       }
     }
     return answer

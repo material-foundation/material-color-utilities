@@ -17,7 +17,6 @@ package contrast
 
 import utils.ColorUtils
 import kotlin.math.abs
-import kotlin.math.max
 
 /**
  * Color science for contrast utilities.
@@ -91,7 +90,7 @@ object Contrast {
    * The equation is ratio = lighter Y + 5 / darker Y + 5.
    */
   fun ratioOfYs(y1: Double, y2: Double): Double {
-    val lighter = max(y1, y2)
+    val lighter = maxOf(y1, y2)
     val darker = if (lighter == y2) y1 else y2
     return (lighter + 5.0) / (darker + 5.0)
   }

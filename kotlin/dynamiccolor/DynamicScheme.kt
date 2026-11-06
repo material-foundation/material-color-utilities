@@ -19,7 +19,6 @@ import dynamiccolor.ColorSpec.SpecVersion
 import hct.Hct
 import palettes.TonalPalette
 import utils.MathUtils
-import kotlin.math.min
 
 /**
  * Provides important settings for creating colors dynamically, and 6 color palettes. Requires: 1. A
@@ -324,7 +323,7 @@ open class DynamicScheme(
       hueBreakpoints: DoubleArray,
       hues: DoubleArray,
     ): Double {
-      val size = min(hueBreakpoints.size - 1, hues.size)
+      val size = minOf(hueBreakpoints.size - 1, hues.size)
       val sourceHue = sourceColorHct.hue
       for (i in 0 until size) {
         if (sourceHue >= hueBreakpoints[i] && sourceHue < hueBreakpoints[i + 1]) {
@@ -365,7 +364,7 @@ open class DynamicScheme(
       rotations: DoubleArray,
     ): Double {
       var rotation = getPiecewiseValue(sourceColorHct, hueBreakpoints, rotations)
-      if (min(hueBreakpoints.size - 1, rotations.size) <= 0) {
+      if (minOf(hueBreakpoints.size - 1, rotations.size) <= 0) {
         // No condition matched, return the source hue.
         rotation = 0.0
       }

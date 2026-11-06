@@ -21,8 +21,6 @@ import dynamiccolor.ToneDeltaPair.DeltaConstraint
 import dynamiccolor.ToneDeltaPair.TonePolarity
 import hct.Hct
 import palettes.TonalPalette
-import kotlin.math.max
-import kotlin.math.min
 
 /** [ColorSpec] implementation for the 2025 spec. */
 open class ColorSpec2025 : ColorSpec2021() {
@@ -1655,8 +1653,8 @@ open class ColorSpec2025 : ColorSpec2021() {
       // Case 2: Adjust for dual backgrounds.
       val bgTone1 = background.getTone(scheme)
       val bgTone2 = secondBackground.getTone(scheme)
-      val upper = max(bgTone1, bgTone2)
-      val lower = min(bgTone1, bgTone2)
+      val upper = maxOf(bgTone1, bgTone2)
+      val lower = minOf(bgTone1, bgTone2)
       if (
         Contrast.ratioOfTones(upper, answer) >= desiredRatio &&
           Contrast.ratioOfTones(lower, answer) >= desiredRatio

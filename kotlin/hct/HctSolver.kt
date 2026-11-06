@@ -24,7 +24,6 @@ import kotlin.math.atan2
 import kotlin.math.ceil
 import kotlin.math.cos
 import kotlin.math.floor
-import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.sign
 import kotlin.math.sin
@@ -556,7 +555,7 @@ object HctSolver {
 
   internal fun inverseChromaticAdaptation(adapted: Double): Double {
     val adaptedAbs = abs(adapted)
-    val base = max(0.0, 27.13 * adaptedAbs / (400.0 - adaptedAbs))
+    val base = maxOf(0.0, 27.13 * adaptedAbs / (400.0 - adaptedAbs))
     return sign(adapted) * base.pow(1.0 / 0.42)
   }
 

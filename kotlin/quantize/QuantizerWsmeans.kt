@@ -19,7 +19,6 @@ import java.util.Arrays
 import java.util.LinkedHashMap
 import java.util.Random
 import kotlin.math.abs
-import kotlin.math.min
 import kotlin.math.sqrt
 
 /**
@@ -85,9 +84,9 @@ object QuantizerWsmeans {
       val count = pixelToCount[pixel]!!
       counts[i] = count
     }
-    var clusterCount = min(maxColors, pointCount)
+    var clusterCount = minOf(maxColors, pointCount)
     if (startingClusters.isNotEmpty()) {
-      clusterCount = min(clusterCount, startingClusters.size)
+      clusterCount = minOf(clusterCount, startingClusters.size)
     }
     val clusters = arrayOfNulls<DoubleArray>(clusterCount)
     var clustersCreated = 0

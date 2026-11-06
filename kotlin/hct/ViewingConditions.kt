@@ -20,7 +20,6 @@ import utils.MathUtils
 import kotlin.math.PI
 import kotlin.math.cbrt
 import kotlin.math.exp
-import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -87,7 +86,7 @@ private constructor(
     ): ViewingConditions {
       // A background of pure black is non-physical and leads to infinities that represent the idea
       // that any color viewed in pure black can't be seen.
-      val backgroundLstar = max(0.1, backgroundLstar)
+      val backgroundLstar = maxOf(0.1, backgroundLstar)
       // Transform white point XYZ to 'cone'/'rgb' responses
       val matrix = Cam16.XYZ_TO_CAM16RGB
       val xyz = whitePoint

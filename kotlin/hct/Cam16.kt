@@ -24,7 +24,6 @@ import kotlin.math.cos
 import kotlin.math.expm1
 import kotlin.math.hypot
 import kotlin.math.ln1p
-import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.sign
 import kotlin.math.sin
@@ -136,11 +135,11 @@ private constructor(
     val rA = (460.0 * p2 + 451.0 * a + 288.0 * b) / 1403.0
     val gA = (460.0 * p2 - 891.0 * a - 261.0 * b) / 1403.0
     val bA = (460.0 * p2 - 220.0 * a - 6300.0 * b) / 1403.0
-    val rCBase = max(0.0, 27.13 * abs(rA) / (400.0 - abs(rA)))
+    val rCBase = maxOf(0.0, 27.13 * abs(rA) / (400.0 - abs(rA)))
     val rC = sign(rA) * (100.0 / viewingConditions.fl) * (rCBase).pow(1.0 / 0.42)
-    val gCBase = max(0.0, 27.13 * abs(gA) / (400.0 - abs(gA)))
+    val gCBase = maxOf(0.0, 27.13 * abs(gA) / (400.0 - abs(gA)))
     val gC = sign(gA) * (100.0 / viewingConditions.fl) * (gCBase).pow(1.0 / 0.42)
-    val bCBase = max(0.0, 27.13 * abs(bA) / (400.0 - abs(bA)))
+    val bCBase = maxOf(0.0, 27.13 * abs(bA) / (400.0 - abs(bA)))
     val bC = sign(bA) * (100.0 / viewingConditions.fl) * (bCBase).pow(1.0 / 0.42)
     val rF = rC / viewingConditions.rgbD[0]
     val gF = gC / viewingConditions.rgbD[1]
