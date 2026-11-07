@@ -65,7 +65,7 @@ class QuantizerWu : Quantizer {
       momentsR[index] += red * count
       momentsG[index] += green * count
       momentsB[index] += blue * count
-      moments[index] += count * (red * red + green * green + blue * blue).toDouble()
+      moments[index] += count.toDouble() * (red * red + green * green + blue * blue).toDouble()
     }
   }
 
@@ -168,7 +168,10 @@ class QuantizerWu : Quantizer {
         moments[getIndex(cube.r0, cube.g1, cube.b1)] +
         moments[getIndex(cube.r0, cube.g1, cube.b0)] +
         moments[getIndex(cube.r0, cube.g0, cube.b1)] - moments[getIndex(cube.r0, cube.g0, cube.b0)])
-    val hypotenuse = dr * dr + dg * dg + db * db
+    val drD = dr.toDouble()
+    val dgD = dg.toDouble()
+    val dbD = db.toDouble()
+    val hypotenuse = drD * drD + dgD * dgD + dbD * dbD
     val volume = volume(cube, weights)
     return xx - hypotenuse / volume.toDouble()
   }
@@ -254,7 +257,10 @@ class QuantizerWu : Quantizer {
       if (halfW == 0) {
         continue
       }
-      var tempNumerator = (halfR * halfR + halfG * halfG + halfB * halfB).toDouble()
+      val hRD = halfR.toDouble()
+      val hGD = halfG.toDouble()
+      val hBD = halfB.toDouble()
+      var tempNumerator = hRD * hRD + hGD * hGD + hBD * hBD
       var tempDenominator = halfW.toDouble()
       var temp = tempNumerator / tempDenominator
       halfR = wholeR - halfR
@@ -264,7 +270,10 @@ class QuantizerWu : Quantizer {
       if (halfW == 0) {
         continue
       }
-      tempNumerator = (halfR * halfR + halfG * halfG + halfB * halfB).toDouble()
+      val hRD2 = halfR.toDouble()
+      val hGD2 = halfG.toDouble()
+      val hBD2 = halfB.toDouble()
+      tempNumerator = hRD2 * hRD2 + hGD2 * hGD2 + hBD2 * hBD2
       tempDenominator = halfW.toDouble()
       temp += tempNumerator / tempDenominator
       if (temp > max) {
