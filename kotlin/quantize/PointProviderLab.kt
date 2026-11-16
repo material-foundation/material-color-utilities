@@ -26,8 +26,9 @@ class PointProviderLab : PointProvider {
    * Convert a color represented in ARGB to a 3-element array of L*a*b* coordinates of the color.
    */
   override fun fromInt(argb: Int): DoubleArray {
-    val lab = ColorUtils.labFromArgb(argb)
-    return doubleArrayOf(lab[0], lab[1], lab[2])
+    val lab = DoubleArray(3)
+    labFromArgb(argb, lab, 0)
+    return lab
   }
 
   /** Convert a 3-element array to a color represented in ARGB. */
@@ -48,5 +49,29 @@ class PointProviderLab : PointProvider {
     val dA = a[1] - b[1]
     val dB = a[2] - b[2]
     return dL * dL + dA * dA + dB * dB
+  }
+
+  internal companion object {
+    /** [ColorUtils.linearized] of each 8-bit channel value, computed once. */
+    private val LINEARIZED = DoubleArray(256) { ColorUtils.linearized(it) }
+
+    /**
+     * Writes the L*a*b* coordinates of [argb] to [out], from [offset]: the same values, computed in
+     * the same order, as [ColorUtils.labFromArgb], with each channel linearized by a table lookup.
+     */
+    fun labFromArgb(argb: Int, out: DoubleArray, offset: Int) {
+      val linearR = LINEARIZED[ColorUtils.redFromArgb(argb)]
+      val linearG = LINEARIZED[ColorUtils.greenFromArgb(argb)]
+      val linearB = LINEARIZED[ColorUtils.blueFromArgb(argb)]
+      val x = 0.41233895 * linearR + 0.35762064 * linearG + 0.18051042 * linearB
+      val y = 0.2126 * linearR + 0.7152 * linearG + 0.0722 * linearB
+      val z = 0.01932141 * linearR + 0.11916382 * linearG + 0.95034478 * linearB
+      val fx = ColorUtils.labF(x / 95.047)
+      val fy = ColorUtils.labF(y / 100.0)
+      val fz = ColorUtils.labF(z / 108.883)
+      out[offset] = 116.0 * fy - 16
+      out[offset + 1] = 500.0 * (fx - fy)
+      out[offset + 2] = 200.0 * (fy - fz)
+    }
   }
 }

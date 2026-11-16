@@ -17,17 +17,21 @@ package quantize
 
 import java.util.LinkedHashMap
 
+/** The load factor that a `LinkedHashMap` uses when it is not given one. */
+private const val DEFAULT_LOAD_FACTOR = 0.75
+
 /** Creates a dictionary with keys of colors, and values of count of the color */
 class QuantizerMap : Quantizer {
   var colorToCount: MutableMap<Int, Int>? = null
     private set
 
   override fun quantize(pixels: IntArray, maxColors: Int): QuantizerResult {
-    val pixelByCount: MutableMap<Int, Int> = LinkedHashMap()
-    for (pixel in pixels) {
-      val currentPixelCount = pixelByCount[pixel]
-      val newPixelCount = if (currentPixelCount == null) 1 else currentPixelCount + 1
-      pixelByCount[pixel] = newPixelCount
+    val pixelCounts = PixelCounts(pixels)
+    // Sized to hold every distinct color without growing.
+    val pixelByCount: MutableMap<Int, Int> =
+      LinkedHashMap((pixelCounts.size / DEFAULT_LOAD_FACTOR).toInt() + 1)
+    for (i in 0 until pixelCounts.size) {
+      pixelByCount[pixelCounts.colors[i]] = pixelCounts.counts[i]
     }
     colorToCount = pixelByCount
     return QuantizerResult(pixelByCount)
