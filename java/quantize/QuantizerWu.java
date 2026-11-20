@@ -46,8 +46,7 @@ public final class QuantizerWu implements Quantizer {
 
   @Override
   public QuantizerResult quantize(int[] pixels, int colorCount) {
-    QuantizerResult mapResult = new QuantizerMap().quantize(pixels, colorCount);
-    constructHistogram(mapResult.colorToCount);
+    constructHistogram(new PixelCounts(pixels));
     createMoments();
     CreateBoxesResult createBoxesResult = createBoxes(colorCount);
     List<Integer> colors = createResult(createBoxesResult.resultCount);
@@ -62,16 +61,18 @@ public final class QuantizerWu implements Quantizer {
     return (r << (INDEX_BITS * 2)) + (r << (INDEX_BITS + 1)) + r + (g << INDEX_BITS) + g + b;
   }
 
-  void constructHistogram(Map<Integer, Integer> pixels) {
+  void constructHistogram(PixelCounts pixelCounts) {
     weights = new int[TOTAL_SIZE];
     momentsR = new int[TOTAL_SIZE];
     momentsG = new int[TOTAL_SIZE];
     momentsB = new int[TOTAL_SIZE];
     moments = new double[TOTAL_SIZE];
 
-    for (Map.Entry<Integer, Integer> pair : pixels.entrySet()) {
-      int pixel = pair.getKey();
-      int count = pair.getValue();
+    int[] colors = pixelCounts.colors();
+    int[] counts = pixelCounts.counts();
+    for (int i = 0; i < pixelCounts.size(); i++) {
+      int pixel = colors[i];
+      int count = counts[i];
       int red = ColorUtils.redFromArgb(pixel);
       int green = ColorUtils.greenFromArgb(pixel);
       int blue = ColorUtils.blueFromArgb(pixel);

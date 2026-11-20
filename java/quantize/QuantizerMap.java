@@ -25,11 +25,12 @@ public final class QuantizerMap implements Quantizer {
 
   @Override
   public QuantizerResult quantize(int[] pixels, int colorCount) {
+    PixelCounts pixelCounts = new PixelCounts(pixels);
+    int[] colors = pixelCounts.colors();
+    int[] counts = pixelCounts.counts();
     final Map<Integer, Integer> pixelByCount = new LinkedHashMap<>();
-    for (int pixel : pixels) {
-      final Integer currentPixelCount = pixelByCount.get(pixel);
-      final int newPixelCount = currentPixelCount == null ? 1 : currentPixelCount + 1;
-      pixelByCount.put(pixel, newPixelCount);
+    for (int i = 0; i < pixelCounts.size(); i++) {
+      pixelByCount.put(colors[i], counts[i]);
     }
     colorToCount = pixelByCount;
     return new QuantizerResult(pixelByCount);
