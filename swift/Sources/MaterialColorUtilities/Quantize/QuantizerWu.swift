@@ -36,12 +36,7 @@ public class QuantizerWu: Quantizer {
   )
     -> QuantizerResult
   {
-    let result = QuantizerMap().quantize(pixels, maxColors)
-
-    var colorToPopulation = result.colorToCount.map({ (color: $0.key, population: $0.value) })
-      .sorted(by: { $0.population > $1.population })
-
-    constructHistogram(colorToPopulation)
+    constructHistogram(opaquePixels: pixels)
     computeMoments()
     let createBoxesResult = createBoxes(maxColors)
     let results = createResult(createBoxesResult.resultCount)
@@ -87,6 +82,41 @@ public class QuantizerWu: Quantizer {
       moments[index] +=
         (Double(count) * (Double(red * red) + Double(green * green) + Double(blue * blue)))
     }
+  }
+
+  /// Builds the same histogram as `constructHistogram(_:)` does from the counts of the opaque
+  /// colors in `pixels` (`QuantizerMap` skips the other pixels), but straight from the pixels,
+  /// without counting them first.
+  ///
+  /// The result is identical: every sum adds only whole numbers, which stay exact in any order.
+  func constructHistogram(opaquePixels pixels: [Int]) {
+    let size = QuantizerWu.totalSize
+    var weights = [Int](repeating: 0, count: size)
+    var momentsR = [Int](repeating: 0, count: size)
+    var momentsG = [Int](repeating: 0, count: size)
+    var momentsB = [Int](repeating: 0, count: size)
+    var moments = [Double](repeating: 0, count: size)
+    let bitsToRemove = 8 - QuantizerWu.indexBits
+    for pixel in pixels {
+      if ColorUtils.alphaFromArgb(pixel) < 255 {
+        continue
+      }
+      let red = ColorUtils.redFromArgb(pixel)
+      let green = ColorUtils.greenFromArgb(pixel)
+      let blue = ColorUtils.blueFromArgb(pixel)
+      let index = QuantizerWu.getIndex(
+        (red >> bitsToRemove) + 1, (green >> bitsToRemove) + 1, (blue >> bitsToRemove) + 1)
+      weights[index] += 1
+      momentsR[index] += red
+      momentsG[index] += green
+      momentsB[index] += blue
+      moments[index] += Double(red * red) + Double(green * green) + Double(blue * blue)
+    }
+    self.weights = weights
+    self.momentsR = momentsR
+    self.momentsG = momentsG
+    self.momentsB = momentsB
+    self.moments = moments
   }
 
   public func computeMoments() {

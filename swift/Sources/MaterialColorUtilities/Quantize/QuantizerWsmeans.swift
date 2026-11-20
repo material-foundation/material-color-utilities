@@ -59,6 +59,11 @@ public class QuantizerWsmeans {
     maxIterations: Int = 5,
     returnInputPixelToClusterPixel: Bool = false
   ) -> QuantizerResult {
+    if pointProvider is PointProviderLab && !debug {
+      return quantizeLab(
+        inputPixels, maxColors, startingClusters: startingClusters, maxIterations: maxIterations,
+        returnInputPixelToClusterPixel: returnInputPixelToClusterPixel)
+    }
     var pixelToCount: [Int: Int] = [:]
     var points: [[Double]] = []
     var pixels: [Int] = []
@@ -269,6 +274,190 @@ public class QuantizerWsmeans {
       let value = clusterPopulations[i]
       colorToCount[key] = value
     }
+    return QuantizerResult(colorToCount, inputPixelToClusterPixel: inputPixelToClusterPixel)
+  }
+
+  /// The same as `quantize` with a `PointProviderLab`, with identical results, but faster.
+  ///
+  /// The steps, the order of the arithmetic, and the random numbers are the same as in `quantize`.
+  /// Only the way the data is stored and walked through is different:
+  ///
+  /// * The colors are counted in `PixelCounts` instead of a `Dictionary`.
+  /// * The points and the clusters are in flat arrays of L*a*b* triples, and the distances are
+  ///   computed inline instead of with `PointProvider` calls.
+  /// * Each row of the distance matrix is a flat array of distances that is sorted in place. Only
+  ///   the sorted distances are read, never which clusters they belong to, as in `quantize`.
+  /// * The search for a closer cluster stops at the first distance in the sorted row that is too
+  ///   large, because all the later distances are too large as well.
+  private static func quantizeLab(
+    _ inputPixels: [Int],
+    _ maxColors: Int,
+    startingClusters: [Int],
+    maxIterations: Int,
+    returnInputPixelToClusterPixel: Bool
+  ) -> QuantizerResult {
+    let pixelCounts = PixelCounts(inputPixels)
+    let pixels = pixelCounts.colors
+    let counts = pixelCounts.counts
+    let pointCount = pixels.count
+    var points = [Double](repeating: 0, count: pointCount * 3)
+    for i in 0..<pointCount {
+      PointProviderLab.labFromArgb(pixels[i], into: &points, at: i * 3)
+    }
+
+    let clusterCount = min(maxColors, pointCount)
+
+    // All the starting clusters are converted, as in `quantize`, but only the first
+    // `clusterCount` clusters are used.
+    let additionalClustersNeeded = clusterCount - startingClusters.count
+    var clusters = [Double](
+      repeating: 0, count: (startingClusters.count + max(additionalClustersNeeded, 0)) * 3)
+    for (i, argb) in startingClusters.enumerated() {
+      PointProviderLab.labFromArgb(argb, into: &clusters, at: i * 3)
+    }
+    if additionalClustersNeeded > 0 {
+      // The same random numbers as in `quantize`.
+      var seedGenerator = RandomNumberWithSeed(0x42688)
+      var indices: [Int] = []
+      for _ in 0..<additionalClustersNeeded {
+        var index = Int.random(in: 0..<pointCount, using: &seedGenerator)
+        while indices.contains(index) {
+          index = Int.random(in: 0..<pointCount, using: &seedGenerator)
+        }
+        indices.append(index)
+      }
+      for (i, index) in indices.enumerated() {
+        let cluster = (startingClusters.count + i) * 3
+        clusters[cluster] = points[index * 3]
+        clusters[cluster + 1] = points[index * 3 + 1]
+        clusters[cluster + 2] = points[index * 3 + 2]
+      }
+    }
+    // Stops with a division by zero if `clusterCount` is 0 and there are pixels, as in `quantize`.
+    var clusterIndices = [Int](repeating: 0, count: pointCount)
+    for i in 0..<pointCount {
+      clusterIndices[i] = i % clusterCount
+    }
+    // Stops with a precondition failure if `clusterCount` is negative, as in `quantize`.
+    var pixelCountSums = [Int](repeating: 0, count: clusterCount)
+
+    // Row `i` holds the distances from cluster `i` to all clusters, sorted. Each iteration writes
+    // the new distances by position into the rows sorted in the previous iteration, and position
+    // `i` of row `i` keeps its previous value, as in `quantize`.
+    var distanceMatrix = [Double](repeating: 0, count: clusterCount * clusterCount)
+
+    var componentASums = [Double](repeating: 0, count: clusterCount)
+    var componentBSums = [Double](repeating: 0, count: clusterCount)
+    var componentCSums = [Double](repeating: 0, count: clusterCount)
+    for iteration in 0..<maxIterations {
+      var pointsMoved = 0
+      for i in 0..<clusterCount {
+        let iL = clusters[i * 3]
+        let iA = clusters[i * 3 + 1]
+        let iB = clusters[i * 3 + 2]
+        for j in (i + 1)..<clusterCount {
+          let dL = iL - clusters[j * 3]
+          let dA = iA - clusters[j * 3 + 1]
+          let dB = iB - clusters[j * 3 + 2]
+          let distance = dL * dL + dA * dA + dB * dB
+          distanceMatrix[j * clusterCount + i] = distance
+          distanceMatrix[i * clusterCount + j] = distance
+        }
+        // The distances are never NaN, so the values are in the same order as after the sort of
+        // `DistanceAndIndex` objects in `quantize`.
+        distanceMatrix[(i * clusterCount)..<((i + 1) * clusterCount)].sort()
+      }
+
+      for i in 0..<pointCount {
+        let pointL = points[i * 3]
+        let pointA = points[i * 3 + 1]
+        let pointB = points[i * 3 + 2]
+        let previousClusterIndex = clusterIndices[i]
+        let previousL = pointL - clusters[previousClusterIndex * 3]
+        let previousA = pointA - clusters[previousClusterIndex * 3 + 1]
+        let previousB = pointB - clusters[previousClusterIndex * 3 + 2]
+        let previousDistance = previousL * previousL + previousA * previousA + previousB * previousB
+
+        var minimumDistance = previousDistance
+        var newClusterIndex = -1
+        let rowStart = previousClusterIndex * clusterCount
+        let maximumDistance = 4 * previousDistance
+        for j in 0..<clusterCount {
+          // The row is sorted, so the rest of the row is too far as well.
+          if distanceMatrix[rowStart + j] >= maximumDistance {
+            break
+          }
+          let dL = pointL - clusters[j * 3]
+          let dA = pointA - clusters[j * 3 + 1]
+          let dB = pointB - clusters[j * 3 + 2]
+          let distance = dL * dL + dA * dA + dB * dB
+          if distance < minimumDistance {
+            minimumDistance = distance
+            newClusterIndex = j
+          }
+        }
+        if newClusterIndex != -1 {
+          pointsMoved += 1
+          clusterIndices[i] = newClusterIndex
+        }
+      }
+
+      if pointsMoved == 0 && iteration > 0 {
+        break
+      }
+
+      for i in 0..<clusterCount {
+        pixelCountSums[i] = 0
+        componentASums[i] = 0
+        componentBSums[i] = 0
+        componentCSums[i] = 0
+      }
+      for i in 0..<pointCount {
+        let clusterIndex = clusterIndices[i]
+        let count = counts[i]
+        pixelCountSums[clusterIndex] += count
+        componentASums[clusterIndex] += (points[i * 3] * Double(count))
+        componentBSums[clusterIndex] += (points[i * 3 + 1] * Double(count))
+        componentCSums[clusterIndex] += (points[i * 3 + 2] * Double(count))
+      }
+
+      for i in 0..<clusterCount {
+        let count = pixelCountSums[i]
+        if count == 0 {
+          clusters[i * 3] = 0
+          clusters[i * 3 + 1] = 0
+          clusters[i * 3 + 2] = 0
+          continue
+        }
+        clusters[i * 3] = componentASums[i] / Double(count)
+        clusters[i * 3 + 1] = componentBSums[i] / Double(count)
+        clusters[i * 3 + 2] = componentCSums[i] / Double(count)
+      }
+    }
+
+    var colorToCount: [Int: Int] = [:]
+    for i in 0..<clusterCount {
+      let count = pixelCountSums[i]
+      if count == 0 {
+        continue
+      }
+      let possibleNewCluster = ColorUtils.argbFromLab(
+        clusters[i * 3], clusters[i * 3 + 1], clusters[i * 3 + 2])
+      // The first cluster with a color keeps it, as in `quantize`.
+      if colorToCount[possibleNewCluster] == nil {
+        colorToCount[possibleNewCluster] = count
+      }
+    }
+
+    var inputPixelToClusterPixel: [Int: Int] = [:]
+    if returnInputPixelToClusterPixel {
+      for i in 0..<pointCount {
+        let cluster = clusterIndices[i] * 3
+        inputPixelToClusterPixel[pixels[i]] = ColorUtils.argbFromLab(
+          clusters[cluster], clusters[cluster + 1], clusters[cluster + 2])
+      }
+    }
+
     return QuantizerResult(colorToCount, inputPixelToClusterPixel: inputPixelToClusterPixel)
   }
 }
