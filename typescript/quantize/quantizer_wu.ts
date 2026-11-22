@@ -17,8 +17,6 @@
 
 import * as utils from '../utils/color_utils.js';
 
-import {QuantizerMap} from './quantizer_map.js';
-
 const INDEX_BITS = 5;
 const SIDE_LENGTH = 33;    // ((1 << INDEX_INDEX_BITS) + 1)
 const TOTAL_SIZE = 35937;  // SIDE_LENGTH * SIDE_LENGTH * SIDE_LENGTH
@@ -39,9 +37,11 @@ const directions = {
  */
 export class QuantizerWu {
   constructor(
-      private weights: number[] = [], private momentsR: number[] = [],
-      private momentsG: number[] = [], private momentsB: number[] = [],
-      private moments: number[] = [], private cubes: Box[] = []) {}
+      private weights = new Float64Array(0),
+      private momentsR = new Float64Array(0),
+      private momentsG = new Float64Array(0),
+      private momentsB = new Float64Array(0),
+      private moments = new Float64Array(0), private cubes: Box[] = []) {}
 
   /**
    * @param pixels Colors in ARGB format.
@@ -58,40 +58,43 @@ export class QuantizerWu {
   }
 
   private constructHistogram(pixels: number[]) {
-    this.weights = Array.from<number>({length: TOTAL_SIZE}).fill(0);
-    this.momentsR = Array.from<number>({length: TOTAL_SIZE}).fill(0);
-    this.momentsG = Array.from<number>({length: TOTAL_SIZE}).fill(0);
-    this.momentsB = Array.from<number>({length: TOTAL_SIZE}).fill(0);
-    this.moments = Array.from<number>({length: TOTAL_SIZE}).fill(0);
+    const weights = this.weights = new Float64Array(TOTAL_SIZE);
+    const momentsR = this.momentsR = new Float64Array(TOTAL_SIZE);
+    const momentsG = this.momentsG = new Float64Array(TOTAL_SIZE);
+    const momentsB = this.momentsB = new Float64Array(TOTAL_SIZE);
+    const moments = this.moments = new Float64Array(TOTAL_SIZE);
 
-    const countByColor = QuantizerMap.quantize(pixels);
-
-    for (const [pixel, count] of countByColor.entries()) {
+    // Adds each opaque pixel directly, skipping the others as QuantizerMap
+    // does. The sums only add whole numbers, so they are exactly the same as
+    // when adding count * value for each distinct color.
+    const bitsToRemove = 8 - INDEX_BITS;
+    for (let i = 0; i < pixels.length; i++) {
+      const pixel = pixels[i];
+      if (utils.alphaFromArgb(pixel) < 255) {
+        continue;
+      }
       const red = utils.redFromArgb(pixel);
       const green = utils.greenFromArgb(pixel);
       const blue = utils.blueFromArgb(pixel);
-
-      const bitsToRemove = 8 - INDEX_BITS;
       const iR = (red >> bitsToRemove) + 1;
       const iG = (green >> bitsToRemove) + 1;
       const iB = (blue >> bitsToRemove) + 1;
       const index = this.getIndex(iR, iG, iB);
-
-      this.weights[index] = (this.weights[index] ?? 0) + count;
-      this.momentsR[index] += count * red;
-      this.momentsG[index] += count * green;
-      this.momentsB[index] += count * blue;
-      this.moments[index] += count * (red * red + green * green + blue * blue);
+      weights[index] += 1;
+      momentsR[index] += red;
+      momentsG[index] += green;
+      momentsB[index] += blue;
+      moments[index] += red * red + green * green + blue * blue;
     }
   }
 
   private computeMoments() {
     for (let r = 1; r < SIDE_LENGTH; r++) {
-      const area = Array.from<number>({length: SIDE_LENGTH}).fill(0);
-      const areaR = Array.from<number>({length: SIDE_LENGTH}).fill(0);
-      const areaG = Array.from<number>({length: SIDE_LENGTH}).fill(0);
-      const areaB = Array.from<number>({length: SIDE_LENGTH}).fill(0);
-      const area2 = Array.from<number>({length: SIDE_LENGTH}).fill(0.0);
+      const area = new Float64Array(SIDE_LENGTH);
+      const areaR = new Float64Array(SIDE_LENGTH);
+      const areaG = new Float64Array(SIDE_LENGTH);
+      const areaB = new Float64Array(SIDE_LENGTH);
+      const area2 = new Float64Array(SIDE_LENGTH);
       for (let g = 1; g < SIDE_LENGTH; g++) {
         let line = 0;
         let lineR = 0;
@@ -309,7 +312,7 @@ export class QuantizerWu {
     return new MaximizeResult(cut, max);
   }
 
-  private volume(cube: Box, moment: number[]) {
+  private volume(cube: Box, moment: Float64Array) {
     return (
         moment[this.getIndex(cube.r1, cube.g1, cube.b1)] -
         moment[this.getIndex(cube.r1, cube.g1, cube.b0)] -
@@ -321,7 +324,7 @@ export class QuantizerWu {
         moment[this.getIndex(cube.r0, cube.g0, cube.b0)]);
   }
 
-  private bottom(cube: Box, direction: string, moment: number[]) {
+  private bottom(cube: Box, direction: string, moment: Float64Array) {
     switch (direction) {
       case directions.RED:
         return (
@@ -347,7 +350,7 @@ export class QuantizerWu {
   }
 
   private top(
-      cube: Box, direction: string, position: number, moment: number[]) {
+      cube: Box, direction: string, position: number, moment: Float64Array) {
     switch (direction) {
       case directions.RED:
         return (

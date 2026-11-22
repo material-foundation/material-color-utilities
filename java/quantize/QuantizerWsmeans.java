@@ -18,6 +18,7 @@ package quantize;
 
 import static java.lang.Math.min;
 
+import utils.ColorUtils;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -36,21 +37,6 @@ import java.util.Random;
 public final class QuantizerWsmeans {
   private QuantizerWsmeans() {}
 
-  private static final class Distance implements Comparable<Distance> {
-    int index;
-    double distance;
-
-    Distance() {
-      this.index = -1;
-      this.distance = -1;
-    }
-
-    @Override
-    public int compareTo(Distance other) {
-      return ((Double) this.distance).compareTo(other.distance);
-    }
-  }
-
   private static final int MAX_ITERATIONS = 10;
   private static final double MIN_MOVEMENT_DISTANCE = 3.0;
 
@@ -59,12 +45,11 @@ public final class QuantizerWsmeans {
    * the original image and the recolored image.
    *
    * @param inputPixels Colors in ARGB format.
-   * @param startingClusters Defines the initial state of the quantizer. Passing an empty array is
-   *     fine, the implementation will create its own initial state that leads to reproducible
-   *     results for the same inputs. Passing an array that is the result of Wu quantization leads
-   *     to higher quality results.
-   * @param maxColors The number of colors to divide the image into. A lower number of colors may be
-   *     returned.
+   * @param startingClusters Defines the initial state of the quantizer, in ARGB format. Must not be
+   *     empty for a non-empty image, and must not have more colors than maxColors or than the image
+   *     has distinct colors. Passing the result of Wu quantization leads to high quality results.
+   * @param maxColors The number of colors to divide the image into. Must be positive for a
+   *     non-empty image. A lower number of colors may be returned.
    * @return Map with keys of colors in ARGB format, values of how many of the input pixels belong
    *     to the color.
    */
@@ -73,31 +58,16 @@ public final class QuantizerWsmeans {
     // Uses a seeded random number generator to ensure consistent results.
     Random random = new Random(0x42688);
 
-    Map<Integer, Integer> pixelToCount = new LinkedHashMap<>();
-    double[][] points = new double[inputPixels.length][];
-    int[] pixels = new int[inputPixels.length];
-    PointProvider pointProvider = new PointProviderLab();
-
-    int pointCount = 0;
-    for (int i = 0; i < inputPixels.length; i++) {
-      int inputPixel = inputPixels[i];
-      Integer pixelCount = pixelToCount.get(inputPixel);
-      if (pixelCount == null) {
-        points[pointCount] = pointProvider.fromInt(inputPixel);
-        pixels[pointCount] = inputPixel;
-        pointCount++;
-
-        pixelToCount.put(inputPixel, 1);
-      } else {
-        pixelToCount.put(inputPixel, pixelCount + 1);
-      }
-    }
-
-    int[] counts = new int[pointCount];
+    // The distinct colors, in the order in which they first appear, as L*a*b* points: the L*, a*
+    // and b* of point i are at indices 3 * i, 3 * i + 1 and 3 * i + 2. The clusters are stored the
+    // same way.
+    PixelCounts pixelCounts = new PixelCounts(inputPixels);
+    int pointCount = pixelCounts.size();
+    int[] pixels = pixelCounts.colors();
+    int[] counts = pixelCounts.counts();
+    double[] points = new double[pointCount * 3];
     for (int i = 0; i < pointCount; i++) {
-      int pixel = pixels[i];
-      int count = pixelToCount.get(pixel);
-      counts[i] = count;
+      PointProviderLab.labFromArgb(pixels[i], points, i * 3);
     }
 
     int clusterCount = min(maxColors, pointCount);
@@ -105,16 +75,18 @@ public final class QuantizerWsmeans {
       clusterCount = min(clusterCount, startingClusters.length);
     }
 
-    double[][] clusters = new double[clusterCount][];
-    int clustersCreated = 0;
+    // Throws NegativeArraySizeException for a negative cluster count before clusterCount * 3 can
+    // overflow.
+    int[] pixelCountSums = new int[clusterCount];
+    double[] clusters = new double[clusterCount * 3];
+    // Throws ArrayIndexOutOfBoundsException for more starting clusters than clusters.
     for (int i = 0; i < startingClusters.length; i++) {
-      clusters[i] = pointProvider.fromInt(startingClusters[i]);
-      clustersCreated++;
+      PointProviderLab.labFromArgb(startingClusters[i], clusters, i * 3);
     }
-
-    int additionalClustersNeeded = clusterCount - clustersCreated;
-    if (additionalClustersNeeded > 0) {
-      for (int i = 0; i < additionalClustersNeeded; i++) {}
+    if (startingClusters.length == 0 && clusterCount > 0) {
+      // Without starting clusters, the clusters have no coordinates to start from. Throw the
+      // NullPointerException that this case has always thrown.
+      throw new NullPointerException("QuantizerWsmeans needs starting clusters");
     }
 
     int[] clusterIndices = new int[pointCount];
@@ -122,49 +94,60 @@ public final class QuantizerWsmeans {
       clusterIndices[i] = random.nextInt(clusterCount);
     }
 
-    int[][] indexMatrix = new int[clusterCount][];
-    for (int i = 0; i < clusterCount; i++) {
-      indexMatrix[i] = new int[clusterCount];
+    // Row i holds the distances from cluster i to the other clusters, sorted ascending. Each row is
+    // updated in place, by position, and sorted again; its entry at index i is never updated, and
+    // keeps whatever the previous sort left there. The scan below pairs the j-th smallest distance
+    // with cluster j. Both quirks shape the results, so they are kept.
+    double[][] distanceMatrix = new double[clusterCount][clusterCount];
+    for (double[] row : distanceMatrix) {
+      Arrays.fill(row, -1.0);
     }
 
-    Distance[][] distanceToIndexMatrix = new Distance[clusterCount][];
-    for (int i = 0; i < clusterCount; i++) {
-      distanceToIndexMatrix[i] = new Distance[clusterCount];
-      for (int j = 0; j < clusterCount; j++) {
-        distanceToIndexMatrix[i][j] = new Distance();
-      }
-    }
-
-    int[] pixelCountSums = new int[clusterCount];
+    double[] componentASums = new double[clusterCount];
+    double[] componentBSums = new double[clusterCount];
+    double[] componentCSums = new double[clusterCount];
     for (int iteration = 0; iteration < MAX_ITERATIONS; iteration++) {
       for (int i = 0; i < clusterCount; i++) {
+        double[] row = distanceMatrix[i];
+        double iL = clusters[i * 3];
+        double iA = clusters[i * 3 + 1];
+        double iB = clusters[i * 3 + 2];
         for (int j = i + 1; j < clusterCount; j++) {
-          double distance = pointProvider.distance(clusters[i], clusters[j]);
-          distanceToIndexMatrix[j][i].distance = distance;
-          distanceToIndexMatrix[j][i].index = i;
-          distanceToIndexMatrix[i][j].distance = distance;
-          distanceToIndexMatrix[i][j].index = j;
+          double dL = iL - clusters[j * 3];
+          double dA = iA - clusters[j * 3 + 1];
+          double dB = iB - clusters[j * 3 + 2];
+          double distance = dL * dL + dA * dA + dB * dB;
+          distanceMatrix[j][i] = distance;
+          row[j] = distance;
         }
-        Arrays.sort(distanceToIndexMatrix[i]);
-        for (int j = 0; j < clusterCount; j++) {
-          indexMatrix[i][j] = distanceToIndexMatrix[i][j].index;
-        }
+        Arrays.sort(row);
       }
 
       int pointsMoved = 0;
       for (int i = 0; i < pointCount; i++) {
-        double[] point = points[i];
+        double pointL = points[i * 3];
+        double pointA = points[i * 3 + 1];
+        double pointB = points[i * 3 + 2];
         int previousClusterIndex = clusterIndices[i];
-        double[] previousCluster = clusters[previousClusterIndex];
-        double previousDistance = pointProvider.distance(point, previousCluster);
+        double previousL = pointL - clusters[previousClusterIndex * 3];
+        double previousA = pointA - clusters[previousClusterIndex * 3 + 1];
+        double previousB = pointB - clusters[previousClusterIndex * 3 + 2];
+        double previousDistance =
+            previousL * previousL + previousA * previousA + previousB * previousB;
 
         double minimumDistance = previousDistance;
         int newClusterIndex = -1;
+        double[] sortedDistances = distanceMatrix[previousClusterIndex];
+        double maximumDistance = 4 * previousDistance;
         for (int j = 0; j < clusterCount; j++) {
-          if (distanceToIndexMatrix[previousClusterIndex][j].distance >= 4 * previousDistance) {
-            continue;
+          // The distances are sorted, so once one reaches the maximum, all the following ones do.
+          if (sortedDistances[j] >= maximumDistance) {
+            break;
           }
-          double distance = pointProvider.distance(point, clusters[j]);
+          double dL = pointL - clusters[j * 3];
+          double dA = pointA - clusters[j * 3 + 1];
+          double dB = pointB - clusters[j * 3 + 2];
+          double distance = dL * dL + dA * dA + dB * dB;
           if (distance < minimumDistance) {
             minimumDistance = distance;
             newClusterIndex = j;
@@ -184,32 +167,30 @@ public final class QuantizerWsmeans {
         break;
       }
 
-      double[] componentASums = new double[clusterCount];
-      double[] componentBSums = new double[clusterCount];
-      double[] componentCSums = new double[clusterCount];
+      Arrays.fill(componentASums, 0.0);
+      Arrays.fill(componentBSums, 0.0);
+      Arrays.fill(componentCSums, 0.0);
       Arrays.fill(pixelCountSums, 0);
       for (int i = 0; i < pointCount; i++) {
         int clusterIndex = clusterIndices[i];
-        double[] point = points[i];
         int count = counts[i];
         pixelCountSums[clusterIndex] += count;
-        componentASums[clusterIndex] += (point[0] * count);
-        componentBSums[clusterIndex] += (point[1] * count);
-        componentCSums[clusterIndex] += (point[2] * count);
+        componentASums[clusterIndex] += (points[i * 3] * count);
+        componentBSums[clusterIndex] += (points[i * 3 + 1] * count);
+        componentCSums[clusterIndex] += (points[i * 3 + 2] * count);
       }
 
       for (int i = 0; i < clusterCount; i++) {
         int count = pixelCountSums[i];
         if (count == 0) {
-          clusters[i] = new double[] {0., 0., 0.};
+          clusters[i * 3] = 0.0;
+          clusters[i * 3 + 1] = 0.0;
+          clusters[i * 3 + 2] = 0.0;
           continue;
         }
-        double a = componentASums[i] / count;
-        double b = componentBSums[i] / count;
-        double c = componentCSums[i] / count;
-        clusters[i][0] = a;
-        clusters[i][1] = b;
-        clusters[i][2] = c;
+        clusters[i * 3] = componentASums[i] / count;
+        clusters[i * 3 + 1] = componentBSums[i] / count;
+        clusters[i * 3 + 2] = componentCSums[i] / count;
       }
     }
 
@@ -220,7 +201,8 @@ public final class QuantizerWsmeans {
         continue;
       }
 
-      int possibleNewCluster = pointProvider.toInt(clusters[i]);
+      int possibleNewCluster =
+          ColorUtils.argbFromLab(clusters[i * 3], clusters[i * 3 + 1], clusters[i * 3 + 2]);
       if (argbToPopulation.containsKey(possibleNewCluster)) {
         continue;
       }

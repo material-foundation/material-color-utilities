@@ -26,7 +26,8 @@ import palettes.CorePalette;
  * Represents a Material color scheme, a mapping of color roles to colors.
  *
  * @deprecated Please use dynamiccolor.DynamicScheme instead. Refer
- *     to https://github.com/material-foundation/material-color-utilities/blob/main/make_schemes.md
+ *     to
+ *     https://github.com/material-foundation/material-color-utilities/blob/main/dev_guide/creating_color_scheme.md
  *     for migration guidance.
  */
 @Deprecated

@@ -35,4 +35,33 @@ public class PointProviderLab: PointProvider {
     // called at least once for each pixel in an image.
     return (dL * dL + dA * dA + dB * dB)
   }
+
+  /// `ColorUtils.linearized` of each 8-bit channel value.
+  private static let linearizedChannels: [Double] = (0..<256).map { ColorUtils.linearized($0) }
+
+  /// Converts a color to L*a*b* as `ColorUtils.labFromArgb`, with bit-identical results, and
+  /// writes L*, a* and b* to `lab` at `offset`, `offset + 1` and `offset + 2`.
+  ///
+  /// Each channel is linearized with a lookup table instead of `pow`, and no array is allocated
+  /// for the result.
+  static func labFromArgb(_ argb: Int, into lab: inout [Double], at offset: Int) {
+    let linearR = linearizedChannels[ColorUtils.redFromArgb(argb)]
+    let linearG = linearizedChannels[ColorUtils.greenFromArgb(argb)]
+    let linearB = linearizedChannels[ColorUtils.blueFromArgb(argb)]
+    // The same operations, in the same order, as in `ColorUtils.labFromArgb`.
+    let matrix = ColorUtils.srgbToXyz
+    let x = matrix[0][0] * linearR + matrix[0][1] * linearG + matrix[0][2] * linearB
+    let y = matrix[1][0] * linearR + matrix[1][1] * linearG + matrix[1][2] * linearB
+    let z = matrix[2][0] * linearR + matrix[2][1] * linearG + matrix[2][2] * linearB
+    let whitePoint = ColorUtils.whitePointD65
+    let xNormalized = x / whitePoint[0]
+    let yNormalized = y / whitePoint[1]
+    let zNormalized = z / whitePoint[2]
+    let fx = ColorUtils.labF(xNormalized)
+    let fy = ColorUtils.labF(yNormalized)
+    let fz = ColorUtils.labF(zNormalized)
+    lab[offset] = 116 * fy - 16
+    lab[offset + 1] = 500 * (fx - fy)
+    lab[offset + 2] = 200 * (fy - fz)
+  }
 }

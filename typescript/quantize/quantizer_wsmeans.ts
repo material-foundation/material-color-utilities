@@ -15,7 +15,9 @@
  * limitations under the License.
  */
 
-import {LabPointProvider} from './lab_point_provider.js';
+import * as utils from '../utils/color_utils.js';
+
+import {labFromArgbInto} from './lab_conversion.js';
 
 const MAX_ITERATIONS = 10;
 const MIN_MOVEMENT_DISTANCE = 3.0;
@@ -46,37 +48,58 @@ export class QuantizerWsmeans {
    *     Passing an array that is the result of Wu quantization leads to higher
    *     quality results.
    * @param maxColors The number of colors to divide the image into. A lower
-   *     number of colors may be returned.
+   *     number of colors may be returned. Should be a positive integer: other
+   *     values throw an error for most inputs.
    * @return Colors in ARGB format.
    */
   static quantize(
       inputPixels: number[], startingClusters: number[],
       maxColors: number): Map<number, number> {
-    const pixelToCount = new Map<number, number>();
-    const points = new Array<number[]>();
-    const pixels = new Array<number>();
-    const pointProvider = new LabPointProvider();
+    // Uses a seeded random number generator to ensure consistent results,
+    // matching java.util.Random(0x42688) in the Java/Kotlin ports.
+    const random = new SeededRandom(0x42688);
+
+    // Counts the distinct pixels in order of first appearance, in a flat
+    // open-addressing hash table. Keys are kept as they are and compared like
+    // Map keys (SameValueZero), so the result is the same as with a Map.
+    let mask = 1023;
+    let slots = new Int32Array(mask + 1);
+    const pixels: number[] = [];
+    const counts: number[] = [];
     let pointCount = 0;
     for (let i = 0; i < inputPixels.length; i++) {
-      const inputPixel = inputPixels[i];
-      const pixelCount = pixelToCount.get(inputPixel);
-      if (pixelCount === undefined) {
-        pointCount++;
-        points.push(pointProvider.fromInt(inputPixel));
-        pixels.push(inputPixel);
-        pixelToCount.set(inputPixel, 1);
-      } else {
-        pixelToCount.set(inputPixel, pixelCount + 1);
+      const pixel = inputPixels[i];
+      let slot = hashSlot(pixel, mask);
+      let entry = 0;
+      while ((entry = slots[slot]) !== 0) {
+        const existing = pixels[entry - 1];
+        if (existing === pixel || (existing !== existing && pixel !== pixel)) {
+          break;
+        }
+        slot = (slot + 1) & mask;
+      }
+      if (entry !== 0) {
+        counts[entry - 1]++;
+        continue;
+      }
+      pixels.push(pixel);
+      counts.push(1);
+      pointCount++;
+      slots[slot] = pointCount;
+      if (pointCount * 2 > mask) {
+        mask = mask * 2 + 1;
+        slots = new Int32Array(mask + 1);
+        for (let p = 0; p < pointCount; p++) {
+          let s = hashSlot(pixels[p], mask);
+          while (slots[s] !== 0) s = (s + 1) & mask;
+          slots[s] = p + 1;
+        }
       }
     }
 
-    const counts = new Array<number>();
+    const points = new Float64Array(pointCount * 3);
     for (let i = 0; i < pointCount; i++) {
-      const pixel = pixels[i];
-      const count = pixelToCount.get(pixel);
-      if (count !== undefined) {
-        counts[i] = count;
-      }
+      labFromArgbInto(pixels[i], points, i * 3);
     }
 
     let clusterCount = Math.min(maxColors, pointCount);
@@ -84,76 +107,95 @@ export class QuantizerWsmeans {
       clusterCount = Math.min(clusterCount, startingClusters.length);
     }
 
-    const clusters = new Array<number[]>();
-    for (let i = 0; i < startingClusters.length; i++) {
-      clusters.push(pointProvider.fromInt(startingClusters[i]));
+    // Invalid cluster counts throw as they did when clusters were arrays: a
+    // point that is assigned to a missing cluster throws a TypeError, and an
+    // invalid array length throws a RangeError. This gives the same kind of
+    // error for integer and NaN counts. Non-integer counts always threw, too,
+    // but the kind of error depended on the random cluster indices.
+    if (!(clusterCount >= 0) || !Number.isInteger(clusterCount)) {
+      if (pointCount > 0 &&
+          (startingClusters.length === 0 || Number.isNaN(clusterCount))) {
+        throw new TypeError('maxColors must be a positive integer');
+      }
+      throw new RangeError('maxColors must be a positive integer');
     }
-    const additionalClustersNeeded = clusterCount - clusters.length;
+    if (clusterCount === 0) {
+      if (pointCount > 0 && startingClusters.length === 0) {
+        throw new TypeError('maxColors must be a positive integer');
+      }
+      return new Map<number, number>();
+    }
+
+    const clusters =
+        new Float64Array(Math.max(startingClusters.length, clusterCount) * 3);
+    for (let i = 0; i < startingClusters.length; i++) {
+      labFromArgbInto(startingClusters[i], clusters, i * 3);
+    }
+    const additionalClustersNeeded = clusterCount - startingClusters.length;
     if (startingClusters.length === 0 && additionalClustersNeeded > 0) {
       for (let i = 0; i < additionalClustersNeeded; i++) {
-        const l = Math.random() * 100.0;
-        const a = Math.random() * (100.0 - (-100.0) + 1) + -100;
-        const b = Math.random() * (100.0 - (-100.0) + 1) + -100;
-
-        clusters.push(new Array(l, a, b));
+        const l = random.nextDouble() * 100.0;
+        const a = random.nextDouble() * (100.0 - (-100.0) + 1) + -100;
+        const b = random.nextDouble() * (100.0 - (-100.0) + 1) + -100;
+        clusters[i * 3] = l;
+        clusters[i * 3 + 1] = a;
+        clusters[i * 3 + 2] = b;
       }
     }
 
-    const clusterIndices = new Array<number>();
+    const clusterIndices = new Int32Array(pointCount);
     for (let i = 0; i < pointCount; i++) {
-      clusterIndices.push(Math.floor(Math.random() * clusterCount));
+      clusterIndices[i] = random.nextInt(clusterCount);
     }
 
-    const indexMatrix = new Array<number[]>();
-    for (let i = 0; i < clusterCount; i++) {
-      indexMatrix.push(new Array<number>());
-      for (let j = 0; j < clusterCount; j++) {
-        indexMatrix[i].push(0);
-      }
-    }
+    // distances[i * clusterCount + j] is the distance between clusters i and j,
+    // and -1 for i == j. The previous implementation called sort() without a
+    // comparator on each row of objects. That compares their strings, which
+    // are all equal, so the stable sort kept the rows in index order. The rows
+    // are therefore left unsorted here, and the scan below checks every entry.
+    const distances = new Float64Array(clusterCount * clusterCount).fill(-1);
 
-    const distanceToIndexMatrix = new Array<DistanceAndIndex[]>();
-    for (let i = 0; i < clusterCount; i++) {
-      distanceToIndexMatrix.push(new Array<DistanceAndIndex>());
-      for (let j = 0; j < clusterCount; j++) {
-        distanceToIndexMatrix[i].push(new DistanceAndIndex());
-      }
-    }
-
-
-    const pixelCountSums = new Array<number>();
-    for (let i = 0; i < clusterCount; i++) {
-      pixelCountSums.push(0);
-    }
+    const pixelCountSums = new Float64Array(clusterCount);
+    const componentASums = new Float64Array(clusterCount);
+    const componentBSums = new Float64Array(clusterCount);
+    const componentCSums = new Float64Array(clusterCount);
     for (let iteration = 0; iteration < MAX_ITERATIONS; iteration++) {
       for (let i = 0; i < clusterCount; i++) {
+        const iL = clusters[i * 3];
+        const iA = clusters[i * 3 + 1];
+        const iB = clusters[i * 3 + 2];
         for (let j = i + 1; j < clusterCount; j++) {
-          const distance = pointProvider.distance(clusters[i], clusters[j]);
-          distanceToIndexMatrix[j][i].distance = distance;
-          distanceToIndexMatrix[j][i].index = i;
-          distanceToIndexMatrix[i][j].distance = distance;
-          distanceToIndexMatrix[i][j].index = j;
-        }
-        distanceToIndexMatrix[i].sort();
-        for (let j = 0; j < clusterCount; j++) {
-          indexMatrix[i][j] = distanceToIndexMatrix[i][j].index;
+          const dL = iL - clusters[j * 3];
+          const dA = iA - clusters[j * 3 + 1];
+          const dB = iB - clusters[j * 3 + 2];
+          const distance = dL * dL + dA * dA + dB * dB;
+          distances[j * clusterCount + i] = distance;
+          distances[i * clusterCount + j] = distance;
         }
       }
 
       let pointsMoved = 0;
       for (let i = 0; i < pointCount; i++) {
-        const point = points[i];
+        const pL = points[i * 3];
+        const pA = points[i * 3 + 1];
+        const pB = points[i * 3 + 2];
         const previousClusterIndex = clusterIndices[i];
-        const previousCluster = clusters[previousClusterIndex];
-        const previousDistance = pointProvider.distance(point, previousCluster);
+        const dL0 = pL - clusters[previousClusterIndex * 3];
+        const dA0 = pA - clusters[previousClusterIndex * 3 + 1];
+        const dB0 = pB - clusters[previousClusterIndex * 3 + 2];
+        const previousDistance = dL0 * dL0 + dA0 * dA0 + dB0 * dB0;
+        const limit = 4 * previousDistance;
+        const row = previousClusterIndex * clusterCount;
         let minimumDistance = previousDistance;
         let newClusterIndex = -1;
         for (let j = 0; j < clusterCount; j++) {
-          if (distanceToIndexMatrix[previousClusterIndex][j].distance >=
-              4 * previousDistance) {
+          if (distances[row + j] >= limit) {
             continue;
           }
-          const distance = pointProvider.distance(point, clusters[j]);
+          const dL = pL - clusters[j * 3];
+          const dA = pA - clusters[j * 3 + 1];
+          const dB = pB - clusters[j * 3 + 2];
+          const distance = dL * dL + dA * dA + dB * dB;
           if (distance < minimumDistance) {
             minimumDistance = distance;
             newClusterIndex = j;
@@ -173,33 +215,30 @@ export class QuantizerWsmeans {
         break;
       }
 
-      const componentASums = new Array<number>(clusterCount).fill(0);
-      const componentBSums = new Array<number>(clusterCount).fill(0);
-      const componentCSums = new Array<number>(clusterCount).fill(0);
-
-      for (let i = 0; i < clusterCount; i++) {
-        pixelCountSums[i] = 0;
-      }
+      pixelCountSums.fill(0);
+      componentASums.fill(0);
+      componentBSums.fill(0);
+      componentCSums.fill(0);
       for (let i = 0; i < pointCount; i++) {
         const clusterIndex = clusterIndices[i];
-        const point = points[i];
         const count = counts[i];
         pixelCountSums[clusterIndex] += count;
-        componentASums[clusterIndex] += (point[0] * count);
-        componentBSums[clusterIndex] += (point[1] * count);
-        componentCSums[clusterIndex] += (point[2] * count);
+        componentASums[clusterIndex] += (points[i * 3] * count);
+        componentBSums[clusterIndex] += (points[i * 3 + 1] * count);
+        componentCSums[clusterIndex] += (points[i * 3 + 2] * count);
       }
 
       for (let i = 0; i < clusterCount; i++) {
         const count = pixelCountSums[i];
         if (count === 0) {
-          clusters[i] = [0.0, 0.0, 0.0];
+          clusters[i * 3] = 0.0;
+          clusters[i * 3 + 1] = 0.0;
+          clusters[i * 3 + 2] = 0.0;
           continue;
         }
-        const a = componentASums[i] / count;
-        const b = componentBSums[i] / count;
-        const c = componentCSums[i] / count;
-        clusters[i] = [a, b, c];
+        clusters[i * 3] = componentASums[i] / count;
+        clusters[i * 3 + 1] = componentBSums[i] / count;
+        clusters[i * 3 + 2] = componentCSums[i] / count;
       }
     }
 
@@ -210,7 +249,8 @@ export class QuantizerWsmeans {
         continue;
       }
 
-      const possibleNewCluster = pointProvider.toInt(clusters[i]);
+      const possibleNewCluster = utils.argbFromLab(
+          clusters[i * 3], clusters[i * 3 + 1], clusters[i * 3 + 2]);
       if (argbToPopulation.has(possibleNewCluster)) {
         continue;
       }
@@ -221,10 +261,55 @@ export class QuantizerWsmeans {
   }
 }
 
+/** Returns the first slot to probe for a pixel in a table of mask + 1 slots. */
+function hashSlot(pixel: number, mask: number): number {
+  const h = Math.imul(pixel | 0, 0x9e3779b1);
+  return (h ^ (h >>> 15)) & mask;
+}
+
 /**
- *  A wrapper for maintaining a table of distances between K-Means clusters.
+ * Deterministic 48-bit LCG matching `java.util.Random` using two 24-bit words
+ * so all intermediate products stay exact in IEEE-754 numbers (< 2^53).
  */
-class DistanceAndIndex {
-  distance: number = -1;
-  index: number = -1;
+class SeededRandom {
+  private lo: number;
+  private hi: number;
+
+  constructor(seed: number) {
+    this.lo = (seed & 0xffffff) ^ 0xece66d;
+    this.hi = ((seed >>> 24) & 0xffffff) ^ 0x5de;
+  }
+
+  private nextBits(bits: number): number {
+    const loProduct = this.lo * 0xece66d + 0xb;
+    const carry = Math.floor(loProduct / 0x1000000);
+    const nextLo = loProduct % 0x1000000;
+    const hiProduct = this.hi * 0xece66d + this.lo * 0x5de + carry;
+    this.lo = nextLo;
+    this.hi = hiProduct & 0xffffff;
+    const shift = 48 - bits;
+    return (this.hi << (24 - shift)) | (this.lo >>> shift);
+  }
+
+  nextInt(bound: number): number {
+    if (bound <= 0) {
+      return 0;
+    }
+    if ((bound & -bound) === bound) {
+      return Math.floor((bound * this.nextBits(31)) / 0x80000000);
+    }
+    let bits: number;
+    let val: number;
+    do {
+      bits = this.nextBits(31);
+      val = bits % bound;
+    } while (bits - val + (bound - 1) >= 0x80000000);
+    return val;
+  }
+
+  nextDouble(): number {
+    return (
+      (this.nextBits(26) * 0x8000000 + this.nextBits(27)) / 0x20000000000000
+    );
+  }
 }

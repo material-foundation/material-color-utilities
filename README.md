@@ -1,22 +1,15 @@
 # Material Color Utilities
 
-Color is a powerful design tool and part of the Material system along with
-styles like typography and shape. In products, colors and the way they are used
-can be vast and varied. An app’s color scheme can express brand and style.
-Semantic colors can communicate meaning. And color contrast control supports
-visual accessibility.
+Color is a foundational part of the
+[Material Design system](https://m3.material.io/), alongside typography and
+shape. In products, color can communicate brand, reinforce meaning through
+semantic roles, and improve usability through
+[accessible contrast](https://m3.material.io/foundations/designing/color-contrast).
 
-In many design systems of the past, designers manually picked app colors to
-support the necessary range of color applications and use cases. Material 3
-introduces a dynamic color system, which does not rely on hand-picked colors.
-Instead, it uses color algorithms to generate beautiful, accessible color
-schemes based on dynamic inputs like a user’s wallpaper. This enables greater
-flexibility, personalization, and expression, all while streamlining work for
-designers and teams.
-
-Material Color Ultilities (MCU) powers dynamic color with a set of color
-libraries containing algorithms and utilities that make it easier for you to
-develop color themes and schemes in your app.
+Historically, teams hand-picked many colors to cover all UI use cases. In
+[Material 3](https://m3.material.io/styles/color/overview),
+[dynamic color](https://m3.material.io/styles/color/dynamic-color/overview)
+shifts
 
 <video autoplay muted loop src="https://user-images.githubusercontent.com/6655696/146014425-8e8e04bc-e646-4cc2-a3e7-97497a3e1b09.mp4" data-canonical-src="https://user-images.githubusercontent.com/6655696/146014425-8e8e04bc-e646-4cc2-a3e7-97497a3e1b09.mp4" class="d-block rounded-bottom-2 width-fit" style="max-width:640px;"></video>
 
@@ -39,7 +32,7 @@ or open a new one.
 ## Capabilities Overview
 
 <a href="https://github.com/material-foundation/material-color-utilities/raw/main/cheat_sheet.png">
-    <img alt="library cheat sheet" src="https://github.com/material-foundation/material-color-utilities/raw/main/cheat_sheet.png" style="max-width:640px;" />
+    <img alt="library components cheat sheet" src="https://github.com/material-foundation/material-color-utilities/raw/main/cheat_sheet.png" style="max-width:640px;" />
 </a>
 
 The library consists of various components, each having its own folder and
@@ -65,14 +58,14 @@ The library consists of various components, each having its own folder and
 
 ## Learn about color science
 
-[The Science of Color & Design - Material Design](https://material.io/blog/science-of-color-design)
+[The Science of Color & Design - Material Design](https://m3.material.io/blog/science-of-color-design)
 
 ## Try it out
 
 ### Material Theme Builder
 
 We recommend incorporating the Material Theme Builder
-[Figma plugin](https://www.figma.com/community/plugin/1034969338659738588/Material-Theme-Builder)
+[Figma plugin](https://www.figma.com/community/plugin/1034969338659738588/material-theme-builder)
 and [web tool](https://material-foundation.github.io/material-theme-builder/)
 into the design workflow. With them, designers can easily experiment with
 different dynamic color themes and see how they transform their designs with

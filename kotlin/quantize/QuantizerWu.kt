@@ -34,8 +34,7 @@ class QuantizerWu : Quantizer {
   private lateinit var cubes: Array<Box>
 
   override fun quantize(pixels: IntArray, maxColors: Int): QuantizerResult {
-    val mapResult = QuantizerMap().quantize(pixels, maxColors)
-    constructHistogram(mapResult.colorToCount)
+    constructHistogram(pixels)
     createMoments()
     val createBoxesResult = createBoxes(maxColors)
     val colors = createResult(createBoxesResult.resultCount)
@@ -44,6 +43,34 @@ class QuantizerWu : Quantizer {
       resultMap[color] = 0
     }
     return QuantizerResult(resultMap)
+  }
+
+  /**
+   * Constructs the histogram straight from [pixels], without counting each distinct color first: it
+   * holds the same sums as [constructHistogram] of the colors' counts. The integer sums are equal,
+   * and so are the floating-point ones, which add up integers small enough to be exact.
+   */
+  private fun constructHistogram(pixels: IntArray) {
+    weights = IntArray(TOTAL_SIZE)
+    momentsR = IntArray(TOTAL_SIZE)
+    momentsG = IntArray(TOTAL_SIZE)
+    momentsB = IntArray(TOTAL_SIZE)
+    moments = DoubleArray(TOTAL_SIZE)
+    val bitsToRemove = 8 - INDEX_BITS
+    for (pixel in pixels) {
+      val red = ColorUtils.redFromArgb(pixel)
+      val green = ColorUtils.greenFromArgb(pixel)
+      val blue = ColorUtils.blueFromArgb(pixel)
+      val iR = (red shr bitsToRemove) + 1
+      val iG = (green shr bitsToRemove) + 1
+      val iB = (blue shr bitsToRemove) + 1
+      val index = getIndex(iR, iG, iB)
+      weights[index]++
+      momentsR[index] += red
+      momentsG[index] += green
+      momentsB[index] += blue
+      moments[index] += (red * red + green * green + blue * blue).toDouble()
+    }
   }
 
   fun constructHistogram(pixels: Map<Int, Int>) {

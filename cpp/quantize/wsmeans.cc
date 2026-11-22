@@ -18,6 +18,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstddef>
 #include <cstdint>
 #include <cstdlib>
 #include <map>
@@ -25,6 +26,7 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
 #include "absl/container/flat_hash_map.h"
@@ -42,15 +44,6 @@ struct Swatch {
   bool operator<(const Swatch& b) const { return population > b.population; }
 };
 
-struct DistanceToIndex {
-  double distance = 0.0;
-  int index = 0;
-
-  bool operator<(const DistanceToIndex& a) const {
-    return distance < a.distance;
-  }
-};
-
 QuantizerResult QuantizeWsmeans(const std::vector<Argb>& input_pixels,
                                 const std::vector<Argb>& starting_clusters,
                                 uint16_t max_colors) {
@@ -64,25 +57,23 @@ QuantizerResult QuantizeWsmeans(const std::vector<Argb>& input_pixels,
   }
 
   uint32_t pixel_count = input_pixels.size();
-  absl::flat_hash_map<Argb, int> pixel_to_count;
+  // The distinct colors, in the order that they first appear, with their Lab
+  // points and counts. The map gives the index of each color in `pixels`.
+  absl::flat_hash_map<Argb, int> pixel_to_index;
   std::vector<uint32_t> pixels;
   pixels.reserve(pixel_count);
   std::vector<Lab> points;
   points.reserve(pixel_count);
+  std::vector<int> counts;
   for (Argb pixel : input_pixels) {
-    // tested over 1000 runs with 128 colors, 12544 (112 x 112)
-    // std::map 10.9 ms
-    // std::unordered_map 10.2 ms
-    // absl::btree_map 9.0 ms
-    // absl::flat_hash_map 8.0 ms
-    absl::flat_hash_map<Argb, int>::iterator it = pixel_to_count.find(pixel);
-    if (it != pixel_to_count.end()) {
-      it->second++;
-
-    } else {
+    auto [it, inserted] =
+        pixel_to_index.try_emplace(pixel, static_cast<int>(pixels.size()));
+    if (inserted) {
       pixels.push_back(pixel);
       points.push_back(LabFromInt(pixel));
-      pixel_to_count[pixel] = 1;
+      counts.push_back(1);
+    } else {
+      counts[it->second]++;
     }
   }
 
@@ -121,31 +112,22 @@ QuantizerResult QuantizeWsmeans(const std::vector<Argb>& input_pixels,
     cluster_indices.push_back(rand() % cluster_count);
   }
 
-  std::vector<std::vector<int>> index_matrix(
-      cluster_count, std::vector<int>(cluster_count, 0));
-
-  std::vector<std::vector<DistanceToIndex>> distance_to_index_matrix(
-      cluster_count, std::vector<DistanceToIndex>(cluster_count));
+  // The distance between each pair of clusters, one row per cluster, in a
+  // flat array. The rows are kept in cluster order, not sorted.
+  std::vector<double> cluster_distances(
+      static_cast<size_t>(cluster_count) * cluster_count, 0.0);
 
   for (int iteration = 0; iteration < kMaxIterations; iteration++) {
     // Calculate cluster distances
     for (int i = 0; i < cluster_count; i++) {
-      distance_to_index_matrix[i][i].distance = 0;
-      distance_to_index_matrix[i][i].index = i;
+      double* row = &cluster_distances[static_cast<size_t>(i) * cluster_count];
+      row[i] = 0;
       for (int j = i + 1; j < cluster_count; j++) {
         double distance = clusters[i].DeltaE(clusters[j]);
 
-        distance_to_index_matrix[j][i].distance = distance;
-        distance_to_index_matrix[j][i].index = i;
-        distance_to_index_matrix[i][j].distance = distance;
-        distance_to_index_matrix[i][j].index = j;
-      }
-
-      std::vector<DistanceToIndex> row = distance_to_index_matrix[i];
-      std::sort(row.begin(), row.end());
-
-      for (int j = 0; j < cluster_count; j++) {
-        index_matrix[i][j] = row[j].index;
+        cluster_distances[static_cast<size_t>(j) * cluster_count + i] =
+            distance;
+        row[j] = distance;
       }
     }
 
@@ -160,9 +142,11 @@ QuantizerResult QuantizeWsmeans(const std::vector<Argb>& input_pixels,
       double minimum_distance = previous_distance;
       int new_cluster_index = -1;
 
+      const double* previous_cluster_distances =
+          &cluster_distances[static_cast<size_t>(previous_cluster_index) *
+                             cluster_count];
       for (int j = 0; j < cluster_count; j++) {
-        if (distance_to_index_matrix[previous_cluster_index][j].distance >=
-            4 * previous_distance) {
+        if (previous_cluster_distances[j] >= 4 * previous_distance) {
           continue;
         }
         double distance = point.DeltaE(clusters[j]);
@@ -196,7 +180,7 @@ QuantizerResult QuantizeWsmeans(const std::vector<Argb>& input_pixels,
     for (size_t i = 0; i < points.size(); i++) {
       int clusterIndex = cluster_indices[i];
       Lab point = points[i];
-      int count = pixel_to_count[pixels[i]];
+      int count = counts[i];
 
       pixel_count_sums[clusterIndex] += count;
       component_a_sums[clusterIndex] += (point.l * count);
@@ -252,12 +236,19 @@ QuantizerResult QuantizeWsmeans(const std::vector<Argb>& input_pixels,
     color_to_count[swatches[i].argb] = swatches[i].population;
   }
 
-  std::map<Argb, Argb> input_pixel_to_cluster_pixel;
+  // The input colors are distinct, so the map can be filled in key order, with
+  // each new entry placed at the end, instead of searching for each key.
+  std::vector<std::pair<Argb, Argb>> pixel_to_cluster_pixel;
+  pixel_to_cluster_pixel.reserve(points.size());
   for (size_t i = 0; i < points.size(); i++) {
-    int pixel = pixels[i];
-    int cluster_index = cluster_indices[i];
-    int cluster_argb = all_cluster_argbs[cluster_index];
-    input_pixel_to_cluster_pixel[pixel] = cluster_argb;
+    pixel_to_cluster_pixel.push_back(
+        {pixels[i], all_cluster_argbs[cluster_indices[i]]});
+  }
+  std::sort(pixel_to_cluster_pixel.begin(), pixel_to_cluster_pixel.end());
+  std::map<Argb, Argb> input_pixel_to_cluster_pixel;
+  for (const std::pair<Argb, Argb>& entry : pixel_to_cluster_pixel) {
+    input_pixel_to_cluster_pixel.emplace_hint(
+        input_pixel_to_cluster_pixel.end(), entry);
   }
 
   return {color_to_count, input_pixel_to_cluster_pixel};

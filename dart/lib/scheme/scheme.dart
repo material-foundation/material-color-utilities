@@ -23,7 +23,7 @@ import '../palettes/core_palette.dart';
 /// ColorScheme class, inlined to ensure parity across languages.
 @Deprecated(
   'The `Scheme` class is deprecated in favor of `DynamicScheme`.\n'
-  'Please see https://github.com/material-foundation/material-color-utilities/blob/main/make_schemes.md'
+  'Please see https://github.com/material-foundation/material-color-utilities/blob/main/dev_guide/creating_color_scheme.md'
   'for migration guidance.',
 )
 class Scheme {

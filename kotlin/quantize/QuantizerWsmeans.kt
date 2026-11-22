@@ -15,7 +15,7 @@
  */
 package quantize
 
-import java.util.Arrays
+import utils.ColorUtils
 import java.util.LinkedHashMap
 import java.util.Random
 import kotlin.math.abs
@@ -33,15 +33,6 @@ import kotlin.math.sqrt
  * Performance of K-Means for Color Quantization. https://arxiv.org/abs/1101.0395
  */
 object QuantizerWsmeans {
-  private class Distance() : Comparable<Distance> {
-    var index = -1
-    var distance = -1.0
-
-    override fun compareTo(other: Distance): Int {
-      return distance.compareTo(other.distance)
-    }
-  }
-
   private const val MAX_ITERATIONS = 10
   private const val MIN_MOVEMENT_DISTANCE = 3.0
 
@@ -50,86 +41,94 @@ object QuantizerWsmeans {
    * the original image and the recolored image.
    *
    * @param inputPixels Colors in ARGB format.
-   * @param startingClusters Defines the initial state of the quantizer. Passing an empty array is
-   *   fine, the implementation will create its own initial state that leads to reproducible results
-   *   for the same inputs. Passing an array that is the result of Wu quantization leads to higher
-   *   quality results.
+   * @param startingClusters Defines the initial state of the quantizer: the colors that the
+   *   clusters start from. Passing an array that is the result of Wu quantization leads to higher
+   *   quality results. It must not be empty unless [inputPixels] is, and must not hold more colors
+   *   than [maxColors] or than [inputPixels] has distinct colors.
    * @param maxColors The number of colors to divide the image into. A lower number of colors may be
-   *   returned.
+   *   returned. It must be positive, or 0 if [inputPixels] is empty.
    * @return Map with keys of colors in ARGB format, values of how many of the input pixels belong
    *   to the color.
    */
   fun quantize(inputPixels: IntArray, startingClusters: IntArray, maxColors: Int): Map<Int, Int> {
     // Uses a seeded random number generator to ensure consistent results.
     val random = Random(0x42688L)
-    val pixelToCount: MutableMap<Int, Int> = LinkedHashMap()
-    val points = arrayOfNulls<DoubleArray>(inputPixels.size)
-    val pixels = IntArray(inputPixels.size)
-    val pointProvider: PointProvider = PointProviderLab()
-    var pointCount = 0
-    for (i in inputPixels.indices) {
-      val inputPixel = inputPixels[i]
-      val pixelCount = pixelToCount[inputPixel]
-      if (pixelCount == null) {
-        points[pointCount] = pointProvider.fromInt(inputPixel)
-        pixels[pointCount] = inputPixel
-        pointCount++
-        pixelToCount[inputPixel] = 1
-      } else {
-        pixelToCount[inputPixel] = pixelCount + 1
-      }
-    }
-    val counts = IntArray(pointCount)
+    // The distinct pixels, in order of first appearance, as points in L*a*b*: three coordinates
+    // each, in a flat array.
+    val pixelCounts = PixelCounts(inputPixels)
+    val pointCount = pixelCounts.size
+    val counts = pixelCounts.counts
+    val points = DoubleArray(pointCount * 3)
     for (i in 0 until pointCount) {
-      val pixel = pixels[i]
-      val count = pixelToCount[pixel]!!
-      counts[i] = count
+      PointProviderLab.labFromArgb(pixelCounts.colors[i], points, i * 3)
     }
     var clusterCount = min(maxColors, pointCount)
     if (startingClusters.isNotEmpty()) {
       clusterCount = min(clusterCount, startingClusters.size)
     }
-    val clusters = arrayOfNulls<DoubleArray>(clusterCount)
-    var clustersCreated = 0
-    for (i in startingClusters.indices) {
-      clusters[i] = pointProvider.fromInt(startingClusters[i])
-      clustersCreated++
+    if (clusterCount < 0) {
+      // Throw the NegativeArraySizeException that a negative maxColors has always thrown, before
+      // clusterCount * 3 can overflow.
+      throw NegativeArraySizeException("maxColors is negative: $maxColors")
     }
-    val additionalClustersNeeded = clusterCount - clustersCreated
-    if (additionalClustersNeeded > 0) {
-      for (i in 0 until additionalClustersNeeded) {}
+    val clusters = DoubleArray(clusterCount * 3)
+    for (i in startingClusters.indices) {
+      PointProviderLab.labFromArgb(startingClusters[i], clusters, i * 3)
     }
     val clusterIndices = IntArray(pointCount) { random.nextInt(clusterCount) }
-    val indexMatrix = Array(clusterCount) { IntArray(clusterCount) }
-    val distanceToIndexMatrix = Array(clusterCount) { Array(clusterCount) { Distance() } }
+    if (startingClusters.isEmpty() && clusterCount > 0) {
+      // Without starting clusters, the clusters have no coordinates to start from. Throw the
+      // NullPointerException that this case has always thrown.
+      throw NullPointerException("QuantizerWsmeans needs starting clusters")
+    }
+    // Row i holds the distances from cluster i to the other clusters, sorted ascending. Each row is
+    // updated in place, by position, and sorted again; its entry at index i is never updated, and
+    // keeps whatever the previous sort left there. The scan below pairs the j-th smallest distance
+    // with cluster j. Both quirks shape the results, so they are kept.
+    val distanceMatrix = Array(clusterCount) { DoubleArray(clusterCount) { -1.0 } }
     val pixelCountSums = IntArray(clusterCount)
+    val componentASums = DoubleArray(clusterCount)
+    val componentBSums = DoubleArray(clusterCount)
+    val componentCSums = DoubleArray(clusterCount)
     for (iteration in 0 until MAX_ITERATIONS) {
       for (i in 0 until clusterCount) {
+        val row = distanceMatrix[i]
+        val iL = clusters[i * 3]
+        val iA = clusters[i * 3 + 1]
+        val iB = clusters[i * 3 + 2]
         for (j in i + 1 until clusterCount) {
-          val distance = pointProvider.distance(clusters[i]!!, clusters[j]!!)
-          distanceToIndexMatrix[j][i].distance = distance
-          distanceToIndexMatrix[j][i].index = i
-          distanceToIndexMatrix[i][j].distance = distance
-          distanceToIndexMatrix[i][j].index = j
+          val dL = iL - clusters[j * 3]
+          val dA = iA - clusters[j * 3 + 1]
+          val dB = iB - clusters[j * 3 + 2]
+          val distance = dL * dL + dA * dA + dB * dB
+          distanceMatrix[j][i] = distance
+          row[j] = distance
         }
-        Arrays.sort(distanceToIndexMatrix[i])
-        for (j in 0 until clusterCount) {
-          indexMatrix[i][j] = distanceToIndexMatrix[i][j].index
-        }
+        row.sort()
       }
       var pointsMoved = 0
       for (i in 0 until pointCount) {
-        val point = points[i]!!
+        val pointL = points[i * 3]
+        val pointA = points[i * 3 + 1]
+        val pointB = points[i * 3 + 2]
         val previousClusterIndex = clusterIndices[i]
-        val previousCluster = clusters[previousClusterIndex]!!
-        val previousDistance = pointProvider.distance(point, previousCluster)
+        val previousL = pointL - clusters[previousClusterIndex * 3]
+        val previousA = pointA - clusters[previousClusterIndex * 3 + 1]
+        val previousB = pointB - clusters[previousClusterIndex * 3 + 2]
+        val previousDistance = previousL * previousL + previousA * previousA + previousB * previousB
         var minimumDistance = previousDistance
         var newClusterIndex = -1
+        val sortedDistances = distanceMatrix[previousClusterIndex]
+        val maximumDistance = 4 * previousDistance
         for (j in 0 until clusterCount) {
-          if (distanceToIndexMatrix[previousClusterIndex][j].distance >= 4 * previousDistance) {
-            continue
+          // The distances are sorted, so once one reaches the maximum, all the following ones do.
+          if (sortedDistances[j] >= maximumDistance) {
+            break
           }
-          val distance = pointProvider.distance(point, clusters[j]!!)
+          val dL = pointL - clusters[j * 3]
+          val dA = pointA - clusters[j * 3 + 1]
+          val dB = pointB - clusters[j * 3 + 2]
+          val distance = dL * dL + dA * dA + dB * dB
           if (distance < minimumDistance) {
             minimumDistance = distance
             newClusterIndex = j
@@ -146,29 +145,29 @@ object QuantizerWsmeans {
       if (pointsMoved == 0 && iteration != 0) {
         break
       }
-      val componentASums = DoubleArray(clusterCount)
-      val componentBSums = DoubleArray(clusterCount)
-      val componentCSums = DoubleArray(clusterCount)
+      componentASums.fill(0.0)
+      componentBSums.fill(0.0)
+      componentCSums.fill(0.0)
       pixelCountSums.fill(0)
       for (i in 0 until pointCount) {
         val clusterIndex = clusterIndices[i]
-        val point = points[i]!!
         val count = counts[i]
         pixelCountSums[clusterIndex] += count
-        componentASums[clusterIndex] += point[0] * count
-        componentBSums[clusterIndex] += point[1] * count
-        componentCSums[clusterIndex] += point[2] * count
+        componentASums[clusterIndex] += points[i * 3] * count
+        componentBSums[clusterIndex] += points[i * 3 + 1] * count
+        componentCSums[clusterIndex] += points[i * 3 + 2] * count
       }
       for (i in 0 until clusterCount) {
         val count = pixelCountSums[i]
         if (count == 0) {
-          clusters[i] = doubleArrayOf(0.0, 0.0, 0.0)
+          clusters[i * 3] = 0.0
+          clusters[i * 3 + 1] = 0.0
+          clusters[i * 3 + 2] = 0.0
           continue
         }
-        val a = componentASums[i] / count
-        val b = componentBSums[i] / count
-        val c = componentCSums[i] / count
-        clusters[i] = doubleArrayOf(a, b, c)
+        clusters[i * 3] = componentASums[i] / count
+        clusters[i * 3 + 1] = componentBSums[i] / count
+        clusters[i * 3 + 2] = componentCSums[i] / count
       }
     }
     val argbToPopulation: MutableMap<Int, Int> = LinkedHashMap()
@@ -177,7 +176,8 @@ object QuantizerWsmeans {
       if (count == 0) {
         continue
       }
-      val possibleNewCluster = pointProvider.toInt(clusters[i]!!)
+      val possibleNewCluster =
+        ColorUtils.argbFromLab(clusters[i * 3], clusters[i * 3 + 1], clusters[i * 3 + 2])
       if (argbToPopulation.containsKey(possibleNewCluster)) {
         continue
       }

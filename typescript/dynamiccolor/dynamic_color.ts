@@ -20,7 +20,7 @@ import {Hct} from '../hct/hct.js';
 import {TonalPalette} from '../palettes/tonal_palette.js';
 import * as math from '../utils/math_utils.js';
 
-import type {SpecVersion} from './color_spec';
+import type {SpecVersion} from './color_spec.js';
 import {ContrastCurve} from './contrast_curve.js';
 import {DynamicScheme} from './dynamic_scheme.js';
 import {ToneDeltaPair} from './tone_delta_pair.js';
@@ -662,7 +662,8 @@ class ColorCalculationDelegateImpl2025 implements ColorCalculationDelegate {
 
       // This can avoid the awkward tones for background colors including the
       // access fixed colors. Accent fixed dim colors should not be adjusted.
-      if (color.isBackground && !color.name.endsWith('_fixed_dim')) {
+      if (scheme.platform === 'phone' && color.isBackground &&
+          !color.name.endsWith('_fixed_dim')) {
         if (selfTone >= 57) {
           selfTone = math.clampDouble(65, 100, selfTone);
         } else {
@@ -696,11 +697,20 @@ class ColorCalculationDelegateImpl2025 implements ColorCalculationDelegate {
 
       // This can avoid the awkward tones for background colors including the
       // access fixed colors. Accent fixed dim colors should not be adjusted.
-      if (color.isBackground && !color.name.endsWith('_fixed_dim')) {
+      if (scheme.platform === 'phone' && color.isBackground &&
+          !color.name.endsWith('_fixed_dim')) {
         if (answer >= 57) {
           answer = math.clampDouble(65, 100, answer);
         } else {
           answer = math.clampDouble(0, 49, answer);
+        }
+      } else if (
+          scheme.platform === 'watch' && color.isBackground && 50 <= answer &&
+          answer < 60) {
+        if (Contrast.ratioOfTones(49, bgTone) >= desiredRatio) {
+          answer = 49;
+        } else {
+          answer = 60;
         }
       }
 

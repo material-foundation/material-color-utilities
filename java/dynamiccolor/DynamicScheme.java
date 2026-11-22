@@ -178,7 +178,7 @@ public class DynamicScheme {
     this.isDark = isDark;
     this.contrastLevel = contrastLevel;
     this.platform = platform;
-    this.specVersion = maybeFallbackSpecVersion(specVersion, variant);
+    this.specVersion = maybeFallbackSpecVersion(specVersion, variant, platform);
     this.sourceColorHctList = sourceColorHctList;
 
     this.primaryPalette = primaryPalette;
@@ -213,14 +213,16 @@ public class DynamicScheme {
    * Returns the spec version to use for the given variant. If the variant is not supported by the
    * given spec version, the fallback spec version is returned.
    */
-  private static SpecVersion maybeFallbackSpecVersion(SpecVersion specVersion, Variant variant) {
+  private static SpecVersion maybeFallbackSpecVersion(
+      SpecVersion specVersion, Variant variant, Platform platform) {
     if (variant == Variant.CMF) {
       return specVersion;
     }
     if (variant == Variant.EXPRESSIVE
         || variant == Variant.VIBRANT
         || variant == Variant.TONAL_SPOT
-        || variant == Variant.NEUTRAL) {
+        || variant == Variant.NEUTRAL
+        || (platform == Platform.WATCH && variant == Variant.CONTENT)) {
       return specVersion == SpecVersion.SPEC_2026 ? SpecVersion.SPEC_2025 : specVersion;
     }
     return SpecVersion.SPEC_2021;

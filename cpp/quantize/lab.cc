@@ -18,6 +18,8 @@
 
 #include <math.h>
 
+#include <array>
+
 #include "cpp/utils/utils.h"
 
 namespace material_color_utilities {
@@ -51,13 +53,31 @@ Argb IntFromLab(const Lab lab) {
   return ArgbFromRgb(red, green, blue);
 }
 
+namespace {
+
+// Linearized() of each 8-bit channel value, computed once with the same
+// formula, so a lookup returns exactly what Linearized() returns.
+const std::array<double, 256>& LinearizedTable() {
+  static const std::array<double, 256> kTable = [] {
+    std::array<double, 256> table;
+    for (int i = 0; i < 256; i++) {
+      table[i] = Linearized(i);
+    }
+    return table;
+  }();
+  return kTable;
+}
+
+}  // namespace
+
 Lab LabFromInt(const Argb argb) {
   int red = (argb & 0x00ff0000) >> 16;
   int green = (argb & 0x0000ff00) >> 8;
   int blue = (argb & 0x000000ff);
-  double red_l = Linearized(red);
-  double green_l = Linearized(green);
-  double blue_l = Linearized(blue);
+  const std::array<double, 256>& linearized = LinearizedTable();
+  double red_l = linearized[red];
+  double green_l = linearized[green];
+  double blue_l = linearized[blue];
   double x = 0.41233895 * red_l + 0.35762064 * green_l + 0.18051042 * blue_l;
   double y = 0.2126 * red_l + 0.7152 * green_l + 0.0722 * blue_l;
   double z = 0.01932141 * red_l + 0.11916382 * green_l + 0.95034478 * blue_l;

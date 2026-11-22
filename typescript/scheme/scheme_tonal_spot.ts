@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-import { SpecVersion } from "../dynamiccolor/color_spec.js";
-import { DynamicScheme, Platform } from "../dynamiccolor/dynamic_scheme.js";
-import { Variant } from "../dynamiccolor/variant.js";
-import { Hct } from "../hct/hct.js";
+import {SpecVersion} from '../dynamiccolor/color_spec.js';
+import {DynamicScheme, Platform} from '../dynamiccolor/dynamic_scheme.js';
+import {Variant} from '../dynamiccolor/variant.js';
+import {Hct} from '../hct/hct.js';
 
 /**
  * A Dynamic Color theme with low to medium colorfulness and a Tertiary
@@ -28,30 +28,17 @@ import { Hct } from "../hct/hct.js";
  */
 export class SchemeTonalSpot extends DynamicScheme {
   constructor(
-    sourceColorHct: Hct,
-    isDark: boolean,
-    contrastLevel: number,
-    specVersion?: SpecVersion,
-    platform?: Platform,
-  );
+      sourceColorHct: Hct, isDark: boolean, contrastLevel: number,
+      specVersion?: SpecVersion, platform?: Platform);
   constructor(
-    sourceColorHcts: Hct[],
-    isDark: boolean,
-    contrastLevel: number,
-    specVersion?: SpecVersion,
-    platform?: Platform,
-  );
+      sourceColorHcts: Hct[], isDark: boolean, contrastLevel: number,
+      specVersion?: SpecVersion, platform?: Platform);
   constructor(
-    sourceColorOrList: Hct | Hct[],
-    isDark: boolean,
-    contrastLevel: number,
-    specVersion: SpecVersion = DynamicScheme.DEFAULT_SPEC_VERSION,
-    platform: Platform = DynamicScheme.DEFAULT_PLATFORM,
-  ) {
+      sourceColorOrList: Hct|Hct[], isDark: boolean, contrastLevel: number,
+      specVersion: SpecVersion = DynamicScheme.DEFAULT_SPEC_VERSION,
+      platform: Platform = DynamicScheme.DEFAULT_PLATFORM) {
     super({
-      sourceColorHcts: Array.isArray(sourceColorOrList)
-        ? sourceColorOrList
-        : [sourceColorOrList],
+      sourceColorHcts: Array.isArray(sourceColorOrList) ? sourceColorOrList : [sourceColorOrList],
       variant: Variant.TONAL_SPOT,
       contrastLevel,
       isDark,

@@ -1,50 +1,100 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## Unreleased
+
+## 0.13.1 - 2026-08-10
+
+### Changed
+
+- Use `MathUtils.sanitizeDegreesDouble` for hue value calculation in `Cam16`.
+
+
+### Fixed
+
+- Fix documentation link for deprecated `Scheme` class.
+
 ## 0.13.0 - 2025-05-20
 
-- All of the `MaterialDynamicColors` fields are now final.
-- Require Dart 3.5
+### Changed
+
+- Make all `MaterialDynamicColors` fields `final`.
+- Require Dart 3.5.
+- Optimize ARGB and HCT color conversions in `DynamicScheme` constructors.
+- Unify `errorPalette` parameter handling across `DynamicScheme` constructors.
+- Make `Scheme` internal implementation details private.
+
+### Deprecated
+
+- Deprecate legacy `CorePalette` class in favor of `CorePalettes`.
 
 ## 0.12.0 - 2024-06-06
+
 ### Changed
-- Updated `MaterialDynamicColors` to use the expressive on-colors spec.
+
+- Update `MaterialDynamicColors` to use the expressive on-colors spec.
 
 ## 0.11.2 - 2024-04-30
+
 ### Changed
-- Updated `TonalPalette` to use new key color algorithm.
+
+- Update `TonalPalette` to use new key color algorithm.
 
 ## 0.11.1 - 2024-03-11
+
 ### Fixed
-- Fixed Apache license
+
+- Fix Apache license.
 
 ## 0.11.0 - 2024-02-20
+
 ### Changed
-- Updated `TonalPalette.fromList` so that it provides colors at any tone, not
+
+- Update `TonalPalette.fromList` so that it provides colors at any tone, not
   only at `commonTones`.
 
 ## 0.10.0 - 2023-11-27
+
 ### Changed
-- Updated `MaterialDynamicColors` to new Contrast Surfaces spec.
+
+- Update `MaterialDynamicColors` to new Contrast Surfaces spec.
 
 ## 0.9.0 - 2023-11-06
+
 ### Added
-- Added getters for `DynamicScheme`.
+
+- Add getters for `DynamicScheme`.
 
 ### Changed
-- Moved `DynamicScheme` from `scheme/` to `dynamiccolor/`.
+
+- Move `DynamicScheme` from `scheme/` to `dynamiccolor/`.
 
 ## 0.8.0 - 2023-06-22
+
 ### Added
-- Add fruit salad color scheme
-- Add rainbow color scheme
+
+- Add fruit salad color scheme.
+- Add rainbow color scheme.
 
 ## 0.7.0 - 2023-06-13
+
 ### Changed
-- Updated `DynamicColor` so that it conforms to the new contrast requirements.
-    - API for `DynamicColor` modified.
+
+- Update `DynamicColor` to conform to the new contrast requirements.
+
+    - Modify API for `DynamicColor`.
 
 ## 0.6.0 - 2023-05-31
+
 ### Added
+
 - Add key color to tonal palette.
 - Add key colors to the Material dynamic colors:
+
     - `primaryPaletteKeyColor`
     - `secondaryPaletteKeyColor`
     - `tertiaryPaletteKeyColor`
@@ -52,6 +102,7 @@
     - `neutralVariantPaletteKeyColor`
 
 ### Changed
+
 - Scheme updates to align with recent Android Sys UI changes:
     - `SchemeExpressive`:
         - Primary hue + 240 from 120
@@ -63,32 +114,43 @@
         - Neutral chroma = 10 from 8
 
 ### Fixed
-- Fixed outline when in dark mode to be tone 60.
+
+- Fix outline when in dark mode to be tone 60.
 
 ## 0.5.0 - 2023-05-02
+
 ### Removed
-- Removed `inverseOnPrimary`, an unfounded dynamic color
+
+- Remove `inverseOnPrimary`, an unfounded dynamic color.
 
 ## 0.4.0 - 2023-04-28
+
 ### Added
-- Add `label` and `description` to each `Variant`
-- Add `xFixed` Material dynamic colors
+
+- Add `label` and `description` to each `Variant`.
+- Add `xFixed` Material dynamic colors.
 
 ### Changed
-- Update monochrome scheme to new spec
 
-## Fixed
-- Fix `inverseSurface` tone value
+- Update monochrome scheme to new spec.
+
+### Fixed
+
+- Fix `inverseSurface` tone value.
 
 ## 0.3.0 - 2023-03-10
+
 ### Added
 
 - Add 4 new components:
-    - `contrast`: Use `Contrast` for utility methods
-    - `dislike`: Use `DislikeAnalyzer` for checking and fixing universally disliked colors
-    - `dynamiccolor`: Use `DynamicColor` and `MaterialDynamicColors` for colors from a `DynamicScheme`, that adjust based on UI state
+    - `contrast`: Use `Contrast` for utility methods.
+    - `dislike`: Use `DislikeAnalyzer` for checking and fixing universally disliked colors.
+    - `dynamiccolor`: Use `DynamicColor` and `MaterialDynamicColors` for colors
+        from a `DynamicScheme`, that adjust based on UI state
         (dark theme, style, preferences, contrast requirements, etc.)
-    - `temperature`: Use `TemperatureCache` for analogous & complementary colors
+
+    - `temperature`: Use `TemperatureCache` for analogous & complementary colors.
+
 - `scheme`: Add `DynamicScheme` and its subclasses:
     - `SchemeExpressive`
     - `SchemeMonochrome`
@@ -97,63 +159,83 @@
     - `SchemeVibrant`
     - `SchemeFidelity`
     - `SchemeContent`
-- `hct`: Add `inViewingConditions` to `hct`, for color relativity
-- `utilities`: Add `lstarFromY` method, utility to which is the inverse of `yFromLstar`
 
+- `hct`: Add `inViewingConditions` to `hct`, for color relativity.
+- `utilities`: Add `lstarFromY` method, utility which is the inverse of `yFromLstar`.
 
 ### Changed
-- Export all public API in `material_color_utilities.dart`
-- Bump minimum Flutter SDK version to `2.17.0`
+
+- Export all public API in `material_color_utilities.dart`.
+- Bump minimum Flutter SDK version to `2.17.0`.
 
 ### Fixed
-- Fix missing `hashCode` override for `Hct`
-- Fix `TonalPalette` equality operator when different constructors are used ([#56](https://github.com/material-foundation/material-color-utilities/issues/56))
+
+- Fix missing `hashCode` override for `Hct`.
+- Fix `TonalPalette` equality operator when different constructors are used ([#56](https://github.com/material-foundation/material-color-utilities/issues/56)).
 
 ## 0.2.0 - 2022-08-05
+
 ### Added
-- Add support for content color
-- Add `outlineVariant` and `scrim` colors
+
+- Add support for content color.
+- Add `outlineVariant` and `scrim` colors.
 
 ### Changed
-- Rename `CamSolver` to `HctSolver`
+
+- Rename `CamSolver` to `HctSolver`.
 
 ### Fixed
-- Correct `repository` in pubspec
+
+- Correct `repository` in pubspec.
 
 ## 0.1.5 - 2022-04-25
+
 ### Added
-- Introduce `CamSolver`, a fast solver for the HCT equation. Highly performant, but a small breaking change
-- Add explanation and link to `dynamic_color` packages
-- Add `operator ==` and `toString` overrides to `Hct`
+
+- Introduce `CamSolver`, a fast solver for the HCT equation. Highly performant, but a small breaking change.
+- Add explanation and link to `dynamic_color` packages.
+- Add `operator ==` and `toString` overrides to `Hct`.
 
 ### Changed
-- Improve documentation for `color_utils.dart`
-- Rename `HctColor` to `Hct`
+
+- Improve documentation for `color_utils.dart`.
+- Rename `HctColor` to `Hct`.
 
 ### Fixed
-- Fix README import
+
+- Fix README import.
 
 ## 0.1.4 - 2022-01-21
+
 ### Added
-- Allow creation of `Scheme` from a `CorePalette` with `lightFromCorePalette`
-    and `darkFromCorePalette`
+
+- Allow creation of `Scheme` from a `CorePalette` with `lightFromCorePalette` and `darkFromCorePalette`
 
 ## 0.1.3 - 2021-12-10
+
 ### Added
-- Export `Scheme`
+
+- Export `Scheme`.
 
 ## 0.1.2 - 2021-12-02
+
 ### Changed
-- Update `Scheme` tonal values
-- Move `matcher` to pubspec's `dev_dependencies`
+
+- Update `Scheme` tonal values.
+- Move `matcher` to pubspec's `dev_dependencies`.
 
 ## 0.1.1 - 2021-10-28
+
 ### Changed
-- Update pubspec `description`
+
+- Update pubspec `description`.
 
 ### Fixed
-- Fix `matcher` version incompatibility with flutter stable
+
+- Fix `matcher` version incompatibility with Flutter stable.
 
 ## 0.1.0 - 2021-10-28
+
 ### Added
-- Create library
+
+- Create library.
