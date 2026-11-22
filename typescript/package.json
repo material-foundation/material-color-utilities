@@ -1,6 +1,6 @@
 {
   "name": "@quaffui/material-color-utilities",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "publishConfig": {
     "access": "public"
   },
@@ -15,7 +15,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/material-foundation/material-color-utilities.git",
+    "url": "git+https://github.com/quaffui/material-color-utilities.git",
     "directory": "typescript"
   },
   "author": "Material Eng",
@@ -45,7 +45,7 @@
   "scripts": {
     "build": "wireit",
     "build:ts": "wireit",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build && node --input-type=module -e \"await import('./index.js')\""
   },
   "wireit": {
     "build": {

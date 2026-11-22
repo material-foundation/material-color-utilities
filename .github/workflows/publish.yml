@@ -19,28 +19,25 @@ on:
     tags:
       - "v*"
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   publish_typescript:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: typescript
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v7.0.1
         with:
-          cache-dependency-path: typescript/package-lock.json
-          node-version: 18
-          cache: npm
-
-      - run: cd typescript && npm ci
-      - run: cd typescript && npm run build
-        env:
-          WIREIT_FAILURES: continue
-
-      - uses: actions/setup-node@v3
+          persist-credentials: false
+      - uses: actions/setup-node@v7.1.0
         with:
-          node-version: 18
+          node-version: "24"
           registry-url: "https://registry.npmjs.org/"
-      - run: cd typescript &&  npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          package-manager-cache: false
+      - run: npm ci
+      - run: npm publish
