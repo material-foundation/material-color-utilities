@@ -18,9 +18,10 @@
 // languages. Including variable types, though sometimes unnecessary, is a
 // powerful help to verification and avoiding hard-to-debug issues.
 
+import 'dart:typed_data';
+
 import '../utils/color_utils.dart';
 import 'quantizer.dart';
-import 'quantizer_map.dart';
 
 class QuantizerWu implements Quantizer {
   List<int> weights = <int>[];
@@ -41,8 +42,9 @@ class QuantizerWu implements Quantizer {
 
   @override
   Future<QuantizerResult> quantize(Iterable<int> pixels, int colorCount) async {
-    final result = await QuantizerMap().quantize(pixels, colorCount);
-    constructHistogram(result.colorToCount);
+    _constructHistogramFromPixels(
+      pixels is List<int> ? pixels : pixels.toList(),
+    );
     computeMoments();
     final createBoxesResult = createBoxes(colorCount);
     final results = createResult(createBoxesResult.resultCount);
@@ -56,6 +58,51 @@ class QuantizerWu implements Quantizer {
         r +
         g +
         b;
+  }
+
+  /// Builds the same histogram as [constructHistogram] does from the counts
+  /// that `QuantizerMap` gives for [pixels], straight from the pixels: it
+  /// skips pixels that are not opaque, as `QuantizerMap` does.
+  ///
+  /// The sums are the same: they add only whole numbers, which stay exact in
+  /// any order, also in [moments], while they are below 2^53. Int32List is
+  /// used where its sums cannot overflow, that is, while 255 times the number
+  /// of pixels is below 2^31.
+  void _constructHistogramFromPixels(List<int> pixels) {
+    final fitsInt32 = pixels.length <= 0x7fffffff ~/ 255;
+    List<int> newSums() => fitsInt32
+        ? Int32List(totalSize)
+        : List.filled(totalSize, 0, growable: false);
+    final weights = newSums();
+    final momentsR = newSums();
+    final momentsG = newSums();
+    final momentsB = newSums();
+    final moments = Float64List(totalSize);
+    const bitsToRemove = 8 - indexBits;
+    for (var i = 0; i < pixels.length; i++) {
+      final pixel = pixels[i];
+      if (ColorUtils.alphaFromArgb(pixel) < 255) {
+        continue;
+      }
+      final red = ColorUtils.redFromArgb(pixel);
+      final green = ColorUtils.greenFromArgb(pixel);
+      final blue = ColorUtils.blueFromArgb(pixel);
+      final index = getIndex(
+        (red >> bitsToRemove) + 1,
+        (green >> bitsToRemove) + 1,
+        (blue >> bitsToRemove) + 1,
+      );
+      weights[index]++;
+      momentsR[index] += red;
+      momentsG[index] += green;
+      momentsB[index] += blue;
+      moments[index] += (red * red) + (green * green) + (blue * blue);
+    }
+    this.weights = weights;
+    this.momentsR = momentsR;
+    this.momentsG = momentsG;
+    this.momentsB = momentsB;
+    this.moments = moments;
   }
 
   void constructHistogram(Map<int, int> pixels) {
@@ -89,7 +136,7 @@ class QuantizerWu implements Quantizer {
       List<int> areaR = List.filled(sideLength, 0, growable: false);
       List<int> areaG = List.filled(sideLength, 0, growable: false);
       List<int> areaB = List.filled(sideLength, 0, growable: false);
-      List<double> area2 = List.filled(sideLength, 0.0, growable: false);
+      List<double> area2 = Float64List(sideLength);
       for (var g = 1; g < sideLength; g++) {
         int line = 0;
         int lineR = 0;
