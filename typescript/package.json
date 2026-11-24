@@ -2,7 +2,8 @@
   "name": "@material/material-color-utilities",
   "version": "0.4.0",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://us-npm.pkg.dev/oss-exit-gate-prod/material-color-utilities--npm/"
   },
   "description": "Algorithms and utilities that power the Material Design 3 (M3) color system, including choosing theme colors from images and creating tones of colors; all in a new color space.",
   "keywords": [
@@ -45,15 +46,22 @@
   "scripts": {
     "build": "wireit",
     "build:ts": "wireit",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "release:exit-gate": "gcloud artifacts packages delete \"@material/material-color-utilities\" --project=oss-exit-gate-prod --repository=material-color-utilities--npm --location=us --quiet 2>/dev/null || true; npx --yes google-artifactregistry-auth --repo-config=.npmrc --credential-config=$HOME/.npmrc && npm publish && VERSION=$(node -p \"require('./package.json').version\") && printf '{\"publish_all\":false,\"publishing_groups\":[{\"namespace\":\"@material\",\"packages\":[{\"name\":\"material-color-utilities\",\"version\":\"%s\"}]}]}\\n' \"$VERSION\" > /tmp/mcu-manifest-$VERSION.json && gcloud storage cp /tmp/mcu-manifest-$VERSION.json gs://oss-exit-gate-prod-projects-bucket/material-color-utilities/npm/manifests/manifest-$VERSION-$(date +%s).json"
   },
   "wireit": {
     "build": {
-      "dependencies": ["build:ts"]
+      "dependencies": [
+        "build:ts"
+      ]
     },
     "build:ts": {
       "command": "tsc --pretty",
-      "files": ["tsconfig.json", "**/*.ts", "!**/*.d.ts"],
+      "files": [
+        "tsconfig.json",
+        "**/*.ts",
+        "!**/*.d.ts"
+      ],
       "output": [
         ".tsbuildinfo",
         "**/*.js",
