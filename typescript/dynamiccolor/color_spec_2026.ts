@@ -22,7 +22,7 @@ import {clampDouble} from '../utils/math_utils.js';
 
 import {ColorSpecDelegateImpl2025} from './color_spec_2025.js';
 import {ContrastCurve} from './contrast_curve.js';
-import {DynamicColor, extendSpecVersion} from './dynamic_color';
+import {DynamicColor, extendSpecVersion} from './dynamic_color.js';
 import {ToneDeltaPair} from './tone_delta_pair.js';
 import {Variant} from './variant.js';
 

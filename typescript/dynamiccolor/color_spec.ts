@@ -18,7 +18,7 @@
 import {ColorSpecDelegateImpl2021} from './color_spec_2021.js';
 import {ColorSpecDelegateImpl2025} from './color_spec_2025.js';
 import {ColorSpecDelegateImpl2026} from './color_spec_2026.js';
-import type {DynamicColor} from './dynamic_color';
+import type {DynamicColor} from './dynamic_color.js';
 import {DynamicScheme} from './dynamic_scheme.js';
 
 /**

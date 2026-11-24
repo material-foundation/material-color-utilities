@@ -23,7 +23,7 @@ import {labFromArgbInto} from './lab_conversion.js';
 import {QuantizerCelebi} from './quantizer_celebi.js';
 import {QuantizerWsmeans} from './quantizer_wsmeans.js';
 import {QuantizerWu} from './quantizer_wu.js';
-import {ReferenceQuantizerCelebi, ReferenceQuantizerWsmeans, ReferenceQuantizerWu} from './reference_quantizers';
+import {ReferenceQuantizerCelebi, ReferenceQuantizerWsmeans, ReferenceQuantizerWu} from './reference_quantizers.js';
 
 /**
  * Checks that the optimized quantizers return exactly what the frozen copies

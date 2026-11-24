@@ -20,7 +20,7 @@ import {Hct} from '../hct/hct.js';
 import {TonalPalette} from '../palettes/tonal_palette.js';
 import * as math from '../utils/math_utils.js';
 
-import type {SpecVersion} from './color_spec';
+import type {SpecVersion} from './color_spec.js';
 import {ContrastCurve} from './contrast_curve.js';
 import {DynamicScheme} from './dynamic_scheme.js';
 import {ToneDeltaPair} from './tone_delta_pair.js';
